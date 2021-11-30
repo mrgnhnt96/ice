@@ -1,0 +1,31 @@
+brun: dart run build_runner build --delete-conflicting-outputs
+
+wrun: dart run build_runner watch --delete-conflicting-outputs
+
+cbrun: dart run build_runner clean build
+
+trun: dart --observe --pause-isolates-on-start .dart_tool/build/entrypoint/build.dart build
+
+cproj:
+  - flutter clean
+  - dart pub upgrade
+  - dart pub get
+
+sort: dart pub global run import_sorter:main
+
+prep:
+  - flutter format lib test
+  - $sort
+
+coverage:
+  - format_coverage --lcov --in=coverage --out=coverage/lcov.info --packages=.packages --report-on=lib
+  - genhtml coverage/lcov.info -o coverage
+  - open coverage/index.html
+
+runtests:
+  - pub run test --coverage coverage -r expanded --test-randomize-ordering-seed random --timeout 60s
+  - $coverage
+
+publish:
+  - cd ../enum_assist && pub publish
+  - cd ../enum_assist_annotation && pub publish

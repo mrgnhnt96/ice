@@ -1,0 +1,20 @@
+# Read about `build.yaml` at https://pub.dev/packages/build_config
+targets:
+  $default:
+    builders:
+      diana:
+        enabled: true
+        generate_for:
+          exclude:
+            - test/
+          include:
+            - test/**/integration/*
+            - test/**/integration/**/*
+
+builders:
+  diana:
+    import: "package:copywith_plus/diana.dart"
+    builder_factories: ["diana"]
+    build_extensions: { ".dart": ["gql.dart"] }
+    auto_apply: dependents
+    build_to: source
