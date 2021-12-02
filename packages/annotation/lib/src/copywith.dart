@@ -9,6 +9,9 @@ class CopyWith {
   const CopyWith();
 }
 
+/// {@macro copyWith}
+const copyWith = CopyWith();
+
 // /// {@template copywith}
 // /// Annotation used to mark a class to generate a copyWith method.
 // ///
@@ -36,3 +39,6 @@ class CopyWithEntryPoint {
   /// {@macro copywith_entrypoint}
   const CopyWithEntryPoint();
 }
+
+/// {@macro copywith_entrypoint}
+const copyWithEntryPoint = CopyWithEntryPoint();
