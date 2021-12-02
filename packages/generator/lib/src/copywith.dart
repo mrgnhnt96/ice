@@ -1,6 +1,7 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:copywith_annotation/copywith.dart';
+import 'package:copywith_plus/src/domain/copy_with_method.dart';
 import 'package:copywith_plus/src/domain/domain.dart';
 import 'package:meta/meta.dart';
 import 'package:source_gen/source_gen.dart';
@@ -25,7 +26,7 @@ class CopyWithGenerator extends GeneratorForAnnotation<CopyWith> {
   final String _path;
 
   @override
-  Iterable<String> generateForAnnotatedElement(
+  String generateForAnnotatedElement(
     Element element,
     ConstantReader annotation,
     BuildStep buildStep,
@@ -35,8 +36,19 @@ class CopyWithGenerator extends GeneratorForAnnotation<CopyWith> {
     print(annotation);
     print(buildStep);
 
+    if (element is! ClassElement) {
+      throw InvalidGenerationSourceError(
+        'Generator cannot target `${element.runtimeType}`.',
+        element: element,
+      );
+    }
+
     final subject = Class.fromElement(element);
 
-    return [];
+    final copyWith = CopyWithMethod.forSubject(subject);
+
+    final result = copyWith.toString();
+
+    return result;
   }
 }
