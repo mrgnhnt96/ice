@@ -5,9 +5,9 @@ import 'package:test/test.dart';
 void main() {
   group('generator', () {
     setUpAll(() {
-      const base = 'test/generator';
+      const base = 'test/copywith_generator';
       GeneratorPath.setDirPath(
-        input: '$base/input',
+        input: base,
         output: '$base/output',
       );
     });
