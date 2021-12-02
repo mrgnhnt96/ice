@@ -46,6 +46,8 @@ class Class {
 
     final entryPoint = constructor.firstWhere(
       (constructor) => constructor.hasEntryPointAnnotation,
+      // TODO: get the default constructer
+      // if that doesn't exist, get the private constructor
       orElse: () => constructor.first,
     );
 
