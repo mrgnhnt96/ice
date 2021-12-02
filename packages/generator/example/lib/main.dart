@@ -92,33 +92,3 @@ extension ExampleX on Example {
     );
   }
 }
-
-
-/*
-property_name:
-- element.fields[i].displayName // isMale
-
-type_name:
-  ! PREFERRED
-- element.fields[i].declaration.type.displayName // bool
-- element.fields[i].declaration.type.name // bool
-  ! LESS PREFERRED
-- element.accessors[i].returnType // InterfaceTypeImpl (bool?)
-- element.fields[i] // (bool? isMale)
-- element.fields[i].type // (bool?)
-
-is_nullable:
-- element.fields[i].declaration.type.nullabilitySuffix // NullabilitySuffix.question *QUESTION == nullable*
-
-is_private:
-- element.fields[i].isPrivate
-is_public:
-- element.fields[i].isPublic
-
-class_name:
-- element.displayName // Basic
-
-? options:
-?
-- include_late_fields
-*/
