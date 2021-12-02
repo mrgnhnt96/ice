@@ -11,6 +11,7 @@ void main() {
         output: '$base/output',
       );
     });
+
     test('generates a valid file', () async {
       await testPartGenerator(
         'basic',
@@ -33,6 +34,8 @@ GOAL:
 
 
 /*
+GET FROM ELEMENT::::
+
 - constructor:
   - location:
     * element.constructors // List<ConstructorElement>
