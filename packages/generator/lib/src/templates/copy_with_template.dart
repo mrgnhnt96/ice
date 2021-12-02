@@ -70,9 +70,9 @@ extension on Param {
 /// {@template copy_with_method}
 /// Generates a copyWith method for a class.
 /// {@endtemplate}
-class CopyWithMethod {
+class CopyWithTemplate {
   /// {@macro copy_with_method}
-  const CopyWithMethod.forSubject(Class subject) : _subject = subject;
+  const CopyWithTemplate.forSubject(Class subject) : _subject = subject;
 
   final Class _subject;
 
