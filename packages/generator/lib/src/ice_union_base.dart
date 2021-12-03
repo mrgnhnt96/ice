@@ -4,7 +4,6 @@ import 'package:copywith_annotation/copywith.dart';
 import 'package:copywith_plus/src/domain/domain.dart';
 import 'package:copywith_plus/src/ice.dart';
 import 'package:copywith_plus/src/templates/templates.dart';
-import 'package:meta/meta.dart';
 import 'package:source_gen/source_gen.dart';
 
 /// {@template ice_generator}
@@ -12,19 +11,7 @@ import 'package:source_gen/source_gen.dart';
 /// {@endtemplate}
 class IceUnionBaseGenerator extends GeneratorForAnnotation<IceUnionBase> {
   /// {@macro ice_generator}
-  const IceUnionBaseGenerator()
-      : _path = 'graphql.yaml',
-        super();
-
-  /// Used to set the path to the `graphql.yaml` file.
-  ///
-  /// Used for testing purposes only.
-  @visibleForTesting
-  const IceUnionBaseGenerator.manual(String fileName, {String? dir})
-      : _path = '${dir == null ? '' : '$dir/'}$fileName.yaml',
-        super();
-
-  final String _path;
+  const IceUnionBaseGenerator() : super();
 
   @override
   String generateForAnnotatedElement(
@@ -32,8 +19,7 @@ class IceUnionBaseGenerator extends GeneratorForAnnotation<IceUnionBase> {
     ConstantReader annotation,
     BuildStep buildStep,
   ) {
-    print(IceGenerator.subjects);
-    print(_path);
+    print(IceGenerator.unions);
     print(element);
     print(annotation);
     print(buildStep);

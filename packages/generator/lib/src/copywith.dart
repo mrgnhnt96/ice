@@ -3,7 +3,6 @@ import 'package:build/build.dart';
 import 'package:copywith_annotation/copywith.dart';
 import 'package:copywith_plus/src/domain/domain.dart';
 import 'package:copywith_plus/src/templates/copy_with_template.dart';
-import 'package:meta/meta.dart';
 import 'package:source_gen/source_gen.dart';
 
 /// {@template copywith_generator}
@@ -11,19 +10,7 @@ import 'package:source_gen/source_gen.dart';
 /// {@endtemplate}
 class CopyWithGenerator extends GeneratorForAnnotation<CopyWith> {
   /// {@macro copywith_generator}
-  const CopyWithGenerator()
-      : _path = 'graphql.yaml',
-        super();
-
-  /// Used to set the path to the `graphql.yaml` file.
-  ///
-  /// Used for testing purposes only.
-  @visibleForTesting
-  const CopyWithGenerator.manual(String fileName, {String? dir})
-      : _path = '${dir == null ? '' : '$dir/'}$fileName.yaml',
-        super();
-
-  final String _path;
+  const CopyWithGenerator() : super();
 
   @override
   String generateForAnnotatedElement(
@@ -31,7 +18,6 @@ class CopyWithGenerator extends GeneratorForAnnotation<CopyWith> {
     ConstantReader annotation,
     BuildStep buildStep,
   ) {
-    print(_path);
     print(element);
     print(annotation);
     print(buildStep);
