@@ -2,25 +2,26 @@
 
 part of 'main.dart';
 
+@IceUnionBase()
 abstract class State {
   const State();
 
   factory State.fromJson(Map<String, dynamic> json) => _$StateFromJson(json);
 }
 
-@IceUnion(State)
+@Ice.union(State)
 class _$Initial extends State {
   const _$Initial();
 }
 
-@IceUnion.private(State)
+@Ice.privateUnion(State)
 class _$Ready extends State {
   const _$Ready(this.data);
 
   final String data;
 }
 
-@IceUnion.private(State)
+@Ice.privateUnion(State)
 class _$Error extends State {
   const _$Error(
     this.data, {
@@ -33,7 +34,7 @@ class _$Error extends State {
   final String? fix;
 }
 
-@ice
+@Ice()
 class _ModelClass {
   const _ModelClass();
 }

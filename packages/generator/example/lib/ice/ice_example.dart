@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 
 part 'ice_example.ice.dart';
 
-@ice
+@Ice()
 class _Example {
   const _Example({
     this.name,
