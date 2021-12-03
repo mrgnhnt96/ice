@@ -6,19 +6,27 @@ import 'package:meta/meta_meta.dart';
 @Target({TargetKind.classType})
 class Ice {
   /// {@macro ice}
-  const Ice({
-    this.isPrivate = false,
-  });
+  const Ice() : isPrivate = false;
+
+  /// {@macro ice}
+  ///
+  /// creates a private class instance
+  const Ice.private() : isPrivate = true;
+
+  /// {@macro ice_union}
+  const factory Ice.union(Type type) = IceUnion;
+
+  /// {@macro ice_union}
+  ///
+  /// create a private class instance
+  const factory Ice.privateUnion(Type type) = IceUnion.private;
 
   /// whether the class is private
   final bool isPrivate;
 }
 
-/// {@macro ice}
-const ice = Ice();
-
 /*
-TODO: check this out
+TODO: check for `$` on private classes
 ? If it is private, then the base class super be "super private"
 ```
 class _$Example {}
@@ -30,12 +38,7 @@ class _Example extends _$Example {}
 ? it will accept both
 */
 
-/// {@macro ice}
-///
-/// The output class name will be remain private.
-const privateIce = Ice(isPrivate: true);
-
-/// {@template ice}
+/// {@template ice_union}
 /// Annotation used to mark a class to generate a ice method.
 /// {@endtemplate}
 @Target({TargetKind.classType})
@@ -44,8 +47,22 @@ class IceUnion extends Ice {
   const IceUnion(this.union) : super();
 
   /// {@macro ice}
-  const IceUnion.private(this.union) : super(isPrivate: true);
+  const IceUnion.private(this.union) : super.private();
 
   /// the type of the top union class
   final Type union;
+}
+
+/// {@template ice_union_base}
+/// the base of the union
+///  {@endtemplate}
+class IceUnionBase {
+  /// {@macro ice_union_base}
+  const IceUnionBase() : isPrivate = false;
+
+  /// {@macro ice_union_base}
+  const IceUnionBase.private() : isPrivate = true;
+
+  /// whether the class is private
+  final bool isPrivate;
 }
