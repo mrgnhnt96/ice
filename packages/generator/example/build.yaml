@@ -3,10 +3,10 @@ targets:
   $default:
     builders:
       ice:
-        enabled: false
-        generate_for:
-          exclude:
-            - test/
-          include:
-            - test/**/integration/*
-            - test/**/integration/**/*
+        enabled: true
+      ice|json_serializable:
+        enabled: true
+        options:
+          explicit_to_json: true
+          include_if_null: false
+          any_map: true
