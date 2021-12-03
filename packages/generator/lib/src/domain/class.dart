@@ -1,9 +1,9 @@
 // ignore_for_file: comment_references, implementation_imports
 
 import 'package:analyzer/dart/element/element.dart';
-import 'package:ice_annotation/src/ice.dart';
 import 'package:ice/src/domain/domain.dart';
 import 'package:ice/src/domain/field.dart';
+import 'package:ice_annotation/src/ice.dart';
 
 /// {@template class}
 /// The class that [CopyWith] will be generated for
