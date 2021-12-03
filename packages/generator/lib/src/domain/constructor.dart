@@ -44,6 +44,17 @@ class Constructor {
     );
   }
 
+  /// Gets all constructors for the class from [ConstructorElement]
+  static List<Constructor> fromElements(List<ConstructorElement> elements) {
+    final constructors = <Constructor>[];
+
+    for (final element in elements) {
+      constructors.add(Constructor.fromElement(element));
+    }
+
+    return constructors;
+  }
+
   /// The name of the [Constructor]
   final String name;
 
@@ -61,4 +72,16 @@ class Constructor {
   bool get hasEntryPointAnnotation {
     return annotations.any((annotation) => annotation.isEntryPoint);
   }
+
+  /// If the [Constructor] is default
+  bool get isDefault => name.isEmpty;
+
+  /// If the [Constructor] is named
+  bool get isNamed => !isDefault;
+
+  /// If the [Constructor] is named privately
+  bool get isPrivate => name.startsWith('_');
+
+  /// If the [Constructor] is underscore named
+  bool get isNamedUnderscore => name == '_';
 }
