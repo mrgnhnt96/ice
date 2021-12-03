@@ -1,9 +1,11 @@
+// ignore_for_file: comment_references
+
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:copywith_annotation/copywith.dart';
 import 'package:copywith_plus/src/domain/domain.dart';
+import 'package:copywith_plus/src/domain/ice_subjects.dart';
 import 'package:copywith_plus/src/templates/templates.dart';
-import 'package:meta/meta.dart';
 import 'package:source_gen/source_gen.dart';
 
 /// {@template ice_generator}
@@ -11,25 +13,10 @@ import 'package:source_gen/source_gen.dart';
 /// {@endtemplate}
 class IceGenerator extends GeneratorForAnnotation<Ice> {
   /// {@macro ice_generator}
-  const IceGenerator()
-      : _path = 'graphql.yaml',
-        super();
+  const IceGenerator() : super();
 
-  static Map<String, Class> subjects = {};
-
-  void addSubject(Class subject) {
-    subjects[subject.name] = subject;
-  }
-
-  /// Used to set the path to the `graphql.yaml` file.
-  ///
-  /// Used for testing purposes only.
-  @visibleForTesting
-  const IceGenerator.manual(String fileName, {String? dir})
-      : _path = '${dir == null ? '' : '$dir/'}$fileName.yaml',
-        super();
-
-  final String _path;
+  /// {@macro unions}
+  static IceSubjects unions = IceSubjects();
 
   @override
   String generateForAnnotatedElement(
@@ -37,7 +24,6 @@ class IceGenerator extends GeneratorForAnnotation<Ice> {
     ConstantReader annotation,
     BuildStep buildStep,
   ) {
-    print(_path);
     print(element);
     print(annotation);
     print(buildStep);
@@ -50,7 +36,7 @@ class IceGenerator extends GeneratorForAnnotation<Ice> {
     }
 
     final subject = Class.fromElement(element);
-    addSubject(subject);
+    unions.add(subject);
 
     final ice = IceTemplate.forSubject(subject);
 
@@ -59,23 +45,3 @@ class IceGenerator extends GeneratorForAnnotation<Ice> {
     return result;
   }
 }
-
-abstract class Unions {
-  Map<String, List<Class>> _unions = {};
-
-  List<Class> getSubjects(String base);
-  void addSubject(Class subject) {
-    if (!subject.isIceUnion) {
-      return;
-    }
-
-    // _unions[] ??= [];
-  }
-}
-
-// extension on Class {
-//   String get unionType {
-//     // TODO: get union base class name from annotation
-//     if ()
-//   }
-// }
