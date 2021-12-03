@@ -32,7 +32,7 @@ class Annotation {
     final name = element.displayName;
     final type = annotationTypeConv.fromJson(name);
 
-    String? getBaseValue() {
+    String? getBaseName() {
       final reader = ConstantReader(annotation.computeConstantValue());
       final result = reader
           .peek('union')
@@ -42,7 +42,10 @@ class Annotation {
       return result;
     }
 
-    final unionBase = type.maybeMap(union: getBaseValue, orElse: () => null)();
+    final unionBase = type.maybeMap(
+      union: getBaseName,
+      orElse: () => null,
+    )();
 
     final declaration =
         '${(annotation as ElementAnnotationImpl).annotationAst}';
