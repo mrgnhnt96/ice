@@ -8,11 +8,9 @@ enum PositionType {
   /// `Example({required String name})`
   /// `Example({String name = ''})`\
   /// `Example({String? name})`
-
   named,
 
   /// `Example([String? name])`\
   /// `Example([String name = ''])`\
-
   positioned,
 }
