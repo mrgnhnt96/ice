@@ -2,10 +2,10 @@
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
-import 'package:ice_annotation/ice.dart';
 import 'package:ice/src/domain/domain.dart';
 import 'package:ice/src/domain/ice_subjects.dart';
 import 'package:ice/src/templates/templates.dart';
+import 'package:ice_annotation/ice.dart';
 import 'package:source_gen/source_gen.dart';
 
 /// {@template ice_generator}
