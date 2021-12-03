@@ -2,6 +2,7 @@ import 'package:ice_annotation/ice.dart';
 
 part 'main.g.dart';
 part 'main.ice.dart';
+part 'example_main.ice.dart';
 
 @Ice()
 class _Example {
