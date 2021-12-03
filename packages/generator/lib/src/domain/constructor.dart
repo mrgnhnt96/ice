@@ -13,34 +13,33 @@ class Constructor {
     required this.displayName,
     required this.annotations,
     required this.params,
+    required this.declaration,
+    required this.isConst,
+    required this.isDefault,
+    required this.isPrivate,
   });
 
   /// Gets the constructor from the [ConstructorElement]
   factory Constructor.fromElement(ConstructorElement element) {
-    final annotations = <Annotation>[];
-    final params = <Param>[];
+    final annotations = Annotation.fromElements(element.metadata);
+    final params = Param.fromElements(element.parameters);
 
-    for (final annotation in element.metadata) {
-      final annotate = Annotation.fromElement(annotation);
-
-      if (annotate == null) {
-        continue;
-      }
-
-      annotations.add(annotate);
-    }
-
-    for (final param in element.parameters) {
-      final paramElement = Param.fromElement(param);
-
-      params.add(paramElement);
-    }
+    final declaration = '${element.declaration}'
+        .replaceFirst(
+          element.returnType.getDisplayString(withNullability: true),
+          '',
+        )
+        .trim();
 
     return Constructor(
       name: element.name,
       displayName: element.displayName,
       annotations: annotations,
       params: params,
+      declaration: declaration,
+      isConst: element.isConst,
+      isDefault: element.isDefaultConstructor,
+      isPrivate: element.isPrivate,
     );
   }
 
@@ -55,33 +54,39 @@ class Constructor {
     return constructors;
   }
 
-  /// The name of the [Constructor]
+  /// The name of the constructor
   final String name;
 
-  /// The name of the [Constructor] with the [Class]'s name
+  /// The name of the constructor with the [Class]'s name
   final String displayName;
 
-  /// The annotation of the [Constructor]
+  /// The annotation of the constructor
   final List<Annotation> annotations;
 
-  /// The params of the [Constructor]
+  /// The params of the constructor
   final List<Param> params;
 
-  /// Whether the [Constructor] is the copyWith entry point\
+  /// the domain of the constructor
+  final String declaration;
+
+  /// if the constructor is a const
+  final bool isConst;
+
+  /// if the constructor is the default constructor
+  final bool isDefault;
+
+  /// If the constructor is named privately
+  final bool isPrivate;
+
+  /// Whether the constructor is the copyWith entry point\
   /// determined by the [CopyWithEntryPoint] annotation
   bool get hasEntryPointAnnotation {
     return annotations.any((annotation) => annotation.isEntryPoint);
   }
 
-  /// If the [Constructor] is default
-  bool get isDefault => name.isEmpty;
-
-  /// If the [Constructor] is named
+  /// If the constructor is named
   bool get isNamed => !isDefault;
 
-  /// If the [Constructor] is named privately
-  bool get isPrivate => name.startsWith('_');
-
-  /// If the [Constructor] is underscore named
+  /// If the constructor is underscore named
   bool get isNamedUnderscore => name == '_';
 }
