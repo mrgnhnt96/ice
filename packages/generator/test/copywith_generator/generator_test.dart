@@ -15,7 +15,7 @@ void main() {
     test('generates a valid file', () async {
       await testPartGenerator(
         'basic',
-        generator: () => const CopyWithGenerator.manual('basic'),
+        generator: const CopyWithGenerator(),
       );
     });
   });
