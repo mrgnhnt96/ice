@@ -2,15 +2,15 @@ part of 'main.dart';
 
 @JsonSerializable()
 class Example extends _Example with EquatableMixin {
-  Example({
-    String? name,
+  Example(
+    String? name, {
     int? age,
     bool? isMale,
     List<String>? friends,
     Map<String, dynamic>? data,
     Example? father,
   }) : super(
-          name: name,
+          name,
           age: age,
           isMale: isMale,
           friends: friends,
@@ -44,7 +44,7 @@ extension ExampleX on Example {
     Example? father,
   }) {
     return Example(
-      name: name ?? this.name,
+      name ?? this.name,
       age: age ?? this.age,
       isMale: isMale ?? this.isMale,
       friends: friends ?? this.friends,

@@ -6,8 +6,8 @@ part 'example_main.ice.dart';
 
 @Ice()
 class _Example {
-  const _Example({
-    this.name,
+  const _Example(
+    this.name, {
     this.age,
     this.isMale,
     this.friends,
