@@ -1,7 +1,7 @@
-// ignore_for_file: comment_references
+// ignore_for_file: comment_references, implementation_imports
 
 import 'package:analyzer/dart/element/element.dart';
-import 'package:copywith_annotation/copywith.dart';
+import 'package:copywith_annotation/src/ice.dart';
 import 'package:copywith_plus/src/domain/domain.dart';
 import 'package:copywith_plus/src/domain/field.dart';
 
@@ -56,26 +56,38 @@ class Class {
         _isIce = true;
       } else if (annotate.isIceUnion) {
         _isIceUnion = true;
+        _unionBaseName = annotate.unionBase;
       } else if (annotate.isUnionBase) {
         _isUnionBase = true;
+      } else if (annotate.isOther) {
+        _isOther = true;
       }
     }
   }
 
+  /// Returns true when the class has an [Ice] or [IceUnion] annotation
+  bool get isIce => _isIce;
   var _isIce = false;
 
-  /// Returns true class has annotation for [Ice] or [IceUnion]
-  bool get isIce => _isIce;
-
+  /// returns true when the class has an [IceUnion] annotation
+  bool get isIceUnion => _isIceUnion;
   var _isIceUnion = false;
 
-  /// returns true class has annotation for [IceUnion]
-  bool get isIceUnion => _isIceUnion;
-
+  /// returns true when the class has an [IceUnionBase] annotation
+  bool get isUnionBase => _isUnionBase;
   var _isUnionBase = false;
 
-  /// returns true class has annotation for [IceUnionBase]
-  bool get isUnionBase => _isUnionBase;
+  /// returns true if the class has an [Ice] annotation
+  bool get hasIceAnnotation => isIce || isIceUnion || isUnionBase;
+
+  /// returns true if the class is annotated with
+  /// an unknown annotation
+  bool get isOther => _isOther;
+  var _isOther = false;
+
+  /// The name of the base class for the union
+  String? get unionBaseName => _unionBaseName;
+  String? _unionBaseName;
 }
 
 class _EntryPoint {
