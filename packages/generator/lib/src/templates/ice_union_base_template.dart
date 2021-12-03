@@ -6,8 +6,8 @@ import 'package:copywith_plus/src/domain/domain.dart';
 /// - copyWith()
 /// - Equatable Props
 /// - toString()
-class IceTemplate {
-  const IceTemplate.forSubject(Class subject) : _subject = subject;
+class IceUnionBaseTemplate {
+  const IceUnionBaseTemplate.forSubject(Class subject) : _subject = subject;
 
   final Class _subject;
 }

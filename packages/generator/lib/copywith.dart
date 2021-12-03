@@ -13,6 +13,8 @@
 
 import 'package:build/build.dart';
 import 'package:copywith_plus/src/copywith.dart';
+import 'package:copywith_plus/src/ice.dart';
+import 'package:copywith_plus/src/ice_union_base.dart';
 import 'package:source_gen/source_gen.dart';
 
 /// Not meant to be invoked by hand-authored code.
@@ -21,7 +23,11 @@ Builder copywithPlus(BuilderOptions options) {
   const ignores = <String>[];
 
   return PartBuilder(
-    [const CopyWithGenerator()],
+    [
+      const CopyWithGenerator(),
+      const IceGenerator(),
+      const IceUnionBaseGenerator(),
+    ],
     '.gql.dart',
     header: '''
 // coverage:ignore-file
