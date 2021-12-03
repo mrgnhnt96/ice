@@ -75,4 +75,4 @@ coverage/
 !**/ios/**/default.pbxuser
 !**/ios/**/default.perspectivev3
 .markdownlint.json
-**/*.g.dart
+**/test/*.g.dart
