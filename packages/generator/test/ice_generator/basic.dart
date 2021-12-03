@@ -4,14 +4,23 @@ import 'package:ice_annotation/ice.dart';
 
 @Ice()
 class _Example {
-  const _Example({
-    this.name,
+  const _Example(
+    this.name, {
     this.age,
     this.isMale,
     this.friends,
     this.data,
     String? fatherName,
-  }) : _father = const _Example(name: fatherName);
+  }) : _father = const _Example(fatherName);
+
+  const _Example.empty()
+      : this(
+          null,
+          age: null,
+          isMale: null,
+          friends: null,
+          data: null,
+        );
 
   final String? name;
   final int? age;
