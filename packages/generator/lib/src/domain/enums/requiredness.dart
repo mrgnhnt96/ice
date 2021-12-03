@@ -7,15 +7,9 @@ part 'requiredness.ge.dart';
 enum Requiredness {
   /// `Example({required String name})`
   /// `Example(String name)`
-  @EnumValue(extensions: [_ToString('required ')])
   required,
 
   /// `Example({String? name})`
   /// `Example([String? name])`
-  @EnumValue(extensions: [_ToString('')])
   optional,
-}
-
-class _ToString extends MapExtension<String> {
-  const _ToString(String value) : super(value, methodName: 'string');
 }
