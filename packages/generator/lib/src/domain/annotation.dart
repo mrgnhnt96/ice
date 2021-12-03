@@ -1,29 +1,106 @@
-// ignore_for_file: comment_references
+// ignore_for_file: comment_references, avoid_dynamic_calls
+// ignore_for_file: implementation_imports
 
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/src/dart/element/element.dart';
 import 'package:copywith_annotation/copywith.dart';
+import 'package:copywith_plus/src/domain/annotation_types.dart';
+import 'package:source_gen/source_gen.dart';
 
 /// {@template annotation}
 /// The annotation for a [Class]
 /// {@endtemplate}
 class Annotation {
   /// {@macro annotation}
-  const Annotation(this.name);
+  const Annotation({
+    required this.name,
+    required this.type,
+    required this.unionBase,
+    required this.declaration,
+  });
 
   /// gets the annotation from the [ElementAnnotation]
   static Annotation? fromElement(ElementAnnotation annotation) {
-    final name = annotation.element?.displayName;
+    final element = annotation.element;
 
-    if (name == null) {
+    if (element == null) {
       return null;
     }
+    const annotationTypeConv =
+        AnnotationTypesConv(defaultValue: AnnotationTypes.other);
 
-    return Annotation(name);
+    final name = element.displayName;
+    final type = annotationTypeConv.fromJson(name);
+
+    String? getBaseValue() {
+      final reader = ConstantReader(annotation.computeConstantValue());
+      final result = reader
+          .peek('union')
+          ?.typeValue
+          .getDisplayString(withNullability: false);
+
+      return result;
+    }
+
+    final unionBase = type.maybeMap(union: getBaseValue, orElse: () => null)();
+
+    final declaration =
+        '${(annotation as ElementAnnotationImpl).annotationAst}';
+
+    return Annotation(
+      name: name,
+      type: type,
+      unionBase: unionBase,
+      declaration: declaration,
+    );
   }
 
-  /// The name of the [Annotation]
+  /// gets the annotation from the [ElementAnnotation]s
+  static List<Annotation> fromElements(List<ElementAnnotation> elements) {
+    final annotations = <Annotation>[];
+
+    for (final annotation in elements) {
+      final annotate = Annotation.fromElement(annotation);
+      if (annotate == null) {
+        continue;
+      }
+
+      annotations.add(annotate);
+    }
+
+    return annotations;
+  }
+
+  /// The name of the annotation
   final String name;
 
-  /// Whether the [Annotation] is the entry point for [CopyWith]
-  bool get isEntryPoint => name == '$CopyWithEntryPoint';
+  /// The type of the annotation
+  final AnnotationTypes type;
+
+  /// The class name of the union base
+  final String? unionBase;
+
+  /// The declaration of the annotation
+  ///
+  /// eg:
+  /// ```dart
+  /// @JsonSerializable(fieldRename: FieldRename.snake)
+  /// ```
+  final String declaration;
+
+  /// Whether the annotation is the entry point for [CopyWith]
+  bool get isEntryPoint => type == AnnotationTypes.entryPoint;
+
+  /// Returns true when annotation is [Ice] or [IceUnion]
+  bool get isIce =>
+      type == AnnotationTypes.ice || type == AnnotationTypes.union;
+
+  /// returns true when annotation is [IceUnion]
+  bool get isIceUnion => type == AnnotationTypes.union;
+
+  /// returns true when annotation is [IceUnionBase]
+  bool get isUnionBase => type == AnnotationTypes.unionBase;
+
+  /// returns true when annotation is not recognized
+  bool get isOther => type == AnnotationTypes.other;
 }
