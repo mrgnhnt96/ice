@@ -14,10 +14,11 @@ import 'package:build/build.dart';
 import 'package:ice/src/copywith.dart';
 import 'package:ice/src/ice.dart';
 import 'package:ice/src/ice_union_base.dart';
+import 'package:json_serializable/builder.dart' as i;
 import 'package:source_gen/source_gen.dart';
 
 /// Not meant to be invoked by hand-authored code.
-Builder ice(BuilderOptions options) {
+Builder iceBuilder(BuilderOptions options) {
   // get settings from the build file
   const ignores = <String>[];
 
@@ -35,3 +36,7 @@ Builder ice(BuilderOptions options) {
 ''',
   );
 }
+
+/// json_serializable builder
+Builder iceJsonSerializable(BuilderOptions options) =>
+    i.jsonSerializable(options);

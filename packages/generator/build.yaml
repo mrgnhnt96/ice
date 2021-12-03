@@ -14,8 +14,16 @@ targets:
 builders:
   ice:
     import: "package:ice/ice.dart"
-    builder_factories: ["copywithPlus"]
+    builder_factories: ["iceBuilder"]
     build_extensions: { ".dart": ["ice.dart"] }
     auto_apply: dependents
     build_to: source
-    runs_before: ["json_serializable|json_serializable"]
+    runs_before: ["json_serializable"]
+
+  json_serializable:
+    import: "package:ice/ice.dart"
+    builder_factories: ["iceJsonSerializable"]
+    build_extensions: { ".dart": ["json_serializable.g.part"] }
+    auto_apply: dependents
+    build_to: cache
+    applies_builders: ["source_gen|combining_builder"]
