@@ -1,8 +1,7 @@
 // ignore_for_file: comment_references, implementation_imports
 
-import 'package:ice_annotation/src/ice.dart';
-import 'package:ice_annotation/src/ice.dart';
 import 'package:enum_assist_annotation/enum_assist_annotation.dart';
+import 'package:ice_annotation/src/ice.dart';
 
 part 'annotation_types.ge.dart';
 
