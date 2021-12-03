@@ -1,7 +1,7 @@
 // ignore: lines_longer_than_80_chars
 // ignore_for_file: cast_nullable_to_non_nullable, prefer_constructors_over_static_methods
 
-import 'package:copywith_annotation/copywith.dart';
+import 'package:ice_annotation/ice.dart';
 
 part 'output/basic.dart';
 

@@ -2,7 +2,7 @@
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
-import 'package:copywith_plus/src/domain/domain.dart';
+import 'package:ice/src/domain/domain.dart';
 
 /// {@template field}
 /// The [Field] of a [Class]

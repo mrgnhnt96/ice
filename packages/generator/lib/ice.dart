@@ -10,15 +10,14 @@
 /// This library is **not** intended to be imported by typical end-users unless
 /// you are creating a custom compilation pipeline. See documentation for
 /// details, and `build.yaml` for how these builders are configured by default.
-
 import 'package:build/build.dart';
-import 'package:copywith_plus/src/copywith.dart';
-import 'package:copywith_plus/src/ice.dart';
-import 'package:copywith_plus/src/ice_union_base.dart';
+import 'package:ice/src/copywith.dart';
+import 'package:ice/src/ice.dart';
+import 'package:ice/src/ice_union_base.dart';
 import 'package:source_gen/source_gen.dart';
 
 /// Not meant to be invoked by hand-authored code.
-Builder copywithPlus(BuilderOptions options) {
+Builder ice(BuilderOptions options) {
   // get settings from the build file
   const ignores = <String>[];
 
@@ -28,7 +27,7 @@ Builder copywithPlus(BuilderOptions options) {
       const IceGenerator(),
       const IceUnionBaseGenerator(),
     ],
-    '.gql.dart',
+    '.ice.dart',
     header: '''
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND

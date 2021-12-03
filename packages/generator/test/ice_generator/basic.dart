@@ -1,6 +1,6 @@
 // ignore_for_file: unused_element, unused_field
 
-import 'package:copywith_annotation/copywith.dart';
+import 'package:ice_annotation/ice.dart';
 
 @Ice()
 class _Example {

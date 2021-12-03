@@ -1,7 +1,7 @@
 // ignore_for_file: comment_references
 
 import 'package:analyzer/dart/element/element.dart';
-import 'package:copywith_plus/src/domain/domain.dart';
+import 'package:ice/src/domain/domain.dart';
 
 /// {@template constructor}
 /// A constructor of the [Class]

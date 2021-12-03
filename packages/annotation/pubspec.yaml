@@ -1,5 +1,4 @@
-name: copywith_annotation
-description: Generate copyWith methods for your model classes
+name: ice_annotation
 version: 0.0.1
 publish_to: none
 
@@ -7,6 +6,7 @@ environment:
   sdk: ">=2.14.0 <3.0.0"
 
 dependencies:
+  equatable: ^2.0.3
   json_annotation: ^4.3.0
   meta: ^1.7.0
 

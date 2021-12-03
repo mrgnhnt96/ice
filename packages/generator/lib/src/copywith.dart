@@ -1,8 +1,10 @@
+// ignore_for_file: implementation_imports
+
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
-import 'package:copywith_annotation/copywith.dart';
-import 'package:copywith_plus/src/domain/domain.dart';
-import 'package:copywith_plus/src/templates/copy_with_template.dart';
+import 'package:ice/src/domain/domain.dart';
+import 'package:ice/src/templates/copy_with_template.dart';
+import 'package:ice_annotation/src/copywith.dart';
 import 'package:source_gen/source_gen.dart';
 
 /// {@template copywith_generator}
@@ -18,9 +20,9 @@ class CopyWithGenerator extends GeneratorForAnnotation<CopyWith> {
     ConstantReader annotation,
     BuildStep buildStep,
   ) {
-    print(element);
-    print(annotation);
-    print(buildStep);
+    // print(element);
+    // print(annotation);
+    // print(buildStep);
 
     if (element is! ClassElement) {
       throw InvalidGenerationSourceError(

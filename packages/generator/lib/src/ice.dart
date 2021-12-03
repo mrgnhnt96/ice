@@ -2,10 +2,10 @@
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
-import 'package:copywith_annotation/copywith.dart';
-import 'package:copywith_plus/src/domain/domain.dart';
-import 'package:copywith_plus/src/domain/ice_subjects.dart';
-import 'package:copywith_plus/src/templates/templates.dart';
+import 'package:ice_annotation/ice.dart';
+import 'package:ice/src/domain/domain.dart';
+import 'package:ice/src/domain/ice_subjects.dart';
+import 'package:ice/src/templates/templates.dart';
 import 'package:source_gen/source_gen.dart';
 
 /// {@template ice_generator}
@@ -24,9 +24,9 @@ class IceGenerator extends GeneratorForAnnotation<Ice> {
     ConstantReader annotation,
     BuildStep buildStep,
   ) {
-    print(element);
-    print(annotation);
-    print(buildStep);
+    // print(element);
+    // print(annotation);
+    // print(buildStep);
 
     if (element is! ClassElement) {
       throw InvalidGenerationSourceError(
@@ -42,6 +42,6 @@ class IceGenerator extends GeneratorForAnnotation<Ice> {
 
     final result = ice.toString();
 
-    return result;
+    return '// GENERATED CODE - DO NOT MODIFY BY HAND';
   }
 }

@@ -1,7 +1,7 @@
-import 'package:copywith_plus/src/copywith.dart';
-import 'package:copywith_plus/src/ice.dart';
-import 'package:copywith_plus/src/ice_union_base.dart';
 import 'package:generator_test/generator_test.dart';
+import 'package:ice/src/copywith.dart';
+import 'package:ice/src/ice.dart';
+import 'package:ice/src/ice_union_base.dart';
 import 'package:test/test.dart';
 
 void main() {

@@ -1,10 +1,12 @@
-import 'package:copywith_annotation/copywith.dart';
+import 'package:ice_annotation/ice.dart';
+
+part 'main.ice.dart';
 
 // if only 1 constructor, use that constructor for copywith
 // if multiple, use default first, then `._` if available
 //
 // if default & `._` are not available, throw error
-@CopyWith()
+@copyWith
 class Example {
   const Example._({
     this.text,
@@ -18,7 +20,7 @@ class Example {
     this.example,
   });
 
-  @CopyWithEntryPoint()
+  @copyWithEntryPoint
   factory Example.fromJson({
     String? text,
     int? whole,

@@ -1,5 +1,5 @@
-import 'package:copywith_plus/src/domain/domain.dart';
-import 'package:copywith_plus/src/util/string_buffer_ext.dart';
+import 'package:ice/src/domain/domain.dart';
+import 'package:ice/src/util/string_buffer_ext.dart';
 
 extension on Class {
   String get extension {

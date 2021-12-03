@@ -1,7 +1,7 @@
 // ignore_for_file: comment_references, implementation_imports
 
-import 'package:copywith_annotation/src/ice.dart';
-import 'package:copywith_plus/src/domain/domain.dart';
+import 'package:ice/src/domain/domain.dart';
+import 'package:ice_annotation/src/ice.dart';
 
 /// {@template unions}
 /// All classes that are annotated with [Ice]
