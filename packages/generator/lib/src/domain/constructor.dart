@@ -15,7 +15,6 @@ class Constructor {
     required this.params,
     required this.declaration,
     required this.isConst,
-    required this.isDefault,
     required this.isPrivate,
   });
 
@@ -25,7 +24,7 @@ class Constructor {
     final params = Param.fromElements(element.parameters);
 
     final declaration = '${element.declaration}'
-        .replaceFirst(
+        .replaceAll(
           element.returnType.getDisplayString(withNullability: true),
           '',
         )
@@ -38,7 +37,6 @@ class Constructor {
       params: params,
       declaration: declaration,
       isConst: element.isConst,
-      isDefault: element.isDefaultConstructor,
       isPrivate: element.isPrivate,
     );
   }
@@ -72,9 +70,6 @@ class Constructor {
   /// if the constructor is a const
   final bool isConst;
 
-  /// if the constructor is the default constructor
-  final bool isDefault;
-
   /// If the constructor is named privately
   final bool isPrivate;
 
@@ -83,6 +78,9 @@ class Constructor {
   bool get hasEntryPointAnnotation {
     return annotations.any((annotation) => annotation.isEntryPoint);
   }
+
+  /// if the constructor is the default constructor
+  bool get isDefault => name.isEmpty;
 
   /// If the constructor is named
   bool get isNamed => !isDefault;
