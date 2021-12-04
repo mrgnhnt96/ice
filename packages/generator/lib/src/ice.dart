@@ -42,6 +42,6 @@ class IceGenerator extends GeneratorForAnnotation<Ice> {
 
     final result = ice.toString();
 
-    return '// GENERATED CODE - DO NOT MODIFY BY HAND';
+    return result;
   }
 }
