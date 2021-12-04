@@ -51,6 +51,7 @@ class Class {
   Constructor entryPoint() => _entryPoint.access;
 
   void _checkForAnnotationTypes() {
+    var hasSetPrivate = false;
     for (final annotate in annotations) {
       if (annotate.isIce) {
         _isIce = true;
@@ -61,6 +62,11 @@ class Class {
         _isUnionBase = true;
       } else if (annotate.isOther) {
         _isOther = true;
+      }
+
+      if (hasIceAnnotation && !hasSetPrivate) {
+        hasSetPrivate = true;
+        _genAsPrivate = annotate.genAsPrivate;
       }
     }
   }
@@ -84,6 +90,10 @@ class Class {
   /// an unknown annotation
   bool get isOther => _isOther;
   var _isOther = false;
+
+  /// whether to generate the class as a private class
+  bool get genAsPrivate => _genAsPrivate;
+  var _genAsPrivate = false;
 
   /// The name of the base class for the union
   String? get unionBaseName => _unionBaseName;

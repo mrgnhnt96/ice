@@ -17,6 +17,7 @@ class Annotation {
     required this.type,
     required this.unionBase,
     required this.declaration,
+    required this.genAsPrivate,
   });
 
   /// gets the annotation from the [ElementAnnotation]
@@ -32,8 +33,10 @@ class Annotation {
     final name = element.displayName;
     final type = annotationTypeConv.fromJson(name);
 
+    final reader = ConstantReader(annotation.computeConstantValue());
+    final genAsPrivate = reader.peek('isPrivate')?.boolValue ?? false;
+
     String? getBaseName() {
-      final reader = ConstantReader(annotation.computeConstantValue());
       final result = reader
           .peek('union')
           ?.typeValue
@@ -55,6 +58,7 @@ class Annotation {
       type: type,
       unionBase: unionBase,
       declaration: declaration,
+      genAsPrivate: genAsPrivate,
     );
   }
 
@@ -90,6 +94,9 @@ class Annotation {
   /// @JsonSerializable(fieldRename: FieldRename.snake)
   /// ```
   final String declaration;
+
+  /// whether the generated class should be private
+  final bool genAsPrivate;
 
   /// Whether the annotation is the entry point for [CopyWith]
   bool get isEntryPoint => type == AnnotationTypes.entryPoint;
