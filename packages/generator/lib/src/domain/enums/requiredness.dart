@@ -7,7 +7,7 @@ part 'requiredness.ge.dart';
 enum Requiredness {
   /// `Example({required String name})`
   /// `Example(String name)`
-  @EnumValue(readable: 'required ')
+  @EnumValue(readable: 'required')
   required,
 
   /// `Example({String? name})`

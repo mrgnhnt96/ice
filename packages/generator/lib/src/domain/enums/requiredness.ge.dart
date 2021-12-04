@@ -68,7 +68,7 @@ extension RequirednessX on Requiredness {
   /// In a human readable format
   String get readable {
     return map<String>(
-      required: 'required ',
+      required: 'required',
       optional: '',
     );
   }
