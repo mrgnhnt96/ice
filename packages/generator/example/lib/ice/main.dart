@@ -2,11 +2,11 @@ import 'package:ice_annotation/ice.dart';
 
 part 'main.g.dart';
 part 'main.ice.dart';
-part 'example_main.ice.dart';
+// part 'example_main.ice.dart';
 
 @ice
-class _Example {
-  const _Example(
+class _$Example {
+  const _$Example(
     this.name, {
     this.age,
     this.isMale,
@@ -20,5 +20,5 @@ class _Example {
   final bool? isMale;
   final List<String>? friends;
   final Map<String, dynamic>? data;
-  final Example? father;
+  final _Example? father;
 }

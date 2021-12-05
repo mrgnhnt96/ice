@@ -10,6 +10,7 @@ dependencies:
   ice_annotation:
     path: ../../annotation
   equatable: ^2.0.3
+  json_annotation: ^4.4.0
   meta: ^1.7.0
 
 dev_dependencies:

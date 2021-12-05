@@ -6,23 +6,32 @@ part of 'main.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Example _$ExampleFromJson(Map<String, dynamic> json) => Example(
+_Example _$ExampleFromJson(Map json) => _Example(
       json['name'] as String?,
       age: json['age'] as int?,
       isMale: json['isMale'] as bool?,
       friends:
           (json['friends'] as List<dynamic>?)?.map((e) => e as String).toList(),
-      data: json['data'] as Map<String, dynamic>?,
-      father: json['father'] == null
-          ? null
-          : Example.fromJson(json['father'] as Map<String, dynamic>),
+      data: (json['data'] as Map?)?.map(
+        (k, e) => MapEntry(k as String, e),
+      ),
+      father: json['father'],
     );
 
-Map<String, dynamic> _$ExampleToJson(Example instance) => <String, dynamic>{
-      'name': instance.name,
-      'age': instance.age,
-      'isMale': instance.isMale,
-      'friends': instance.friends,
-      'data': instance.data,
-      'father': instance.father,
-    };
+Map<String, dynamic> _$ExampleToJson(_Example instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('name', instance.name);
+  writeNotNull('age', instance.age);
+  writeNotNull('isMale', instance.isMale);
+  writeNotNull('friends', instance.friends);
+  writeNotNull('data', instance.data);
+  writeNotNull('father', instance.father?.toJson());
+  return val;
+}
