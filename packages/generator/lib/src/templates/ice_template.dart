@@ -10,25 +10,23 @@ extension on Class {
     return 'class ${getName()} extends $name with EquatableMixin';
   }
 
-  String getName() {
-    final startsWithPrivate = name.startsWith('_');
-    final startsWithDollar = name.startsWith(r'$');
-    final startsWithPrivateDollar = name.startsWith(r'_$');
+  String getName({bool retainPrivate = true}) {
+    final startsWithDollar = name.contains(r'$');
 
-    final mustBePrivateException = Exception(
+    final mustBeGenClass = Exception(
       'Class name $name must start with \$ to '
       'successfully generate as a private class',
     );
 
-    if (genAsPrivate && (!startsWithDollar || !startsWithPrivateDollar)) {
-      throw mustBePrivateException;
+    if (!startsWithDollar) {
+      throw mustBeGenClass;
     }
 
-    if (genAsPrivate && startsWithPrivate) {
-      throw mustBePrivateException;
-    }
+    var cleanName = name.replaceAll(r'$', '');
 
-    final cleanName = name.replaceAll(r'$', '').replaceAll('_', '');
+    if (!retainPrivate) {
+      cleanName = cleanName.replaceAll('_', '');
+    }
 
     if (genAsPrivate) {
       return '_$cleanName';
@@ -112,6 +110,7 @@ class IceTemplate {
     final cls = _subject;
 
     final genClassName = cls.getName();
+    final nonPrivategGenClassName = cls.getName(retainPrivate: false);
 
     buffer
       ..writeln('@JsonSerializable()')
@@ -122,12 +121,12 @@ class IceTemplate {
             ..writeAll(cls.constructors.declarations(genClassName))
             ..writeln(
               'factory $genClassName.fromJson(Map<String, dynamic> json) => '
-              '_\$${genClassName}FromJson(json);',
+              '_\$${nonPrivategGenClassName}FromJson(json);',
             )
             ..writeln()
             ..writeln(
               'Map<String, dynamic> toJson() => '
-              '_\$${genClassName}ToJson(this);',
+              '_\$${nonPrivategGenClassName}ToJson(this);',
             )
             ..writeln()
             ..writeln('@override')
@@ -135,7 +134,7 @@ class IceTemplate {
               'String toString()',
               body: (strBuf, strTab) {
                 strBuf
-                  ..write("return '${cls.name}{")
+                  ..write("return '$genClassName{")
                   ..writeAll(cls.fields.asArgs(), ', ')
                   ..writeln("}';");
               },
