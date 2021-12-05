@@ -1,7 +1,13 @@
+// ignore_for_file: unused_import
+
+import 'package:build/build.dart';
+import 'package:build_test/build_test.dart';
 import 'package:generator_test/generator_test.dart';
+import 'package:ice/ice.dart';
 import 'package:ice/src/copywith.dart';
 import 'package:ice/src/ice.dart';
 import 'package:ice/src/ice_union_base.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -25,44 +31,16 @@ void main() {
         ],
       );
     });
+
+    test('builder', () async {
+      await testPackageBuilder(
+        ['basic'],
+        builder: iceBuilder,
+      );
+    });
   });
 }
 
-/*
-?GOAL:
-  ice:
-    generate class:
-      - all constructors
-      - to/from json
-      - props for equatable
-      - toString
-      - copyWith extension
-  ice union:
-    - ^ include ice ^
-    - Union from json
-    - typedef
-      - result
-      - no result
-    extensions:
-      - to json
-      - toString
-      - pattern match
-        - map/when
-        - maybe Map|When
-        - map|when OrNull
-
-*NEEDED:
-  - fields
-
-*PROCESS:
-  - generate IceUnion classes first
-  - generate IceUnionBase class
-
- */
-
-
-/*
-!GET FROM ELEMENT
-  - fields:
-
-*/
+class TestBuilderOptions extends BuilderOptions {
+  TestBuilderOptions(Map<String, dynamic> config) : super(config);
+}
