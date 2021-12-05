@@ -30,24 +30,25 @@ class _Example {
   final _Example? _father;
 }
 
-@ice.createUnion
+@Ice.createUnion
 abstract class State {
   const State();
 }
 
-@ice.union
+@Ice.createUnion
+@ice
 class _$Initial extends State {
   const _$Initial();
 }
 
-@ice.union
+@ice
 class _$Ready extends _$Initial {
   const _$Ready(this.data);
 
   final String data;
 }
 
-@ice.union
+@ice
 class _$Error extends State {
   const _$Error(
     this.data, {
