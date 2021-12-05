@@ -11,24 +11,10 @@ const ice = Ice._();
 @Target({TargetKind.classType})
 class Ice {
   /// {@macro ice}
-  const Ice._()
-      : union = const IceUnion(),
-        createUnion = const IceUnionBase();
-
-  ///{@macro ice_union}
-  final IceUnion union;
+  const Ice._();
 
   /// {@macro ice_union_base}
-  final IceUnionBase createUnion;
-}
-
-/// {@template ice_union}
-/// Annotation used to mark a class to generate a ice method.
-/// {@endtemplate}
-@Target({TargetKind.classType})
-class IceUnion extends Ice {
-  /// {@macro ice}
-  const IceUnion() : super._();
+  static const IceUnionBase createUnion = IceUnionBase();
 }
 
 /// {@template ice_union_base}
