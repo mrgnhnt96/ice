@@ -1,4 +1,9 @@
+// ignore_for_file: avoid_field_initializers_in_const_classes
+
 import 'package:meta/meta_meta.dart';
+
+/// {@macro ice}
+const ice = Ice._();
 
 /// {@template ice}
 /// Annotation used to mark a class to generate a ice method.
@@ -6,37 +11,16 @@ import 'package:meta/meta_meta.dart';
 @Target({TargetKind.classType})
 class Ice {
   /// {@macro ice}
-  const Ice() : isPrivate = false;
+  const Ice._()
+      : union = const IceUnion(),
+        createUnion = const IceUnionBase();
 
-  /// {@macro ice}
-  ///
-  /// creates a private class instance
-  const Ice.private() : isPrivate = true;
+  ///{@macro ice_union}
+  final IceUnion union;
 
-  /// {@macro ice_union}
-  const factory Ice.union(Type type) = IceUnion;
-
-  /// {@macro ice_union}
-  ///
-  /// create a private class instance
-  const factory Ice.privateUnion(Type type) = IceUnion.private;
-
-  /// whether the class is private
-  final bool isPrivate;
+  /// {@macro ice_union_base}
+  final IceUnionBase createUnion;
 }
-
-/*
-TODO: check for `$` on private classes
-? If it is private, then the base class super be "super private"
-```
-class _$Example {}
-! generated
-class _Example extends _$Example {}
-```
-? If private is "super private", then should we always use "super private"?
-? maybe it could be a way that its taught, but under the hood,
-? it will accept both
-*/
 
 /// {@template ice_union}
 /// Annotation used to mark a class to generate a ice method.
@@ -44,25 +28,14 @@ class _Example extends _$Example {}
 @Target({TargetKind.classType})
 class IceUnion extends Ice {
   /// {@macro ice}
-  const IceUnion(this.union) : super();
-
-  /// {@macro ice}
-  const IceUnion.private(this.union) : super.private();
-
-  /// the type of the top union class
-  final Type union;
+  const IceUnion() : super._();
 }
 
 /// {@template ice_union_base}
 /// the base of the union
 ///  {@endtemplate}
+@Target({TargetKind.classType})
 class IceUnionBase {
   /// {@macro ice_union_base}
-  const IceUnionBase() : isPrivate = false;
-
-  /// {@macro ice_union_base}
-  const IceUnionBase.private() : isPrivate = true;
-
-  /// whether the class is private
-  final bool isPrivate;
+  const IceUnionBase();
 }
