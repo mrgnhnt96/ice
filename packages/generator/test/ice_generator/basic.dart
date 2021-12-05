@@ -2,7 +2,7 @@
 
 import 'package:ice_annotation/ice.dart';
 
-@Ice()
+@ice
 class _Example {
   const _Example(
     this.name, {
@@ -30,24 +30,24 @@ class _Example {
   final _Example? _father;
 }
 
-@IceUnionBase()
+@ice.createUnion
 abstract class State {
   const State();
 }
 
-@Ice.union(State)
+@ice.union
 class _$Initial extends State {
   const _$Initial();
 }
 
-@Ice.union(State)
-class _$Ready extends State {
+@ice.union
+class _$Ready extends _$Initial {
   const _$Ready(this.data);
 
   final String data;
 }
 
-@Ice.union(State)
+@ice.union
 class _$Error extends State {
   const _$Error(
     this.data, {
@@ -60,7 +60,7 @@ class _$Error extends State {
   final String? fix;
 }
 
-@Ice()
+@ice
 class _ModelClass {
   const _ModelClass();
 }

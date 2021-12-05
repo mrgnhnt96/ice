@@ -4,7 +4,7 @@ part 'main.g.dart';
 part 'main.ice.dart';
 part 'example_main.ice.dart';
 
-@Ice()
+@ice
 class _Example {
   const _Example(
     this.name, {
