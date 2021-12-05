@@ -1,6 +1,7 @@
 // ignore_for_file: comment_references, implementation_imports
 
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/type.dart';
 import 'package:ice/src/domain/domain.dart';
 import 'package:ice/src/domain/field.dart';
 import 'package:ice_annotation/src/ice.dart';
@@ -15,6 +16,7 @@ class Class {
     required this.annotations,
     required this.fields,
     required this.name,
+    required this.supertypes,
   }) : _entryPoint = _EntryPoint(constructors) {
     _checkForAnnotationTypes();
   }
@@ -25,11 +27,36 @@ class Class {
     final annotations = Annotation.fromElements(element.metadata);
     final fields = Field.fromElements(element.fields);
 
+    Set<String> _getSuperTypes(List<InterfaceType> interfaces) {
+      final items = <String>{};
+
+      if (interfaces.length <= 1) {
+        return items;
+      }
+
+      for (final interface in interfaces) {
+        final name = interface.element.name;
+
+        if (name == 'Object') {
+          continue;
+        }
+
+        items
+          ..add(name)
+          ..addAll(_getSuperTypes(interface.allSupertypes));
+      }
+
+      return items;
+    }
+
+    final supertypes = _getSuperTypes(element.allSupertypes);
+
     return Class(
       constructors: constructors,
       annotations: annotations,
       fields: fields,
       name: element.displayName,
+      supertypes: supertypes.toList(),
     );
   }
 
@@ -46,6 +73,9 @@ class Class {
   final String name;
 
   final _EntryPoint _entryPoint;
+
+  /// all the super types of the class
+  final List<String> supertypes;
 
   /// The entry point to be used to generate the copyWith method
   Constructor entryPoint() => _entryPoint.access;
@@ -98,6 +128,17 @@ class Class {
   /// The name of the base class for the union
   String? get unionBaseName => _unionBaseName;
   String? _unionBaseName;
+
+  /// maps the super types to this class
+  Map<String, Class> supertypeMap() {
+    final supers = <String, Class>{};
+
+    for (final supertype in supertypes) {
+      supers[supertype] = this;
+    }
+
+    return supers;
+  }
 }
 
 class _EntryPoint {
