@@ -1,5 +1,5 @@
 import 'package:generator_test/generator_test.dart';
-import 'package:ice/src/copywith.dart';
+import 'package:ice/src/method.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -15,7 +15,7 @@ void main() {
     test('generates a valid file', () async {
       await testPartGenerator(
         'basic',
-        generator: const CopyWithGenerator(),
+        generator: const MethodGenerator(),
       );
     });
   });

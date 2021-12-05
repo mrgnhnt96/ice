@@ -4,9 +4,9 @@ import 'package:build/build.dart';
 import 'package:build_test/build_test.dart';
 import 'package:generator_test/generator_test.dart';
 import 'package:ice/ice.dart';
-import 'package:ice/src/copywith.dart';
 import 'package:ice/src/ice.dart';
 import 'package:ice/src/ice_union_base.dart';
+import 'package:ice/src/method.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 
@@ -26,7 +26,7 @@ void main() {
         [file],
         [
           const IceGenerator(),
-          const CopyWithGenerator(),
+          const MethodGenerator(),
           const IceUnionBaseGenerator(),
         ],
       );
