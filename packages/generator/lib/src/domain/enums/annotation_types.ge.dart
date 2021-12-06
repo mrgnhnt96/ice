@@ -13,20 +13,26 @@ extension AnnotationTypesX on AnnotationTypes {
   /// Map of all values of the enum
   T map<T extends Object?>({
     required T ice,
-    required T union,
     required T unionBase,
-    required T entryPoint,
+    required T copyWithEntryPoint,
+    required T props,
+    required T string,
+    required T copyWith,
     required T other,
   }) {
     switch (this) {
       case AnnotationTypes.ice:
         return ice;
-      case AnnotationTypes.union:
-        return union;
       case AnnotationTypes.unionBase:
         return unionBase;
-      case AnnotationTypes.entryPoint:
-        return entryPoint;
+      case AnnotationTypes.copyWithEntryPoint:
+        return copyWithEntryPoint;
+      case AnnotationTypes.props:
+        return props;
+      case AnnotationTypes.string:
+        return string;
+      case AnnotationTypes.copyWith:
+        return copyWith;
       case AnnotationTypes.other:
         return other;
     }
@@ -38,9 +44,11 @@ extension AnnotationTypesX on AnnotationTypes {
   T maybeMap<T extends Object?>({
     required T orElse,
     T? ice,
-    T? union,
     T? unionBase,
-    T? entryPoint,
+    T? copyWithEntryPoint,
+    T? props,
+    T? string,
+    T? copyWith,
     T? other,
   }) {
     var isNullable = true;
@@ -54,15 +62,21 @@ extension AnnotationTypesX on AnnotationTypes {
       case AnnotationTypes.ice:
         if (ice == null && !isNullable) return orElse;
         return ice as T;
-      case AnnotationTypes.union:
-        if (union == null && !isNullable) return orElse;
-        return union as T;
       case AnnotationTypes.unionBase:
         if (unionBase == null && !isNullable) return orElse;
         return unionBase as T;
-      case AnnotationTypes.entryPoint:
-        if (entryPoint == null && !isNullable) return orElse;
-        return entryPoint as T;
+      case AnnotationTypes.copyWithEntryPoint:
+        if (copyWithEntryPoint == null && !isNullable) return orElse;
+        return copyWithEntryPoint as T;
+      case AnnotationTypes.props:
+        if (props == null && !isNullable) return orElse;
+        return props as T;
+      case AnnotationTypes.string:
+        if (string == null && !isNullable) return orElse;
+        return string as T;
+      case AnnotationTypes.copyWith:
+        if (copyWith == null && !isNullable) return orElse;
+        return copyWith as T;
       case AnnotationTypes.other:
         if (other == null && !isNullable) return orElse;
         return other as T;
@@ -73,9 +87,11 @@ extension AnnotationTypesX on AnnotationTypes {
   String get name {
     return map<String>(
       ice: 'ice',
-      union: 'union',
       unionBase: 'unionBase',
-      entryPoint: 'entryPoint',
+      copyWithEntryPoint: 'copyWithEntryPoint',
+      props: 'props',
+      string: 'string',
+      copyWith: 'copyWith',
       other: 'other',
     );
   }
@@ -84,10 +100,12 @@ extension AnnotationTypesX on AnnotationTypes {
   int get toInt {
     return map<int>(
       ice: 0,
-      union: 1,
-      unionBase: 2,
-      entryPoint: 3,
-      other: 4,
+      unionBase: 1,
+      copyWithEntryPoint: 2,
+      props: 3,
+      string: 4,
+      copyWith: 5,
+      other: 6,
     );
   }
 
@@ -96,9 +114,11 @@ extension AnnotationTypesX on AnnotationTypes {
   String get readable {
     return map<String>(
       ice: 'Ice',
-      union: 'Union',
       unionBase: 'Union Base',
-      entryPoint: 'Entry Point',
+      copyWithEntryPoint: 'Copy With Entry Point',
+      props: 'Props',
+      string: 'String',
+      copyWith: 'Copy With',
       other: 'Other',
     );
   }
@@ -110,12 +130,13 @@ extension AnnotationTypesX on AnnotationTypes {
     return map<String?>(
       ice: '''
 [Ice]''',
-      union: '''
-[IceUnion]''',
       unionBase: '''
 [IceUnionBase]''',
-      entryPoint: '''
+      copyWithEntryPoint: '''
 [CopyWithEntryPoint]''',
+      props: null,
+      string: null,
+      copyWith: null,
       other: '''
 any other annotation''',
     );
@@ -125,9 +146,11 @@ any other annotation''',
   Object get serialized {
     return map<Object>(
       ice: AnnotationTypesConv._iceName,
-      union: AnnotationTypesConv._unionName,
       unionBase: AnnotationTypesConv._unionBaseName,
-      entryPoint: AnnotationTypesConv._entryPointName,
+      copyWithEntryPoint: AnnotationTypesConv._copyWithEntryPointName,
+      props: AnnotationTypesConv._propsName,
+      string: AnnotationTypesConv._stringName,
+      copyWith: AnnotationTypesConv._copyWithName,
       other: AnnotationTypesConv._otherName,
     );
   }
@@ -153,10 +176,12 @@ class AnnotationTypesConv extends JsonConverter<AnnotationTypes, Object> {
   /// {@macro annotation_types.json_converter_nullable}
   static const nullable = _AnnotationTypesNullableConv();
 
-  static const _iceName = 'Ice';
-  static const _unionName = 'Ice.union';
-  static const _unionBaseName = 'IceUnionBase';
-  static const _entryPointName = 'CopyWithEntryPoint';
+  static const _iceName = 'ice';
+  static const _unionBaseName = 'Ice.createUnion';
+  static const _copyWithEntryPointName = 'copyWithEntryPoint';
+  static const _propsName = 'props';
+  static const _stringName = 'toString';
+  static const _copyWithName = 'copyWith';
   static const _otherName = 'other';
 
   @override
@@ -164,12 +189,16 @@ class AnnotationTypesConv extends JsonConverter<AnnotationTypes, Object> {
     switch (json) {
       case _iceName:
         return AnnotationTypes.ice;
-      case _unionName:
-        return AnnotationTypes.union;
       case _unionBaseName:
         return AnnotationTypes.unionBase;
-      case _entryPointName:
-        return AnnotationTypes.entryPoint;
+      case _copyWithEntryPointName:
+        return AnnotationTypes.copyWithEntryPoint;
+      case _propsName:
+        return AnnotationTypes.props;
+      case _stringName:
+        return AnnotationTypes.string;
+      case _copyWithName:
+        return AnnotationTypes.copyWith;
       case _otherName:
         return AnnotationTypes.other;
       default:
@@ -203,12 +232,16 @@ class _AnnotationTypesNullableConv
     switch (json) {
       case AnnotationTypesConv._iceName:
         return AnnotationTypes.ice;
-      case AnnotationTypesConv._unionName:
-        return AnnotationTypes.union;
       case AnnotationTypesConv._unionBaseName:
         return AnnotationTypes.unionBase;
-      case AnnotationTypesConv._entryPointName:
-        return AnnotationTypes.entryPoint;
+      case AnnotationTypesConv._copyWithEntryPointName:
+        return AnnotationTypes.copyWithEntryPoint;
+      case AnnotationTypesConv._propsName:
+        return AnnotationTypes.props;
+      case AnnotationTypesConv._stringName:
+        return AnnotationTypes.string;
+      case AnnotationTypesConv._copyWithName:
+        return AnnotationTypes.copyWith;
       case AnnotationTypesConv._otherName:
         return AnnotationTypes.other;
       default:

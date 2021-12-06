@@ -9,20 +9,25 @@ part 'annotation_types.ge.dart';
 @EnumAssist()
 enum AnnotationTypes {
   /// [Ice]
-  @EnumValue(serializedValue: 'Ice')
+  @EnumValue(serializedValue: 'ice')
   ice,
 
-  /// [IceUnion]
-  @EnumValue(serializedValue: 'Ice.union')
-  union,
-
   /// [IceUnionBase]
-  @EnumValue(serializedValue: 'IceUnionBase')
+  @EnumValue(serializedValue: 'Ice.createUnion')
   unionBase,
 
   /// [CopyWithEntryPoint]
-  @EnumValue(serializedValue: 'CopyWithEntryPoint')
-  entryPoint,
+  @EnumValue(serializedValue: 'copyWithEntryPoint')
+  copyWithEntryPoint,
+
+  @EnumValue(serializedValue: 'props')
+  props,
+
+  @EnumValue(serializedValue: 'toString')
+  string,
+
+  @EnumValue(serializedValue: 'copyWith')
+  copyWith,
 
   /// any other annotation
   other,
