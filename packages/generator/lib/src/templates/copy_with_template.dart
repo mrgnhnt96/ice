@@ -1,4 +1,5 @@
 import 'package:ice/src/domain/domain.dart';
+import 'package:ice/src/templates/template.dart';
 import 'package:ice/src/util/string_buffer_ext.dart';
 
 extension on Class {
@@ -20,27 +21,27 @@ extension on Class {
 }
 
 extension on Constructor {
-  Iterable<String> parameters(int tabAmount) {
-    return _parameters(tabAmount, (p) => p.forConstructor());
+  Iterable<String> parameters() {
+    return _parameters((p) => p.forConstructor());
   }
 
-  Iterable<String> objectParameters(int tabAmount) {
-    return _parameters(tabAmount, (p) => p.forConstructorAsObject());
+  Iterable<String> objectParameters() {
+    return _parameters((p) => p.forConstructorAsObject());
   }
 
-  Iterable<String> arguments(int tabAmount) {
-    return _parameters(tabAmount, (p) => p.asArgument());
+  Iterable<String> arguments() {
+    return _parameters((p) => p.asArgument());
   }
 
-  Iterable<String> argumentsWithDefault(int tabAmount) {
-    return _parameters(tabAmount, (p) => p.asArgumentWithDefault());
+  Iterable<String> argumentsWithDefault() {
+    return _parameters((p) => p.asArgumentWithDefault());
   }
 
-  Iterable<String> _parameters(int tabAmount, String Function(Param) toString) {
+  Iterable<String> _parameters(String Function(Param) toString) {
     return params.map((p) {
       final param = '${toString(p)},\n';
 
-      return tab(param, tabAmount);
+      return param;
     });
   }
 
@@ -70,18 +71,16 @@ extension on Param {
 /// {@template copy_with_method}
 /// Generates a copyWith method for a class.
 /// {@endtemplate}
-class CopyWithTemplate {
+class CopyWithTemplate extends Template {
   /// {@macro copy_with_method}
-  const CopyWithTemplate.forSubject(Class subject) : _subject = subject;
-
-  final Class _subject;
+  const CopyWithTemplate.forSubject(Class subject) : super(subject);
 
   void _privateCopyWith(StringBuffer buffer) {
-    final entry = _subject.entryPoint();
+    final entry = subject.entryPoint();
 
     _copyWithMethod(
       buffer,
-      signature: _subject.privateCopyWithSignature,
+      signature: subject.privateCopyWithSignature,
       parameters: entry.objectParameters,
       arguments: entry.argumentsWithDefault,
       returnValue: entry.returnValue,
@@ -89,22 +88,22 @@ class CopyWithTemplate {
   }
 
   void _publicCopyWith(StringBuffer buffer) {
-    final entry = _subject.entryPoint();
+    final entry = subject.entryPoint();
 
     _copyWithMethod(
       buffer,
-      signature: _subject.copyWithSignature,
+      signature: subject.copyWithSignature,
       parameters: entry.parameters,
       arguments: entry.arguments,
-      returnValue: _subject.returnPrivateCopyWith,
+      returnValue: subject.returnPrivateCopyWith,
     );
   }
 
   void _copyWithMethod(
     StringBuffer buffer, {
     required String signature,
-    required Iterable<String> Function(int) parameters,
-    required Iterable<String> Function(int) arguments,
+    required Iterable<String> Function() parameters,
+    required Iterable<String> Function() arguments,
     required String returnValue,
   }) {
     buffer
@@ -112,20 +111,19 @@ class CopyWithTemplate {
         signature,
         open: '({',
         appendNewLine: false,
-        body: (sig, sigTab) {
-          sig.writeAll(parameters(sigTab));
+        body: () {
+          buffer.writeAll(parameters());
         },
         close: '})',
       )
       ..writeObject(
         '',
-        body: (body, bodyTab) {
-          body.writeObject(
+        body: () {
+          buffer.writeObject(
             returnValue,
-            tab: bodyTab,
             open: '(',
-            body: (ret, retTab) {
-              ret.writeAll(arguments(retTab));
+            body: () {
+              buffer.writeAll(arguments());
             },
             close: ');',
           );
@@ -133,16 +131,36 @@ class CopyWithTemplate {
       );
   }
 
+  void _writeCopyWith(StringBuffer buffer) {
+    _privateCopyWith(buffer);
+
+    buffer.writeln();
+
+    _publicCopyWith(buffer);
+  }
+
   @override
   String toString() {
     final buffer = StringBuffer();
 
-    _publicCopyWith(buffer);
-
-    buffer.writeln();
-
-    _privateCopyWith(buffer);
+    _writeCopyWith(buffer);
 
     return buffer.toString();
+  }
+
+  @override
+  void addToBuffer(StringBuffer buffer, {bool wrapWithExtension = false}) {
+    if (wrapWithExtension) {
+      buffer.writeObject(
+        subject.extension,
+        body: () {
+          _writeCopyWith(buffer);
+        },
+      );
+
+      return;
+    }
+
+    _writeCopyWith(buffer);
   }
 }
