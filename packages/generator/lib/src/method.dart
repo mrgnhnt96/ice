@@ -4,6 +4,8 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:ice/src/domain/domain.dart';
 import 'package:ice/src/templates/copy_with_template.dart';
+import 'package:ice/src/templates/props_template.dart';
+import 'package:ice/src/templates/to_string_template.dart';
 import 'package:ice_annotation/src/methods/methods.dart';
 import 'package:source_gen/source_gen.dart';
 
@@ -33,7 +35,17 @@ class MethodGenerator extends GeneratorForAnnotation<Method> {
 
     final subject = Class.fromElement(element);
 
-    final copyWith = CopyWithTemplate.forSubject(subject);
+    if (copyWith) {
+      final copyWith = CopyWithTemplate.forSubject(subject);
+    }
+
+    if (props) {
+      final props = PropsTemplate.forSubject(subject);
+    }
+
+    if (toString) {
+      final toString = ToStringTemplate.forSubject(subject);
+    }
 
     final result = copyWith.toString();
 
