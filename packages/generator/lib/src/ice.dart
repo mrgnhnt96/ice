@@ -16,7 +16,7 @@ class IceGenerator extends GeneratorForAnnotation<Ice> {
   const IceGenerator() : super();
 
   /// {@macro unions}
-  static IceSubjects unions = IceSubjects();
+  static IceSubjects subjects = IceSubjects();
 
   @override
   String generateForAnnotatedElement(
@@ -36,7 +36,7 @@ class IceGenerator extends GeneratorForAnnotation<Ice> {
     }
 
     final subject = Class.fromElement(element);
-    unions.add(subject);
+    subjects.add(subject);
 
     final ice = IceTemplate.forSubject(subject);
 
