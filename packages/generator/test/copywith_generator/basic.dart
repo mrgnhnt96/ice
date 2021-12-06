@@ -10,6 +10,8 @@ part 'output/basic.dart';
 //
 // if default & `._` are not available, throw error
 @copyWith
+@props
+@toString
 class Example {
   const Example._({
     this.text,
@@ -37,6 +39,7 @@ class Example {
 
   static Example something() => const Example._();
 
+  @ignoreProp
   final String? text;
   final int? whole;
   final double? decimal;
