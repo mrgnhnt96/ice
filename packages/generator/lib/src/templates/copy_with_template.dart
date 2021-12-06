@@ -1,4 +1,5 @@
 import 'package:ice/src/domain/domain.dart';
+import 'package:ice/src/domain/enums/position_type.dart';
 import 'package:ice/src/templates/template.dart';
 import 'package:ice/src/util/string_buffer_ext.dart';
 
@@ -15,7 +16,7 @@ extension on Class {
     return '$name _copyWith';
   }
 
-  String get returnPrivateCopyWith {
+  String get returnObjectCopyWoth {
     return 'return _copyWith';
   }
 }
@@ -44,10 +45,6 @@ extension on Constructor {
       return param;
     });
   }
-
-  String get returnValue {
-    return 'return $displayName';
-  }
 }
 
 extension on Param {
@@ -64,7 +61,8 @@ extension on Param {
   }
 
   String asArgumentWithDefault() {
-    return '$name: $name == kCopyWithDefault ? this.$name : $name as $type';
+    final named = positionType.isNamed ? '$name: ' : '';
+    return '$named$name == kCopyWithDefault ? this.$name : $name as $type';
   }
 }
 
@@ -75,19 +73,22 @@ class CopyWithTemplate extends Template {
   /// {@macro copy_with_method}
   const CopyWithTemplate.forSubject(Class subject) : super(subject);
 
-  void _privateCopyWith(StringBuffer buffer) {
+  void _objectCopyWith(StringBuffer buffer) {
     final entry = subject.entryPoint();
+    final genClassName = subject.generatedName(throwOnNameFormat: false);
+    final entryPointName = entry.isDefault ? '' : '.${entry.name}';
+    final returnValue = 'return $genClassName$entryPointName';
 
     _copyWithMethod(
       buffer,
       signature: subject.privateCopyWithSignature,
       parameters: entry.objectParameters,
       arguments: entry.argumentsWithDefault,
-      returnValue: entry.returnValue,
+      returnValue: returnValue,
     );
   }
 
-  void _publicCopyWith(StringBuffer buffer) {
+  void _copyWith(StringBuffer buffer) {
     final entry = subject.entryPoint();
 
     _copyWithMethod(
@@ -95,7 +96,8 @@ class CopyWithTemplate extends Template {
       signature: subject.copyWithSignature,
       parameters: entry.parameters,
       arguments: entry.arguments,
-      returnValue: subject.returnPrivateCopyWith,
+      returnValue: subject.returnObjectCopyWoth,
+      includeObjectCopyWith: true,
     );
   }
 
@@ -105,6 +107,7 @@ class CopyWithTemplate extends Template {
     required Iterable<String> Function() parameters,
     required Iterable<String> Function() arguments,
     required String returnValue,
+    bool includeObjectCopyWith = false,
   }) {
     buffer
       ..writeObject(
@@ -119,6 +122,11 @@ class CopyWithTemplate extends Template {
       ..writeObject(
         '',
         body: () {
+          if (includeObjectCopyWith) {
+            _objectCopyWith(buffer);
+            buffer.writeln();
+          }
+
           buffer.writeObject(
             returnValue,
             open: '(',
@@ -131,19 +139,11 @@ class CopyWithTemplate extends Template {
       );
   }
 
-  void _writeCopyWith(StringBuffer buffer) {
-    _privateCopyWith(buffer);
-
-    buffer.writeln();
-
-    _publicCopyWith(buffer);
-  }
-
   @override
   String toString() {
     final buffer = StringBuffer();
 
-    _writeCopyWith(buffer);
+    _copyWith(buffer);
 
     return buffer.toString();
   }
@@ -154,13 +154,13 @@ class CopyWithTemplate extends Template {
       buffer.writeObject(
         subject.extension,
         body: () {
-          _writeCopyWith(buffer);
+          _copyWith(buffer);
         },
       );
 
       return;
     }
 
-    _writeCopyWith(buffer);
+    _copyWith(buffer);
   }
 }

@@ -17,20 +17,36 @@ class PropsTemplate extends Template {
   }
 
   void _writeAsPrivateFunction(StringBuffer buffer) {
-    final genClassName = subject.generatedName(retainPrivate: false);
+    final privateGenClassName = subject.generatedName(
+      retainPrivate: false,
+      throwOnNameFormat: false,
+    );
+
+    final genClassName = subject.generatedName(
+      throwOnNameFormat: false,
+    );
 
     buffer.writeObject(
-      'List<Object?> _${genClassName}Props()',
+      'List<Object?> _\$${privateGenClassName}Props($genClassName instance)',
       body: () {
-        _writeReturn(buffer);
+        _writeReturn(buffer, withInstance: true);
       },
     );
   }
 
-  void _writeReturn(StringBuffer buffer) {
+  void _writeReturn(StringBuffer buffer, {bool withInstance = false}) {
     buffer
       ..write('return [')
-      ..writeAll(subject.fields.map<String>((e) => e.name), ', ')
+      ..writeAll(
+        subject.fields.map<String>((e) {
+          if (withInstance) {
+            return 'instance.${e.name}';
+          }
+
+          return e.name;
+        }),
+        ', ',
+      )
       ..writeln('];');
   }
 
