@@ -4,11 +4,12 @@ import 'package:ice/src/templates/template.dart';
 import 'package:ice/src/util/string_buffer_ext.dart';
 
 extension on List<Field> {
-  Iterable<String> asArgs() {
+  Iterable<String> asArgs({bool withInstance = false}) {
     final args = <String>[];
+    final access = withInstance ? 'instance.' : '';
 
     for (final field in this) {
-      final arg = '${field.name}: ${field.name}';
+      final arg = '${field.name}: \${$access${field.name}}';
 
       args.add(arg);
     }
@@ -32,25 +33,29 @@ class ToStringTemplate extends Template {
   }
 
   void _writeAsPrivateFunction(StringBuffer buffer) {
-    final genClassName = subject.generatedName(
+    final privateGenClassName = subject.generatedName(
       retainPrivate: false,
       throwOnNameFormat: false,
     );
 
+    final genClassName = subject.generatedName(
+      throwOnNameFormat: false,
+    );
+
     buffer.writeObject(
-      'String _${genClassName}ToString()',
+      'String _\$${privateGenClassName}ToString($genClassName instance)',
       body: () {
-        _writeReturn(buffer);
+        _writeReturn(buffer, withInstance: true);
       },
     );
   }
 
-  void _writeReturn(StringBuffer buffer) {
+  void _writeReturn(StringBuffer buffer, {bool withInstance = false}) {
     final genClassName = subject.generatedName();
 
     buffer
       ..write("return '$genClassName{")
-      ..writeAll(subject.fields.asArgs(), ', ')
+      ..writeAll(subject.fields.asArgs(withInstance: withInstance), ', ')
       ..writeln("}';");
   }
 
