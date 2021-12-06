@@ -4,7 +4,6 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/src/dart/element/element.dart';
 import 'package:ice/src/domain/enums/annotation_types.dart';
-import 'package:ice_annotation/ice.dart';
 import 'package:source_gen/source_gen.dart';
 
 /// {@template annotation}
@@ -34,15 +33,6 @@ class Annotation {
 
     final reader = ConstantReader(annotation.computeConstantValue());
     final genAsPrivate = reader.peek('isPrivate')?.boolValue ?? false;
-
-    String? getBaseName() {
-      final result = reader
-          .peek('union')
-          ?.typeValue
-          .getDisplayString(withNullability: false);
-
-      return result;
-    }
 
     final declaration =
         '${(annotation as ElementAnnotationImpl).annotationAst}';
