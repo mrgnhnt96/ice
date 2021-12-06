@@ -26,6 +26,10 @@ class _Initial extends _$Initial with EquatableMixin {
   List<Object?> get props {
     return [];
   }
+
+  _$Initial copyWith() {
+    return _Initial();
+  }
 }
 
 @JsonSerializable()
@@ -45,6 +49,10 @@ class _Ready extends _$Ready with EquatableMixin {
   List<Object?> get props {
     return [];
   }
+
+  _$Ready copyWith() {
+    return _Ready();
+  }
 }
 
 @JsonSerializable()
@@ -63,6 +71,10 @@ class _Error extends _$Error with EquatableMixin {
   @override
   List<Object?> get props {
     return [];
+  }
+
+  _$Error copyWith() {
+    return _Error();
   }
 }
 
