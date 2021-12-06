@@ -3,36 +3,15 @@
 import 'package:ice/src/domain/domain.dart';
 import 'package:ice/src/domain/enums/enums.dart';
 import 'package:ice/src/domain/field.dart';
+import 'package:ice/src/templates/copy_with_template.dart';
+import 'package:ice/src/templates/props_template.dart';
+import 'package:ice/src/templates/template.dart';
+import 'package:ice/src/templates/to_string_template.dart';
 import 'package:ice/src/util/string_buffer_ext.dart';
 
 extension on Class {
   String className() {
-    return 'class ${getName()} extends $name with EquatableMixin';
-  }
-
-  String getName({bool retainPrivate = true}) {
-    final startsWithDollar = name.contains(r'$');
-
-    final mustBeGenClass = Exception(
-      'Class name $name must start with \$ to '
-      'successfully generate as a private class',
-    );
-
-    if (!startsWithDollar) {
-      throw mustBeGenClass;
-    }
-
-    var cleanName = name.replaceAll(r'$', '');
-
-    if (!retainPrivate) {
-      cleanName = cleanName.replaceAll('_', '');
-    }
-
-    if (genAsPrivate) {
-      return '_$cleanName';
-    }
-
-    return cleanName;
+    return 'class ${generatedName()} extends $name with EquatableMixin';
   }
 }
 
@@ -81,43 +60,31 @@ extension on List<Constructor> {
   }
 }
 
-extension on List<Field> {
-  Iterable<String> asArgs() {
-    final args = <String>[];
-
-    for (final field in this) {
-      final arg = '${field.name}: ${field.name}';
-
-      args.add(arg);
-    }
-
-    return args;
-  }
-}
-
 /// A template to generate methods for
 /// - copyWith()
 /// - Equatable Props
 /// - toString()
-class IceTemplate {
-  const IceTemplate.forSubject(Class subject) : _subject = subject;
-
-  final Class _subject;
+class IceTemplate extends Template {
+  const IceTemplate.forSubject(Class subject) : super(subject);
 
   @override
   String toString() {
     final buffer = StringBuffer();
-    final cls = _subject;
+    final cls = subject;
 
-    final genClassName = cls.getName();
-    final nonPrivategGenClassName = cls.getName(retainPrivate: false);
+    final genClassName = cls.generatedName();
+    final nonPrivategGenClassName = cls.generatedName(retainPrivate: false);
+
+    final toStringTemplate = ToStringTemplate.forSubject(subject);
+    final propsTemplate = PropsTemplate.forSubject(subject);
+    final copyWithTemplate = CopyWithTemplate.forSubject(subject);
 
     buffer
       ..writeln('@JsonSerializable()')
       ..writeObject(
         cls.className(),
-        body: (classBuf, classTab) {
-          classBuf
+        body: () {
+          buffer
             ..writeAll(cls.constructors.declarations(genClassName))
             ..writeln(
               'factory $genClassName.fromJson(Map<String, dynamic> json) => '
@@ -128,31 +95,25 @@ class IceTemplate {
               'Map<String, dynamic> toJson() => '
               '_\$${nonPrivategGenClassName}ToJson(this);',
             )
-            ..writeln()
-            ..writeln('@override')
-            ..writeObject(
-              'String toString()',
-              body: (strBuf, strTab) {
-                strBuf
-                  ..write("return '$genClassName{")
-                  ..writeAll(cls.fields.asArgs(), ', ')
-                  ..writeln("}';");
-              },
-            )
-            ..writeln()
-            ..writeln('@override')
-            ..writeObject(
-              'List<Object?> get props',
-              body: (strBuf, strTab) {
-                strBuf
-                  ..write('return [')
-                  ..writeAll(cls.fields.map<String>((e) => e.name), ', ')
-                  ..writeln('];');
-              },
-            );
+            ..writeln();
+
+          toStringTemplate.addToBuffer(buffer);
+
+          buffer.writeln();
+
+          propsTemplate.addToBuffer(buffer);
+
+          buffer.writeln();
+
+          copyWithTemplate.addToBuffer(buffer);
         },
       );
 
     return buffer.toString();
+  }
+
+  @override
+  void addToBuffer(StringBuffer buffer) {
+    // TODO: implement addToBuffer
   }
 }
