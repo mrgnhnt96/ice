@@ -2,7 +2,6 @@
 
 import 'package:ice/src/domain/domain.dart';
 import 'package:ice/src/domain/enums/enums.dart';
-import 'package:ice/src/domain/field.dart';
 import 'package:ice/src/templates/copy_with_template.dart';
 import 'package:ice/src/templates/props_template.dart';
 import 'package:ice/src/templates/template.dart';

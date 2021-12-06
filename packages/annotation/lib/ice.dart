@@ -6,5 +6,5 @@ export 'package:equatable/equatable.dart';
 export 'package:json_annotation/json_annotation.dart';
 
 export 'src/default_value.dart';
-export 'src/methods/annotations.dart';
 export 'src/ice.dart' hide IceUnionBase;
+export 'src/methods/annotations.dart';
