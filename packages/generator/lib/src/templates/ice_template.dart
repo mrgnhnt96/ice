@@ -10,7 +10,9 @@ import 'package:ice/src/util/string_buffer_ext.dart';
 
 extension on Class {
   String className() {
-    return 'class ${generatedName()} extends $name with EquatableMixin';
+    final keyword = isAbstract ? 'abstract class' : 'class';
+
+    return '$keyword ${generatedName()} extends $name with EquatableMixin';
   }
 }
 
