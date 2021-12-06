@@ -32,7 +32,10 @@ class ToStringTemplate extends Template {
   }
 
   void _writeAsPrivateFunction(StringBuffer buffer) {
-    final genClassName = subject.generatedName(retainPrivate: false);
+    final genClassName = subject.generatedName(
+      retainPrivate: false,
+      throwOnNameFormat: false,
+    );
 
     buffer.writeObject(
       'String _${genClassName}ToString()',
