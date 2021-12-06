@@ -87,16 +87,4 @@ class Annotation {
 
   /// whether the generated class should be private
   final bool genAsPrivate;
-
-  /// Whether the annotation is the entry point for [CopyWith]
-  bool get isEntryPoint => type == AnnotationTypes.copyWithEntryPoint;
-
-  /// Returns true when annotation is [Ice] or [IceUnion]
-  bool get isIce => type == AnnotationTypes.ice;
-
-  /// returns true when annotation is [IceUnionBase]
-  bool get isUnionBase => type == AnnotationTypes.unionBase;
-
-  /// returns true when annotation is not recognized
-  bool get isOther => type == AnnotationTypes.other;
 }

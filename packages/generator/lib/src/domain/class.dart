@@ -4,7 +4,6 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:ice/src/domain/domain.dart';
 import 'package:ice/src/domain/field.dart';
-import 'package:ice_annotation/src/ice.dart';
 
 /// {@template class}
 /// The class that [CopyWith] will be generated for
@@ -17,9 +16,7 @@ class Class {
     required this.fields,
     required this.name,
     required this.supertypes,
-  }) : _entryPoint = _EntryPoint(constructors) {
-    _checkForAnnotationTypes();
-  }
+  }) : _entryPoint = _EntryPoint(constructors);
 
   /// Retrieves the class data from the element
   factory Class.fromElement(ClassElement element) {
@@ -80,48 +77,6 @@ class Class {
   /// The entry point to be used to generate the copyWith method
   Constructor entryPoint() => _entryPoint.access;
 
-  void _checkForAnnotationTypes() {
-    var hasSetPrivate = false;
-    for (final annotate in annotations) {
-      if (annotate.isIce) {
-        _isIce = true;
-      } else if (annotate.isUnionBase) {
-        _isUnionBase = true;
-      } else if (annotate.isOther) {
-        _isOther = true;
-      }
-
-      if (hasIceAnnotation && !hasSetPrivate) {
-        hasSetPrivate = true;
-        _genAsPrivate = annotate.genAsPrivate;
-      }
-    }
-  }
-
-  /// Returns true when the class has an [Ice] or [IceUnion] annotation
-  bool get isIce => _isIce;
-  var _isIce = false;
-
-  /// returns true when the class has an [IceUnionBase] annotation
-  bool get isUnionBase => _isUnionBase;
-  var _isUnionBase = false;
-
-  /// returns true if the class has an [Ice] annotation
-  bool get hasIceAnnotation => isIce || isUnionBase;
-
-  /// returns true if the class is annotated with
-  /// an unknown annotation
-  bool get isOther => _isOther;
-  var _isOther = false;
-
-  /// whether to generate the class as a private class
-  bool get genAsPrivate => _genAsPrivate;
-  var _genAsPrivate = false;
-
-  /// The name of the base class for the union
-  String? get unionBaseName => _unionBaseName;
-  String? _unionBaseName;
-
   /// maps the super types to this class
   Map<String, Class> supertypeMap() {
     final supers = <String, Class>{};
@@ -131,6 +86,40 @@ class Class {
     }
 
     return supers;
+  }
+
+  String? _generatedName;
+  String generatedName({bool retainPrivate = true}) {
+    final genName = _generatedName;
+
+    if (genName != null) {
+      if (!retainPrivate) {
+        return genName.replaceAll('_', '');
+      }
+
+      return genName;
+    }
+
+    final startsWithDollar = name.contains(r'$');
+
+    final mustBeGenClass = Exception(
+      'Class name $name must start with \$ to '
+      'successfully generate as a private class',
+    );
+
+    if (!startsWithDollar) {
+      throw mustBeGenClass;
+    }
+
+    var cleanName = name.replaceAll(r'$', '');
+
+    if (!retainPrivate) {
+      cleanName = cleanName.replaceAll('_', '');
+    }
+
+    _generatedName = cleanName;
+
+    return generatedName(retainPrivate: retainPrivate);
   }
 }
 
