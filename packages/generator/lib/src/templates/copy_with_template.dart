@@ -71,67 +71,67 @@ extension on Param {
 /// {@endtemplate}
 class CopyWithTemplate extends Template {
   /// {@macro copy_with_method}
-  const CopyWithTemplate.forSubject(Class subject) : super(subject);
+  CopyWithTemplate.forSubject(Class subject) : super(subject);
 
-  void _objectCopyWith(StringBuffer buffer) {
-    final entry = subject.entryPoint();
-    final genClassName = subject.generatedName(throwOnNameFormat: false);
-    final entryPointName = entry.isDefault ? '' : '.${entry.name}';
-    final returnValue = 'return $genClassName$entryPointName';
-
-    _copyWithMethod(
-      buffer,
-      signature: subject.privateCopyWithSignature,
-      parameters: entry.objectParameters,
-      arguments: entry.argumentsWithDefault,
-      returnValue: returnValue,
-    );
-  }
-
-  void _copyWith(StringBuffer buffer) {
-    final entry = subject.entryPoint();
-
-    _copyWithMethod(
-      buffer,
-      signature: subject.copyWithSignature,
-      parameters: entry.parameters,
-      arguments: entry.arguments,
-      returnValue: subject.returnObjectCopyWoth,
-      includeObjectCopyWith: true,
-    );
-  }
+  /// the constructor entry for copywith
+  Constructor get entry => _entry ??= subject.entryPoint();
+  Constructor? _entry;
 
   void _copyWithMethod(
     StringBuffer buffer, {
-    required String signature,
-    required Iterable<String> Function() parameters,
-    required Iterable<String> Function() arguments,
-    required String returnValue,
-    bool includeObjectCopyWith = false,
+    String? signature,
+    Iterable<String> Function()? parameters,
+    Iterable<String> Function()? arguments,
+    String? returnValue,
+    bool includeObjectCopyWith = true,
   }) {
+    final genClassName = subject.generatedName(throwOnNameFormat: false);
+    final entryPointName = entry.isDefault ? '' : '.${entry.name}';
+    final classReturnValue = 'return $genClassName$entryPointName';
+
+    final args = arguments?.call() ?? entry.arguments();
+    final params = parameters?.call() ?? entry.parameters();
+    final sig = signature ?? subject.copyWithSignature;
+    final returnVal =
+        returnValue ?? (params.isEmpty ? classReturnValue : 'return _copyWith');
+
+    void _objectCopyWith(StringBuffer buffer) {
+      _copyWithMethod(
+        buffer,
+        signature: subject.privateCopyWithSignature,
+        parameters: entry.objectParameters,
+        arguments: entry.argumentsWithDefault,
+        returnValue: classReturnValue,
+        includeObjectCopyWith: false,
+      );
+    }
+
+    final open = params.isNotEmpty ? '({' : '(';
+    final close = params.isNotEmpty ? '})' : ')';
+
     buffer
       ..writeObject(
-        signature,
-        open: '({',
+        sig,
+        open: open,
         appendNewLine: false,
         body: () {
-          buffer.writeAll(parameters());
+          buffer.writeAll(params);
         },
-        close: '})',
+        close: close,
       )
       ..writeObject(
         '',
         body: () {
-          if (includeObjectCopyWith) {
+          if (includeObjectCopyWith && params.isNotEmpty) {
             _objectCopyWith(buffer);
             buffer.writeln();
           }
 
           buffer.writeObject(
-            returnValue,
+            returnVal,
             open: '(',
             body: () {
-              buffer.writeAll(arguments());
+              buffer.writeAll(args);
             },
             close: ');',
           );
@@ -143,7 +143,7 @@ class CopyWithTemplate extends Template {
   String toString() {
     final buffer = StringBuffer();
 
-    _copyWith(buffer);
+    _copyWithMethod(buffer);
 
     return buffer.toString();
   }
@@ -154,13 +154,13 @@ class CopyWithTemplate extends Template {
       buffer.writeObject(
         subject.extension,
         body: () {
-          _copyWith(buffer);
+          _copyWithMethod(buffer);
         },
       );
 
       return;
     }
 
-    _copyWith(buffer);
+    _copyWithMethod(buffer);
   }
 }
