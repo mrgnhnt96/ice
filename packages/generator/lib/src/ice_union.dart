@@ -10,9 +10,9 @@ import 'package:source_gen/source_gen.dart';
 /// {@template ice_generator}
 /// A [Generator] that generates a [Ice] class for a given [ClassElement].
 /// {@endtemplate}
-class IceUnionBaseGenerator extends GeneratorForAnnotation<IceUnionBase> {
+class IceUnionGenerator extends GeneratorForAnnotation<IceUnionBase> {
   /// {@macro ice_generator}
-  const IceUnionBaseGenerator() : super();
+  const IceUnionGenerator() : super();
 
   @override
   String generateForAnnotatedElement(
