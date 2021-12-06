@@ -72,4 +72,12 @@ class Param {
 
     return type;
   }
+
+  /// formats the arg by [positionType]
+  String get arg {
+    return positionType.map(
+      named: '$name: $name',
+      positioned: name,
+    );
+  }
 }
