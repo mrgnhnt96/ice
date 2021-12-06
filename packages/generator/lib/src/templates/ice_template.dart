@@ -8,59 +8,6 @@ import 'package:ice/src/templates/template.dart';
 import 'package:ice/src/templates/to_string_template.dart';
 import 'package:ice/src/util/string_buffer_ext.dart';
 
-extension on Class {
-  String className() {
-    final keyword = isAbstract ? 'abstract class' : 'class';
-
-    return '$keyword ${generatedName()} extends $name with EquatableMixin';
-  }
-}
-
-extension on Param {
-  String superArg() {
-    return positionType.map(
-      named: '$name: $name',
-      positioned: name,
-    );
-  }
-}
-
-extension on Constructor {
-  String arguments() {
-    var entryPoint = '';
-
-    if (!isDefault) {
-      entryPoint = '.$name';
-    }
-
-    final args = <String>{}
-      ..add('super$entryPoint(')
-      ..addAll(params.map((e) => '${e.superArg()},'))
-      ..add(');');
-
-    if (args.length > 2) {
-      return args.join(' ');
-    }
-
-    return args.join();
-  }
-}
-
-extension on List<Constructor> {
-  Iterable<String> declarations(String genClassName) {
-    final declarations = <String>[];
-
-    for (final constructor in this) {
-      final declaration = '$genClassName${constructor.declaration} : '
-          '${constructor.arguments()}\n\n';
-
-      declarations.add(declaration);
-    }
-
-    return declarations;
-  }
-}
-
 /// A template to generate methods for
 /// - copyWith()
 /// - Equatable Props
@@ -68,53 +15,66 @@ extension on List<Constructor> {
 class IceTemplate extends Template {
   const IceTemplate.forSubject(Class subject) : super(subject);
 
-  @override
-  String toString() {
-    final buffer = StringBuffer();
-    final cls = subject;
-
-    final genClassName = cls.generatedName(throwOnNameFormat: true);
-    final nonPrivategGenClassName = cls.generatedName(retainPrivate: false);
+  void _writeProperties(StringBuffer buffer) {
+    final genClassName = subject.generatedName();
+    final nonPrivategGenClassName = subject.generatedName(retainPrivate: false);
 
     final toStringTemplate = ToStringTemplate.forSubject(subject);
     final propsTemplate = PropsTemplate.forSubject(subject);
     final copyWithTemplate = CopyWithTemplate.forSubject(subject);
 
     buffer
+      ..writeln(
+        'factory $genClassName.fromJson(Map<String, dynamic> json) => '
+        '_\$${nonPrivategGenClassName}FromJson(json);',
+      )
+      ..writeln()
+      ..writeln(
+        'Map<String, dynamic> toJson() => '
+        '_\$${nonPrivategGenClassName}ToJson(this);',
+      )
+      ..writeln();
+
+    toStringTemplate.addToBuffer(buffer);
+
+    buffer.writeln();
+
+    propsTemplate.addToBuffer(buffer);
+
+    buffer.writeln();
+
+    copyWithTemplate.addToBuffer(buffer);
+  }
+
+  void _writeClass(StringBuffer buffer) {
+    final genClassName = subject.generatedName(throwOnNameFormat: true);
+
+    buffer
       ..writeln('@JsonSerializable()')
       ..writeObject(
-        cls.className(),
+        subject.classEntry,
         body: () {
-          buffer
-            ..writeAll(cls.constructors.declarations(genClassName))
-            ..writeln(
-              'factory $genClassName.fromJson(Map<String, dynamic> json) => '
-              '_\$${nonPrivategGenClassName}FromJson(json);',
-            )
-            ..writeln()
-            ..writeln(
-              'Map<String, dynamic> toJson() => '
-              '_\$${nonPrivategGenClassName}ToJson(this);',
-            )
-            ..writeln();
-
-          toStringTemplate.addToBuffer(buffer);
-
-          buffer.writeln();
-
-          propsTemplate.addToBuffer(buffer);
-
-          buffer.writeln();
-
-          copyWithTemplate.addToBuffer(buffer);
+          buffer.writeAll(subject.constructors.declarations(genClassName));
+          _writeProperties(buffer);
         },
       );
+  }
+
+  @override
+  String toString() {
+    final buffer = StringBuffer();
+
+    _writeClass(buffer);
 
     return buffer.toString();
   }
 
   @override
-  void addToBuffer(StringBuffer buffer) {
-    // TODO: implement addToBuffer
+  void addToBuffer(StringBuffer buffer, {bool wrapInClass = true}) {
+    if (wrapInClass) {
+      _writeClass(buffer);
+    } else {
+      _writeProperties(buffer);
+    }
   }
 }
