@@ -85,9 +85,6 @@ class Class {
     for (final annotate in annotations) {
       if (annotate.isIce) {
         _isIce = true;
-      } else if (annotate.isIceUnion) {
-        _isIceUnion = true;
-        _unionBaseName = annotate.unionBase;
       } else if (annotate.isUnionBase) {
         _isUnionBase = true;
       } else if (annotate.isOther) {
@@ -105,16 +102,12 @@ class Class {
   bool get isIce => _isIce;
   var _isIce = false;
 
-  /// returns true when the class has an [IceUnion] annotation
-  bool get isIceUnion => _isIceUnion;
-  var _isIceUnion = false;
-
   /// returns true when the class has an [IceUnionBase] annotation
   bool get isUnionBase => _isUnionBase;
   var _isUnionBase = false;
 
   /// returns true if the class has an [Ice] annotation
-  bool get hasIceAnnotation => isIce || isIceUnion || isUnionBase;
+  bool get hasIceAnnotation => isIce || isUnionBase;
 
   /// returns true if the class is annotated with
   /// an unknown annotation
