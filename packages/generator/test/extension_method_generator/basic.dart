@@ -1,18 +1,11 @@
-// ignore: lines_longer_than_80_chars
-// ignore_for_file: cast_nullable_to_non_nullable, prefer_constructors_over_static_methods
-
 import 'package:ice_annotation/ice.dart';
 
 part 'output/basic.dart';
 
-// if only 1 constructor, use that constructor for copywith
-// if multiple, use default first, then `._` if available
-//
-// if default & `._` are not available, throw error
 @copyWith
 @props
 @toString
-class Example {
+class Example extends Equatable {
   const Example._({
     this.text,
     this.whole,
@@ -37,9 +30,8 @@ class Example {
         decimal: decimal,
       );
 
-  static Example something() => const Example._();
+  static Example something() => Example._();
 
-  @ignoreProp
   final String? text;
   final int? whole;
   final double? decimal;
@@ -49,4 +41,10 @@ class Example {
   final Map<String, String>? map;
   final Set<String>? set;
   final Example? example;
+
+  @override
+  List<Object?> get props => _$ExampleProps(this);
+
+  @override
+  String toString() => _ExampleToString();
 }

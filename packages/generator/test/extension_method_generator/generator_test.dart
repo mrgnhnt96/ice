@@ -5,7 +5,7 @@ import 'package:test/test.dart';
 void main() {
   group('generator', () {
     setUpAll(() {
-      const base = 'test/copywith_generator';
+      const base = 'test/extension_method_generator';
       GeneratorPath.setDirPath(
         input: base,
         output: '$base/output',
