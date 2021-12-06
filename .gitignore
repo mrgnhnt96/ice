@@ -76,3 +76,4 @@ coverage/
 !**/ios/**/default.perspectivev3
 .markdownlint.json
 **/test/*.g.dart
+packages/.gen_files
