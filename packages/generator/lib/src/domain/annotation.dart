@@ -15,7 +15,6 @@ class Annotation {
   const Annotation({
     required this.name,
     required this.type,
-    required this.unionBase,
     required this.declaration,
     required this.genAsPrivate,
   });
@@ -45,18 +44,12 @@ class Annotation {
       return result;
     }
 
-    final unionBase = type.maybeMap(
-      union: getBaseName,
-      orElse: () => null,
-    )();
-
     final declaration =
         '${(annotation as ElementAnnotationImpl).annotationAst}';
 
     return Annotation(
       name: name,
       type: type,
-      unionBase: unionBase,
       declaration: declaration,
       genAsPrivate: genAsPrivate,
     );
@@ -84,9 +77,6 @@ class Annotation {
   /// The type of the annotation
   final AnnotationTypes type;
 
-  /// The class name of the union base
-  final String? unionBase;
-
   /// The declaration of the annotation
   ///
   /// eg:
@@ -99,14 +89,10 @@ class Annotation {
   final bool genAsPrivate;
 
   /// Whether the annotation is the entry point for [CopyWith]
-  bool get isEntryPoint => type == AnnotationTypes.entryPoint;
+  bool get isEntryPoint => type == AnnotationTypes.copyWithEntryPoint;
 
   /// Returns true when annotation is [Ice] or [IceUnion]
-  bool get isIce =>
-      type == AnnotationTypes.ice || type == AnnotationTypes.union;
-
-  /// returns true when annotation is [IceUnion]
-  bool get isIceUnion => type == AnnotationTypes.union;
+  bool get isIce => type == AnnotationTypes.ice;
 
   /// returns true when annotation is [IceUnionBase]
   bool get isUnionBase => type == AnnotationTypes.unionBase;
