@@ -2,6 +2,8 @@
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:ice/src/domain/domain.dart';
+import 'package:ice/src/domain/enums/annotation_types.dart';
+import 'package:ice/src/domain/enums/enums.dart';
 
 /// {@template constructor}
 /// A constructor of the [Class]
@@ -76,7 +78,7 @@ class Constructor {
   /// Whether the constructor is the copyWith entry point\
   /// determined by the [CopyWithEntryPoint] annotation
   bool get hasEntryPointAnnotation {
-    return annotations.any((annotation) => annotation.isEntryPoint);
+    return annotations.any((annotation) => annotation.type.isEntryPoint);
   }
 
   /// if the constructor is the default constructor
