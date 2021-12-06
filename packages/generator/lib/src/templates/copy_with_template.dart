@@ -49,7 +49,7 @@ extension on Constructor {
 
 extension on Param {
   String forConstructor() {
-    return '$type $name';
+    return '$nullableType $name';
   }
 
   String forConstructorAsObject() {
