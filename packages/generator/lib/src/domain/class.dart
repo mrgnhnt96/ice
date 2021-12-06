@@ -89,7 +89,14 @@ class Class {
   }
 
   String? _generatedName;
-  String generatedName({bool retainPrivate = true}) {
+
+  /// The name of the class to be generated
+  ///
+  /// removes the `$` from the name
+  String generatedName({
+    bool retainPrivate = true,
+    bool throwOnNameFormat = true,
+  }) {
     final genName = _generatedName;
 
     if (genName != null) {
@@ -98,6 +105,12 @@ class Class {
       }
 
       return genName;
+    }
+
+    _generatedName = name.replaceAll(r'$', '');
+
+    if (!throwOnNameFormat) {
+      return generatedName(retainPrivate: retainPrivate);
     }
 
     final startsWithDollar = name.contains(r'$');
@@ -110,14 +123,6 @@ class Class {
     if (!startsWithDollar) {
       throw mustBeGenClass;
     }
-
-    var cleanName = name.replaceAll(r'$', '');
-
-    if (!retainPrivate) {
-      cleanName = cleanName.replaceAll('_', '');
-    }
-
-    _generatedName = cleanName;
 
     return generatedName(retainPrivate: retainPrivate);
   }
