@@ -3,6 +3,7 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:ice/src/domain/domain.dart';
+import 'package:ice/src/domain/enums/enums.dart';
 import 'package:ice/src/domain/ice_subjects.dart';
 import 'package:ice/src/templates/templates.dart';
 import 'package:ice_annotation/src/ice.dart';
@@ -36,9 +37,14 @@ class IceGenerator extends GeneratorForAnnotation<Ice> {
     }
 
     final subject = Class.fromElement(element);
-    subjects.add(subject);
+    if (subject.annotations.any((e) => e.type.isUnion)) {
+      // if the subject is a union, the code will be generated
+      // in the union generator
+      return '';
+    }
 
     final ice = IceTemplate.forSubject(subject);
+    subjects.add(subject);
 
     final result = ice.toString();
 

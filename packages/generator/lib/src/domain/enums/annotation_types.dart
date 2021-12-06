@@ -39,7 +39,7 @@ extension AnnotationTypesXX on AnnotationTypes {
   bool get isIce => this == AnnotationTypes.ice;
 
   /// if the type is unionBase
-  bool get isUnionBase => this == AnnotationTypes.unionBase;
+  bool get isUnion => this == AnnotationTypes.unionBase;
 
   /// if the type is copyWithEntryPoint
   bool get isEntryPoint => this == AnnotationTypes.copyWithEntryPoint;
