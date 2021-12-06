@@ -2,66 +2,28 @@
 
 import 'package:ice_annotation/ice.dart';
 
-@ice
-class _Example {
-  const _Example(
-    this.name, {
-    this.age,
-    this.isMale,
-    this.friends,
-    this.data,
-    String? fatherName,
-  }) : _father = const _Example(fatherName);
-
-  const _Example.empty()
-      : this(
-          null,
-          age: null,
-          isMale: null,
-          friends: null,
-          data: null,
-        );
-
-  final String? name;
-  final int? age;
-  final bool? isMale;
-  final List<String>? friends;
-  final Map<String, dynamic>? data;
-  final _Example? _father;
-}
+part 'output/basic.dart';
 
 @Ice.createUnion
-abstract class State {
-  const State();
-}
-
-@Ice.createUnion
-@ice
-class _$Initial extends State {
-  const _$Initial();
-}
+abstract class State {}
 
 @ice
-class _$Ready extends _$Initial {
-  const _$Ready(this.data);
-
-  final String data;
-}
+class _$Initial extends State {}
 
 @ice
-class _$Error extends State {
-  const _$Error(
-    this.data, {
-    required this.message,
-    this.fix,
-  });
-
-  final String data;
-  final String message;
-  final String? fix;
-}
+class _$Ready extends State {}
 
 @ice
-class _ModelClass {
-  const _ModelClass();
-}
+class _$Error extends State {}
+
+_Initial _$InitialFromJson(Map json) => _Initial();
+
+Map<String, dynamic> _$InitialToJson(_Initial instance) => <String, dynamic>{};
+
+_Ready _$ReadyFromJson(Map json) => _Ready();
+
+Map<String, dynamic> _$ReadyToJson(_Ready instance) => <String, dynamic>{};
+
+_Error _$ErrorFromJson(Map json) => _Error();
+
+Map<String, dynamic> _$ErrorToJson(_Error instance) => <String, dynamic>{};

@@ -46,5 +46,5 @@ class Example extends Equatable {
   List<Object?> get props => _$ExampleProps(this);
 
   @override
-  String toString() => _ExampleToString();
+  String toString() => _$ExampleToString(this);
 }

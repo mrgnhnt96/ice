@@ -7,6 +7,7 @@ part of '../basic.dart';
 // **************************************************************************
 // IceGenerator
 // **************************************************************************
+
 extension ExampleX on Example {
   Example copyWith({
     String? text,
@@ -49,6 +50,6 @@ List<Object?> _$ExampleProps(Example instance) {
   ];
 }
 
-String _ExampleToString() {
-  return 'Example{text: text, whole: whole, decimal: decimal, flag: flag, date: date, list: list, map: map, set: set, example: example, props: props}';
+String _$ExampleToString(Example instance) {
+  return 'Example{text: ${instance.text}, whole: ${instance.whole}, decimal: ${instance.decimal}, flag: ${instance.flag}, date: ${instance.date}, list: ${instance.list}, map: ${instance.map}, set: ${instance.set}, example: ${instance.example}, props: ${instance.props}}';
 }
