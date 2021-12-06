@@ -16,6 +16,7 @@ class Class {
     required this.fields,
     required this.name,
     required this.supertypes,
+    required this.isAbstract,
   }) : _entryPoint = _EntryPoint(constructors);
 
   /// Retrieves the class data from the element
@@ -23,6 +24,7 @@ class Class {
     final constructors = Constructor.fromElements(element.constructors);
     final annotations = Annotation.fromElements(element.metadata);
     final fields = Field.fromElements(element.fields);
+    final isAbstract = element.isAbstract;
 
     Set<String> _getSuperTypes(List<InterfaceType> interfaces) {
       final items = <String>{};
@@ -54,6 +56,7 @@ class Class {
       fields: fields,
       name: element.displayName,
       supertypes: supertypes.toList(),
+      isAbstract: isAbstract,
     );
   }
 
@@ -73,6 +76,9 @@ class Class {
 
   /// all the super types of the class
   final List<String> supertypes;
+
+  /// whether the class is an abstract class
+  final bool isAbstract;
 
   /// The entry point to be used to generate the copyWith method
   Constructor entryPoint() => _entryPoint.access;
