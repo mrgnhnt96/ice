@@ -32,3 +32,27 @@ enum AnnotationTypes {
   /// any other annotation
   other,
 }
+
+/// extensions for annotationTypes
+extension AnnotationTypesXX on AnnotationTypes {
+  /// if the type is ice
+  bool get isIce => this == AnnotationTypes.ice;
+
+  /// if the type is unionBase
+  bool get isUnionBase => this == AnnotationTypes.unionBase;
+
+  /// if the type is copyWithEntryPoint
+  bool get isEntryPoint => this == AnnotationTypes.copyWithEntryPoint;
+
+  /// if the type is props
+  bool get isProps => this == AnnotationTypes.props;
+
+  /// if the type is string
+  bool get isString => this == AnnotationTypes.string;
+
+  /// if the type is copyWith
+  bool get isCopyWith => this == AnnotationTypes.copyWith;
+
+  /// if the type is other
+  bool get isOther => this == AnnotationTypes.other;
+}
