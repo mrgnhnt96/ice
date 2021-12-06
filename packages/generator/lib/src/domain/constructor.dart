@@ -89,4 +89,41 @@ class Constructor {
 
   /// If the constructor is underscore named
   bool get isNamedUnderscore => name == '_';
+
+  /// gets the args wrapped in a super call
+  String superArgs() {
+    var entryPoint = '';
+
+    if (!isDefault) {
+      entryPoint = '.$name';
+    }
+
+    final args = <String>{}
+      ..add('super$entryPoint(')
+      ..addAll(params.map((e) => '${e.arg},'))
+      ..add(');');
+
+    if (args.length > 2) {
+      return args.join(' ');
+    }
+
+    return args.join();
+  }
+}
+
+/// ext for List<Constructor>
+extension ListConstructorX on List<Constructor> {
+  /// gets the declarations of all constructors
+  Iterable<String> declarations(String className) {
+    final declarations = <String>[];
+
+    for (final constructor in this) {
+      final declaration = '$className${constructor.declaration} : '
+          '${constructor.superArgs()}\n\n';
+
+      declarations.add(declaration);
+    }
+
+    return declarations;
+  }
 }
