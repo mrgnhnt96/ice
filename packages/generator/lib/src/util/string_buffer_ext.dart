@@ -33,4 +33,19 @@ extension StringBufferX on StringBuffer {
       write(closer);
     }
   }
+
+  /// writes a method signature
+  void writeMethod(
+    String entry, {
+    Iterable<String> params = const <String>[],
+    required void Function() body,
+  }) {
+    final argOpen = params.isEmpty ? '(' : '({';
+    final argClose = params.isEmpty ? ')' : '})';
+    writeln('$entry $argOpen');
+    writeAll(params, ', ');
+    writeln('$argClose {');
+    body();
+    writeln('}');
+  }
 }
