@@ -10,4 +10,9 @@ class IceUnionBaseTemplate {
   const IceUnionBaseTemplate.forSubject(Class subject) : _subject = subject;
 
   final Class _subject;
+
+  @override
+  String toString() {
+    return '// TODO: implement toString';
+  }
 }
