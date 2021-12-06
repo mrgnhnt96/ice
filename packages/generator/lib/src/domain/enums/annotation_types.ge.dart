@@ -177,7 +177,7 @@ class AnnotationTypesConv extends JsonConverter<AnnotationTypes, Object> {
   static const nullable = _AnnotationTypesNullableConv();
 
   static const _iceName = 'ice';
-  static const _unionBaseName = 'Ice.createUnion';
+  static const _unionBaseName = 'Ice.union';
   static const _copyWithEntryPointName = 'copyWithEntryPoint';
   static const _propsName = 'props';
   static const _stringName = 'toString';

@@ -13,7 +13,7 @@ enum AnnotationTypes {
   ice,
 
   /// [IceUnionBase]
-  @EnumValue(serializedValue: 'Ice.createUnion')
+  @EnumValue(serializedValue: 'Ice.union')
   unionBase,
 
   /// [CopyWithEntryPoint]

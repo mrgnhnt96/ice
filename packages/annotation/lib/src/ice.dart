@@ -14,7 +14,7 @@ class Ice {
   const Ice._();
 
   /// {@macro ice_union_base}
-  static const IceUnionBase createUnion = IceUnionBase();
+  static const IceUnionBase union = IceUnionBase();
 }
 
 /// {@template ice_union_base}
