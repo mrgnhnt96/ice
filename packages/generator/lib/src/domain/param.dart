@@ -54,4 +54,22 @@ class Param {
 
   /// the position of the param
   final PositionType positionType;
+
+  /// gets the type as a nullable type
+  String get nullableType {
+    if (isNullable) {
+      return type;
+    }
+
+    return '$type?';
+  }
+
+  /// gets the type as a non-nullable type
+  String get nonNullableType {
+    if (isNullable) {
+      return type.substring(0, type.length - 1);
+    }
+
+    return type;
+  }
 }
