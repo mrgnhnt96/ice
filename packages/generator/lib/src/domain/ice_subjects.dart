@@ -9,34 +9,29 @@ import 'package:ice_annotation/src/ice.dart';
 class IceSubjects {
   /// {@macro unions}
   IceSubjects() {
-    _unions = {};
     _classes = {};
   }
 
-  late final Map<String, List<Class>> _unions;
-  late final Map<String, Class> _classes;
+  late final Map<String, List<Class>> _classes;
 
   /// gets the classes assotiated with the union [base]
-  List<Class> getUnions(String base) => _unions[base] ?? [];
-
-  /// If the [subject] is a union, it's appended to the list of
-  /// unions assotiated with the [IceUnionBase]
-  void _addIfUnion(Class subject) {
-    if (!subject.isIceUnion) {
-      return;
-    }
-
-    (_unions[subject.unionBaseName!] ??= []).add(subject);
-  }
+  List<Class> getClasses(String base) => _classes[base] ?? [];
 
   /// adds the [subject] to the list of [Ice] classes
+  /// mapped by supertypes
   void add(Class subject) {
     if (subject.isOther) {
       return;
     }
 
-    _addIfUnion(subject);
+    final subjectMap = subject.supertypeMap();
 
-    _classes[subject.name] = subject;
+    for (final entry in subjectMap.entries) {
+      if (!_classes.containsKey(entry.key)) {
+        _classes[entry.key] = [];
+      }
+
+      _classes[entry.key]!.add(entry.value);
+    }
   }
 }
