@@ -95,7 +95,7 @@ class Class {
   /// removes the `$` from the name
   String generatedName({
     bool retainPrivate = true,
-    bool throwOnNameFormat = true,
+    bool throwOnNameFormat = false,
   }) {
     final genName = _generatedName;
 

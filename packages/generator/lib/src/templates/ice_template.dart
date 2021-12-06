@@ -71,7 +71,7 @@ class IceTemplate extends Template {
     final buffer = StringBuffer();
     final cls = subject;
 
-    final genClassName = cls.generatedName();
+    final genClassName = cls.generatedName(throwOnNameFormat: true);
     final nonPrivategGenClassName = cls.generatedName(retainPrivate: false);
 
     final toStringTemplate = ToStringTemplate.forSubject(subject);

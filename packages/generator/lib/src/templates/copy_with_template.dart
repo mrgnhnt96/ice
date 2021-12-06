@@ -85,7 +85,7 @@ class CopyWithTemplate extends Template {
     String? returnValue,
     bool includeObjectCopyWith = true,
   }) {
-    final genClassName = subject.generatedName(throwOnNameFormat: false);
+    final genClassName = subject.generatedName();
     final entryPointName = entry.isDefault ? '' : '.${entry.name}';
     final classReturnValue = 'return $genClassName$entryPointName';
 
