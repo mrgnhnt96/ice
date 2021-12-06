@@ -14,3 +14,12 @@ enum PositionType {
   /// `Example([String name = ''])`\
   positioned,
 }
+
+/// extension for [PositionType]
+extension PositionTypeXX on PositionType {
+  /// if the type is named
+  bool get isNamed => this == PositionType.named;
+
+  /// if the type is positioned
+  bool get isPositional => this == PositionType.positioned;
+}
