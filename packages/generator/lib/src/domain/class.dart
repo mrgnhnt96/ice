@@ -132,6 +132,15 @@ class Class {
 
     return generatedName(retainPrivate: retainPrivate);
   }
+
+  /// checks for abstract then returns
+  ///
+  /// (abstract)? class extends [name] with EquatableMixin
+  String get classEntry {
+    final keyword = isAbstract ? 'abstract class' : 'class';
+
+    return '$keyword ${generatedName()} extends $name with EquatableMixin';
+  }
 }
 
 class _EntryPoint {
