@@ -76,12 +76,11 @@ class CopyWithTemplate {
 
   final Class _subject;
 
-  void _privateCopyWith(StringBuffer buffer, int tabAmount) {
+  void _privateCopyWith(StringBuffer buffer) {
     final entry = _subject.entryPoint();
 
     _copyWithMethod(
       buffer,
-      tabAmount,
       signature: _subject.privateCopyWithSignature,
       parameters: entry.objectParameters,
       arguments: entry.argumentsWithDefault,
@@ -89,12 +88,11 @@ class CopyWithTemplate {
     );
   }
 
-  void _publicCopyWith(StringBuffer buffer, int tabAmount) {
+  void _publicCopyWith(StringBuffer buffer) {
     final entry = _subject.entryPoint();
 
     _copyWithMethod(
       buffer,
-      tabAmount,
       signature: _subject.copyWithSignature,
       parameters: entry.parameters,
       arguments: entry.arguments,
@@ -103,8 +101,7 @@ class CopyWithTemplate {
   }
 
   void _copyWithMethod(
-    StringBuffer buffer,
-    int tabAmount, {
+    StringBuffer buffer, {
     required String signature,
     required Iterable<String> Function(int) parameters,
     required Iterable<String> Function(int) arguments,
@@ -114,7 +111,6 @@ class CopyWithTemplate {
       ..writeObject(
         signature,
         open: '({',
-        tab: tabAmount,
         appendNewLine: false,
         body: (sig, sigTab) {
           sig.writeAll(parameters(sigTab));
@@ -123,7 +119,6 @@ class CopyWithTemplate {
       )
       ..writeObject(
         '',
-        tab: tabAmount,
         body: (body, bodyTab) {
           body.writeObject(
             returnValue,
@@ -142,16 +137,11 @@ class CopyWithTemplate {
   String toString() {
     final buffer = StringBuffer();
 
-    buffer.writeObject(
-      _subject.extension,
-      body: (ext, extTab) {
-        _publicCopyWith(buffer, extTab);
+    _publicCopyWith(buffer);
 
-        buffer.writeln();
+    buffer.writeln();
 
-        _privateCopyWith(buffer, extTab);
-      },
-    );
+    _privateCopyWith(buffer);
 
     return buffer.toString();
   }
