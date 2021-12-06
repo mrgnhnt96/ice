@@ -129,14 +129,14 @@ class Class {
 }
 
 class _EntryPoint {
-  const _EntryPoint(this._constructors);
+  _EntryPoint(this._constructors);
 
   final List<Constructor> _constructors;
 
-  static bool _hasSetAccess = false;
-  static Constructor? _annotated;
-  static Constructor? _defaultConst;
-  static Constructor? _namedUnderscore;
+  var _hasSetAccess = false;
+  Constructor? _annotated;
+  Constructor? _defaultConst;
+  Constructor? _namedUnderscore;
 
   Constructor get access {
     if (!_hasSetAccess) {
