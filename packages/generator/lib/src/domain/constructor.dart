@@ -41,7 +41,9 @@ class Constructor {
       declaration: declaration,
       isConst: element.isConst,
       isPrivate: element.isPrivate,
-      ignoreOption: const ConstructorToIgnoreConv().fromJson(element.name),
+      ignoreOption:
+          const ConstructorToIgnoreConv(defaultValue: ConstructorToIgnore.other)
+              .fromJson(element.name),
     );
   }
 
