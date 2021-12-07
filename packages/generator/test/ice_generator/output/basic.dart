@@ -56,7 +56,7 @@ class _Ready extends _$Ready with EquatableMixin {
     return [];
   }
 
-  _$Ready copyWith() {
+  _Ready copyWith() {
     return _Ready();
   }
 }
@@ -127,34 +127,31 @@ mixin _$StateUnion {
 
   R when<R extends Object?>(
       {required R Function() initial,
-      required R Function(String data) ready,
-      required R Function(String data, String message, String fix) error}) {
+      required R Function() ready,
+      required R Function() error}) {
     return map(
         initial: (state) => initial(),
-        ready: (state) => ready(state.data),
-        error: (state) => error(state.data, state.message, state.fix));
+        ready: (state) => ready(),
+        error: (state) => error());
   }
 
   R maybeWhen<R extends Object?>(
       {R Function()? initial,
-      R Function(String data)? ready,
-      R Function(String data, String message, String fix)? error,
+      R Function()? ready,
+      R Function()? error,
       required _NoResult<R> orElse}) {
     return map(
         initial: (state) => initial?.call() ?? orElse(),
-        ready: (state) => ready?.call(state.data) ?? orElse(),
-        error: (state) =>
-            error?.call(state.data, state.message, state.fix) ?? orElse());
+        ready: (state) => ready?.call() ?? orElse(),
+        error: (state) => error?.call() ?? orElse());
   }
 
   R? whenOrNull<R extends Object?>(
-      {R Function()? initial,
-      R Function(String data)? ready,
-      R Function(String data, String message, String fix)? error}) {
+      {R Function()? initial, R Function()? ready, R Function()? error}) {
     return map(
         initial: (state) => initial?.call(),
-        ready: (state) => ready?.call(state.data),
-        error: (state) => error?.call(state.data, state.message, state.fix));
+        ready: (state) => ready?.call(),
+        error: (state) => error?.call());
   }
 
   bool get isInitial => this is _Initial;
