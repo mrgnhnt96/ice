@@ -8,7 +8,7 @@ import 'package:ice/src/templates/templates.dart';
 /// {@endtemplate}
 class ExtensionMethodTemplate extends Template {
   /// {@macro extension_method_template}
-  ExtensionMethodTemplate.forSubject(Class subject) : super(subject);
+  ExtensionMethodTemplate.forSubject(Class subject) : super.wrapper(subject);
 
   void _getAndWriteMethods(StringBuffer buffer) {
     var generateCopyWith = false;
@@ -29,18 +29,15 @@ class ExtensionMethodTemplate extends Template {
     if (generateCopyWith) {
       CopyWithTemplate.forSubject(subject)
           .addToBuffer(buffer, wrapWithExtension: true);
-      buffer.writeln();
     }
 
     if (generateProps) {
       PropsTemplate.forSubject(subject).addToBuffer(buffer, asOverride: false);
-      buffer.writeln();
     }
 
     if (generateToString) {
       ToStringTemplate.forSubject(subject)
           .addToBuffer(buffer, asOverride: false);
-      buffer.writeln();
     }
   }
 

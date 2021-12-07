@@ -12,43 +12,35 @@ import 'package:ice/src/util/string_buffer_ext.dart';
 /// - Equatable Props
 /// - toString()
 class IceTemplate extends Template {
-  const IceTemplate.forSubject(Class subject) : super(subject);
+  const IceTemplate.forSubject(Class subject) : super.wrapper(subject);
 
   void _writeSerializable(StringBuffer buffer) {
     final genClassName = subject.generatedName();
     final nonPrivategGenClassName = subject.generatedName(retainPrivate: false);
 
-    buffer
-      ..writeln(
+    if (subject.canGeneratedConstructor('fromJson')) {
+      buffer.writeln(
         'factory $genClassName.fromJson(Map<String, dynamic> json) => '
         '_\$${nonPrivategGenClassName}FromJson(json);',
-      )
-      ..writeln()
-      ..writeln(
+      );
+    }
+
+    if (subject.canGeneratedMethod('toJson')) {
+      buffer.writeln(
         'Map<String, dynamic> toJson() => '
         '_\$${nonPrivategGenClassName}ToJson(this);',
-      )
-      ..writeln();
+      );
+    }
   }
 
   void _writeProperties(StringBuffer buffer) {
-    final toStringTemplate = ToStringTemplate.forSubject(subject);
-    final propsTemplate = PropsTemplate.forSubject(subject);
-    final copyWithTemplate = CopyWithTemplate.forSubject(subject);
-
     if (!subject.isAbstract) {
       _writeSerializable(buffer);
     }
 
-    toStringTemplate.addToBuffer(buffer);
-
-    buffer.writeln();
-    propsTemplate.addToBuffer(buffer);
-
-    if (!subject.isAbstract) {
-      buffer.writeln();
-      copyWithTemplate.addToBuffer(buffer);
-    }
+    ToStringTemplate.forSubject(subject).addToBuffer(buffer);
+    PropsTemplate.forSubject(subject).addToBuffer(buffer);
+    CopyWithTemplate.forSubject(subject).addToBuffer(buffer);
   }
 
   void _writeClass(StringBuffer buffer) {

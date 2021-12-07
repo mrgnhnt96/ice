@@ -78,7 +78,7 @@ extension on StringBuffer {
 /// - Equatable Props
 /// - toString()
 class IceUnionBaseTemplate extends Template {
-  IceUnionBaseTemplate.forSubject(Class subject) : super(subject);
+  IceUnionBaseTemplate.forSubject(Class subject) : super.wrapper(subject);
 
   List<Class> get subtypes =>
       _subtypes ??= IceGenerator.subjects.getUnions(subject);

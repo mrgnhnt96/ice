@@ -23,7 +23,12 @@ extension on List<Field> {
 /// {@endtemplate}
 class ToStringTemplate extends Template {
   /// {@macro to_string_template}
-  const ToStringTemplate.forSubject(Class subject) : super(subject);
+  const ToStringTemplate.forSubject(Class subject)
+      : super(
+          subject,
+          name: 'toString',
+          type: TemplateType.method,
+        );
 
   void _writeAsOverride(StringBuffer buffer) {
     buffer
@@ -62,6 +67,10 @@ class ToStringTemplate extends Template {
 
   @override
   String toString() {
+    if (!canBeGenerated) {
+      return '';
+    }
+
     final buffer = StringBuffer();
 
     _writeAsOverride(buffer);
@@ -72,6 +81,10 @@ class ToStringTemplate extends Template {
   @override
   void addToBuffer(StringBuffer buffer, {bool asOverride = true}) {
     if (asOverride) {
+      if (!canBeGenerated) {
+        return;
+      }
+
       _writeAsOverride(buffer);
     } else {
       _writeAsPrivateFunction(buffer);

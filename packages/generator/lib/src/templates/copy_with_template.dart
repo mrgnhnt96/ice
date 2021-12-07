@@ -69,7 +69,12 @@ extension on Param {
 /// {@endtemplate}
 class CopyWithTemplate extends Template {
   /// {@macro copy_with_method}
-  CopyWithTemplate.forSubject(Class subject) : super(subject);
+  CopyWithTemplate.forSubject(Class subject)
+      : super(
+          subject,
+          name: 'copyWith',
+          type: TemplateType.method,
+        );
 
   /// the constructor entry for copywith
   Constructor get entry => _entry ??= subject.entryPoint();
@@ -139,6 +144,10 @@ class CopyWithTemplate extends Template {
 
   @override
   String toString() {
+    if (!canBeGenerated) {
+      return '';
+    }
+
     final buffer = StringBuffer();
 
     _copyWithMethod(buffer);
@@ -148,6 +157,10 @@ class CopyWithTemplate extends Template {
 
   @override
   void addToBuffer(StringBuffer buffer, {bool wrapWithExtension = false}) {
+    if (!canBeGenerated) {
+      return;
+    }
+
     if (wrapWithExtension) {
       buffer.writeObject(
         subject.extension,
