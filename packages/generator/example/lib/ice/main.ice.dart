@@ -40,15 +40,15 @@ class _Example extends _$Example with EquatableMixin {
     return [name, age, isMale, friends, data, father];
   }
 
-  _$Example copyWith({
+  _Example copyWith({
     String? name,
     int? age,
     bool? isMale,
     List<String>? friends,
     Map<String, dynamic>? data,
-    dynamic father,
+    dynamic? father,
   }) {
-    _$Example _copyWith({
+    _Example _copyWith({
       Object? name,
       Object? age,
       Object? isMale,
