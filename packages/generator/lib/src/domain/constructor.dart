@@ -2,7 +2,7 @@
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:ice/src/domain/domain.dart';
-import 'package:ice/src/domain/enums/annotation_types.dart';
+import 'package:ice/src/domain/enums/constructor_to_ignore.dart';
 import 'package:ice/src/domain/enums/enums.dart';
 
 /// {@template constructor}
@@ -18,6 +18,7 @@ class Constructor {
     required this.declaration,
     required this.isConst,
     required this.isPrivate,
+    required this.ignoreOption,
   });
 
   /// Gets the constructor from the [ConstructorElement]
@@ -40,6 +41,7 @@ class Constructor {
       declaration: declaration,
       isConst: element.isConst,
       isPrivate: element.isPrivate,
+      ignoreOption: const ConstructorToIgnoreConv().fromJson(element.name),
     );
   }
 
@@ -74,6 +76,13 @@ class Constructor {
 
   /// If the constructor is named privately
   final bool isPrivate;
+
+  /// determine if the constructor is an
+  /// option that will be generated
+  ///
+  /// if the option is `other` then the constructor
+  /// will be generated
+  final ConstructorToIgnore ignoreOption;
 
   /// Whether the constructor is the copyWith entry point\
   /// determined by the [CopyWithEntryPoint] annotation
