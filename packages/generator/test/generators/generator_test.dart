@@ -24,17 +24,18 @@ void main() {
       );
     });
 
-    test('generates a valid file', () async {
-      await testPartGenerator(
-        'basic',
-        iceBuilder.generators.first,
-      );
-    });
+    // test('generates a valid file', () async {
+    //   await testPartGenerator(
+    //     'basic',
+    //     iceBuilder.generators.first,
+    //   );
+    // });
 
     test('builder', () async {
       await testPackageBuilder(
         'basic',
         builder: iceBuilder.entryPoint,
+        extension: iceBuilder.extension,
         header: iceBuilder.header,
       );
     });
