@@ -2,6 +2,7 @@
 
 import 'package:enum_assist_annotation/enum_assist_annotation.dart';
 import 'package:ice_annotation/src/ice.dart';
+import 'package:ice_annotation/src/methods/methods.dart';
 
 part 'annotation_types.ge.dart';
 
@@ -20,12 +21,15 @@ enum AnnotationTypes {
   @EnumValue(serializedValue: 'copyWithEntryPoint')
   copyWithEntryPoint,
 
+  /// [Props]
   @EnumValue(serializedValue: 'props')
   props,
 
+  /// [ToString]
   @EnumValue(serializedValue: 'toString')
   string,
 
+  /// [CopyWith]
   @EnumValue(serializedValue: 'copyWith')
   copyWith,
 

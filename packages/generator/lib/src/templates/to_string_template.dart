@@ -18,7 +18,11 @@ extension on List<Field> {
   }
 }
 
+/// {@template to_string_template}
+/// Generates a toString method for the Class and its fields.
+/// {@endtemplate}
 class ToStringTemplate extends Template {
+  /// {@macro to_string_template}
   const ToStringTemplate.forSubject(Class subject) : super(subject);
 
   void _writeAsOverride(StringBuffer buffer) {

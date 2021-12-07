@@ -3,7 +3,6 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:ice/src/domain/domain.dart';
-import 'package:ice/src/domain/enums/enums.dart';
 import 'package:ice/src/domain/ice_subjects.dart';
 import 'package:ice/src/templates/templates.dart';
 import 'package:ice_annotation/src/ice.dart';

@@ -2,7 +2,11 @@ import 'package:ice/src/domain/domain.dart';
 import 'package:ice/src/templates/template.dart';
 import 'package:ice/src/util/string_buffer_ext.dart';
 
+/// {@template props_template}
+/// A template that generates a method for the props getter.
+/// {@endtemplate}
 class PropsTemplate extends Template {
+  /// {@macro props_template}
   const PropsTemplate.forSubject(Class subject) : super(subject);
 
   void _writeAsOverride(StringBuffer buffer) {

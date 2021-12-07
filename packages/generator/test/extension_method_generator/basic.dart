@@ -30,8 +30,6 @@ class Example extends Equatable {
         decimal: decimal,
       );
 
-  static Example something() => Example._();
-
   final String? text;
   final int? whole;
   final double? decimal;

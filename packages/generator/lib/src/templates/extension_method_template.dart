@@ -3,8 +3,11 @@ import 'package:ice/src/domain/enums/annotation_types.dart';
 import 'package:ice/src/templates/template.dart';
 import 'package:ice/src/templates/templates.dart';
 
+/// {@template extension_method_template}
 /// Writes the extensions and methods for the given class.
+/// {@endtemplate}
 class ExtensionMethodTemplate extends Template {
+  /// {@macro extension_method_template}
   ExtensionMethodTemplate.forSubject(Class subject) : super(subject);
 
   void _getAndWriteMethods(StringBuffer buffer) {
