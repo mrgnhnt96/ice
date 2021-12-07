@@ -144,7 +144,7 @@ class CopyWithTemplate extends Template {
 
   @override
   String toString() {
-    if (!canBeGenerated) {
+    if (!canBeGenerated || subject.isAbstract) {
       return '';
     }
 
@@ -157,7 +157,7 @@ class CopyWithTemplate extends Template {
 
   @override
   void addToBuffer(StringBuffer buffer, {bool wrapWithExtension = false}) {
-    if (!canBeGenerated) {
+    if (!canBeGenerated || subject.isAbstract) {
       return;
     }
 
