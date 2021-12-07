@@ -37,11 +37,6 @@ class IceGenerator extends GeneratorForAnnotation<Ice> {
     }
 
     final subject = Class.fromElement(element);
-    if (subject.annotations.any((e) => e.type.isUnion)) {
-      // if the subject is a union, the code will be generated
-      // in the union generator
-      return '';
-    }
 
     final ice = IceTemplate.forSubject(subject);
     subjects.add(subject);

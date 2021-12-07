@@ -35,23 +35,9 @@ class IceUnionGenerator extends GeneratorForAnnotation<IceUnionBase> {
 
     final subject = Class.fromElement(element);
 
-    final buffer = StringBuffer();
-
-    IceTemplate? ice;
-
-    if (subject.annotations.any((e) => e.type.isIce)) {
-      ice = IceTemplate.forSubject(subject);
-    }
-
     final union = IceUnionBaseTemplate.forSubject(subject);
 
-    if (ice != null) {
-      ice.addToBuffer(buffer);
-    }
-
-    union.addToBuffer(buffer, wrapInClass: ice == null);
-
-    final result = buffer.toString();
+    final result = union.toString();
 
     return result;
   }
