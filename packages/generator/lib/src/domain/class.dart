@@ -3,6 +3,7 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:ice/src/domain/domain.dart';
+import 'package:ice/src/domain/enums/enums.dart';
 import 'package:ice/src/domain/field.dart';
 
 /// {@template class}
@@ -17,6 +18,7 @@ class Class {
     required this.name,
     required this.supertypes,
     required this.isAbstract,
+    required this.methods,
   }) : _entryPoint = _EntryPoint(constructors);
 
   /// Retrieves the class data from the element
@@ -24,6 +26,7 @@ class Class {
     final constructors = Constructor.fromElements(element.constructors);
     final annotations = Annotation.fromElements(element.metadata);
     final fields = Field.fromElements(element.fields);
+    final methods = Method.fromElements(element.methods);
     final isAbstract = element.isAbstract;
 
     Set<String> _getSuperTypes(List<InterfaceType> interfaces) {
@@ -57,6 +60,7 @@ class Class {
       name: element.displayName,
       supertypes: supertypes.toList(),
       isAbstract: isAbstract,
+      methods: methods,
     );
   }
 
@@ -79,6 +83,9 @@ class Class {
 
   /// whether the class is an abstract class
   final bool isAbstract;
+
+  /// the methods in the class
+  final List<Method> methods;
 
   /// The entry point to be used to generate the copyWith method
   Constructor entryPoint() => _entryPoint.access;
@@ -183,5 +190,44 @@ class _EntryPoint {
         _namedUnderscore = constructor;
       }
     }
+  }
+}
+
+/// {@template method}
+/// An existing method of the class annotated
+/// {@endtemplate}
+class Method {
+  /// {@macro method}
+  const Method({
+    required this.name,
+    required this.ignoreOption,
+  });
+
+  /// gets the method from the element
+  factory Method.fromElement(MethodElement element) {
+    return Method(
+      name: element.name,
+      ignoreOption:
+          const MethodsToIgnoreConv(defaultValue: MethodsToIgnore.other)
+              .fromJson(element.name),
+    );
+  }
+
+  /// the name of the method
+  final String name;
+
+  /// whether the method should be ignored
+  final MethodsToIgnore ignoreOption;
+
+  /// gets a list of methods from elements
+  static List<Method> fromElements(List<MethodElement> elements) {
+    final methods = <Method>[];
+
+    for (final element in elements) {
+      final method = Method.fromElement(element);
+      methods.add(method);
+    }
+
+    return methods;
   }
 }
