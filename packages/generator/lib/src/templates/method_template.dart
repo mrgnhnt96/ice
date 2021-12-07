@@ -11,31 +11,31 @@ class MethodTemplate extends Template {
   MethodTemplate.forSubject(Class subject) : super.wrapper(subject);
 
   void _getAndWriteMethods(StringBuffer buffer) {
-    var generateCopyWith = false;
-    var generateProps = false;
-    var generateToString = false;
+    var hasCopyWithAnnotation = false;
+    var hasPropsAnnotation = false;
+    var hasToStringAnnotation = false;
 
     for (final annotation in subject.annotations) {
       final type = annotation.type;
       if (type.isCopyWith) {
-        generateCopyWith = true;
+        hasCopyWithAnnotation = true;
       } else if (type.isProps) {
-        generateProps = true;
+        hasPropsAnnotation = true;
       } else if (type.isString) {
-        generateToString = true;
+        hasToStringAnnotation = true;
       }
     }
 
-    if (generateCopyWith) {
+    if (hasCopyWithAnnotation) {
       CopyWithTemplate.forSubject(subject)
           .addToBuffer(buffer, wrapWithExtension: true);
     }
 
-    if (generateProps) {
+    if (hasPropsAnnotation) {
       PropsTemplate.forSubject(subject).addToBuffer(buffer, asOverride: false);
     }
 
-    if (generateToString) {
+    if (hasToStringAnnotation) {
       ToStringTemplate.forSubject(subject)
           .addToBuffer(buffer, asOverride: false);
     }
