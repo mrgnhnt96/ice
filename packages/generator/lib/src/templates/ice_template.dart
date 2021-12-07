@@ -19,17 +19,21 @@ class IceTemplate extends Template {
     final nonPrivategGenClassName = subject.generatedName(retainPrivate: false);
 
     if (subject.canGeneratedConstructor('fromJson')) {
-      buffer.writeln(
-        'factory $genClassName.fromJson(Map<String, dynamic> json) => '
-        '_\$${nonPrivategGenClassName}FromJson(json);',
-      );
+      buffer
+        ..writeln(
+          'factory $genClassName.fromJson(Map<String, dynamic> json) => '
+          '_\$${nonPrivategGenClassName}FromJson(json);',
+        )
+        ..writeln();
     }
 
     if (subject.canGeneratedMethod('toJson')) {
-      buffer.writeln(
-        'Map<String, dynamic> toJson() => '
-        '_\$${nonPrivategGenClassName}ToJson(this);',
-      );
+      buffer
+        ..writeln(
+          'Map<String, dynamic> toJson() => '
+          '_\$${nonPrivategGenClassName}ToJson(this);',
+        )
+        ..writeln();
     }
   }
 

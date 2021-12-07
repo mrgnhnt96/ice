@@ -265,8 +265,8 @@ class IceUnionBaseTemplate extends Template {
         body: () {
           _writeProperties(buffer);
         },
-      );
-
+      )
+      ..writeln();
     _writeSerialize(buffer);
   }
 
@@ -284,6 +284,9 @@ class IceUnionBaseTemplate extends Template {
       _writeClass(buffer);
     } else {
       _writeProperties(buffer);
+
+      buffer.writeln();
+
       _writeSerialize(buffer);
     }
   }
