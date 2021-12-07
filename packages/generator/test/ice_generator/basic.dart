@@ -4,17 +4,18 @@ import 'package:ice_annotation/ice.dart';
 
 part 'output/basic.dart';
 
-@Ice.createUnion
-abstract class State {}
+@ice
+@Ice.union
+abstract class $State {}
 
 @ice
-class _$Initial extends State {}
+class _$Initial extends $State {}
 
 @ice
-class _$Ready extends State {}
+class _$Ready extends $State {}
 
 @ice
-class _$Error extends State {}
+class _$Error extends $State {}
 
 _Initial _$InitialFromJson(Map json) => _Initial();
 
