@@ -199,8 +199,9 @@ class IceUnionBaseTemplate extends Template {
 
   void _writeSerialize(StringBuffer buffer) {
     buffer.writeObject(
-      '_\$${subject.generatedName(retainPrivate: false)}UnionFromJson('
-      'Map<String, dynamic> json, [${subject.unionName}? orElse])',
+      '${subject.unionName} _\$${subject.generatedName(retainPrivate: false)}'
+      'UnionFromJson(Map<String, dynamic> json, '
+      '[${subject.unionName}? orElse])',
       body: () {
         buffer.writeObject(
           "switch (json['runtimeType'] as String?)",
