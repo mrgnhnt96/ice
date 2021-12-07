@@ -35,14 +35,6 @@ class IceGenerator extends GeneratorForAnnotation<Ice> {
       );
     }
 
-// TODO: test adding null to a non-nullable field
-// TODO: check for existing property methods and figure out what to do
-// - toJson
-// - fromJson
-// - copyWith
-// - toString
-// - props
-
     final subject = Class.fromElement(element);
 
     final ice = IceTemplate.forSubject(subject);
