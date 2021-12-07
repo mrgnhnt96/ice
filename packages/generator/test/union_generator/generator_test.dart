@@ -7,6 +7,7 @@ import 'package:ice/ice.dart';
 import 'package:ice/src/ice.dart';
 import 'package:ice/src/ice_union.dart';
 import 'package:ice/src/method.dart';
+import 'package:ice/src/util/unified_generator.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 
@@ -21,26 +22,24 @@ void main() {
     });
 
     test('generates a valid file', () async {
-      const file = 'basic';
-      await testPartGenerators(
-        [file],
-        [
-          const IceGenerator(),
-          const MethodGenerator(),
-          const IceUnionGenerator(),
-        ],
+      await testPartGenerator(
+        'basic',
+        const UnifiedGenerator(
+          [
+            IceGenerator(),
+            MethodGenerator(),
+            IceUnionGenerator(),
+          ],
+          name: IceGenerator.name,
+        ),
       );
     });
 
     test('builder', () async {
       await testPackageBuilder(
-        ['basic'],
+        'basic',
         builder: iceBuilder,
       );
     });
   });
-}
-
-class TestBuilderOptions extends BuilderOptions {
-  TestBuilderOptions(Map<String, dynamic> config) : super(config);
 }

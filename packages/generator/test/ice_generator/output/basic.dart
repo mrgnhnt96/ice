@@ -33,7 +33,7 @@ class _Initial extends _$Initial with EquatableMixin {
     return [];
   }
 
-  _$Initial copyWith() {
+  _Initial copyWith() {
     return _Initial();
   }
 }
@@ -79,7 +79,7 @@ class _Error extends _$Error with EquatableMixin {
     return [];
   }
 
-  _$Error copyWith() {
+  _Error copyWith() {
     return _Error();
   }
 }
