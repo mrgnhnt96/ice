@@ -38,12 +38,12 @@ class IceTemplate extends Template {
     toStringTemplate.addToBuffer(buffer);
 
     buffer.writeln();
-
     propsTemplate.addToBuffer(buffer);
 
-    buffer.writeln();
-
-    copyWithTemplate.addToBuffer(buffer);
+    if (!subject.isAbstract) {
+      buffer.writeln();
+      copyWithTemplate.addToBuffer(buffer);
+    }
   }
 
   void _writeClass(StringBuffer buffer) {
