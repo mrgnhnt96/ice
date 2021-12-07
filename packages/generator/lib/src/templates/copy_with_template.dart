@@ -9,15 +9,13 @@ extension on Class {
   }
 
   String get copyWithSignature {
-    return '$name copyWith';
+    final genName = generatedName();
+    return '$genName copyWith';
   }
 
   String get privateCopyWithSignature {
-    return '$name _copyWith';
-  }
-
-  String get returnObjectCopyWoth {
-    return 'return _copyWith';
+    final genName = generatedName();
+    return '$genName _copyWith';
   }
 }
 
