@@ -134,9 +134,12 @@ extension AnnotationTypesX on AnnotationTypes {
 [IceUnionBase]''',
       copyWithEntryPoint: '''
 [CopyWithEntryPoint]''',
-      props: null,
-      string: null,
-      copyWith: null,
+      props: '''
+[Props]''',
+      string: '''
+[ToString]''',
+      copyWith: '''
+[CopyWith]''',
       other: '''
 any other annotation''',
     );
