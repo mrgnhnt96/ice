@@ -11,7 +11,7 @@ import 'package:source_gen/source_gen.dart';
 /// {@template copywith_generator}
 /// A [Generator] that generates a [CopyWith] class for a given [ClassElement].
 /// {@endtemplate}
-class MethodGenerator extends GeneratorForAnnotation<Method> {
+class MethodGenerator extends GeneratorForAnnotation<MethodAnnotation> {
   /// {@macro copywith_generator}
   const MethodGenerator() : super();
 

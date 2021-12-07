@@ -5,7 +5,7 @@ import 'package:meta/meta_meta.dart';
 /// Annotation used to mark a class to generate a copyWith method.
 /// {@endtemplate}
 @Target({TargetKind.classType})
-class CopyWith extends Method {
+class CopyWith extends MethodAnnotation {
   /// {@macro copywith}
   const CopyWith();
 

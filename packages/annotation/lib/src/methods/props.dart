@@ -5,7 +5,7 @@ import 'package:meta/meta_meta.dart';
 /// Annotation to generate the `props` getter for Equatable classes.
 /// {@endtemplate}
 @Target({TargetKind.classType})
-class Props extends Method {
+class Props extends MethodAnnotation {
   /// {@macro props}
   const Props();
 }

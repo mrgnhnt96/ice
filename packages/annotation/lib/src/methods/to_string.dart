@@ -5,7 +5,7 @@ import 'package:meta/meta_meta.dart';
 /// Annotation to generate the toString method.
 /// {@endtemplate}
 @Target({TargetKind.classType})
-class ToString extends Method {
+class ToString extends MethodAnnotation {
   /// {@macro to_string}
   const ToString();
 }

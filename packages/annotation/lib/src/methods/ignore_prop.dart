@@ -6,7 +6,7 @@ import 'package:meta/meta_meta.dart';
 /// the `props` getter.
 /// {@endtemplate}
 @Target({TargetKind.field})
-class IgnoreProp extends Method {
+class IgnoreProp extends MethodAnnotation {
   /// {@macro ignore_prop}
   const IgnoreProp();
 }

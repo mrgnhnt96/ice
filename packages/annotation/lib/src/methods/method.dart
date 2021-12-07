@@ -6,7 +6,7 @@ import 'package:meta/meta_meta.dart';
 /// This type is used to trigger the generator
 /// {@endtemplate}
 @Target({TargetKind.classType})
-class Method {
+class MethodAnnotation {
   /// {@template method}
-  const Method();
+  const MethodAnnotation();
 }
