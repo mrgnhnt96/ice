@@ -39,7 +39,7 @@ class MethodGenerator extends GeneratorForAnnotation<MethodAnnotation> {
       return '';
     }
 
-    final template = ExtensionMethodTemplate.forSubject(subject);
+    final template = MethodTemplate.forSubject(subject);
 
     final result = template.toString();
 
