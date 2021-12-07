@@ -6,7 +6,14 @@ part 'output/basic.dart';
 
 @ice
 @Ice.union
-abstract class $State {}
+abstract class $State with _$StateUnion {
+  const $State();
+
+  factory $State.fromJson(Map<String, dynamic> json, [State? orElse]) =>
+      _$StateUnionFromJson(json, orElse);
+
+  Map<String, dynamic> toJson() => _$StateUnionToJson(this);
+}
 
 @ice
 class _$Initial extends $State {}
