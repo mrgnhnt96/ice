@@ -13,36 +13,15 @@
 /// you are creating a custom compilation pipeline. See documentation for
 /// details, and `build.yaml` for how these builders are configured by default.
 import 'package:build/build.dart';
-import 'package:ice/src/ice.dart';
-import 'package:ice/src/ice_union.dart';
-import 'package:ice/src/method.dart';
-import 'package:ice/src/util/unified_generator.dart';
+import 'package:ice/ice_builder.dart';
 import 'package:json_serializable/builder.dart' as i;
-import 'package:source_gen/source_gen.dart';
 
 /// Not meant to be invoked by hand-authored code.
 Builder iceBuilder(BuilderOptions options) {
   // get settings from the build file
-  const ignores = <String>[];
+  final ice = IceBuilder();
 
-  return PartBuilder(
-    [
-      const UnifiedGenerator(
-        [
-          IceGenerator(),
-          IceUnionGenerator(),
-          MethodGenerator(),
-        ],
-        name: IceGenerator.name,
-      )
-    ],
-    '.ice.dart',
-    header: '''
-// coverage:ignore-file
-// GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: ${ignores.join(',')}
-''',
-  );
+  return ice.builder;
 }
 
 /// json_serializable builder

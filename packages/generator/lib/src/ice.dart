@@ -18,9 +18,6 @@ class IceGenerator extends GeneratorForAnnotation<Ice> {
   /// {@macro unions}
   static IceSubjects subjects = IceSubjects();
 
-  /// the name of the IceGenerator
-  static const name = 'IceGenerator';
-
   @override
   String generateForAnnotatedElement(
     Element element,
