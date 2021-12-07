@@ -22,9 +22,8 @@ void main() {
     });
 
     test('generates a valid file', () async {
-      const file = 'basic';
       await testPartGenerator(
-        file,
+        'basic',
         const UnifiedGenerator(
           [
             IceGenerator(),
@@ -36,11 +35,11 @@ void main() {
       );
     });
 
-    // test('builder', () async {
-    //   await testPackageBuilder(
-    //     ['basic'],
-    //     builder: iceBuilder,
-    //   );
-    // });
+    test('builder', () async {
+      await testPackageBuilder(
+        'basic',
+        builder: iceBuilder,
+      );
+    });
   });
 }
