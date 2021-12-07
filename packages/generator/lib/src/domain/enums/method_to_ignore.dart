@@ -25,3 +25,9 @@ enum MethodsToIgnore {
   /// `other` is the only option that will be generated
   other,
 }
+
+/// extension on [MethodsToIgnore]
+extension MethodsToIgnoreXX on MethodsToIgnore {
+  /// returns true if the option is `other`
+  bool get ignore => this != MethodsToIgnore.other;
+}

@@ -19,5 +19,5 @@ enum ConstructorToIgnore {
 /// extension on [ConstructorToIgnore]
 extension ConstructorToIgnoreXX on ConstructorToIgnore {
   /// if the constructor can be generated
-  bool get canGenerate => this == ConstructorToIgnore.other;
+  bool get ignore => this != ConstructorToIgnore.other;
 }

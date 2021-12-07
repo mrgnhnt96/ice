@@ -129,6 +129,10 @@ extension ListConstructorX on List<Constructor> {
     final declarations = <String>[];
 
     for (final constructor in this) {
+      if (constructor.ignoreOption.ignore) {
+        continue;
+      }
+
       final declaration = '$className${constructor.declaration} : '
           '${constructor.superArgs()}\n\n';
 

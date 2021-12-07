@@ -5,6 +5,7 @@ import 'package:analyzer/dart/element/type.dart';
 import 'package:ice/src/domain/domain.dart';
 import 'package:ice/src/domain/enums/enums.dart';
 import 'package:ice/src/domain/field.dart';
+import 'package:ice/src/domain/method.dart';
 
 /// {@template class}
 /// The class that [CopyWith] will be generated for
@@ -148,6 +149,60 @@ class Class {
 
     return '$keyword ${generatedName()} extends $name with EquatableMixin';
   }
+
+  Map<String, bool>? _methodsToIgnore;
+
+  /// returns mapped methods by name with
+  /// whether they should be ignored
+  Map<String, bool> get methodsToIgnore {
+    if (_methodsToIgnore != null) {
+      return _methodsToIgnore!;
+    }
+
+    final toIgnore = <String, bool>{};
+
+    for (final method in methods) {
+      toIgnore[method.name] = method.ignoreOption.ignore;
+    }
+
+    return _methodsToIgnore = toIgnore;
+  }
+
+  Map<String, bool>? _constructorsToIgnore;
+
+  /// returns mapped constructors by name with
+  /// whether they should be ignored
+  Map<String, bool> get constructorsToIgnore {
+    if (_constructorsToIgnore != null) {
+      return _constructorsToIgnore!;
+    }
+
+    final toIgnore = <String, bool>{};
+
+    for (final constructor in constructors) {
+      toIgnore[constructor.name] = constructor.ignoreOption.ignore;
+    }
+
+    return _constructorsToIgnore = toIgnore;
+  }
+
+  /// whether a method can be generated
+  ///
+  /// returns false if the method already exists
+  bool canGeneratedMethod(String name) {
+    return methodsToIgnore[name] ?? true;
+  }
+
+  /// whether a constructor can be generated
+  ///
+  /// returns false if the constructor already exists
+  bool canGeneratedConstructor(String name) {
+    if (isAbstract) {
+      return false;
+    }
+
+    return constructorsToIgnore[name] ?? true;
+  }
 }
 
 class _EntryPoint {
@@ -190,44 +245,5 @@ class _EntryPoint {
         _namedUnderscore = constructor;
       }
     }
-  }
-}
-
-/// {@template method}
-/// An existing method of the class annotated
-/// {@endtemplate}
-class Method {
-  /// {@macro method}
-  const Method({
-    required this.name,
-    required this.ignoreOption,
-  });
-
-  /// gets the method from the element
-  factory Method.fromElement(MethodElement element) {
-    return Method(
-      name: element.name,
-      ignoreOption:
-          const MethodsToIgnoreConv(defaultValue: MethodsToIgnore.other)
-              .fromJson(element.name),
-    );
-  }
-
-  /// the name of the method
-  final String name;
-
-  /// whether the method should be ignored
-  final MethodsToIgnore ignoreOption;
-
-  /// gets a list of methods from elements
-  static List<Method> fromElements(List<MethodElement> elements) {
-    final methods = <Method>[];
-
-    for (final element in elements) {
-      final method = Method.fromElement(element);
-      methods.add(method);
-    }
-
-    return methods;
   }
 }
