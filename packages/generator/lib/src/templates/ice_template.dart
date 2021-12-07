@@ -15,13 +15,9 @@ import 'package:ice/src/util/string_buffer_ext.dart';
 class IceTemplate extends Template {
   const IceTemplate.forSubject(Class subject) : super(subject);
 
-  void _writeProperties(StringBuffer buffer) {
+  void _writeSerializable(StringBuffer buffer) {
     final genClassName = subject.generatedName();
     final nonPrivategGenClassName = subject.generatedName(retainPrivate: false);
-
-    final toStringTemplate = ToStringTemplate.forSubject(subject);
-    final propsTemplate = PropsTemplate.forSubject(subject);
-    final copyWithTemplate = CopyWithTemplate.forSubject(subject);
 
     buffer
       ..writeln(
@@ -34,6 +30,16 @@ class IceTemplate extends Template {
         '_\$${nonPrivategGenClassName}ToJson(this);',
       )
       ..writeln();
+  }
+
+  void _writeProperties(StringBuffer buffer) {
+    final toStringTemplate = ToStringTemplate.forSubject(subject);
+    final propsTemplate = PropsTemplate.forSubject(subject);
+    final copyWithTemplate = CopyWithTemplate.forSubject(subject);
+
+    if (!subject.isAbstract) {
+      _writeSerializable(buffer);
+    }
 
     toStringTemplate.addToBuffer(buffer);
 
@@ -49,15 +55,16 @@ class IceTemplate extends Template {
   void _writeClass(StringBuffer buffer) {
     final genClassName = subject.generatedName(throwOnNameFormat: true);
 
-    buffer
-      ..writeln('@JsonSerializable()')
-      ..writeObject(
-        subject.classEntry,
-        body: () {
-          buffer.writeAll(subject.constructors.declarations(genClassName));
-          _writeProperties(buffer);
-        },
-      );
+    if (!subject.isAbstract) {
+      buffer.writeln('@JsonSerializable()');
+    }
+    buffer.writeObject(
+      subject.classEntry,
+      body: () {
+        buffer.writeAll(subject.constructors.declarations(genClassName));
+        _writeProperties(buffer);
+      },
+    );
   }
 
   @override
