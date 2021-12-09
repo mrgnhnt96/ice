@@ -33,9 +33,7 @@ class _Initial extends _$Initial with EquatableMixin {
     return [];
   }
 
-  _Initial copyWith() {
-    return _Initial();
-  }
+  _Initial copyWith() => _Initial();
 }
 
 @JsonSerializable()
@@ -59,19 +57,26 @@ class _Ready extends _$Ready with EquatableMixin {
     return [example];
   }
 
-  _Ready copyWith({
-    Example? example,
-  }) {
-    _Ready _copyWith({
-      Object? example,
-    }) {
-      return _Ready(
-        example == kCopyWithDefault ? this.example : example as Example,
-      );
-    }
+// @JsonKey(ignore: true)
+  $_ReadyCopyWith get copyWith => $_ReadyCopyWithImpl(this);
+}
 
-    return _copyWith(
-      example: example,
+abstract class $_ReadyCopyWith {
+  _Ready call({
+    Example? example,
+  });
+}
+
+class $_ReadyCopyWithImpl extends $_ReadyCopyWith {
+  const $_ReadyCopyWithImpl(this._value);
+
+  final _Ready _value;
+
+  _Ready call({
+    Object? example = kCopyWithDefault,
+  }) {
+    return _Ready(
+      example == kCopyWithDefault ? this.example : example as Example,
     );
   }
 }
@@ -94,9 +99,7 @@ class _Error extends _$Error with EquatableMixin {
     return [];
   }
 
-  _Error copyWith() {
-    return _Error();
-  }
+  _Error copyWith() => _Error();
 }
 
 typedef _Result<R, T extends $State> = R Function(T);
