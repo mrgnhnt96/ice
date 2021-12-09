@@ -37,14 +37,19 @@ class IceTemplate extends Template {
     }
   }
 
-  void _writeProperties(StringBuffer buffer) {
+  void _writeProperties(
+    StringBuffer buffer,
+    Function(CopyWithTemplate) afterClass,
+  ) {
     if (!subject.isAbstract) {
       _writeSerializable(buffer);
     }
 
     ToStringTemplate.forSubject(subject).addToBuffer(buffer);
     PropsTemplate.forSubject(subject).addToBuffer(buffer);
-    CopyWithTemplate.forSubject(subject).addToBuffer(buffer);
+    final copyWithTemplate = CopyWithTemplate.forSubject(subject)
+      ..addToBuffer(buffer);
+    afterClass(copyWithTemplate);
   }
 
   void _writeClass(StringBuffer buffer) {
@@ -53,13 +58,21 @@ class IceTemplate extends Template {
     if (!subject.isAbstract) {
       buffer.writeln('@JsonSerializable()');
     }
+
+    CopyWithTemplate? copyWithTemplate;
+
     buffer.writeObject(
       subject.classEntry,
       body: () {
         buffer.writeAll(subject.constructors.declarations(genClassName));
-        _writeProperties(buffer);
+
+        _writeProperties(buffer, (copyWith) {
+          copyWithTemplate = copyWith;
+        });
       },
     );
+
+    copyWithTemplate?.addToBuffer(buffer, writeCopyClass: true);
   }
 
   @override
@@ -76,7 +89,9 @@ class IceTemplate extends Template {
     if (wrapInClass) {
       _writeClass(buffer);
     } else {
-      _writeProperties(buffer);
+      _writeProperties(buffer, (copyWith) {
+        copyWith.addToBuffer(buffer, writeCopyClass: true);
+      });
     }
   }
 }
