@@ -42,6 +42,7 @@ extension StringBufferX on StringBuffer {
   }) {
     final argOpen = params.isEmpty ? '(' : '({';
     final argClose = params.isEmpty ? ')' : '})';
+
     writeln('$entry $argOpen');
     writeAll(params, ', ');
     writeln('$argClose {');
