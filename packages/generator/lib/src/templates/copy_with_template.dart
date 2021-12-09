@@ -1,21 +1,30 @@
+// ignore_for_file: dead_code
+
+import 'package:ice/src/domain/copy_with_method.dart';
 import 'package:ice/src/domain/domain.dart';
 import 'package:ice/src/domain/enums/position_type.dart';
+import 'package:ice/src/domain/field.dart';
 import 'package:ice/src/templates/template.dart';
 import 'package:ice/src/util/string_buffer_ext.dart';
 
 extension on Class {
   String get extension {
-    return 'extension ${name}X on $name';
+    return 'extension \$${name}X on $name';
   }
 
-  String get copyWithSignature {
-    final genName = generatedName();
-    return '$genName copyWith';
+  String get copyWithInterfaceName {
+    final genClassName = generatedName();
+    return '\$${genClassName}CopyWith';
   }
 
-  String get privateCopyWithSignature {
-    final genName = generatedName();
-    return '$genName _copyWith';
+  String get copyWithNameImpl {
+    final name = copyWithInterfaceName;
+
+    return '${name}Impl';
+  }
+
+  Iterable<Field> deepCopies() {
+    return fields.where((e) => e.hasCopyWith());
   }
 }
 
@@ -26,10 +35,6 @@ extension on Constructor {
 
   Iterable<String> objectParameters() {
     return _parameters((p) => p.forConstructorAsObject());
-  }
-
-  Iterable<String> arguments() {
-    return _parameters((p) => p.asArgument());
   }
 
   Iterable<String> argumentsWithDefault() {
@@ -51,11 +56,7 @@ extension on Param {
   }
 
   String forConstructorAsObject() {
-    return 'Object? $name';
-  }
-
-  String asArgument() {
-    return '$name: $name';
+    return 'Object? $name = kCopyWithDefault';
   }
 
   String asArgumentWithDefault() {
@@ -80,66 +81,129 @@ class CopyWithTemplate extends Template {
   Constructor get entry => _entry ??= subject.entryPoint();
   Constructor? _entry;
 
-  void _copyWithMethod(
-    StringBuffer buffer, {
-    String? signature,
-    Iterable<String> Function()? parameters,
-    Iterable<String> Function()? arguments,
-    String? returnValue,
-    bool includeObjectCopyWith = true,
-  }) {
-    final genClassName = subject.generatedName();
-    final entryPointName = entry.isDefault ? '' : '.${entry.name}';
-    final classReturnValue = 'return $genClassName$entryPointName';
+  void _writeCopyWith(
+    StringBuffer buffer,
+  ) {
+    final entry = subject.entryPoint();
 
-    final args = arguments?.call() ?? entry.arguments();
-    final params = parameters?.call() ?? entry.parameters();
-    final sig = signature ?? subject.copyWithSignature;
-    final returnVal =
-        returnValue ?? (params.isEmpty ? classReturnValue : 'return _copyWith');
+    if (entry.params.isEmpty) {
+      final genClassName = subject.generatedName();
 
-    void _objectCopyWith(StringBuffer buffer) {
-      _copyWithMethod(
-        buffer,
-        signature: subject.privateCopyWithSignature,
-        parameters: entry.objectParameters,
-        arguments: entry.argumentsWithDefault,
-        returnValue: classReturnValue,
-        includeObjectCopyWith: false,
-      );
+      buffer.writeln('$genClassName copyWith() => $genClassName();');
+
+      return;
     }
 
-    final open = params.isNotEmpty ? '({' : '(';
-    final close = params.isNotEmpty ? '})' : ')';
+    final interface = subject.copyWithInterfaceName;
+    final impl = subject.copyWithNameImpl;
 
     buffer
-      ..writeObject(
-        sig,
-        open: open,
-        appendNewLine: false,
-        body: () {
-          buffer.writeAll(params);
-        },
-        close: close,
-      )
-      ..writeObject(
-        '',
-        body: () {
-          if (includeObjectCopyWith && params.isNotEmpty) {
-            _objectCopyWith(buffer);
-            buffer.writeln();
-          }
+      ..writeln('// @JsonKey(ignore: true)')
+      ..writeln('$interface get copyWith => $impl(this);');
+  }
 
-          buffer.writeObject(
-            returnVal,
-            open: '(',
-            body: () {
-              buffer.writeAll(args);
-            },
-            close: ');',
-          );
+  void _writeCopyClasses(StringBuffer buffer) {
+    final entry = subject.entryPoint();
+
+    if (entry.params.isEmpty) {
+      return;
+    }
+
+    final interfaceName = subject.copyWithInterfaceName;
+    final genClassName = subject.generatedName();
+
+    _writeInterface(
+      buffer,
+      interfaceName: interfaceName,
+      returnType: genClassName,
+      entry: entry,
+    );
+
+    final implName = subject.copyWithNameImpl;
+
+    _writeImplementation(
+      buffer,
+      interfaceName: interfaceName,
+      implName: implName,
+      returnType: genClassName,
+      entry: entry,
+    );
+  }
+
+  void _writeInterface(
+    StringBuffer buffer, {
+    required String interfaceName,
+    required String returnType,
+    required Constructor entry,
+  }) {
+    buffer
+      ..writeObject(
+        'abstract class $interfaceName',
+        body: () {
+          buffer
+              .writeln('$returnType call({${entry.parameters().join(', ')}});');
         },
-      );
+      )
+      ..writeln();
+  }
+
+  void _writeImplementation(
+    StringBuffer buffer, {
+    required String interfaceName,
+    required String implName,
+    required String returnType,
+    required Constructor entry,
+  }) {
+    buffer.writeObject(
+      'class $implName extends $interfaceName',
+      body: () {
+        buffer
+          ..writeln(
+            'const $implName(this._value);',
+          )
+          ..writeln()
+          ..writeln('final $returnType _value;')
+          ..writeln()
+          ..writeMethod(
+            '$returnType call',
+            params: entry.objectParameters(),
+            body: () {
+              buffer.writeObject(
+                'return $returnType',
+                open: '(',
+                body: () {
+                  buffer.writeAll(entry.argumentsWithDefault());
+                },
+                close: ');',
+              );
+            },
+          )
+          ..writeln();
+
+        _writeDeepCopy(buffer);
+      },
+    );
+  }
+
+  void _writeDeepCopy(StringBuffer buffer) {
+    // TODO: implement deep copy
+    return;
+
+    final deepCopies = subject.deepCopies();
+
+    void writeIceDeepCopy(CopyWithMethod copyWith) {
+      buffer
+        ..writeln()
+        ..writeln();
+    }
+
+    for (final field in deepCopies) {
+      final fieldCopyWith = field.copyWith!;
+
+      if (fieldCopyWith.isIceGenerated) {
+        writeIceDeepCopy(fieldCopyWith);
+      }
+    }
   }
 
   @override
@@ -150,14 +214,24 @@ class CopyWithTemplate extends Template {
 
     final buffer = StringBuffer();
 
-    _copyWithMethod(buffer);
+    _writeCopyWith(buffer);
 
     return buffer.toString();
   }
 
   @override
-  void addToBuffer(StringBuffer buffer, {bool wrapWithExtension = false}) {
+  void addToBuffer(
+    StringBuffer buffer, {
+    bool wrapWithExtension = false,
+    bool writeCopyClass = false,
+  }) {
     if (!canBeGenerated || subject.isAbstract) {
+      return;
+    }
+
+    if (writeCopyClass) {
+      _writeCopyClasses(buffer);
+
       return;
     }
 
@@ -165,13 +239,13 @@ class CopyWithTemplate extends Template {
       buffer.writeObject(
         subject.extension,
         body: () {
-          _copyWithMethod(buffer);
+          _writeCopyWith(buffer);
         },
       );
 
       return;
     }
 
-    _copyWithMethod(buffer);
+    _writeCopyWith(buffer);
   }
 }
