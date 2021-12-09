@@ -2,6 +2,7 @@
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
+import 'package:analyzer/dart/element/type.dart';
 import 'package:ice/src/domain/domain.dart';
 
 /// {@template field}
@@ -15,11 +16,33 @@ class Field {
     required this.type,
     required this.isNullable,
     required this.isPrivate,
+    required this.copyWithType,
   });
 
   /// retrieves the field from the [FieldElement]
   factory Field.fromElement(FieldElement element) {
     final annotations = Annotation.fromElements(element.metadata);
+    String? copyWithType;
+
+    final type = element.type;
+    if (type is InterfaceType) {
+      final methods = type.methods;
+
+      for (final method in methods) {
+        if (method.name != 'copyWith') {
+          continue;
+        }
+
+        final type = method.returnType.getDisplayString(withNullability: true);
+
+        if (type.startsWith('_')) {
+          break;
+        }
+
+        copyWithType = type;
+        break;
+      }
+    }
 
     return Field(
       annotations: annotations,
@@ -27,6 +50,7 @@ class Field {
       name: element.displayName,
       type: element.type.getDisplayString(withNullability: true),
       isPrivate: element.isPrivate,
+      copyWithType: copyWithType,
     );
   }
 
@@ -55,4 +79,10 @@ class Field {
 
   /// if the field is private
   final bool isPrivate;
+
+  /// the type of the copyWith method for this field
+  final String? copyWithType;
+
+  /// if the field has a method named copyWith
+  bool hasCopyWith() => copyWithType != null;
 }
