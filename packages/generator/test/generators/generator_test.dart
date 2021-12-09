@@ -13,31 +13,42 @@ import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group('generator', () {
-    final iceBuilder = IceBuilder();
+  final iceBuilder = IceBuilder();
+  const base = 'test/generators';
 
-    setUpAll(() {
-      const base = 'test/ice_generator';
-      GeneratorPath.setDirPath(
-        input: base,
-        output: '$base/output',
-      );
-    });
-
-    // test('generates a valid file', () async {
-    //   await testPartGenerator(
-    //     'basic',
-    //     iceBuilder.generators.first,
-    //   );
-    // });
-
-    test('builder', () async {
-      await testPackageBuilder(
-        'basic',
-        builder: iceBuilder.entryPoint,
-        extension: iceBuilder.extension,
-        header: iceBuilder.header,
-      );
-    });
+  setUp(() {
+    GeneratorPath.setDirPath(
+      input: base,
+      output: '$base/output',
+    );
   });
+
+  void setPath(String name) {
+    final _base = '$base/$name';
+
+    GeneratorPath.setDirPath(
+      input: _base,
+      output: '$_base/output',
+    );
+  }
+
+  final paths = {
+    'ice': [
+      'basic',
+      'non_primative',
+    ]
+  };
+
+  for (final path in paths.entries) {
+    for (final file in path.value) {
+      test('$path $file', () async {
+        setPath(path.key);
+
+        await testPartGenerator(
+          file,
+          iceBuilder.generators.first,
+        );
+      });
+    }
+  }
 }
