@@ -37,7 +37,7 @@ class Param {
 
   /// Retreives the [Param]s from the [ParameterElement]s
   static List<Param> fromElements(List<ParameterElement> elements) {
-    return elements.map((e) => Param.fromElement(e)).toList();
+    return elements.map(Param.fromElement).toList();
   }
 
   /// The name of the [Param]

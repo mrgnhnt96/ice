@@ -2,7 +2,6 @@
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:ice/src/domain/domain.dart';
-import 'package:ice/src/domain/enums/constructor_to_ignore.dart';
 import 'package:ice/src/domain/enums/enums.dart';
 
 /// {@template constructor}

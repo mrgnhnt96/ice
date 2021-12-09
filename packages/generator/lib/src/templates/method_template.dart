@@ -1,6 +1,5 @@
 import 'package:ice/src/domain/class.dart';
 import 'package:ice/src/domain/enums/annotation_types.dart';
-import 'package:ice/src/templates/template.dart';
 import 'package:ice/src/templates/templates.dart';
 
 /// {@template method_template}

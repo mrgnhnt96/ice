@@ -71,11 +71,7 @@ Iterable<String> _normalizeGeneratorOutput(Object? value) {
 
   if (value is Iterable<String?>) {
     return value.whereType<String>().map<String>((e) {
-      if (e is String) {
-        return e.trim();
-      }
-
-      throw _argError(e);
+      return e.trim();
     }).where((e) => e.isNotEmpty);
   }
   throw _argError(value);

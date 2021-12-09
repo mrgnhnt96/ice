@@ -46,7 +46,7 @@ class _Example extends _$Example with EquatableMixin {
     bool? isMale,
     List<String>? friends,
     Map<String, dynamic>? data,
-    dynamic? father,
+    dynamic father,
   }) {
     _Example _copyWith({
       Object? name,
