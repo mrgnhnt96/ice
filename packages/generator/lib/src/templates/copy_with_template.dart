@@ -61,7 +61,7 @@ extension on Param {
 
   String asArgumentWithDefault() {
     final named = positionType.isNamed ? '$name: ' : '';
-    return '$named$name == kCopyWithDefault ? this.$name : $name as $type';
+    return '$named$name == kCopyWithDefault ? _value.$name : $name as $type';
   }
 }
 
@@ -168,6 +168,7 @@ class CopyWithTemplate extends Template {
           ..writeMethod(
             '$returnType call',
             params: entry.objectParameters(),
+            separator: '',
             body: () {
               buffer.writeObject(
                 'return $returnType',
