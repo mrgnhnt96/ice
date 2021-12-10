@@ -39,12 +39,13 @@ extension StringBufferX on StringBuffer {
     String entry, {
     Iterable<String> params = const <String>[],
     required void Function() body,
+    String separator = ', ',
   }) {
     final argOpen = params.isEmpty ? '(' : '({';
     final argClose = params.isEmpty ? ')' : '})';
 
     writeln('$entry $argOpen');
-    writeAll(params, ', ');
+    writeAll(params, separator);
     writeln('$argClose {');
     body();
     writeln('}');
