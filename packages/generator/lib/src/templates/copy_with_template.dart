@@ -141,7 +141,8 @@ class CopyWithTemplate extends Template {
         'abstract class $interfaceName',
         body: () {
           buffer
-              .writeln('$returnType call({${entry.parameters().join(', ')}});');
+            ..writeln('const $interfaceName();')
+            ..writeln('$returnType call({${entry.parameters().join()}});');
         },
       )
       ..writeln();
