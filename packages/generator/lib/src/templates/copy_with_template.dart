@@ -165,6 +165,7 @@ class CopyWithTemplate extends Template {
           ..writeln()
           ..writeln('final $returnType _value;')
           ..writeln()
+          ..writeln('@override')
           ..writeMethod(
             '$returnType call',
             params: entry.objectParameters(),
