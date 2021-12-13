@@ -12,16 +12,20 @@ const ice = Ice._();
 class Ice {
   /// {@macro ice}
   const Ice._();
-
-  /// {@macro ice_union_base}
-  static const IceUnionBase union = IceUnionBase();
 }
 
 /// {@template ice_union_base}
 /// the base of the union
 ///  {@endtemplate}
 @Target({TargetKind.classType})
-class IceUnionBase {
+class IceUnion {
   /// {@macro ice_union_base}
-  const IceUnionBase();
+  const IceUnion(this.base);
+
+  /// the base of the union
+  final Type base;
+
+  /// {@macro ice_union_base}
+  // ignore: prefer_constructors_over_static_methods
+  static const IceUnion create = IceUnion(IceUnion);
 }
