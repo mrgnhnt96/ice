@@ -18,6 +18,7 @@ class Constructor {
     required this.isConst,
     required this.isPrivate,
     required this.ignoreOption,
+    required this.isGenerative,
   });
 
   /// Gets the constructor from the [ConstructorElement]
@@ -32,6 +33,9 @@ class Constructor {
         )
         .trim();
 
+    final isGenerative = element.isDefaultConstructor ||
+        !(element.isFactory || element.isStatic);
+
     return Constructor(
       name: element.name,
       displayName: element.displayName,
@@ -40,6 +44,7 @@ class Constructor {
       declaration: declaration,
       isConst: element.isConst,
       isPrivate: element.isPrivate,
+      isGenerative: isGenerative,
       ignoreOption:
           const ConstructorToIgnoreConv(defaultValue: ConstructorToIgnore.other)
               .fromJson(element.name),
@@ -96,6 +101,10 @@ class Constructor {
 
   /// If the constructor is named
   bool get isNamed => !isDefault;
+
+  /// whether the constructor is a named constructor
+  /// and not a static or factory constructor
+  final bool isGenerative;
 
   /// If the constructor is underscore named
   bool get isNamedUnderscore => name == '_';
