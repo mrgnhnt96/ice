@@ -13,7 +13,6 @@ import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 
 void main() {
-  final iceBuilder = IceBuilder();
   const base = 'test/generators';
 
   setUp(() {
@@ -23,32 +22,16 @@ void main() {
     );
   });
 
-  void setPath(String name) {
-    final _base = '$base/$name';
+  final paths = [
+    'basic',
+  ];
 
-    GeneratorPath.setDirPath(
-      input: _base,
-      output: '$_base/output',
-    );
-  }
-
-  final paths = {
-    'ice': [
-      'basic',
-      'non_primative',
-    ]
-  };
-
-  for (final path in paths.entries) {
-    for (final file in path.value) {
-      test('$path $file', () async {
-        setPath(path.key);
-
-        await testPartGenerator(
-          file,
-          iceBuilder.generators.first,
-        );
-      });
-    }
+  for (final file in paths) {
+    test(file, () async {
+      await testPartGenerator(
+        file,
+        const IceUnionGenerator(),
+      );
+    });
   }
 }

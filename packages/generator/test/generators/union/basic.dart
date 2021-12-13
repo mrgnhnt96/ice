@@ -4,27 +4,34 @@ import 'package:ice_annotation/ice.dart';
 
 part 'output/basic.dart';
 
-@ice
-@Ice.union
-abstract class $State {}
+@IceUnion.create
+class State extends _$State {
+  // unions must have 1 generative constructor
+  // default, private, or named constructors are allowed
+  // factories are not allowed
+  const State();
 
-@ice
-class _$Initial extends $State {}
+  // @unionEntryPoint
+  const State.named();
 
-@ice
-class _$Ready extends $State {}
+  const factory State.ready() = _Ready;
+  const factory State.notReady() = _NotReady;
+}
 
-@ice
-class _$Error extends $State {}
+@IceUnion(State)
+class _Ready extends _$Ready {
+  const _Ready();
+}
 
-_Initial _$InitialFromJson(Map json) => _Initial();
+@IceUnion(State)
+class _NotReady extends _$NotReady {
+  const _NotReady();
+}
 
-Map<String, dynamic> _$InitialToJson(_Initial instance) => <String, dynamic>{};
+dynamic _$ReadyFromJson(Map json) {}
 
-_Ready _$ReadyFromJson(Map json) => _Ready();
+dynamic _$ReadyToJson(_Ready instance) {}
 
-Map<String, dynamic> _$ReadyToJson(_Ready instance) => <String, dynamic>{};
+dynamic _$NotReadyFromJson(Map json) {}
 
-_Error _$ErrorFromJson(Map json) => _Error();
-
-Map<String, dynamic> _$ErrorToJson(_Error instance) => <String, dynamic>{};
+dynamic _$NotReadyToJson(_NotReady instance) {}
