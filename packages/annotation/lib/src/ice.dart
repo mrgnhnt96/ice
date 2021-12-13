@@ -20,12 +20,12 @@ class Ice {
 @Target({TargetKind.classType})
 class IceUnion {
   /// {@macro ice_union_base}
-  const IceUnion(this.base);
+  const IceUnion.of(this.base);
 
   /// the base of the union
   final Type base;
 
   /// {@macro ice_union_base}
   // ignore: prefer_constructors_over_static_methods
-  static const IceUnion create = IceUnion(IceUnion);
+  static const IceUnion create = IceUnion.of(IceUnion);
 }

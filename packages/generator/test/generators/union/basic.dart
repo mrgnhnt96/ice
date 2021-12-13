@@ -18,12 +18,12 @@ class State extends _$State {
   const factory State.notReady() = _NotReady;
 }
 
-@IceUnion(State)
+@IceUnion.of(State)
 class _Ready extends _$Ready {
   const _Ready();
 }
 
-@IceUnion(State)
+@IceUnion.of(State)
 class _NotReady extends _$NotReady {
   const _NotReady();
 }
