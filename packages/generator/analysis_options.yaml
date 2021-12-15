@@ -4,3 +4,5 @@ analyzer:
   exclude:
     - "**/*.g.dart"
     - "**/output/*.dart"
+  errors:
+    unused_element: ignore
