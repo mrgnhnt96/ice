@@ -116,24 +116,6 @@ class Class {
     return _methodsToIgnore = toIgnore;
   }
 
-  Map<String, bool>? _constructorsToIgnore;
-
-  /// returns mapped constructors by name with
-  /// whether they should be ignored
-  Map<String, bool> get constructorsToIgnore {
-    if (_constructorsToIgnore != null) {
-      return _constructorsToIgnore!;
-    }
-
-    final toIgnore = <String, bool>{};
-
-    for (final constructor in constructors) {
-      toIgnore[constructor.name] = constructor.ignoreOption.ignore;
-    }
-
-    return _constructorsToIgnore = toIgnore;
-  }
-
   /// whether a method can be generated
   ///
   /// returns false if the method already exists
@@ -155,17 +137,6 @@ class Class {
     }
 
     return true;
-  }
-
-  /// whether a constructor can be generated
-  ///
-  /// returns false if the constructor already exists
-  bool canGeneratedConstructor(String name) {
-    if (isAbstract) {
-      return false;
-    }
-
-    return constructorsToIgnore[name] ?? true;
   }
 }
 
