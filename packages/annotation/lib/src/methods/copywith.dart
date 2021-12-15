@@ -8,9 +8,6 @@ import 'package:meta/meta_meta.dart';
 class CopyWith extends MethodAnnotation {
   /// {@macro copywith}
   const CopyWith();
-
-  /// {@macro copywith_entrypoint}
-  static const entryPoint = CopyWithEntryPoint();
 }
 
 /// {@template copywith_entrypoint}
@@ -20,4 +17,12 @@ class CopyWith extends MethodAnnotation {
 class CopyWithEntryPoint {
   /// {@macro copywith_entrypoint}
   const CopyWithEntryPoint();
+}
+
+/// {@template copywith_nullable}
+/// Whether the copyWith method should accept nullable types.
+/// {@endtemplate}
+class CopyWithNullable extends MethodAnnotation {
+  /// {@macro copywith_nullable}
+  const CopyWithNullable();
 }
