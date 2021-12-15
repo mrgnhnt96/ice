@@ -16,17 +16,7 @@ class IceTemplate extends Template {
   const IceTemplate.forSubject(Class subject) : super.wrapper(subject);
 
   void _writeSerializable(StringBuffer buffer) {
-    final genClassName = subject.generatedName();
     final nonPrivategGenClassName = subject.generatedName(retainPrivate: false);
-
-    if (subject.canGeneratedConstructor('fromJson')) {
-      buffer
-        ..writeln(
-          'factory $genClassName.fromJson(Map<String, dynamic> json) => '
-          '_\$${nonPrivategGenClassName}FromJson(json);',
-        )
-        ..writeln();
-    }
 
     if (subject.canGeneratedMethod(IceOptions.toJson)) {
       buffer
