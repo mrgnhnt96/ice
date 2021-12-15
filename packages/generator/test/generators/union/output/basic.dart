@@ -14,7 +14,7 @@ part of '../basic.dart';
 // void whenOrNull() {}
 // }
 
-abstract class $State with _$StateUnion {
+abstract class $State {
   String get $StateType;
 }
 

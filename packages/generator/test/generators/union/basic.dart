@@ -11,7 +11,7 @@ class State extends _$State {
   // factories are not allowed
   const State();
 
-  // @unionEntryPoint
+  @unionEntryPoint
   const State.named();
 
   const factory State.ready() = _Ready;
@@ -25,6 +25,7 @@ class _Ready extends _$Ready {
 
 @IceUnion.of(State)
 class _NotReady extends _$NotReady {
+  @copyWithEntryPoint
   const _NotReady();
 }
 
