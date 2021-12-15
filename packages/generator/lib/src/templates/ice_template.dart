@@ -1,8 +1,8 @@
 // ignore_for_file: unused_field, public_member_api_docs
 
 import 'package:ice/src/domain/domain.dart';
-import 'package:ice/src/templates/copy_with_type_safe_template.dart';
 import 'package:ice/src/templates/copy_with_template.dart';
+import 'package:ice/src/templates/copy_with_type_safe_template.dart';
 import 'package:ice/src/templates/props_template.dart';
 import 'package:ice/src/templates/template.dart';
 import 'package:ice/src/templates/to_string_template.dart';
