@@ -84,7 +84,7 @@ class IceAnnotation extends Annotation implements Ice {
   /// {@macro ice_annotation}
   const IceAnnotation({
     required this.copyWith,
-    required this.copyWithIsNullable,
+    required this.copyWithTypeSafe,
     required this.equatable,
     required this.tostring,
     required String name,
@@ -109,7 +109,7 @@ class IceAnnotation extends Annotation implements Ice {
     final reader = ConstantReader(annotation.computeConstantValue());
 
     final copyWith = reader.read('copyWith').boolValue;
-    final copyWithIsNullable = reader.read('copyWithIsNullable').boolValue;
+    final copyWithTypeSafe = reader.read('copyWithTypeSafe').boolValue;
     final equatable = reader.read('equatable').boolValue;
     final tostring = reader.read('tostring').boolValue;
 
@@ -120,7 +120,7 @@ class IceAnnotation extends Annotation implements Ice {
       name: name,
       equatable: equatable,
       copyWith: copyWith,
-      copyWithIsNullable: copyWithIsNullable,
+      copyWithTypeSafe: copyWithTypeSafe,
       tostring: tostring,
       type: AnnotationTypes.ice,
       declaration: declaration,
@@ -131,7 +131,7 @@ class IceAnnotation extends Annotation implements Ice {
   final bool copyWith;
 
   @override
-  final bool copyWithIsNullable;
+  final bool copyWithTypeSafe;
 
   @override
   final bool equatable;
@@ -144,12 +144,12 @@ class IceAnnotation extends Annotation implements Ice {
     switch (option) {
       case IceOptions.copyWith:
         return copyWith;
-      case IceOptions.copyWithNullable:
+      case IceOptions.copyWithTypeSafe:
         if (copyWith) {
           return false;
         }
 
-        return copyWithIsNullable;
+        return copyWithTypeSafe;
       case IceOptions.equatable:
         return equatable;
       case IceOptions.tostring:
@@ -167,7 +167,7 @@ enum IceOptions {
   copyWith,
 
   /// [CopyWithNullable] will be generated
-  copyWithNullable,
+  copyWithTypeSafe,
 
   /// [Equatable] will be generated
   equatable,

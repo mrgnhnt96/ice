@@ -7,7 +7,7 @@ import 'package:ice_annotation/src/methods/to_string.dart';
 const copyWith = CopyWith();
 
 /// {@macro copywith_nullable}
-const copyWithNullable = CopyWithNullable();
+const copyWithNullable = CopyWithTypeSafe();
 
 /// {@macro copywith_entrypoint}
 const copyWithEntryPoint = CopyWithEntryPoint();

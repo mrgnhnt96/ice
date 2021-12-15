@@ -12,7 +12,7 @@ class Ice {
     this.copyWith,
     this.tostring,
     this.equatable,
-    this.copyWithIsNullable,
+    this.copyWithTypeSafe,
   });
 
   /// generates the copyWith method
@@ -26,7 +26,7 @@ class Ice {
 
   /// whether the copyWith method is generated
   /// with simple or nullable arguments
-  final bool? copyWithIsNullable;
+  final bool? copyWithTypeSafe;
 }
 
 /// {@template ice_union_base}

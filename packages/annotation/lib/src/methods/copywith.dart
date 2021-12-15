@@ -22,7 +22,7 @@ class CopyWithEntryPoint {
 /// {@template copywith_nullable}
 /// Whether the copyWith method should accept nullable types.
 /// {@endtemplate}
-class CopyWithNullable extends MethodAnnotation {
+class CopyWithTypeSafe extends MethodAnnotation {
   /// {@macro copywith_nullable}
-  const CopyWithNullable();
+  const CopyWithTypeSafe();
 }

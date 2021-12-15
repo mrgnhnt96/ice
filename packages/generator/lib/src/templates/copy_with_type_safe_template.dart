@@ -67,9 +67,9 @@ extension on Param {
 /// {@template copy_with_method}
 /// Generates a copyWith method for a class.
 /// {@endtemplate}
-class CopyWithNullableTemplate extends Template {
+class CopyWithTypeSafeTemplate extends Template {
   /// {@macro copy_with_method}
-  CopyWithNullableTemplate.forSubject(Class subject)
+  CopyWithTypeSafeTemplate.forSubject(Class subject)
       : super(
           subject,
           name: 'copyWith',

@@ -21,7 +21,7 @@ extension AnnotationTypesX on AnnotationTypes {
     required T ignoreProp,
     required T string,
     required T copyWith,
-    required T copyWithNullable,
+    required T copyWithTypeSafe,
     required T other,
   }) {
     switch (this) {
@@ -43,8 +43,8 @@ extension AnnotationTypesX on AnnotationTypes {
         return string;
       case AnnotationTypes.copyWith:
         return copyWith;
-      case AnnotationTypes.copyWithNullable:
-        return copyWithNullable;
+      case AnnotationTypes.copyWithTypeSafe:
+        return copyWithTypeSafe;
       case AnnotationTypes.other:
         return other;
     }
@@ -64,7 +64,7 @@ extension AnnotationTypesX on AnnotationTypes {
     T? ignoreProp,
     T? string,
     T? copyWith,
-    T? copyWithNullable,
+    T? copyWithTypeSafe,
     T? other,
   }) {
     var isNullable = true;
@@ -102,9 +102,9 @@ extension AnnotationTypesX on AnnotationTypes {
       case AnnotationTypes.copyWith:
         if (copyWith == null && !isNullable) return orElse;
         return copyWith as T;
-      case AnnotationTypes.copyWithNullable:
-        if (copyWithNullable == null && !isNullable) return orElse;
-        return copyWithNullable as T;
+      case AnnotationTypes.copyWithTypeSafe:
+        if (copyWithTypeSafe == null && !isNullable) return orElse;
+        return copyWithTypeSafe as T;
       case AnnotationTypes.other:
         if (other == null && !isNullable) return orElse;
         return other as T;
@@ -123,7 +123,7 @@ extension AnnotationTypesX on AnnotationTypes {
       ignoreProp: 'ignoreProp',
       string: 'string',
       copyWith: 'copyWith',
-      copyWithNullable: 'copyWithNullable',
+      copyWithTypeSafe: 'copyWithTypeSafe',
       other: 'other',
     );
   }
@@ -140,7 +140,7 @@ extension AnnotationTypesX on AnnotationTypes {
       ignoreProp: 6,
       string: 7,
       copyWith: 8,
-      copyWithNullable: 9,
+      copyWithTypeSafe: 9,
       other: 10,
     );
   }
@@ -158,7 +158,7 @@ extension AnnotationTypesX on AnnotationTypes {
       ignoreProp: 'Ignore Prop',
       string: 'String',
       copyWith: 'Copy With',
-      copyWithNullable: 'Copy With Nullable',
+      copyWithTypeSafe: 'Copy With Nullable',
       other: 'Other',
     );
   }
@@ -186,8 +186,8 @@ extension AnnotationTypesX on AnnotationTypes {
 [ToString]''',
       copyWith: '''
 [CopyWith]''',
-      copyWithNullable: '''
-[CopyWithNullable]''',
+      copyWithTypeSafe: '''
+[CopyWithTypeSafe]''',
       other: '''
 any other annotation''',
     );
@@ -205,7 +205,7 @@ any other annotation''',
       ignoreProp: AnnotationTypesConv._ignorePropName,
       string: AnnotationTypesConv._stringName,
       copyWith: AnnotationTypesConv._copyWithName,
-      copyWithNullable: AnnotationTypesConv._copyWithNullableName,
+      copyWithTypeSafe: AnnotationTypesConv._copyWithTypeSafeName,
       other: AnnotationTypesConv._otherName,
     );
   }
@@ -240,7 +240,7 @@ class AnnotationTypesConv extends JsonConverter<AnnotationTypes, Object> {
   static const _ignorePropName = 'ignoreProp';
   static const _stringName = 'toString';
   static const _copyWithName = 'copyWith';
-  static const _copyWithNullableName = 'copyWithNullable';
+  static const _copyWithTypeSafeName = 'copyWithTypeSafe';
   static const _otherName = 'other';
 
   @override
@@ -264,8 +264,8 @@ class AnnotationTypesConv extends JsonConverter<AnnotationTypes, Object> {
         return AnnotationTypes.string;
       case _copyWithName:
         return AnnotationTypes.copyWith;
-      case _copyWithNullableName:
-        return AnnotationTypes.copyWithNullable;
+      case _copyWithTypeSafeName:
+        return AnnotationTypes.copyWithTypeSafe;
       case _otherName:
         return AnnotationTypes.other;
       default:
@@ -315,8 +315,8 @@ class _AnnotationTypesNullableConv
         return AnnotationTypes.string;
       case AnnotationTypesConv._copyWithName:
         return AnnotationTypes.copyWith;
-      case AnnotationTypesConv._copyWithNullableName:
-        return AnnotationTypes.copyWithNullable;
+      case AnnotationTypesConv._copyWithTypeSafeName:
+        return AnnotationTypes.copyWithTypeSafe;
       case AnnotationTypesConv._otherName:
         return AnnotationTypes.other;
       default:
