@@ -69,11 +69,13 @@ Iterable<String> _normalizeGeneratorOutput(Object? value) {
     value = [value];
   }
 
+  String trim(String value) => value.trim();
+  bool isNotEmpty(String value) => value.isNotEmpty;
+
   if (value is Iterable<String?>) {
-    return value.whereType<String>().map<String>((e) {
-      return e.trim();
-    }).where((e) => e.isNotEmpty);
+    return value.whereType<String>().map<String>(trim).where(isNotEmpty);
   }
+
   throw _argError(value);
 }
 
