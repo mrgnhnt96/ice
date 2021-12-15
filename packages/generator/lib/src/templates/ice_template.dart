@@ -1,6 +1,7 @@
 // ignore_for_file: unused_field, public_member_api_docs
 
 import 'package:ice/src/domain/domain.dart';
+import 'package:ice/src/templates/copy_with_type_safe_template.dart';
 import 'package:ice/src/templates/copy_with_template.dart';
 import 'package:ice/src/templates/props_template.dart';
 import 'package:ice/src/templates/template.dart';
@@ -27,7 +28,7 @@ class IceTemplate extends Template {
         ..writeln();
     }
 
-    if (subject.canGeneratedMethod('toJson')) {
+    if (subject.canGeneratedMethod(IceOptions.toJson)) {
       buffer
         ..writeln(
           'Map<String, dynamic> toJson() => '
@@ -39,17 +40,30 @@ class IceTemplate extends Template {
 
   void _writeProperties(
     StringBuffer buffer,
-    Function(CopyWithTemplate) afterClass,
+    Function(CopyWithTypeSafeTemplate) afterClass,
   ) {
     if (!subject.isAbstract) {
       _writeSerializable(buffer);
     }
 
-    ToStringTemplate.forSubject(subject).addToBuffer(buffer);
-    PropsTemplate.forSubject(subject).addToBuffer(buffer);
-    final copyWithTemplate = CopyWithTemplate.forSubject(subject)
-      ..addToBuffer(buffer);
-    afterClass(copyWithTemplate);
+    if (subject.canGeneratedMethod(IceOptions.tostring)) {
+      ToStringTemplate.forSubject(subject).addToBuffer(buffer);
+    }
+
+    if (subject.canGeneratedMethod(IceOptions.equatable)) {
+      PropsTemplate.forSubject(subject).addToBuffer(buffer);
+    }
+
+    if (subject.canGeneratedMethod(IceOptions.copyWith)) {
+      CopyWithTemplate.forSubject(subject).addToBuffer(buffer);
+    }
+
+    if (subject.canGeneratedMethod(IceOptions.copyWithTypeSafe)) {
+      final copyWithTemplate = CopyWithTypeSafeTemplate.forSubject(subject)
+        ..addToBuffer(buffer);
+
+      afterClass(copyWithTemplate);
+    }
   }
 
   void _writeClass(StringBuffer buffer) {
@@ -59,7 +73,7 @@ class IceTemplate extends Template {
       buffer.writeln('@JsonSerializable()');
     }
 
-    CopyWithTemplate? copyWithTemplate;
+    CopyWithTypeSafeTemplate? copyWithTemplate;
 
     buffer.writeObject(
       subject.classEntry,
