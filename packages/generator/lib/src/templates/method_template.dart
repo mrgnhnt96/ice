@@ -1,5 +1,6 @@
 import 'package:ice/src/domain/class.dart';
 import 'package:ice/src/domain/enums/annotation_types.dart';
+import 'package:ice/src/templates/copy_with_template.dart';
 import 'package:ice/src/templates/templates.dart';
 
 /// {@template method_template}
@@ -10,31 +11,46 @@ class MethodTemplate extends Template {
   MethodTemplate.forSubject(Class subject) : super.wrapper(subject);
 
   void _getAndWriteMethods(StringBuffer buffer) {
-    var hasCopyWithAnnotation = false;
-    var hasPropsAnnotation = false;
-    var hasToStringAnnotation = false;
+    var generateCopyWith = false;
+    var generateCopyWithNullable = false;
+    var generateProps = false;
+    var generateToString = false;
 
     for (final annotation in subject.annotations) {
       final type = annotation.type;
-      if (type.isCopyWith) {
-        hasCopyWithAnnotation = true;
-      } else if (type.isProps) {
-        hasPropsAnnotation = true;
-      } else if (type.isString) {
-        hasToStringAnnotation = true;
+      if (type.isOther) continue;
+
+      type.maybeMap(
+        copyWith: () {
+          generateCopyWith = true;
+        },
+        props: () {
+          generateProps = true;
+        },
+        copyWithTypeSafe: () {
+          generateCopyWithNullable = true;
+        },
+        string: () {
+          generateToString = true;
+        },
+        orElse: () {},
+      )();
+    }
+
+    if (generateCopyWith || generateCopyWithNullable) {
+      if (generateCopyWithNullable) {
+        CopyWithTypeSafeTemplate.forSubject(subject)
+            .addToBuffer(buffer, wrapWithExtension: true);
+      } else {
+        CopyWithTemplate.forSubject(subject).addToBuffer(buffer);
       }
     }
 
-    if (hasCopyWithAnnotation) {
-      CopyWithTemplate.forSubject(subject)
-          .addToBuffer(buffer, wrapWithExtension: true);
-    }
-
-    if (hasPropsAnnotation) {
+    if (generateProps) {
       PropsTemplate.forSubject(subject).addToBuffer(buffer, asOverride: false);
     }
 
-    if (hasToStringAnnotation) {
+    if (generateToString) {
       ToStringTemplate.forSubject(subject)
           .addToBuffer(buffer, asOverride: false);
     }
