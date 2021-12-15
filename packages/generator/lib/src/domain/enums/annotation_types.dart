@@ -10,20 +10,32 @@ part 'annotation_types.ge.dart';
 @EnumAssist()
 enum AnnotationTypes {
   /// [Ice]
-  @EnumValue(serializedValue: 'ice')
+  @EnumValue(serializedValue: 'Ice')
   ice,
 
-  /// [IceUnionBase]
-  @EnumValue(serializedValue: 'Ice.union')
+  /// [IceUnion]
+  @EnumValue(serializedValue: 'IceUnion.create')
   unionBase,
+
+  /// [IceUnion]
+  @EnumValue(serializedValue: 'IceUnion.of')
+  unionOf,
 
   /// [CopyWithEntryPoint]
   @EnumValue(serializedValue: 'copyWithEntryPoint')
   copyWithEntryPoint,
 
+  /// [UnionEntryPoint]
+  @EnumValue(serializedValue: 'unionEntryPoint')
+  unionEntryPoint,
+
   /// [Props]
   @EnumValue(serializedValue: 'props')
   props,
+
+  /// [IgnoreProp]
+  @EnumValue(serializedValue: 'ignoreProp')
+  ignoreProp,
 
   /// [ToString]
   @EnumValue(serializedValue: 'toString')
@@ -33,30 +45,46 @@ enum AnnotationTypes {
   @EnumValue(serializedValue: 'copyWith')
   copyWith,
 
+  /// [CopyWithNullable]
+  @EnumValue(serializedValue: 'copyWithNullable')
+  copyWithNullable,
+
   /// any other annotation
   other,
 }
 
-/// extensions for annotationTypes
+/// Annotations for [AnnotatinTypesX]
 extension AnnotationTypesXX on AnnotationTypes {
-  /// if the type is ice
+  /// The [Ice] annotation
   bool get isIce => this == AnnotationTypes.ice;
 
-  /// if the type is unionBase
-  bool get isUnion => this == AnnotationTypes.unionBase;
+  /// The [IceUnion] annotation
+  bool get isUnionBase => this == AnnotationTypes.unionBase;
 
-  /// if the type is copyWithEntryPoint
-  bool get isEntryPoint => this == AnnotationTypes.copyWithEntryPoint;
+  /// The [IceUnion] annotation
+  bool get isUnionOf => this == AnnotationTypes.unionOf;
 
-  /// if the type is props
+  /// The [CopyWithEntryPoint] annotation
+  bool get isCopyWithEntryPoint => this == AnnotationTypes.copyWithEntryPoint;
+
+  /// The [UnionEntryPoint] annotation
+  bool get isUnionEntryPoint => this == AnnotationTypes.unionEntryPoint;
+
+  /// The [Props] annotation
   bool get isProps => this == AnnotationTypes.props;
 
-  /// if the type is string
-  bool get isString => this == AnnotationTypes.string;
+  /// The [IgnoreProp] annotation
+  bool get isIgnoreProp => this == AnnotationTypes.ignoreProp;
 
-  /// if the type is copyWith
+  /// The [ToString] annotation
+  bool get isToString => this == AnnotationTypes.string;
+
+  /// The [CopyWith] annotation
   bool get isCopyWith => this == AnnotationTypes.copyWith;
 
-  /// if the type is other
+  /// The [CopyWithNullable] annotation
+  bool get isCopyWithNullable => this == AnnotationTypes.copyWithNullable;
+
+  /// any other annotation
   bool get isOther => this == AnnotationTypes.other;
 }

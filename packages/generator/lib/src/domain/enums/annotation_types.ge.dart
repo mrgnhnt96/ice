@@ -14,10 +14,14 @@ extension AnnotationTypesX on AnnotationTypes {
   T map<T extends Object?>({
     required T ice,
     required T unionBase,
+    required T unionOf,
     required T copyWithEntryPoint,
+    required T unionEntryPoint,
     required T props,
+    required T ignoreProp,
     required T string,
     required T copyWith,
+    required T copyWithNullable,
     required T other,
   }) {
     switch (this) {
@@ -25,14 +29,22 @@ extension AnnotationTypesX on AnnotationTypes {
         return ice;
       case AnnotationTypes.unionBase:
         return unionBase;
+      case AnnotationTypes.unionOf:
+        return unionOf;
       case AnnotationTypes.copyWithEntryPoint:
         return copyWithEntryPoint;
+      case AnnotationTypes.unionEntryPoint:
+        return unionEntryPoint;
       case AnnotationTypes.props:
         return props;
+      case AnnotationTypes.ignoreProp:
+        return ignoreProp;
       case AnnotationTypes.string:
         return string;
       case AnnotationTypes.copyWith:
         return copyWith;
+      case AnnotationTypes.copyWithNullable:
+        return copyWithNullable;
       case AnnotationTypes.other:
         return other;
     }
@@ -45,10 +57,14 @@ extension AnnotationTypesX on AnnotationTypes {
     required T orElse,
     T? ice,
     T? unionBase,
+    T? unionOf,
     T? copyWithEntryPoint,
+    T? unionEntryPoint,
     T? props,
+    T? ignoreProp,
     T? string,
     T? copyWith,
+    T? copyWithNullable,
     T? other,
   }) {
     var isNullable = true;
@@ -65,18 +81,30 @@ extension AnnotationTypesX on AnnotationTypes {
       case AnnotationTypes.unionBase:
         if (unionBase == null && !isNullable) return orElse;
         return unionBase as T;
+      case AnnotationTypes.unionOf:
+        if (unionOf == null && !isNullable) return orElse;
+        return unionOf as T;
       case AnnotationTypes.copyWithEntryPoint:
         if (copyWithEntryPoint == null && !isNullable) return orElse;
         return copyWithEntryPoint as T;
+      case AnnotationTypes.unionEntryPoint:
+        if (unionEntryPoint == null && !isNullable) return orElse;
+        return unionEntryPoint as T;
       case AnnotationTypes.props:
         if (props == null && !isNullable) return orElse;
         return props as T;
+      case AnnotationTypes.ignoreProp:
+        if (ignoreProp == null && !isNullable) return orElse;
+        return ignoreProp as T;
       case AnnotationTypes.string:
         if (string == null && !isNullable) return orElse;
         return string as T;
       case AnnotationTypes.copyWith:
         if (copyWith == null && !isNullable) return orElse;
         return copyWith as T;
+      case AnnotationTypes.copyWithNullable:
+        if (copyWithNullable == null && !isNullable) return orElse;
+        return copyWithNullable as T;
       case AnnotationTypes.other:
         if (other == null && !isNullable) return orElse;
         return other as T;
@@ -88,10 +116,14 @@ extension AnnotationTypesX on AnnotationTypes {
     return map<String>(
       ice: 'ice',
       unionBase: 'unionBase',
+      unionOf: 'unionOf',
       copyWithEntryPoint: 'copyWithEntryPoint',
+      unionEntryPoint: 'unionEntryPoint',
       props: 'props',
+      ignoreProp: 'ignoreProp',
       string: 'string',
       copyWith: 'copyWith',
+      copyWithNullable: 'copyWithNullable',
       other: 'other',
     );
   }
@@ -101,11 +133,15 @@ extension AnnotationTypesX on AnnotationTypes {
     return map<int>(
       ice: 0,
       unionBase: 1,
-      copyWithEntryPoint: 2,
-      props: 3,
-      string: 4,
-      copyWith: 5,
-      other: 6,
+      unionOf: 2,
+      copyWithEntryPoint: 3,
+      unionEntryPoint: 4,
+      props: 5,
+      ignoreProp: 6,
+      string: 7,
+      copyWith: 8,
+      copyWithNullable: 9,
+      other: 10,
     );
   }
 
@@ -115,10 +151,14 @@ extension AnnotationTypesX on AnnotationTypes {
     return map<String>(
       ice: 'Ice',
       unionBase: 'Union Base',
+      unionOf: 'Union Of',
       copyWithEntryPoint: 'Copy With Entry Point',
+      unionEntryPoint: 'Union Entry Point',
       props: 'Props',
+      ignoreProp: 'Ignore Prop',
       string: 'String',
       copyWith: 'Copy With',
+      copyWithNullable: 'Copy With Nullable',
       other: 'Other',
     );
   }
@@ -131,15 +171,23 @@ extension AnnotationTypesX on AnnotationTypes {
       ice: '''
 [Ice]''',
       unionBase: '''
-[IceUnionBase]''',
+[IceUnion]''',
+      unionOf: '''
+[IceUnion]''',
       copyWithEntryPoint: '''
 [CopyWithEntryPoint]''',
+      unionEntryPoint: '''
+[UnionEntryPoint]''',
       props: '''
 [Props]''',
+      ignoreProp: '''
+[IgnoreProp]''',
       string: '''
 [ToString]''',
       copyWith: '''
 [CopyWith]''',
+      copyWithNullable: '''
+[CopyWithNullable]''',
       other: '''
 any other annotation''',
     );
@@ -150,10 +198,14 @@ any other annotation''',
     return map<Object>(
       ice: AnnotationTypesConv._iceName,
       unionBase: AnnotationTypesConv._unionBaseName,
+      unionOf: AnnotationTypesConv._unionOfName,
       copyWithEntryPoint: AnnotationTypesConv._copyWithEntryPointName,
+      unionEntryPoint: AnnotationTypesConv._unionEntryPointName,
       props: AnnotationTypesConv._propsName,
+      ignoreProp: AnnotationTypesConv._ignorePropName,
       string: AnnotationTypesConv._stringName,
       copyWith: AnnotationTypesConv._copyWithName,
+      copyWithNullable: AnnotationTypesConv._copyWithNullableName,
       other: AnnotationTypesConv._otherName,
     );
   }
@@ -179,12 +231,16 @@ class AnnotationTypesConv extends JsonConverter<AnnotationTypes, Object> {
   /// {@macro annotation_types.json_converter_nullable}
   static const nullable = _AnnotationTypesNullableConv();
 
-  static const _iceName = 'ice';
-  static const _unionBaseName = 'Ice.union';
+  static const _iceName = 'Ice';
+  static const _unionBaseName = 'IceUnion.create';
+  static const _unionOfName = 'IceUnion.of';
   static const _copyWithEntryPointName = 'copyWithEntryPoint';
+  static const _unionEntryPointName = 'unionEntryPoint';
   static const _propsName = 'props';
+  static const _ignorePropName = 'ignoreProp';
   static const _stringName = 'toString';
   static const _copyWithName = 'copyWith';
+  static const _copyWithNullableName = 'copyWithNullable';
   static const _otherName = 'other';
 
   @override
@@ -194,14 +250,22 @@ class AnnotationTypesConv extends JsonConverter<AnnotationTypes, Object> {
         return AnnotationTypes.ice;
       case _unionBaseName:
         return AnnotationTypes.unionBase;
+      case _unionOfName:
+        return AnnotationTypes.unionOf;
       case _copyWithEntryPointName:
         return AnnotationTypes.copyWithEntryPoint;
+      case _unionEntryPointName:
+        return AnnotationTypes.unionEntryPoint;
       case _propsName:
         return AnnotationTypes.props;
+      case _ignorePropName:
+        return AnnotationTypes.ignoreProp;
       case _stringName:
         return AnnotationTypes.string;
       case _copyWithName:
         return AnnotationTypes.copyWith;
+      case _copyWithNullableName:
+        return AnnotationTypes.copyWithNullable;
       case _otherName:
         return AnnotationTypes.other;
       default:
@@ -237,14 +301,22 @@ class _AnnotationTypesNullableConv
         return AnnotationTypes.ice;
       case AnnotationTypesConv._unionBaseName:
         return AnnotationTypes.unionBase;
+      case AnnotationTypesConv._unionOfName:
+        return AnnotationTypes.unionOf;
       case AnnotationTypesConv._copyWithEntryPointName:
         return AnnotationTypes.copyWithEntryPoint;
+      case AnnotationTypesConv._unionEntryPointName:
+        return AnnotationTypes.unionEntryPoint;
       case AnnotationTypesConv._propsName:
         return AnnotationTypes.props;
+      case AnnotationTypesConv._ignorePropName:
+        return AnnotationTypes.ignoreProp;
       case AnnotationTypesConv._stringName:
         return AnnotationTypes.string;
       case AnnotationTypesConv._copyWithName:
         return AnnotationTypes.copyWith;
+      case AnnotationTypesConv._copyWithNullableName:
+        return AnnotationTypes.copyWithNullable;
       case AnnotationTypesConv._otherName:
         return AnnotationTypes.other;
       default:
