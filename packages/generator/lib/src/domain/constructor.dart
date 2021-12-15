@@ -92,8 +92,15 @@ class Constructor {
 
   /// Whether the constructor is the copyWith entry point\
   /// determined by the [CopyWithEntryPoint] annotation
-  bool get hasEntryPointAnnotation {
-    return annotations.any((annotation) => annotation.type.isEntryPoint);
+  bool get hasCopyWithEntryPointAnnotation {
+    return annotations
+        .any((annotation) => annotation.type.isCopyWithEntryPoint);
+  }
+
+  /// Whether the constructor is the copyWith entry point\
+  /// determined by the [CopyWithEntryPoint] annotation
+  bool get hasUnionEntryPointAnnotation {
+    return annotations.any((annotation) => annotation.type.isUnionEntryPoint);
   }
 
   /// if the constructor is the default constructor
