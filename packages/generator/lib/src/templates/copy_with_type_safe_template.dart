@@ -72,8 +72,7 @@ class CopyWithTypeSafeTemplate extends Template {
   CopyWithTypeSafeTemplate.forSubject(Class subject)
       : super(
           subject,
-          name: 'copyWith',
-          type: TemplateType.method,
+          name: IceOptions.copyWithTypeSafe,
         );
 
   /// the constructor entry for copywith

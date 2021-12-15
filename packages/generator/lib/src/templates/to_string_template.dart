@@ -26,8 +26,7 @@ class ToStringTemplate extends Template {
   const ToStringTemplate.forSubject(Class subject)
       : super(
           subject,
-          name: 'toString',
-          type: TemplateType.method,
+          name: IceOptions.tostring,
         );
 
   void _writeAsOverride(StringBuffer buffer) {

@@ -72,8 +72,7 @@ class CopyWithTemplate extends Template {
   CopyWithTemplate.forSubject(Class subject)
       : super(
           subject,
-          name: 'copyWith',
-          type: TemplateType.method,
+          name: IceOptions.copyWith,
         );
 
   /// the constructor entry for copywith

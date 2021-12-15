@@ -155,7 +155,7 @@ class IceAnnotation extends Annotation implements Ice {
       case IceOptions.tostring:
         return tostring;
       case IceOptions.toJson:
-        // TODO: implement toJson
+      case IceOptions.other:
         return true;
     }
   }
@@ -175,6 +175,9 @@ enum IceOptions {
   /// [ToString] will be generated
   tostring,
 
-  /// [ToJson] will be generated
+  /// [toJson] will be generated
   toJson,
+
+  /// any other option
+  other,
 }
