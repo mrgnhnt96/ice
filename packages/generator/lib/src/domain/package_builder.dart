@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_field_initializers_in_const_classes
+
 import 'package:build/build.dart';
 import 'package:meta/meta.dart';
 import 'package:source_gen/source_gen.dart';
@@ -10,7 +12,7 @@ typedef TestBuilder = Builder Function(BuilderOptions options);
 /// {@endtemplate}
 abstract class PackageBuilder {
   /// {@macro package_builder}
-  PackageBuilder({
+  const PackageBuilder({
     required this.name,
     required this.extension,
   });
@@ -50,7 +52,7 @@ $ignoreForFile
   List<String> get ignores => <String>[];
 
   /// `// GENERATED CODE - DO NOT MODIFY BY HAND`
-  final String generatedByHand = '// GENERATED CODE - DO NOT MODIFY BY HAND';
+  final String generatedByHand = defaultFileHeader;
 
   /// `// coverage:ignore-file`
   final String ignoreCoverage = '// coverage:ignore-file';
