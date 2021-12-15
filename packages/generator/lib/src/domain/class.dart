@@ -1,7 +1,6 @@
 // ignore_for_file: comment_references, implementation_imports
 
 import 'package:analyzer/dart/element/element.dart';
-import 'package:analyzer/dart/element/type.dart';
 import 'package:ice/src/domain/domain.dart';
 import 'package:ice/src/domain/enums/enums.dart';
 import 'package:ice/src/domain/field.dart';
@@ -17,7 +16,6 @@ class Class {
     required this.annotations,
     required this.fields,
     required this.name,
-    required this.supertypes,
     required this.isAbstract,
     required this.methods,
   }) : _entryPoint = _EntryPoint(constructors);
@@ -30,36 +28,11 @@ class Class {
     final methods = Method.fromElements(element.methods);
     final isAbstract = element.isAbstract;
 
-    Set<String> _getSuperTypes(List<InterfaceType> interfaces) {
-      final items = <String>{};
-
-      if (interfaces.length <= 1) {
-        return items;
-      }
-
-      for (final interface in interfaces) {
-        final name = interface.element.name;
-
-        if (name == 'Object') {
-          continue;
-        }
-
-        items
-          ..add(name)
-          ..addAll(_getSuperTypes(interface.allSupertypes));
-      }
-
-      return items;
-    }
-
-    final supertypes = _getSuperTypes(element.allSupertypes);
-
     return Class(
       constructors: constructors,
       annotations: annotations,
       fields: fields,
       name: element.displayName,
-      supertypes: supertypes.toList(),
       isAbstract: isAbstract,
       methods: methods,
     );
@@ -79,9 +52,6 @@ class Class {
 
   final _EntryPoint _entryPoint;
 
-  /// all the super types of the class
-  final List<String> supertypes;
-
   /// whether the class is an abstract class
   final bool isAbstract;
 
@@ -90,17 +60,6 @@ class Class {
 
   /// The entry point to be used to generate the copyWith method
   Constructor entryPoint() => _entryPoint.access;
-
-  /// maps the super types to this class
-  Map<String, Class> supertypeMap() {
-    final supers = <String, Class>{};
-
-    for (final supertype in supertypes) {
-      supers[supertype] = this;
-    }
-
-    return supers;
-  }
 
   String? _generatedName;
 
@@ -125,17 +84,6 @@ class Class {
 
     if (!throwOnNameFormat) {
       return generatedName(retainPrivate: retainPrivate);
-    }
-
-    final startsWithDollar = name.contains(r'$');
-
-    final mustBeGenClass = Exception(
-      'Class name $name must start with \$ to '
-      'successfully generate as a private class',
-    );
-
-    if (!startsWithDollar) {
-      throw mustBeGenClass;
     }
 
     return generatedName(retainPrivate: retainPrivate);
@@ -189,8 +137,24 @@ class Class {
   /// whether a method can be generated
   ///
   /// returns false if the method already exists
-  bool canGeneratedMethod(String name) {
-    return methodsToIgnore[name] ?? true;
+  bool canGeneratedMethod(IceOptions option) {
+    try {
+      final iceAnnotation =
+          annotations.firstWhere((e) => e.type.isIce) as IceAnnotation;
+
+      final shouldGenerate = iceAnnotation.shouldGenerate(option);
+
+      if (!shouldGenerate) {
+        return false;
+      }
+    } catch (_) {}
+
+    final name = option.name;
+    if (methodsToIgnore.containsKey(name)) {
+      return methodsToIgnore[name]!;
+    }
+
+    return true;
   }
 
   /// whether a constructor can be generated
@@ -237,7 +201,7 @@ class _EntryPoint {
     }
 
     for (final constructor in _constructors) {
-      if (constructor.hasEntryPointAnnotation) {
+      if (constructor.hasCopyWithEntryPointAnnotation) {
         _annotated = constructor;
       } else if (constructor.isDefault) {
         _defaultConst = constructor;
