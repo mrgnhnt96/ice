@@ -1,0 +1,4 @@
+enum CopyWithType {
+  simple,
+  nullable,
+}
