@@ -52,7 +52,14 @@ class _$State with EquatableMixin {
 
   @override
   String toString() {
-    return 'State(name: $name, age: $age, money: $money, isCool: $isCool, date: $date)';
+    return '''
+State(
+  name: $name
+  age: $age
+  money: $money
+  isCool: $isCool
+  date: $date
+)''';
   }
 }
 
