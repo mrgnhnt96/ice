@@ -3,6 +3,7 @@
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/src/dart/element/element.dart';
+import 'package:ice/ice.dart';
 import 'package:ice/src/domain/enums/annotation_types.dart';
 import 'package:ice_annotation/ice.dart';
 import 'package:source_gen/source_gen.dart';
@@ -108,10 +109,15 @@ class IceAnnotation extends Annotation implements Ice {
 
     final reader = ConstantReader(annotation.computeConstantValue());
 
-    final copyWith = reader.read('copyWith').boolValue;
-    final copyWithTypeSafe = reader.read('copyWithTypeSafe').boolValue;
-    final equatable = reader.read('equatable').boolValue;
-    final tostring = reader.read('tostring').boolValue;
+    T? get<T>(String name) {
+      return reader.peek(name)?.literalValue as T?;
+    }
+
+    final copyWith = get<bool>('copyWith') ?? iceSettings.copyWith;
+    final copyWithTypeSafe =
+        get<bool>('copyWithTypeSafe') ?? iceSettings.copyWithTypeSafe;
+    final equatable = get<bool>('equatable') ?? iceSettings.equatable;
+    final tostring = get<bool>('tostring') ?? iceSettings.tostring;
 
     final declaration =
         '${(annotation as ElementAnnotationImpl).annotationAst}';
