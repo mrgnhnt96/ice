@@ -5,8 +5,8 @@ import 'package:ice_annotation/ice.dart';
 
 part 'output/basic.dart';
 
-@JsonSerializable()
 @Ice()
+@JsonSerializable()
 class State extends _$State {
   const State(
     this.name,
@@ -14,13 +14,7 @@ class State extends _$State {
     this.money,
     this.isCool,
     this.date,
-  }) : super.ice(
-          name,
-          age,
-          money: money,
-          isCool: isCool,
-          date: date,
-        );
+  });
 
   factory State.fromJson(Map<String, dynamic> json) => _$StateFromJson(json);
 

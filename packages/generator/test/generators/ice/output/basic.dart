@@ -6,28 +6,14 @@ part of '../basic.dart';
 
 typedef CopyCallback<T> = T Function(T);
 
-class _$State with EquatableMixin {
-  factory _$State(
-    String name,
-    int? age, {
-    double? money,
-    bool? isCool,
-    DateTime? date,
-  }) = State;
+abstract class _$State with EquatableMixin {
+  const _$State();
 
-  const _$State.ice(
-    this.name,
-    this.age, {
-    this.money,
-    this.isCool,
-    this.date,
-  });
-
-  final String name;
-  final int? age;
-  final double? money;
-  final bool? isCool;
-  final DateTime? date;
+  String get name;
+  int? get age;
+  double? get money;
+  bool? get isCool;
+  DateTime? get date;
 
   State copyWith({
     String? name,

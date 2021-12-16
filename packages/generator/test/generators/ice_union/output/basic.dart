@@ -15,32 +15,77 @@ part of '../basic.dart';
 // }
 
 abstract class $State {
-  const $State();
-
   String get $StateType;
 }
 
-abstract class _$State with _$StateUnion implements $State {
+abstract class _$State with _$StateUnion, EquatableMixin implements $State {
   const _$State();
+
+  int get code;
 
   @override
   String get $StateType => 'State';
+
+  @override
+  List<Object> get props => [code];
+
+  @override
+  String toString() {
+    return '''
+State(
+  code: $code
+)''';
+  }
 }
 
 abstract class _$Ready extends State {
-  const _$Ready(String value) : super(value);
+  const _$Ready(int code) : super(code);
   const _$Ready.empty() : super.empty();
+
+  String get message;
 
   @override
   String get $StateType => '_Ready';
+
+  @override
+  List<Object> get props => [code, message];
+
+  _Ready copyWith({String? message}) {
+    return _Ready(message ?? this.message);
+  }
+
+  @override
+  String toString() {
+    return '''
+Ready(
+  message: $message
+)''';
+  }
 }
 
 abstract class _$NotReady extends State {
-  const _$NotReady(String value) : super(value);
+  const _$NotReady(int code) : super(code);
   const _$NotReady.empty() : super.empty();
+
+  bool get willBe;
+
+  _NotReady copyWith({bool? willBe}) {
+    return _NotReady(willBe: willBe ?? this.willBe);
+  }
 
   @override
   String get $StateType => '_NotReady';
+
+  @override
+  List<Object> get props => [code, willBe];
+
+  @override
+  String toString() {
+    return '''
+NotReady(
+  willBe: $willBe
+)''';
+  }
 }
 
 typedef _Result<R, T extends $State> = R Function(T);
