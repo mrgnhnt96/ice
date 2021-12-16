@@ -13,10 +13,7 @@ dependencies:
   enum_assist_annotation: ^0.1.0+1
   equatable: ^2.0.3
   ice_annotation:
-    git:
-      url: 'https://github.com/mrgnhnt96/ice'
-      path: packages/annotation
-  json_serializable: ^6.1.1
+    path: ../annotation
   meta: ^1.7.0
   source_gen: ^1.1.1
   source_helper: ^1.3.0

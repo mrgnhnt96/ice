@@ -15,7 +15,6 @@
 import 'package:build/build.dart';
 import 'package:ice/ice_builder.dart';
 import 'package:ice/src/domain/ice_settings.dart';
-import 'package:json_serializable/builder.dart' as i;
 
 /// the settings for the [IceBuilder] from the build.yaml file
 late final IceSettings iceSettings;
@@ -28,7 +27,3 @@ Builder iceBuilder(BuilderOptions options) {
 
   return ice.builder;
 }
-
-/// json_serializable builder
-Builder iceJsonSerializable(BuilderOptions options) =>
-    i.jsonSerializable(options);

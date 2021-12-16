@@ -6,7 +6,6 @@ part of '../basic.dart';
 
 typedef CopyCallback<T> = T Function(T);
 
-@JsonSerializable()
 class _$State with EquatableMixin {
   factory _$State(
     String name,

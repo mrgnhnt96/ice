@@ -10,10 +10,6 @@ targets:
           include:
             - test/**/integration/*
             - test/**/integration/**/*
-      json_serializable:
-        enabled: false
-      ice|json_serializable:
-        enabled: true
 
 builders:
   ice:
@@ -23,11 +19,3 @@ builders:
     auto_apply: dependents
     build_to: source
     runs_before: ["json_serializable"]
-
-  json_serializable:
-    import: "package:ice/ice.dart"
-    builder_factories: ["iceJsonSerializable"]
-    build_extensions: { ".dart": ["json_serializable.g.part"] }
-    auto_apply: dependents
-    build_to: cache
-    applies_builders: ["source_gen|combining_builder"]
