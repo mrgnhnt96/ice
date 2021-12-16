@@ -13,7 +13,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 
 void main() {
-  final iceBuilder = IceBuilder();
+  const iceBuilder = IceBuilder();
 
   setUpAll(() {
     const base = 'test/builder';
