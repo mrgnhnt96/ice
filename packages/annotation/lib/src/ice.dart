@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_field_initializers_in_const_classes
 
+import 'package:ice_annotation/src/enums/copy_with_type.dart';
 import 'package:meta/meta_meta.dart';
 
 /// {@template ice}
@@ -12,7 +13,7 @@ class Ice {
     this.copyWith,
     this.tostring,
     this.equatable,
-    this.copyWithTypeSafe,
+    this.copyWithType,
   });
 
   /// generates the copyWith method
@@ -26,7 +27,7 @@ class Ice {
 
   /// whether the copyWith method is generated
   /// with simple or nullable arguments
-  final bool? copyWithTypeSafe;
+  final CopyWithType? copyWithType;
 }
 
 /// {@template ice_union_base}
