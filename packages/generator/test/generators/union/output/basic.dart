@@ -47,7 +47,7 @@ mixin _$StateUnion {
     required _Result<R, _Ready> ready,
     required _Result<R, _NotReady> notReady,
   }) {
-    switch (this.runtimeType) {
+    switch (runtimeType) {
       case _Ready:
         return ready(this as _Ready);
       case _NotReady:
