@@ -3,10 +3,10 @@
 import 'package:enum_assist_annotation/enum_assist_annotation.dart';
 import 'package:ice_annotation/ice.dart';
 
-part 'output/basic.dart';
+part 'output/basic_copy_with_type_safe.dart';
 
 @JsonSerializable()
-@Ice()
+@Ice(copyWithTypeSafe: true)
 class State extends _$State {
   const State(
     this.name,

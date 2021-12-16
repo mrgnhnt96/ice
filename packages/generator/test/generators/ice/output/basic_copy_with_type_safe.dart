@@ -2,7 +2,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file:, prefer_const_declarations, unused_local_variable
 
-part of '../basic.dart';
+part of '../basic_copy_with_type_safe.dart';
 
 typedef CopyCallback<T> = T Function(T);
 
@@ -30,18 +30,18 @@ class _$State with EquatableMixin {
   final DateTime? date;
 
   State copyWith({
-    String? name,
-    int? age,
-    double? money,
-    bool? isCool,
-    DateTime? date,
+    CopyCallback<String>? name,
+    CopyCallback<int?>? age,
+    CopyCallback<double?>? money,
+    CopyCallback<bool?>? isCool,
+    CopyCallback<DateTime?>? date,
   }) {
     return State(
-      name ?? this.name,
-      age ?? this.age,
-      money: money ?? this.money,
-      isCool: isCool ?? this.isCool,
-      date: date ?? this.date,
+      name == null ? this.name : name(this.name),
+      age == null ? this.age : age(this.age),
+      money: money == null ? this.money : money(this.money),
+      isCool: isCool == null ? this.isCool : isCool(this.isCool),
+      date: date == null ? this.date : date(this.date),
     );
   }
 
