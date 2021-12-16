@@ -1,4 +1,4 @@
-// ignore_for_file: unused_element, unused_field
+// ignore_for_file: overridden_fields, annotate_overrides
 
 import 'package:ice_annotation/ice.dart';
 
@@ -11,11 +11,26 @@ part 'output/basic.dart';
   tostring: false,
 )
 class State extends _$State {
-  // unions must have 1 generative constructor
-  // default, private, or named constructors are allowed
-  // factories are not allowed
-  const State();
+  const State(
+    this.name,
+    this.age, {
+    this.money,
+    this.isCool,
+    this.date,
+  }) : super.ice(
+          name,
+          age,
+          money: money,
+          isCool: isCool,
+          date: date,
+        );
 
-  @copyWithEntryPoint
-  const State.named();
+  final String name;
+  final int? age;
+  final double? money;
+  final bool? isCool;
+  final DateTime? date;
 }
+
+Map<String, dynamic> _$$StateToJson(_$State state) => <String, dynamic>{};
+_$State _$$StateFromJson(Map<String, dynamic> json) => _$State('', 1);
