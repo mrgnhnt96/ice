@@ -2,100 +2,32 @@
 // ignore_for_file: implementation_imports
 
 import 'package:analyzer/dart/element/element.dart';
-import 'package:analyzer/src/dart/element/element.dart';
 import 'package:ice/ice.dart';
-import 'package:ice/src/domain/enums/annotation_types.dart';
 import 'package:ice_annotation/ice.dart';
 import 'package:source_gen/source_gen.dart';
 
-/// {@template annotation}
-/// The annotation for a [Class]
-/// {@endtemplate}
-class Annotation {
-  /// {@macro annotation}
-  const Annotation({
-    required this.name,
-    required this.type,
-    required this.declaration,
-  });
+class MethodAnnotations {
+  const MethodAnnotations(
+      {required this.hasProps,
+      required this.hasCopyWith,
+      required this.hasToString});
 
-  /// gets the annotation from the [ElementAnnotation]
-  static Annotation? fromElement(ElementAnnotation annotation) {
-    final element = annotation.element;
-
-    if (element == null) {
-      return null;
-    }
-
-    const annotationTypeConv =
-        AnnotationTypesConv(defaultValue: AnnotationTypes.other);
-
-    final name = element.displayName;
-    final type = annotationTypeConv.fromJson(name);
-
-    if (type.isIce) {
-      return IceAnnotation.fromElement(annotation);
-    }
-
-    final declaration =
-        '${(annotation as ElementAnnotationImpl).annotationAst}';
-
-    return Annotation(
-      name: name,
-      type: type,
-      declaration: declaration,
-    );
-  }
-
-  /// gets the annotation from the [ElementAnnotation]s
-  static List<Annotation> fromElements(List<ElementAnnotation> elements) {
-    final annotations = <Annotation>[];
-
-    for (final annotation in elements) {
-      final annotate = Annotation.fromElement(annotation);
-      if (annotate == null) {
-        continue;
-      }
-
-      annotations.add(annotate);
-    }
-
-    return annotations;
-  }
-
-  /// The name of the annotation
-  final String name;
-
-  /// The type of the annotation
-  final AnnotationTypes type;
-
-  /// The declaration of the annotation
-  ///
-  /// eg:
-  /// ```dart
-  /// @JsonSerializable(fieldRename: FieldRename.snake)
-  /// ```
-  final String declaration;
+  final bool hasProps;
+  final bool hasCopyWith;
+  final bool hasToString;
 }
 
 /// {@template ice_annotation}
 /// The annotation details for [Ice]
 /// {@endtemplate}
-class IceAnnotation extends Annotation implements Ice {
+class IceAnnotation implements Ice {
   /// {@macro ice_annotation}
   const IceAnnotation({
     required this.copyWith,
     required this.copyWithTypeSafe,
     required this.equatable,
     required this.tostring,
-    required String name,
-    required AnnotationTypes type,
-    required String declaration,
-  }) : super(
-          name: name,
-          type: type,
-          declaration: declaration,
-        );
+  });
 
   /// gets the annotation from the [ElementAnnotation]
   static IceAnnotation? fromElement(ElementAnnotation annotation) {
@@ -104,8 +36,6 @@ class IceAnnotation extends Annotation implements Ice {
     if (element == null) {
       return null;
     }
-
-    final name = element.displayName;
 
     final reader = ConstantReader(annotation.computeConstantValue());
 
@@ -119,17 +49,11 @@ class IceAnnotation extends Annotation implements Ice {
     final equatable = get<bool>('equatable') ?? iceSettings.equatable;
     final tostring = get<bool>('tostring') ?? iceSettings.tostring;
 
-    final declaration =
-        '${(annotation as ElementAnnotationImpl).annotationAst}';
-
     return IceAnnotation(
-      name: name,
       equatable: equatable,
       copyWith: copyWith,
       copyWithTypeSafe: copyWithTypeSafe,
       tostring: tostring,
-      type: AnnotationTypes.ice,
-      declaration: declaration,
     );
   }
 

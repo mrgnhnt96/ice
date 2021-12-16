@@ -12,18 +12,17 @@ class Constructor {
   const Constructor({
     required this.name,
     required this.displayName,
-    required this.annotations,
+    required this.isCopyWithConstructor,
     required this.params,
     required this.declaration,
-    required this.isConst,
-    required this.isPrivate,
-    required this.ignoreOption,
     required this.isGenerative,
   });
 
   /// Gets the constructor from the [ConstructorElement]
   factory Constructor.fromElement(ConstructorElement element) {
-    final annotations = Annotation.fromElements(element.metadata);
+    // TODO:  get copyWith from the annotations
+    const isCopyWithConstructor = false;
+
     final params = Param.fromElements(element.parameters);
 
     final declaration = '${element.declaration}'
@@ -39,15 +38,10 @@ class Constructor {
     return Constructor(
       name: element.name,
       displayName: element.displayName,
-      annotations: annotations,
       params: params,
       declaration: declaration,
-      isConst: element.isConst,
-      isPrivate: element.isPrivate,
       isGenerative: isGenerative,
-      ignoreOption:
-          const ConstructorToIgnoreConv(defaultValue: ConstructorToIgnore.other)
-              .fromJson(element.name),
+      isCopyWithConstructor: isCopyWithConstructor,
     );
   }
 
@@ -69,52 +63,23 @@ class Constructor {
   final String displayName;
 
   /// The annotation of the constructor
-  final List<Annotation> annotations;
+  final bool isCopyWithConstructor;
 
   /// The params of the constructor
   final List<Param> params;
 
-  /// the domain of the constructor
+  /// the declaration of the constructor
   final String declaration;
-
-  /// if the constructor is a const
-  final bool isConst;
-
-  /// If the constructor is named privately
-  final bool isPrivate;
-
-  /// determine if the constructor is an
-  /// option that will be generated
-  ///
-  /// if the option is `other` then the constructor
-  /// will be generated
-  final ConstructorToIgnore ignoreOption;
-
-  /// Whether the constructor is the copyWith entry point\
-  /// determined by the [CopyWithEntryPoint] annotation
-  bool get hasCopyWithEntryPointAnnotation {
-    return annotations
-        .any((annotation) => annotation.type.isCopyWithEntryPoint);
-  }
-
-  /// Whether the constructor is the copyWith entry point\
-  /// determined by the [CopyWithEntryPoint] annotation
-  bool get hasUnionEntryPointAnnotation {
-    return annotations.any((annotation) => annotation.type.isUnionEntryPoint);
-  }
 
   /// if the constructor is the default constructor
   bool get isDefault => name.isEmpty;
 
   /// If the constructor is named
-  bool get isNamed => !isDefault;
+  bool get isNamed => name.isNotEmpty;
 
   /// whether the constructor is a named constructor
   /// and not a static or factory constructor
   final bool isGenerative;
-
-  /// If the constructor is underscore named
-  bool get isNamedUnderscore => name == '_';
 
   /// gets the args wrapped in a super call
   String superArgs() {
@@ -144,10 +109,6 @@ extension ListConstructorX on List<Constructor> {
     final declarations = <String>[];
 
     for (final constructor in this) {
-      if (constructor.ignoreOption.ignore) {
-        continue;
-      }
-
       final declaration = '$className${constructor.declaration} : '
           '${constructor.superArgs()}\n\n';
 

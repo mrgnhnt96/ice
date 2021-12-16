@@ -2,8 +2,6 @@
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
-import 'package:analyzer/dart/element/type.dart';
-import 'package:ice/src/domain/copy_with_method.dart';
 import 'package:ice/src/domain/domain.dart';
 
 /// {@template field}
@@ -13,30 +11,25 @@ class Field {
   /// {@template field}
   const Field({
     required this.name,
-    required this.annotations,
     required this.type,
     required this.isNullable,
     required this.isPrivate,
-    required this.copyWith,
+    required this.includeInProps,
   });
 
   /// retrieves the field from the [FieldElement]
   factory Field.fromElement(FieldElement element) {
-    final annotations = Annotation.fromElements(element.metadata);
-    CopyWithMethod? copyWith;
+    // TODO: get ignoreProp annotation
+    const includeInProps = true;
 
     final type = element.type;
-    if (type is InterfaceType) {
-      copyWith = CopyWithMethod.fromElements(type.methods);
-    }
 
     return Field(
-      annotations: annotations,
       isNullable: type.nullabilitySuffix == NullabilitySuffix.question,
       name: element.displayName,
       type: type.getDisplayString(withNullability: true),
       isPrivate: element.isPrivate,
-      copyWith: copyWith,
+      includeInProps: includeInProps,
     );
   }
 
@@ -54,9 +47,6 @@ class Field {
   /// the name of the field
   final String name;
 
-  /// the annotations for the field
-  final List<Annotation> annotations;
-
   /// the type of the field
   final String type;
 
@@ -66,9 +56,7 @@ class Field {
   /// if the field is private
   final bool isPrivate;
 
-  /// the type of the copyWith method for this field
-  final CopyWithMethod? copyWith;
-
-  /// if the field has a method named copyWith
-  bool hasCopyWith() => copyWith != null;
+  /// whether the field should be included
+  /// in the `props` getter
+  final bool includeInProps;
 }

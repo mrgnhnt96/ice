@@ -33,14 +33,16 @@ class IceSubjects {
   void add(Class subject) {
     _classes[subject.name] = subject;
 
-    final subjectMap = subject.supertypeMap();
+    final union = subject.annotations.unionType;
 
-    for (final entry in subjectMap.entries) {
-      if (!_supertypes.containsKey(entry.key)) {
-        _supertypes[entry.key] = [];
-      }
-
-      _supertypes[entry.key]!.add(entry.value);
+    if (union == null) {
+      return;
     }
+
+    if (!_supertypes.containsKey(union)) {
+      _supertypes[union] = [];
+    }
+
+    _supertypes[union]!.add(subject);
   }
 }
