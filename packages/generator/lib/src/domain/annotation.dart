@@ -1,20 +1,96 @@
-// ignore_for_file: comment_references, avoid_dynamic_calls
+// ignore_for_file: comment_references, avoid_dynamic_calls, no_default_cases
 // ignore_for_file: implementation_imports
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:ice/ice.dart';
+import 'package:ice/src/domain/enums/copy_with_type_ext.dart';
+import 'package:ice/src/domain/enums/enums.dart';
+import 'package:ice/src/util/enum_ext.dart';
 import 'package:ice_annotation/ice.dart';
 import 'package:source_gen/source_gen.dart';
 
+/// {@template method_annotations}
+/// The annotations used for methods to be generated when the [Ice]
+/// annotation is not present.
+/// {@endtemplate}
 class MethodAnnotations {
-  const MethodAnnotations(
-      {required this.hasProps,
-      required this.hasCopyWith,
-      required this.hasToString});
+  /// {@macro method_annotations}
+  const MethodAnnotations({
+    required this.hasProps,
+    required this.hasCopyWith,
+    required this.hasToString,
+    required this.copyWithType,
+  });
 
+  /// {@macro method_annotations}
+  const MethodAnnotations.empty()
+      : this(
+          hasProps: false,
+          hasCopyWith: false,
+          hasToString: false,
+          copyWithType: CopyWithType.simple,
+        );
+
+  /// [props]
   final bool hasProps;
+
+  /// [copyWith]
   final bool hasCopyWith;
+
+  /// [toString]
   final bool hasToString;
+
+  /// [copyWithType]
+  final CopyWithType copyWithType;
+
+  /// if the [type] can be generated
+  bool canGenerateCopyWith(CopyWithType type) {
+    return hasCopyWith && copyWithType == type;
+  }
+
+  /// All [AnnotationTypes] associated with [MethodAnnotations]
+  static Set<AnnotationTypes> get annotationTypes => {
+        AnnotationTypes.props,
+        AnnotationTypes.copyWith,
+        AnnotationTypes.copyWithNullable,
+        AnnotationTypes.tostring,
+      };
+
+  /// returns a copy of [MethodAnnotations]
+  MethodAnnotations copyWith({
+    bool? hasProps,
+    bool? hasCopyWith,
+    bool? hasToString,
+    CopyWithType? copyWithType,
+  }) {
+    return MethodAnnotations(
+      hasProps: hasProps ?? this.hasProps,
+      hasCopyWith: hasCopyWith ?? this.hasCopyWith,
+      hasToString: hasToString ?? this.hasToString,
+      copyWithType: copyWithType ?? this.copyWithType,
+    );
+  }
+
+  /// check the [type] for any [MethodAnnotations.annotationTypes]
+  /// and updates [MethodAnnotations] using [copyWith]
+  MethodAnnotations checkAnnotationAndUpdate(AnnotationTypes type) {
+    if (!annotationTypes.contains(type)) {
+      return this;
+    }
+
+    switch (type) {
+      case AnnotationTypes.props:
+        return copyWith(hasProps: true);
+      case AnnotationTypes.copyWith:
+        return copyWith(hasCopyWith: true);
+      case AnnotationTypes.copyWithNullable:
+        return copyWith(hasCopyWith: true, copyWithType: CopyWithType.nullable);
+      case AnnotationTypes.tostring:
+        return copyWith(hasToString: true);
+      default:
+        return this;
+    }
+  }
 }
 
 /// {@template ice_annotation}
@@ -24,7 +100,7 @@ class IceAnnotation implements Ice {
   /// {@macro ice_annotation}
   const IceAnnotation({
     required this.copyWith,
-    required this.copyWithTypeSafe,
+    required this.copyWithType,
     required this.equatable,
     required this.tostring,
   });
@@ -44,15 +120,14 @@ class IceAnnotation implements Ice {
     }
 
     final copyWith = get<bool>('copyWith') ?? iceSettings.copyWith;
-    final copyWithTypeSafe =
-        get<bool>('copyWithTypeSafe') ?? iceSettings.copyWithTypeSafe;
     final equatable = get<bool>('equatable') ?? iceSettings.equatable;
     final tostring = get<bool>('tostring') ?? iceSettings.tostring;
+    final copyWithType = CopyWithType.values.fromReader(reader, 'copyWithType');
 
     return IceAnnotation(
       equatable: equatable,
       copyWith: copyWith,
-      copyWithTypeSafe: copyWithTypeSafe,
+      copyWithType: copyWithType ?? CopyWithType.simple,
       tostring: tostring,
     );
   }
@@ -61,7 +136,7 @@ class IceAnnotation implements Ice {
   final bool copyWith;
 
   @override
-  final bool copyWithTypeSafe;
+  final CopyWithType copyWithType;
 
   @override
   final bool equatable;
@@ -72,14 +147,18 @@ class IceAnnotation implements Ice {
   /// whether the [name] can be generated into code
   bool shouldGenerate(IceOptions option) {
     switch (option) {
-      case IceOptions.copyWith:
-        return copyWith;
-      case IceOptions.copyWithTypeSafe:
-        if (copyWith) {
+      case IceOptions.copyWithSimple:
+        if (!copyWith) {
           return false;
         }
 
-        return copyWithTypeSafe;
+        return copyWithType.isSimple;
+      case IceOptions.copyWithNullable:
+        if (!copyWith) {
+          return false;
+        }
+
+        return copyWithType.isNullable;
       case IceOptions.equatable:
         return equatable;
       case IceOptions.tostring:
@@ -94,10 +173,10 @@ class IceAnnotation implements Ice {
 /// The methods that will be generated with the [Ice] annotation
 enum IceOptions {
   /// [CopyWith] will be generated
-  copyWith,
+  copyWithSimple,
 
   /// [CopyWithNullable] will be generated
-  copyWithTypeSafe,
+  copyWithNullable,
 
   /// [Equatable] will be generated
   equatable,
