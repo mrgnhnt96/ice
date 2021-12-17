@@ -16,6 +16,7 @@ class State extends _$State {
     this.date,
   });
 
+  @copyWithEntryPoint
   factory State.fromJson(Map<String, dynamic> json) => _$StateFromJson(json);
 
   final String name;
