@@ -1,8 +1,9 @@
-// ignore_for_file: comment_references
+// ignore_for_file: comment_references, lines_longer_than_80_chars
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:ice/src/domain/domain.dart';
+import 'package:ice/src/domain/enums/enums.dart';
 
 /// {@template field}
 /// The [Field] of a [Class]
@@ -15,14 +16,27 @@ class Field {
     required this.isNullable,
     required this.isPrivate,
     required this.includeInProps,
+    required this.isTrueField,
   });
 
   /// retrieves the field from the [FieldElement]
   factory Field.fromElement(FieldElement element) {
-    // TODO: get ignoreProp annotation
-    const includeInProps = true;
+    var includeInProps = true;
+
+    final annotations = element.metadata;
+
+    if (annotations.isNotEmpty) {
+      final ignoreProp = annotations.any(
+        (e) => e.element?.displayName == AnnotationTypes.ignoreProp.serialized,
+      );
+
+      includeInProps = !ignoreProp;
+    }
 
     final type = element.type;
+
+    // TODO(mrgnhnt96): check for flag to include getters to props
+    final isTrueField = !element.isSynthetic;
 
     return Field(
       isNullable: type.nullabilitySuffix == NullabilitySuffix.question,
@@ -30,6 +44,7 @@ class Field {
       type: type.getDisplayString(withNullability: true),
       isPrivate: element.isPrivate,
       includeInProps: includeInProps,
+      isTrueField: isTrueField,
     );
   }
 
@@ -59,4 +74,9 @@ class Field {
   /// whether the field should be included
   /// in the `props` getter
   final bool includeInProps;
+
+  /// whether the field is a true field, not a getter
+  ///
+  /// getters are read as "synthetic" fields
+  final bool isTrueField;
 }
