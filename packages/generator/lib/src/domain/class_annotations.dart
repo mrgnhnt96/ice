@@ -65,7 +65,8 @@ class ClassAnnotations {
           isUnionBase = true;
           continue;
         case AnnotationTypes.jsonSerializable:
-          createToJson = true;
+          final reader = ConstantReader(annotation.computeConstantValue());
+          createToJson = reader.peek('createToJson')?.boolValue ?? true;
           continue;
         default:
           if (type == null) continue;
