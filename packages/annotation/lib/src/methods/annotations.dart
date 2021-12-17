@@ -1,4 +1,4 @@
-import 'package:ice_annotation/src/methods/copywith.dart';
+import 'package:ice_annotation/src/methods/copy_with.dart';
 import 'package:ice_annotation/src/methods/ignore_prop.dart';
 import 'package:ice_annotation/src/methods/props.dart';
 import 'package:ice_annotation/src/methods/to_string.dart';
