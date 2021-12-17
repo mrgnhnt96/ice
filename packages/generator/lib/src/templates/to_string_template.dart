@@ -41,14 +41,10 @@ class ToStringTemplate extends Template {
   }
 
   void _writeAsPrivateFunction(StringBuffer buffer) {
-    final privateGenClassName = subject.generatedName(
-      retainPrivate: false,
-    );
-
-    final genClassName = subject.generatedName();
+    final genName = subject.genName;
 
     buffer.writeObject(
-      'String _\$${privateGenClassName}ToString($genClassName instance)',
+      'String _\$${subject.cleanName}ToString($genName instance)',
       body: () {
         _writeReturn(buffer, withInstance: true);
       },
@@ -56,10 +52,10 @@ class ToStringTemplate extends Template {
   }
 
   void _writeReturn(StringBuffer buffer, {bool withInstance = false}) {
-    final genClassName = subject.generatedName();
+    final genName = subject.genName;
 
     buffer
-      ..write("return '$genClassName{")
+      ..write("return '$genName{")
       ..writeAll(subject.fields.asArgs(withInstance: withInstance), ', ')
       ..writeln("}';");
   }

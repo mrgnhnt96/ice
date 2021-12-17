@@ -11,8 +11,7 @@ extension on Class {
   }
 
   String get copyWithInterfaceName {
-    final genClassName = generatedName();
-    return '\$${genClassName}CopyWith';
+    return '\$${genName}CopyWith';
   }
 
   String get copyWithNameImpl {
@@ -84,9 +83,9 @@ class CopyWithTypeSafeTemplate extends Template {
     StringBuffer buffer,
   ) {
     if (entry.params.isEmpty) {
-      final genClassName = subject.generatedName();
+      final genName = subject.genName;
 
-      buffer.writeln('$genClassName copyWith() => $genClassName();');
+      buffer.writeln('$genName copyWith() => $genName();');
 
       return;
     }
@@ -105,12 +104,12 @@ class CopyWithTypeSafeTemplate extends Template {
     }
 
     final interfaceName = subject.copyWithInterfaceName;
-    final genClassName = subject.generatedName();
+    final genName = subject.genName;
 
     _writeInterface(
       buffer,
       interfaceName: interfaceName,
-      returnType: genClassName,
+      returnType: genName,
       entry: entry,
     );
 
@@ -120,7 +119,7 @@ class CopyWithTypeSafeTemplate extends Template {
       buffer,
       interfaceName: interfaceName,
       implName: implName,
-      returnType: genClassName,
+      returnType: genName,
       entry: entry,
     );
   }

@@ -15,17 +15,21 @@ import 'package:ice/src/util/string_buffer_ext.dart';
 class IceTemplate extends Template {
   const IceTemplate.forSubject(Class subject) : super.wrapper(subject);
 
-  void _writeSerializable(StringBuffer buffer) {
-    final nonPrivategGenClassName = subject.generatedName(retainPrivate: false);
+  void _writeClass(StringBuffer buffer) {
+    CopyWithTypeSafeTemplate? copyWithTemplate;
 
-    if (subject.canGeneratedMethod(IceOptions.toJson)) {
-      buffer
-        ..writeln(
-          'Map<String, dynamic> toJson() => '
-          '_\$${nonPrivategGenClassName}ToJson(this);',
-        )
-        ..writeln();
-    }
+    buffer.writeObject(
+      subject.classEntry,
+      body: () {
+        buffer.writeAll(subject.constructors.declarations(subject.genName));
+
+        _writeProperties(buffer, (copyWith) {
+          copyWithTemplate = copyWith;
+        });
+      },
+    );
+
+    copyWithTemplate?.addToBuffer(buffer, writeCopyClass: true);
   }
 
   void _writeProperties(
@@ -56,23 +60,15 @@ class IceTemplate extends Template {
     }
   }
 
-  void _writeClass(StringBuffer buffer) {
-    final genClassName = subject.generatedName(throwOnNameFormat: true);
-
-    CopyWithTypeSafeTemplate? copyWithTemplate;
-
-    buffer.writeObject(
-      subject.classEntry,
-      body: () {
-        buffer.writeAll(subject.constructors.declarations(genClassName));
-
-        _writeProperties(buffer, (copyWith) {
-          copyWithTemplate = copyWith;
-        });
-      },
-    );
-
-    copyWithTemplate?.addToBuffer(buffer, writeCopyClass: true);
+  void _writeSerializable(StringBuffer buffer) {
+    if (subject.canGeneratedMethod(IceOptions.toJson)) {
+      buffer
+        ..writeln(
+          'Map<String, dynamic> toJson() => '
+          '_\$${subject.nonPrivateName}ToJson(this);',
+        )
+        ..writeln();
+    }
   }
 
   @override

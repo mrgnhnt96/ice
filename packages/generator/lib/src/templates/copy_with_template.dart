@@ -9,13 +9,7 @@ extension on Class {
   }
 
   String get copyWithSignature {
-    final genName = generatedName();
     return '$genName copyWith';
-  }
-
-  String get privateCopyWithSignature {
-    final genName = generatedName();
-    return '$genName _copyWith';
   }
 }
 
@@ -76,11 +70,11 @@ class CopyWithTemplate extends Template {
         );
 
   void _copyWithMethod(StringBuffer buffer) {
-    final genClassName = subject.generatedName();
+    final genName = subject.genName;
     final entry = subject.copyWithConstructor();
     if (entry == null) return;
 
-    final classReturnValue = 'return $genClassName${entry.name}';
+    final classReturnValue = 'return $genName${entry.name}';
 
     final args = entry.arguments();
     final params = entry.parameters();

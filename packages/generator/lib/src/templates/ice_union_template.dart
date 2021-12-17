@@ -7,12 +7,12 @@ import 'package:ice/src/templates/templates.dart';
 import 'package:ice/src/util/string_buffer_ext.dart';
 
 extension on Class {
-  String get nameAsArg => generatedName(retainPrivate: false).toCamelCase();
+  String get nameAsArg => genName.toCamelCase();
 
   String resultArg({bool isRequired = false}) {
     final nullableStr = isRequired ? '' : '?';
     final keyword = isRequired ? 'required ' : '';
-    return '${keyword}_Result<R, ${generatedName()}>$nullableStr $nameAsArg';
+    return '${keyword}_Result<R, $genName>$nullableStr $nameAsArg';
   }
 
   String whenParams({bool isRequired = false}) {
@@ -41,14 +41,10 @@ extension on Class {
   }
 
   String get switchCase {
-    final genName = generatedName();
     return 'case $genName:\n' 'return $nameAsArg(this as $genName);';
   }
 
   String toIsType() {
-    final genName = generatedName();
-    final cleanName = generatedName(retainPrivate: false);
-
     return 'bool get is$cleanName => this is $genName;';
   }
 
@@ -199,7 +195,7 @@ class IceUnionBaseTemplate extends Template {
 
   void _writeSerialize(StringBuffer buffer) {
     buffer.writeObject(
-      '${subject.unionName} _\$${subject.generatedName(retainPrivate: false)}'
+      '${subject.unionName} _\$${subject.nonPrivateName}'
       'UnionFromJson(Map<String, dynamic> json, '
       '[${subject.unionName}? orElse])',
       body: () {
@@ -209,7 +205,7 @@ class IceUnionBaseTemplate extends Template {
             buffer
               ..writeAll(
                 subtypes.map<String>((e) {
-                  final name = e.generatedName();
+                  final name = e.genName;
                   return "case '$name':\n" 'return $name.fromJson(json);';
                 }),
                 '\n',
@@ -228,7 +224,7 @@ class IceUnionBaseTemplate extends Template {
     buffer
       ..writeln()
       ..writeObject(
-        'Map<String, dynamic> _\$${subject.generatedName(retainPrivate: false)}'
+        'Map<String, dynamic> _\$${subject.cleanName}'
         'UnionToJson(${subject.unionName} instance, '
         '{bool includeRuntimeType = true})',
         body: () {
@@ -261,7 +257,7 @@ class IceUnionBaseTemplate extends Template {
     buffer
       ..writeln()
       ..writeObject(
-        'mixin _\$${subject.generatedName()}Union',
+        'mixin _\$${subject.cleanName}Union',
         body: () {
           _writeProperties(buffer);
         },

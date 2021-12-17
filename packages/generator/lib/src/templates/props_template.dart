@@ -21,14 +21,10 @@ class PropsTemplate extends Template {
   }
 
   void _writeAsPrivateFunction(StringBuffer buffer) {
-    final privateGenClassName = subject.generatedName(
-      retainPrivate: false,
-    );
-
-    final genClassName = subject.generatedName();
+    final genName = subject.genName;
 
     buffer.writeObject(
-      'List<Object?> _\$${privateGenClassName}Props($genClassName instance)',
+      'List<Object?> _\$${subject.cleanName}Props($genName instance)',
       body: () {
         _writeReturn(buffer, withInstance: true);
       },
