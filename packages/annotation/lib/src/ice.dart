@@ -14,6 +14,7 @@ class Ice {
     this.tostring,
     this.equatable,
     this.copyWithType,
+    this.ignoreGettersAsProps,
   });
 
   /// generates the copyWith method
@@ -28,6 +29,12 @@ class Ice {
   /// whether the copyWith method is generated
   /// with simple or nullable arguments
   final CopyWithType? copyWithType;
+
+  /// whether to ignore getter methods as fields
+  /// to be included in `Equatable`'s props list
+  ///
+  /// Does nothing if [equatable] is `false`
+  final bool? ignoreGettersAsProps;
 }
 
 /// {@template ice_union_base}

@@ -103,6 +103,7 @@ class IceAnnotation implements Ice {
     required this.copyWithType,
     required this.equatable,
     required this.tostring,
+    required this.ignoreGettersAsProps,
   });
 
   /// gets the annotation from the [ElementAnnotation]
@@ -122,6 +123,8 @@ class IceAnnotation implements Ice {
     final copyWith = get<bool>('copyWith') ?? iceSettings.copyWith;
     final equatable = get<bool>('equatable') ?? iceSettings.equatable;
     final tostring = get<bool>('tostring') ?? iceSettings.tostring;
+    final ignoreGettersAsProps =
+        get<bool>('ignoreGettersAsProps') ?? iceSettings.ignoreGettersAsProps;
     final copyWithType = CopyWithType.values.fromReader(reader, 'copyWithType');
 
     return IceAnnotation(
@@ -129,6 +132,7 @@ class IceAnnotation implements Ice {
       copyWith: copyWith,
       copyWithType: copyWithType ?? CopyWithType.simple,
       tostring: tostring,
+      ignoreGettersAsProps: ignoreGettersAsProps,
     );
   }
 
@@ -143,6 +147,9 @@ class IceAnnotation implements Ice {
 
   @override
   final bool tostring;
+
+  @override
+  final bool ignoreGettersAsProps;
 
   /// whether the [name] can be generated into code
   bool shouldGenerate(IceOptions option) {
