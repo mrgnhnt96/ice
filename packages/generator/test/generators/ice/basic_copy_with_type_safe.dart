@@ -6,7 +6,7 @@ import 'package:ice_annotation/ice.dart';
 part 'output/basic_copy_with_type_safe.dart';
 
 @JsonSerializable()
-@Ice(copyWithTypeSafe: true)
+@Ice(copyWithType: CopyWithType.simple)
 class State extends _$State {
   const State(
     this.name,
