@@ -12,7 +12,7 @@ abstract class Template {
   const Template.wrapper(this.subject) : name = IceOptions.other;
 
   /// adds the template to the [buffer]
-  void addToBuffer(StringBuffer buffer);
+  void addToBuffer(StringBuffer buffer) => gate(buffer);
 
   /// The subject of the template
   final Class subject;
@@ -25,5 +25,24 @@ abstract class Template {
   /// should be called before [addToBuffer] or [toString]
   bool get canBeGenerated {
     return subject.canGeneratedMethod(name);
+  }
+
+  /// checks if the template can be generated
+  void gate(StringBuffer buffer) {
+    if (canBeGenerated) {
+      generate(buffer);
+    }
+  }
+
+  /// generates the template to the [buffer]
+  void generate(StringBuffer buffer);
+
+  @override
+  String toString() {
+    final buffer = StringBuffer();
+
+    generate(buffer);
+
+    return buffer.toString();
   }
 }
