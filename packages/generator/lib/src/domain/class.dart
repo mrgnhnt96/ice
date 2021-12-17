@@ -1,6 +1,7 @@
 // ignore_for_file: comment_references, implementation_imports, no_default_cases
 
 import 'package:analyzer/dart/element/element.dart';
+import 'package:ice/ice.dart';
 import 'package:ice/src/domain/class_annotations.dart';
 import 'package:ice/src/domain/domain.dart';
 import 'package:ice/src/domain/enums/copy_with_type_ext.dart';
@@ -23,7 +24,11 @@ class Class {
   factory Class.fromElement(ClassElement element) {
     final constructors = Constructor.fromElements(element.constructors);
     final annotations = ClassAnnotations.fromElements(element.metadata);
-    final fields = Field.fromElements(element.fields);
+    final fields = Field.fromElements(
+      element.fields,
+      ignoreGettersAsProps: annotations.ice?.ignoreGettersAsProps ??
+          iceSettings.ignoreGettersAsProps,
+    );
 
     return Class(
       constructors: constructors,

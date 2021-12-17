@@ -4,6 +4,8 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:ice/src/domain/domain.dart';
 import 'package:ice/src/domain/enums/enums.dart';
+import 'package:ice_annotation/ice.dart';
+import 'package:source_gen/source_gen.dart';
 
 /// {@template field}
 /// The [Field] of a [Class]
@@ -23,20 +25,37 @@ class Field {
   factory Field.fromElement(FieldElement element) {
     var includeInProps = true;
 
+    var hasIgnoreProp = false;
+    var hasJsonIgnore = false;
+
     final annotations = element.metadata;
 
     if (annotations.isNotEmpty) {
-      final ignoreProp = annotations.any(
-        (e) => e.element?.displayName == AnnotationTypes.ignoreProp.serialized,
-      );
+      for (final annotation in annotations) {
+        final annotationName = annotation.element?.displayName;
+        if (annotationName == null) {
+          continue;
+        }
 
-      includeInProps = !ignoreProp;
+        if (annotationName == AnnotationTypes.ignoreProp.serialized) {
+          hasIgnoreProp = true;
+          continue;
+        }
+
+        if (annotationName == AnnotationTypes.jsonKey.serialized) {
+          final reader = ConstantReader(annotation.computeConstantValue());
+          hasJsonIgnore = reader.peek('ignore')?.boolValue ?? true;
+          continue;
+        }
+      }
     }
 
     final type = element.type;
-
-    // TODO(mrgnhnt96): check for flag to include getters to props
     final isTrueField = !element.isSynthetic;
+
+    if (hasIgnoreProp || hasJsonIgnore) {
+      includeInProps = false;
+    }
 
     return Field(
       isNullable: type.nullabilitySuffix == NullabilitySuffix.question,
@@ -49,11 +68,20 @@ class Field {
   }
 
   /// retrieves the fields from the [FieldElement]s
-  static List<Field> fromElements(List<FieldElement> elements) {
+  static List<Field> fromElements(
+    List<FieldElement> elements, {
+    required bool ignoreGettersAsProps,
+  }) {
     final fields = <Field>[];
 
-    for (final field in elements) {
-      fields.add(Field.fromElement(field));
+    for (final fieldElement in elements) {
+      final field = Field.fromElement(fieldElement);
+
+      if (!field.isTrueField && ignoreGettersAsProps) {
+        continue;
+      }
+
+      fields.add(Field.fromElement(fieldElement));
     }
 
     return fields;
