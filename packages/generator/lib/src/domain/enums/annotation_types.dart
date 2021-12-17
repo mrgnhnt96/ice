@@ -17,6 +17,10 @@ enum AnnotationTypes {
   @EnumValue(serializedValue: 'JsonSerializable')
   jsonSerializable,
 
+  /// [JsonKey]
+  @EnumValue(serializedValue: 'JsonKey')
+  jsonKey,
+
   /// [IceUnion]
   @EnumValue(serializedValue: 'IceUnion.create')
   unionBase,
@@ -65,8 +69,8 @@ extension AnnotationTypesXX on AnnotationTypes {
   /// The [IceUnion] annotation
   bool get isUnionBase => this == AnnotationTypes.unionBase;
 
-  /// The [JsonSerializable] annotation
-  bool get isJsonSerializable => this == AnnotationTypes.jsonSerializable;
+  /// The [JsonKey] annotation
+  bool get isJsonKey => this == AnnotationTypes.jsonKey;
 
   /// The [IceUnion] annotation
   bool get isUnionOf => this == AnnotationTypes.unionOf;

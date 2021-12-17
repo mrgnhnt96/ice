@@ -4,12 +4,17 @@
 
 part of 'annotation_types.dart';
 
+// **************************************************************************
+// EnumAssistGenerator
+// **************************************************************************
+
 /// Extensions for the enum AnnotationTypes
 extension AnnotationTypesX on AnnotationTypes {
   /// Map of all values of the enum
   T map<T extends Object?>({
     required T ice,
     required T jsonSerializable,
+    required T jsonKey,
     required T unionBase,
     required T unionOf,
     required T copyWithEntryPoint,
@@ -26,6 +31,8 @@ extension AnnotationTypesX on AnnotationTypes {
         return ice;
       case AnnotationTypes.jsonSerializable:
         return jsonSerializable;
+      case AnnotationTypes.jsonKey:
+        return jsonKey;
       case AnnotationTypes.unionBase:
         return unionBase;
       case AnnotationTypes.unionOf:
@@ -56,6 +63,7 @@ extension AnnotationTypesX on AnnotationTypes {
     required T orElse,
     T? ice,
     T? jsonSerializable,
+    T? jsonKey,
     T? unionBase,
     T? unionOf,
     T? copyWithEntryPoint,
@@ -81,6 +89,9 @@ extension AnnotationTypesX on AnnotationTypes {
       case AnnotationTypes.jsonSerializable:
         if (jsonSerializable == null && !isNullable) return orElse;
         return jsonSerializable as T;
+      case AnnotationTypes.jsonKey:
+        if (jsonKey == null && !isNullable) return orElse;
+        return jsonKey as T;
       case AnnotationTypes.unionBase:
         if (unionBase == null && !isNullable) return orElse;
         return unionBase as T;
@@ -119,6 +130,7 @@ extension AnnotationTypesX on AnnotationTypes {
     return map<String>(
       ice: 'ice',
       jsonSerializable: 'jsonSerializable',
+      jsonKey: 'jsonKey',
       unionBase: 'unionBase',
       unionOf: 'unionOf',
       copyWithEntryPoint: 'copyWithEntryPoint',
@@ -137,16 +149,17 @@ extension AnnotationTypesX on AnnotationTypes {
     return map<int>(
       ice: 0,
       jsonSerializable: 1,
-      unionBase: 2,
-      unionOf: 3,
-      copyWithEntryPoint: 4,
-      unionEntryPoint: 5,
-      props: 6,
-      ignoreProp: 7,
-      tostring: 8,
-      copyWith: 9,
-      copyWithNullable: 10,
-      other: 11,
+      jsonKey: 2,
+      unionBase: 3,
+      unionOf: 4,
+      copyWithEntryPoint: 5,
+      unionEntryPoint: 6,
+      props: 7,
+      ignoreProp: 8,
+      tostring: 9,
+      copyWith: 10,
+      copyWithNullable: 11,
+      other: 12,
     );
   }
 
@@ -156,6 +169,7 @@ extension AnnotationTypesX on AnnotationTypes {
     return map<String>(
       ice: 'Ice',
       jsonSerializable: 'Json Serializable',
+      jsonKey: 'Json Key',
       unionBase: 'Union Base',
       unionOf: 'Union Of',
       copyWithEntryPoint: 'Copy With Entry Point',
@@ -178,6 +192,8 @@ extension AnnotationTypesX on AnnotationTypes {
 [Ice]''',
       jsonSerializable: '''
 [JsonSerializable]''',
+      jsonKey: '''
+[JsonKey]''',
       unionBase: '''
 [IceUnion]''',
       unionOf: '''
@@ -206,6 +222,7 @@ any other annotation''',
     return map<Object>(
       ice: AnnotationTypesConv._iceName,
       jsonSerializable: AnnotationTypesConv._jsonSerializableName,
+      jsonKey: AnnotationTypesConv._jsonKeyName,
       unionBase: AnnotationTypesConv._unionBaseName,
       unionOf: AnnotationTypesConv._unionOfName,
       copyWithEntryPoint: AnnotationTypesConv._copyWithEntryPointName,
@@ -242,6 +259,7 @@ class AnnotationTypesConv extends JsonConverter<AnnotationTypes, Object> {
 
   static const _iceName = 'Ice';
   static const _jsonSerializableName = 'JsonSerializable';
+  static const _jsonKeyName = 'JsonKey';
   static const _unionBaseName = 'IceUnion.create';
   static const _unionOfName = 'IceUnion.of';
   static const _copyWithEntryPointName = 'copyWithEntryPoint';
@@ -260,6 +278,8 @@ class AnnotationTypesConv extends JsonConverter<AnnotationTypes, Object> {
         return AnnotationTypes.ice;
       case _jsonSerializableName:
         return AnnotationTypes.jsonSerializable;
+      case _jsonKeyName:
+        return AnnotationTypes.jsonKey;
       case _unionBaseName:
         return AnnotationTypes.unionBase;
       case _unionOfName:
@@ -313,6 +333,8 @@ class _AnnotationTypesNullableConv
         return AnnotationTypes.ice;
       case AnnotationTypesConv._jsonSerializableName:
         return AnnotationTypes.jsonSerializable;
+      case AnnotationTypesConv._jsonKeyName:
+        return AnnotationTypes.jsonKey;
       case AnnotationTypesConv._unionBaseName:
         return AnnotationTypes.unionBase;
       case AnnotationTypesConv._unionOfName:
