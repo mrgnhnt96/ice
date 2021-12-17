@@ -55,35 +55,20 @@ class Class {
   /// The name of the class to be generated
   ///
   /// removes the `$` from the name
-  String generatedName({
-    bool retainPrivate = true,
-    bool throwOnNameFormat = false,
-  }) {
-    final genName = _generatedName;
-
-    if (genName != null) {
-      if (!retainPrivate) {
-        return genName.replaceAll('_', '');
-      }
-
-      return genName;
+  String get genName {
+    if (_generatedName != null) {
+      return _generatedName!;
     }
 
-    _generatedName = name.replaceAll(r'$', '');
-
-    if (!throwOnNameFormat) {
-      return generatedName(retainPrivate: retainPrivate);
-    }
-
-    return generatedName(retainPrivate: retainPrivate);
+    final clean = name.replaceAll(r'$', '');
+    return _generatedName = '_\$$clean';
   }
 
   /// checks for abstract then returns
   ///
   /// (abstract)? class extends [name] with EquatableMixin
   String get classEntry {
-    return 'abstract class ${generatedName()} extends '
-        '$name with EquatableMixin';
+    return 'abstract class $genName with EquatableMixin';
   }
 
   /// whether a method can be generated
@@ -155,5 +140,15 @@ class Class {
     }
 
     return constructors.first;
+  }
+
+  /// removes all `_` from the start of the name
+  String get nonPrivateName {
+    return name.replaceFirst(RegExp('^_+'), '');
+  }
+
+  /// removes all `_` and `$`
+  String get cleanName {
+    return name.replaceFirst(RegExp(r'^[_|$]+'), '');
   }
 }
