@@ -35,7 +35,7 @@ class IceSubjects {
   void add(Class subject) {
     _classes[subject.name] = subject;
 
-    final union = subject.annotations.unionType;
+    final union = subject.annotations.ofUnionType;
 
     if (union == null) {
       return;
