@@ -86,6 +86,12 @@ extension CopyWithTypeX on CopyWithType {
       nullable: CopyWithTypeConv._nullableName,
     );
   }
+
+  /// if the enum is simple
+  bool get isSimple => this == CopyWithType.simple;
+
+  /// if the enum is nullable
+  bool get isNullable => this == CopyWithType.nullable;
 }
 
 /// {@template copy_with_type.json_converter}
