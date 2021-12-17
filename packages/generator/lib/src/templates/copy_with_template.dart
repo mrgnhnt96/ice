@@ -69,6 +69,11 @@ class CopyWithTemplate extends Template {
           name: IceOptions.copyWithSimple,
         );
 
+  @override
+  void generate(StringBuffer buffer) {
+    _copyWithMethod(buffer);
+  }
+
   void _copyWithMethod(StringBuffer buffer) {
     final genName = subject.genName;
     final entry = subject.copyWithConstructor();
@@ -107,38 +112,5 @@ class CopyWithTemplate extends Template {
           );
         },
       );
-  }
-
-  @override
-  String toString() {
-    if (!canBeGenerated) {
-      return '';
-    }
-
-    final buffer = StringBuffer();
-
-    _copyWithMethod(buffer);
-
-    return buffer.toString();
-  }
-
-  @override
-  void addToBuffer(StringBuffer buffer, {bool wrapWithExtension = false}) {
-    if (!canBeGenerated) {
-      return;
-    }
-
-    if (wrapWithExtension) {
-      buffer.writeObject(
-        subject.extension,
-        body: () {
-          _copyWithMethod(buffer);
-        },
-      );
-
-      return;
-    }
-
-    _copyWithMethod(buffer);
   }
 }

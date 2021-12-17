@@ -70,6 +70,16 @@ class CopyWithTypeSafeTemplate extends Template {
           name: IceOptions.copyWithNullable,
         );
 
+  @override
+  void generate(StringBuffer buffer) {
+    if (_entry == null) {
+      return;
+    }
+
+    entry = _entry!;
+    _writeCopyWith(buffer);
+  }
+
   /// receives the Constructor? from the subject
   ///
   /// if null, this CopyWith method is not generated
@@ -178,58 +188,5 @@ class CopyWithTypeSafeTemplate extends Template {
           ..writeln();
       },
     );
-  }
-
-  @override
-  String toString() {
-    if (_entry == null) {
-      return '';
-    }
-    entry = _entry!;
-
-    if (!canBeGenerated) {
-      return '';
-    }
-
-    final buffer = StringBuffer();
-
-    _writeCopyWith(buffer);
-
-    return buffer.toString();
-  }
-
-  @override
-  void addToBuffer(
-    StringBuffer buffer, {
-    bool wrapWithExtension = false,
-    bool writeCopyClass = false,
-  }) {
-    if (_entry == null) {
-      return;
-    }
-    entry = _entry!;
-
-    if (!canBeGenerated) {
-      return;
-    }
-
-    if (writeCopyClass) {
-      _writeCopyClasses(buffer);
-
-      return;
-    }
-
-    if (wrapWithExtension) {
-      buffer.writeObject(
-        subject.extension,
-        body: () {
-          _writeCopyWith(buffer);
-        },
-      );
-
-      return;
-    }
-
-    _writeCopyWith(buffer);
   }
 }

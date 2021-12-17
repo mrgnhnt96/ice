@@ -7,7 +7,14 @@ import 'package:ice/src/util/string_buffer_ext.dart';
 /// {@endtemplate}
 class PropsTemplate extends Template {
   /// {@macro props_template}
-  const PropsTemplate.forSubject(Class subject) : super.wrapper(subject);
+  const PropsTemplate.forSubject(Class subject)
+      : super(subject, name: IceOptions.equatable);
+
+  @override
+  void generate(StringBuffer buffer) {
+    _writeAsOverride(buffer);
+    // _writeAsPrivateFunction(buffer);
+  }
 
   void _writeAsOverride(StringBuffer buffer) {
     buffer
@@ -45,30 +52,5 @@ class PropsTemplate extends Template {
         ', ',
       )
       ..writeln('];');
-  }
-
-  @override
-  String toString() {
-    if (!canBeGenerated) {
-      return '';
-    }
-    final buffer = StringBuffer();
-
-    _writeAsOverride(buffer);
-
-    return buffer.toString();
-  }
-
-  @override
-  void addToBuffer(StringBuffer buffer, {bool asOverride = true}) {
-    if (asOverride) {
-      if (!canBeGenerated) {
-        return;
-      }
-
-      _writeAsOverride(buffer);
-    } else {
-      _writeAsPrivateFunction(buffer);
-    }
   }
 }

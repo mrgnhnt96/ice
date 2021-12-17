@@ -76,6 +76,17 @@ extension on StringBuffer {
 class IceUnionBaseTemplate extends Template {
   IceUnionBaseTemplate.forSubject(Class subject) : super.wrapper(subject);
 
+  @override
+  void generate(StringBuffer buffer) {
+    //   buffer
+    //     ..writeln(
+    // ignore: lines_longer_than_80_chars
+    //       'typedef _Result<R, T extends ${subject.unionName}> = R Function(T);',
+    //     )
+    //     ..writeln('typedef _NoResult<R> = R Function();');
+    _writeClass(buffer);
+  }
+
   List<Class> get subtypes =>
       _subtypes ??= IceGenerator.subjects.getUnions(subject);
   List<Class>? _subtypes;
@@ -264,35 +275,5 @@ class IceUnionBaseTemplate extends Template {
       )
       ..writeln();
     _writeSerialize(buffer);
-  }
-
-  @override
-  void addToBuffer(StringBuffer buffer, {bool wrapInClass = true}) {
-    if (subtypes.isEmpty) return;
-
-    buffer
-      ..writeln(
-        'typedef _Result<R, T extends ${subject.unionName}> = R Function(T);',
-      )
-      ..writeln('typedef _NoResult<R> = R Function();');
-
-    if (wrapInClass) {
-      _writeClass(buffer);
-    } else {
-      _writeProperties(buffer);
-
-      buffer.writeln();
-
-      _writeSerialize(buffer);
-    }
-  }
-
-  @override
-  String toString() {
-    final buffer = StringBuffer();
-
-    addToBuffer(buffer);
-
-    return buffer.toString();
   }
 }

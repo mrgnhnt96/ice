@@ -8,6 +8,18 @@ import 'package:ice/src/templates/template.dart';
 import 'package:ice/src/templates/to_string_template.dart';
 import 'package:ice/src/util/string_buffer_ext.dart';
 
+extension on Class {
+  Iterable<String> get fieldGetters {
+    final getters = <String>[];
+
+    for (final field in fields) {
+      getters.add('${field.type} get ${field.name};');
+    }
+
+    return getters;
+  }
+}
+
 /// A template to generate methods for
 /// - copyWith()
 /// - Equatable Props
@@ -15,13 +27,21 @@ import 'package:ice/src/util/string_buffer_ext.dart';
 class IceTemplate extends Template {
   const IceTemplate.forSubject(Class subject) : super.wrapper(subject);
 
+  @override
+  void generate(StringBuffer buffer) {
+    _writeClass(buffer);
+  }
+
   void _writeClass(StringBuffer buffer) {
     CopyWithTypeSafeTemplate? copyWithTemplate;
 
     buffer.writeObject(
       subject.classEntry,
       body: () {
-        buffer.writeAll(subject.constructors.declarations(subject.genName));
+        buffer
+          ..writeln('const ${subject.genName}();')
+          ..writeln()
+          ..writeAll(subject.fieldGetters, '\n');
 
         _writeProperties(buffer, (copyWith) {
           copyWithTemplate = copyWith;
@@ -29,7 +49,7 @@ class IceTemplate extends Template {
       },
     );
 
-    copyWithTemplate?.addToBuffer(buffer, writeCopyClass: true);
+    copyWithTemplate?.addToBuffer(buffer);
   }
 
   void _writeProperties(
@@ -38,14 +58,6 @@ class IceTemplate extends Template {
   ) {
     if (!subject.annotations.createToJson) {
       _writeSerializable(buffer);
-    }
-
-    if (subject.canGeneratedMethod(IceOptions.tostring)) {
-      ToStringTemplate.forSubject(subject).addToBuffer(buffer);
-    }
-
-    if (subject.canGeneratedMethod(IceOptions.equatable)) {
-      PropsTemplate.forSubject(subject).addToBuffer(buffer);
     }
 
     if (subject.canGeneratedMethod(IceOptions.copyWithSimple)) {
@@ -58,6 +70,14 @@ class IceTemplate extends Template {
 
       afterClass(copyWithTemplate);
     }
+
+    if (subject.canGeneratedMethod(IceOptions.equatable)) {
+      PropsTemplate.forSubject(subject).addToBuffer(buffer);
+    }
+
+    if (subject.canGeneratedMethod(IceOptions.tostring)) {
+      ToStringTemplate.forSubject(subject).addToBuffer(buffer);
+    }
   }
 
   void _writeSerializable(StringBuffer buffer) {
@@ -68,26 +88,6 @@ class IceTemplate extends Template {
           '_\$${subject.nonPrivateName}ToJson(this);',
         )
         ..writeln();
-    }
-  }
-
-  @override
-  String toString() {
-    final buffer = StringBuffer();
-
-    _writeClass(buffer);
-
-    return buffer.toString();
-  }
-
-  @override
-  void addToBuffer(StringBuffer buffer, {bool wrapInClass = true}) {
-    if (wrapInClass) {
-      _writeClass(buffer);
-    } else {
-      _writeProperties(buffer, (copyWith) {
-        copyWith.addToBuffer(buffer, writeCopyClass: true);
-      });
     }
   }
 }

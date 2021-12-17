@@ -29,6 +29,12 @@ class ToStringTemplate extends Template {
           name: IceOptions.tostring,
         );
 
+  @override
+  void generate(StringBuffer buffer) {
+    _writeAsOverride(buffer);
+    // _writeAsPrivateFunction(buffer);
+  }
+
   void _writeAsOverride(StringBuffer buffer) {
     buffer
       ..writeln('@override')
@@ -58,31 +64,5 @@ class ToStringTemplate extends Template {
       ..write("return '$genName{")
       ..writeAll(subject.fields.asArgs(withInstance: withInstance), ', ')
       ..writeln("}';");
-  }
-
-  @override
-  String toString() {
-    if (!canBeGenerated) {
-      return '';
-    }
-
-    final buffer = StringBuffer();
-
-    _writeAsOverride(buffer);
-
-    return buffer.toString();
-  }
-
-  @override
-  void addToBuffer(StringBuffer buffer, {bool asOverride = true}) {
-    if (asOverride) {
-      if (!canBeGenerated) {
-        return;
-      }
-
-      _writeAsOverride(buffer);
-    } else {
-      _writeAsPrivateFunction(buffer);
-    }
   }
 }
