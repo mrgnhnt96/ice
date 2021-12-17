@@ -13,6 +13,10 @@ enum AnnotationTypes {
   @EnumValue(serializedValue: 'Ice')
   ice,
 
+  /// [JsonSerializable]
+  @EnumValue(serializedValue: 'JsonSerializable')
+  jsonSerializable,
+
   /// [IceUnion]
   @EnumValue(serializedValue: 'IceUnion.create')
   unionBase,
@@ -39,7 +43,7 @@ enum AnnotationTypes {
 
   /// [ToString]
   @EnumValue(serializedValue: 'toString')
-  string,
+  tostring,
 
   /// [CopyWith]
   @EnumValue(serializedValue: 'copyWith')
@@ -47,7 +51,7 @@ enum AnnotationTypes {
 
   /// [CopyWithTypeSafe]
   @EnumValue(serializedValue: 'copyWithTypeSafe')
-  copyWithTypeSafe,
+  copyWithNullable,
 
   /// any other annotation
   other,
@@ -60,6 +64,9 @@ extension AnnotationTypesXX on AnnotationTypes {
 
   /// The [IceUnion] annotation
   bool get isUnionBase => this == AnnotationTypes.unionBase;
+
+  /// The [JsonSerializable] annotation
+  bool get isJsonSerializable => this == AnnotationTypes.jsonSerializable;
 
   /// The [IceUnion] annotation
   bool get isUnionOf => this == AnnotationTypes.unionOf;
@@ -77,13 +84,13 @@ extension AnnotationTypesXX on AnnotationTypes {
   bool get isIgnoreProp => this == AnnotationTypes.ignoreProp;
 
   /// The [ToString] annotation
-  bool get isToString => this == AnnotationTypes.string;
+  bool get isToString => this == AnnotationTypes.tostring;
 
   /// The [CopyWith] annotation
   bool get isCopyWith => this == AnnotationTypes.copyWith;
 
   /// The [CopyWithTypeSafe] annotation
-  bool get isCopyWithTypeSafe => this == AnnotationTypes.copyWithTypeSafe;
+  bool get isCopyWithTypeSafe => this == AnnotationTypes.copyWithNullable;
 
   /// any other annotation
   bool get isOther => this == AnnotationTypes.other;
