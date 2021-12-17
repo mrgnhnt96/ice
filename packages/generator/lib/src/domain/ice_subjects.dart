@@ -33,8 +33,6 @@ class IceSubjects {
   /// adds the [subject] to the list of [Ice] classes
   /// mapped by supertypes
   void add(Class subject) {
-    _classes[subject.name] = subject;
-
     final union = subject.annotations.ofUnionType;
 
     if (union == null) {
