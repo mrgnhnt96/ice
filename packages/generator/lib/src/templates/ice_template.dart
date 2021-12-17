@@ -32,7 +32,7 @@ class IceTemplate extends Template {
     StringBuffer buffer,
     Function(CopyWithTypeSafeTemplate) afterClass,
   ) {
-    if (!subject.isAbstract) {
+    if (!subject.annotations.createToJson) {
       _writeSerializable(buffer);
     }
 
@@ -44,11 +44,11 @@ class IceTemplate extends Template {
       PropsTemplate.forSubject(subject).addToBuffer(buffer);
     }
 
-    if (subject.canGeneratedMethod(IceOptions.copyWith)) {
+    if (subject.canGeneratedMethod(IceOptions.copyWithSimple)) {
       CopyWithTemplate.forSubject(subject).addToBuffer(buffer);
     }
 
-    if (subject.canGeneratedMethod(IceOptions.copyWithTypeSafe)) {
+    if (subject.canGeneratedMethod(IceOptions.copyWithNullable)) {
       final copyWithTemplate = CopyWithTypeSafeTemplate.forSubject(subject)
         ..addToBuffer(buffer);
 
@@ -58,10 +58,6 @@ class IceTemplate extends Template {
 
   void _writeClass(StringBuffer buffer) {
     final genClassName = subject.generatedName(throwOnNameFormat: true);
-
-    if (!subject.isAbstract) {
-      buffer.writeln('@JsonSerializable()');
-    }
 
     CopyWithTypeSafeTemplate? copyWithTemplate;
 

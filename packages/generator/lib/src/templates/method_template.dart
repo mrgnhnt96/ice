@@ -1,7 +1,7 @@
 import 'package:ice/src/domain/class.dart';
-import 'package:ice/src/domain/enums/annotation_types.dart';
 import 'package:ice/src/templates/copy_with_template.dart';
 import 'package:ice/src/templates/templates.dart';
+import 'package:ice_annotation/ice.dart';
 
 /// {@template method_template}
 /// Writes the extensions and methods for the given class.
@@ -11,46 +11,25 @@ class MethodTemplate extends Template {
   MethodTemplate.forSubject(Class subject) : super.wrapper(subject);
 
   void _getAndWriteMethods(StringBuffer buffer) {
-    var generateCopyWith = false;
-    var generateCopyWithNullable = false;
-    var generateProps = false;
-    var generateToString = false;
-
-    for (final annotation in subject.annotations) {
-      final type = annotation.type;
-      if (type.isOther) continue;
-
-      type.maybeMap(
-        copyWith: () {
-          generateCopyWith = true;
-        },
-        props: () {
-          generateProps = true;
-        },
-        copyWithTypeSafe: () {
-          generateCopyWithNullable = true;
-        },
-        string: () {
-          generateToString = true;
-        },
-        orElse: () {},
-      )();
+    final methods = subject.annotations.methods;
+    if (methods == null) {
+      return;
     }
 
-    if (generateCopyWith || generateCopyWithNullable) {
-      if (generateCopyWithNullable) {
-        CopyWithTypeSafeTemplate.forSubject(subject)
-            .addToBuffer(buffer, wrapWithExtension: true);
-      } else {
-        CopyWithTemplate.forSubject(subject).addToBuffer(buffer);
-      }
+    if (methods.canGenerateCopyWith(CopyWithType.nullable)) {
+      CopyWithTypeSafeTemplate.forSubject(subject)
+          .addToBuffer(buffer, wrapWithExtension: true);
     }
 
-    if (generateProps) {
+    if (methods.canGenerateCopyWith(CopyWithType.simple)) {
+      CopyWithTemplate.forSubject(subject).addToBuffer(buffer);
+    }
+
+    if (methods.hasProps) {
       PropsTemplate.forSubject(subject).addToBuffer(buffer, asOverride: false);
     }
 
-    if (generateToString) {
+    if (methods.hasToString) {
       ToStringTemplate.forSubject(subject)
           .addToBuffer(buffer, asOverride: false);
     }

@@ -72,41 +72,20 @@ class CopyWithTemplate extends Template {
   CopyWithTemplate.forSubject(Class subject)
       : super(
           subject,
-          name: IceOptions.copyWith,
+          name: IceOptions.copyWithSimple,
         );
 
-  /// the constructor entry for copywith
-  Constructor get entry => _entry ??= subject.entryPoint();
-  Constructor? _entry;
-
-  void _copyWithMethod(
-    StringBuffer buffer, {
-    String? signature,
-    Iterable<String> Function()? parameters,
-    Iterable<String> Function()? arguments,
-    String? returnValue,
-    bool includeObjectCopyWith = true,
-  }) {
+  void _copyWithMethod(StringBuffer buffer) {
     final genClassName = subject.generatedName();
-    final entryPointName = entry.isDefault ? '' : '.${entry.name}';
-    final classReturnValue = 'return $genClassName$entryPointName';
+    final entry = subject.copyWithConstructor();
+    if (entry == null) return;
 
-    final args = arguments?.call() ?? entry.arguments();
-    final params = parameters?.call() ?? entry.parameters();
-    final sig = signature ?? subject.copyWithSignature;
-    final returnVal =
-        returnValue ?? (params.isEmpty ? classReturnValue : 'return _copyWith');
+    final classReturnValue = 'return $genClassName${entry.name}';
 
-    void _objectCopyWith(StringBuffer buffer) {
-      _copyWithMethod(
-        buffer,
-        signature: subject.privateCopyWithSignature,
-        parameters: entry.objectParameters,
-        arguments: entry.argumentsWithDefault,
-        returnValue: classReturnValue,
-        includeObjectCopyWith: false,
-      );
-    }
+    final args = entry.arguments();
+    final params = entry.parameters();
+    final sig = subject.copyWithSignature;
+    final returnVal = params.isEmpty ? classReturnValue : 'return _copyWith';
 
     final open = params.isNotEmpty ? '({' : '(';
     final close = params.isNotEmpty ? '})' : ')';
@@ -124,11 +103,6 @@ class CopyWithTemplate extends Template {
       ..writeObject(
         '',
         body: () {
-          if (includeObjectCopyWith && params.isNotEmpty) {
-            _objectCopyWith(buffer);
-            buffer.writeln();
-          }
-
           buffer.writeObject(
             returnVal,
             open: '(',
@@ -143,7 +117,7 @@ class CopyWithTemplate extends Template {
 
   @override
   String toString() {
-    if (!canBeGenerated || subject.isAbstract) {
+    if (!canBeGenerated) {
       return '';
     }
 
@@ -156,7 +130,7 @@ class CopyWithTemplate extends Template {
 
   @override
   void addToBuffer(StringBuffer buffer, {bool wrapWithExtension = false}) {
-    if (!canBeGenerated || subject.isAbstract) {
+    if (!canBeGenerated) {
       return;
     }
 

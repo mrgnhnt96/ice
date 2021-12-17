@@ -2,7 +2,6 @@
 
 import 'package:ice/src/domain/domain.dart';
 import 'package:ice/src/domain/enums/position_type.dart';
-import 'package:ice/src/domain/field.dart';
 import 'package:ice/src/templates/template.dart';
 import 'package:ice/src/util/string_buffer_ext.dart';
 
@@ -20,10 +19,6 @@ extension on Class {
     final name = copyWithInterfaceName;
 
     return '${name}Impl';
-  }
-
-  Iterable<Field> deepCopies() {
-    return fields.where((e) => e.hasCopyWith());
   }
 }
 
@@ -70,20 +65,24 @@ extension on Param {
 class CopyWithTypeSafeTemplate extends Template {
   /// {@macro copy_with_method}
   CopyWithTypeSafeTemplate.forSubject(Class subject)
-      : super(
+      : _entry = subject.copyWithConstructor(),
+        super(
           subject,
-          name: IceOptions.copyWithTypeSafe,
+          name: IceOptions.copyWithNullable,
         );
 
+  /// receives the Constructor? from the subject
+  ///
+  /// if null, this CopyWith method is not generated
+  /// if not null, [entry] will be assigned the value of [_entry]
+  final Constructor? _entry;
+
   /// the constructor entry for copywith
-  Constructor get entry => _entry ??= subject.entryPoint();
-  Constructor? _entry;
+  late final Constructor entry;
 
   void _writeCopyWith(
     StringBuffer buffer,
   ) {
-    final entry = subject.entryPoint();
-
     if (entry.params.isEmpty) {
       final genClassName = subject.generatedName();
 
@@ -101,8 +100,6 @@ class CopyWithTypeSafeTemplate extends Template {
   }
 
   void _writeCopyClasses(StringBuffer buffer) {
-    final entry = subject.entryPoint();
-
     if (entry.params.isEmpty) {
       return;
     }
@@ -186,7 +183,12 @@ class CopyWithTypeSafeTemplate extends Template {
 
   @override
   String toString() {
-    if (!canBeGenerated || subject.isAbstract) {
+    if (_entry == null) {
+      return '';
+    }
+    entry = _entry!;
+
+    if (!canBeGenerated) {
       return '';
     }
 
@@ -203,7 +205,12 @@ class CopyWithTypeSafeTemplate extends Template {
     bool wrapWithExtension = false,
     bool writeCopyClass = false,
   }) {
-    if (!canBeGenerated || subject.isAbstract) {
+    if (_entry == null) {
+      return;
+    }
+    entry = _entry!;
+
+    if (!canBeGenerated) {
       return;
     }
 
