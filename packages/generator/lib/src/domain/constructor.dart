@@ -20,8 +20,9 @@ class Constructor {
 
   /// Gets the constructor from the [ConstructorElement]
   factory Constructor.fromElement(ConstructorElement element) {
-    // TODO:  get copyWith from the annotations
-    const isCopyWithConstructor = false;
+    const conv = AnnotationTypesConv.nullable;
+    final isCopyWithConstructor =
+        element.metadata.any((e) => conv.fromJson(e.element?.name) != null);
 
     final params = Param.fromElements(element.parameters);
 
@@ -77,8 +78,9 @@ class Constructor {
   /// If the constructor is named
   bool get isNamed => name.isNotEmpty;
 
-  /// whether the constructor is a named constructor
-  /// and not a static or factory constructor
+  /// whether the constructor is a generative (named) constructor
+  ///
+  /// is false if the constructor is factory or static
   final bool isGenerative;
 
   /// gets the args wrapped in a super call
