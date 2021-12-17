@@ -14,23 +14,10 @@ extension ExampleX on Example {
     int? whole,
     double? decimal,
   }) {
-    Example _copyWith({
-      Object? text,
-      Object? whole,
-      Object? decimal,
-    }) {
-      return Example.fromJson(
-        text: text == kCopyWithDefault ? this.text : text as String?,
-        whole: whole == kCopyWithDefault ? this.whole : whole as int?,
-        decimal:
-            decimal == kCopyWithDefault ? this.decimal : decimal as double?,
-      );
-    }
-
-    return _copyWith(
-      text: text,
-      whole: whole,
-      decimal: decimal,
+    return Example.fromJson(
+      text: text ?? this.text,
+      whole: whole ?? this.whole,
+      decimal: decimal ?? this.decimal,
     );
   }
 }
