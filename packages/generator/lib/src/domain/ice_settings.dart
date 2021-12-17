@@ -7,22 +7,37 @@ import 'package:ice_annotation/ice.dart';
 class IceSettings implements Ice {
   /// {@macro ice_settings}
   const IceSettings({
-    this.copyWith = true,
-    this.copyWithType = CopyWithType.simple,
-    this.equatable = true,
-    this.tostring = true,
+    required this.copyWith,
+    required this.copyWithType,
+    required this.equatable,
+    required this.tostring,
+    required this.ignoreGettersAsProps,
   });
+
+  /// the default settings for ice
+  const IceSettings.defaultValues()
+      : this(
+          copyWith: true,
+          copyWithType: CopyWithType.simple,
+          equatable: true,
+          tostring: true,
+          ignoreGettersAsProps: true,
+        );
 
   /// {@macro ice_settings}
   factory IceSettings.fromOptions(Map<String, dynamic> config) {
-    const conv = CopyWithTypeConv(defaultValue: CopyWithType.simple);
+    const defaultValues = IceSettings.defaultValues();
+
+    final conv = CopyWithTypeConv(defaultValue: defaultValues.copyWithType);
     final copyWithType = conv.fromJson(config['copy_with_type'] as String);
 
     return IceSettings(
-      copyWith: config['copy_with'] as bool? ?? true,
+      copyWith: config['copy_with'] as bool? ?? defaultValues.copyWith,
       copyWithType: copyWithType,
-      equatable: config['equatable'] as bool? ?? true,
-      tostring: config['tostring'] as bool? ?? true,
+      equatable: config['equatable'] as bool? ?? defaultValues.equatable,
+      tostring: config['to_string'] as bool? ?? defaultValues.tostring,
+      ignoreGettersAsProps: config['ignore_getters_as_props'] as bool? ??
+          defaultValues.ignoreGettersAsProps,
     );
   }
 
@@ -37,4 +52,7 @@ class IceSettings implements Ice {
 
   @override
   final bool tostring;
+
+  @override
+  final bool ignoreGettersAsProps;
 }
