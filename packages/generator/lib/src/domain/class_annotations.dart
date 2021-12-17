@@ -55,7 +55,6 @@ class ClassAnnotations {
           continue;
         case AnnotationTypes.unionOf:
           final reader = ConstantReader(annotation.computeConstantValue());
-          // TODO(mrgnhnt96): make sure that the base type is right
           unionType = reader.peek('base')?.typeValue.toString();
 
           if (unionType?.endsWith('*') ?? false) {
