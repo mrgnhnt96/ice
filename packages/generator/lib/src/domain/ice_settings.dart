@@ -28,8 +28,9 @@ class IceSettings implements Ice {
   factory IceSettings.fromOptions(Map<String, dynamic> config) {
     const defaultValues = IceSettings.defaultValues();
 
-    final conv = CopyWithTypeConv(defaultValue: defaultValues.copyWithType);
-    final copyWithType = conv.fromJson(config['copy_with_type'] as String);
+    const conv = CopyWithTypeConv.nullable;
+    final copyWithType = conv.fromJson(config['copy_with_type'] as String?) ??
+        defaultValues.copyWithType;
 
     return IceSettings(
       copyWith: config['copy_with'] as bool? ?? defaultValues.copyWith,
