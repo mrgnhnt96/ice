@@ -35,20 +35,12 @@ class ClassAnnotations {
       ...MethodAnnotations.annotationTypes.map((e) => e.serialized),
     };
 
-    const conv = AnnotationTypesConv.nullable;
-
     for (final annotation in elements) {
-      final element = annotation.element;
-      if (element == null) {
+      final type = types.getAnnotationFrom(annotation);
+      if (type == null) {
         continue;
       }
 
-      final annotationType = types.lookup(element.displayName);
-      if (annotationType == null) {
-        continue;
-      }
-
-      final type = conv.fromJson(annotationType);
       switch (type) {
         case AnnotationTypes.ice:
           ice = IceAnnotation.fromElement(annotation);
@@ -69,7 +61,6 @@ class ClassAnnotations {
           createToJson = reader.peek('createToJson')?.boolValue ?? true;
           continue;
         default:
-          if (type == null) continue;
           if (ice != null) {
             if (methods != null) {
               // we do not want to create any methods if the class has been

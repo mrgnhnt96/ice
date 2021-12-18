@@ -20,9 +20,8 @@ class Constructor {
 
   /// Gets the constructor from the [ConstructorElement]
   factory Constructor.fromElement(ConstructorElement element) {
-    const conv = AnnotationTypesConv.nullable;
-    final isCopyWithConstructor =
-        element.metadata.any((e) => conv.fromJson(e.element?.name) != null);
+    final isCopyWithConstructor = element.metadata
+        .containsAnnotation(AnnotationTypes.copyWithConstructor);
 
     final params = Param.fromElements(element.parameters);
 
