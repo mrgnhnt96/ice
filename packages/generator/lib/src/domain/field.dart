@@ -4,7 +4,6 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:ice/src/domain/domain.dart';
 import 'package:ice/src/domain/enums/enums.dart';
-import 'package:ice_annotation/ice.dart';
 import 'package:source_gen/source_gen.dart';
 
 /// {@template field}
