@@ -16,11 +16,8 @@ import 'package:test/test.dart';
 void main() {
   const base = 'test/generators/ice';
 
-  setUpAll(() {
-    iceSettings = const IceSettings();
-  });
-
   setUp(() {
+    iceSettings = const IceSettings.defaultValues();
     GeneratorPath.setDirPath(
       input: base,
       output: '$base/output',

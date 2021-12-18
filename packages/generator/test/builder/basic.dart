@@ -42,5 +42,5 @@ class State extends _$State {
   final DateTime? date;
 }
 
-Map<String, dynamic> _$StateToJson(_$State state) => <String, dynamic>{};
+Map<String, dynamic> _$StateToJson(State state) => <String, dynamic>{};
 State _$StateFromJson(Map<String, dynamic> json) => State('', 1);

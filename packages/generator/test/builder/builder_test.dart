@@ -15,7 +15,7 @@ import 'package:test/test.dart';
 void main() {
   const iceBuilder = IceBuilder();
 
-  setUpAll(() {
+  setUp(() {
     const base = 'test/builder';
     GeneratorPath.setDirPath(
       input: base,

@@ -32,8 +32,6 @@ abstract class _$State with EquatableMixin {
   @override
   List<Object?> get props => [name, age, money, isCool, date];
 
-  Map<String, dynamic> toJson() => _$StateToJson(this);
-
   @override
   String toString() {
     return '''

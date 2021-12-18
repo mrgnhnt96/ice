@@ -1,4 +1,4 @@
-// ignore_for_file: unused_import
+// ignore_for_file: unused_import, file_names
 
 import 'package:build/build.dart';
 import 'package:build_test/build_test.dart';
