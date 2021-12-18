@@ -7,19 +7,11 @@ import 'package:ice_annotation/ice.dart';
 
 extension on Class {
   CopyWithType get copyWithType {
-    final method = annotations.methods;
-
-    if (method != null) {
-      return method.copyWithType;
-    }
-
-    final ice = annotations.ice;
-
-    if (ice != null) {
-      return ice.copyWithType;
-    }
-
-    return CopyWithType.simple;
+    return metaSettings(
+      methodCallback: (method) => method.copyWithType,
+      iceCallback: (ice) => ice.copyWithType,
+      settingsCallback: (settings) => settings.copyWithType,
+    );
   }
 }
 
@@ -43,10 +35,9 @@ abstract class CopyWithTemplate extends Template {
   /// {@macro copy_with}
   CopyWithTemplate(
     Class subject, {
-    required IceOptions name,
     required this.type,
   })  : _constructor = subject.copyWithConstructor(),
-        super(subject, name: name);
+        super(subject, name: IceOptions.copyWith);
 
   /// {@macro copy_with}
   factory CopyWithTemplate.forSubject(Class subject) {
@@ -64,9 +55,7 @@ abstract class CopyWithTemplate extends Template {
 
   /// the type of the copyWith method
   final CopyWithType type;
-
-  /// the doc comment of the copyWith method
-  String get docComment => type.docComment;
+  final Constructor? _constructor;
 
   /// the constructor of the class to be used for the copyWith method
   Constructor get constructor {
@@ -77,5 +66,10 @@ abstract class CopyWithTemplate extends Template {
     return _constructor!;
   }
 
-  final Constructor? _constructor;
+  /// the doc comment of the copyWith method
+  String get docComment => type.docComment;
+
+  /// any preparation/support that is needed for the copyWith method
+  /// to succeffully generate
+  void writeSupport(StringBuffer buffer);
 }
