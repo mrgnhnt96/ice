@@ -103,8 +103,8 @@ class Class {
     switch (option) {
       case IceOptions.copyWithSimple:
         return generateCopyWith((type) => type.isSimple);
-      case IceOptions.copyWithNullable:
-        return generateCopyWith((type) => type.isNullable);
+      case IceOptions.copyWithFunction:
+        return generateCopyWith((type) => type.isTypeSafe);
       case IceOptions.equatable:
         return generate(
           iceCallback: (ice) => ice.equatable,
