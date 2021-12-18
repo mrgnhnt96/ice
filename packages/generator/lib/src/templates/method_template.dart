@@ -1,5 +1,5 @@
 import 'package:ice/src/domain/class.dart';
-import 'package:ice/src/templates/copy_with_template.dart';
+import 'package:ice/src/templates/copy_with_templates/copy_with_template.dart';
 import 'package:ice/src/templates/templates.dart';
 
 /// {@template method_template}
@@ -11,15 +11,10 @@ class MethodTemplate extends Template {
 
   @override
   void generate(StringBuffer buffer) {
-    _getAndWriteMethods(buffer);
-  }
-
-  void _getAndWriteMethods(StringBuffer buffer) {
     final methods = subject.annotations.methods;
     if (methods == null) return;
 
-    CopyWithTypeSafeTemplate.forSubject(subject).addToBuffer(buffer);
-    CopyWithTemplate.forSubject(subject).addToBuffer(buffer);
+    CopyWithTemplate.forSubject(subject, asExtension: true).addToBuffer(buffer);
     PropsTemplate.forSubject(subject).addToBuffer(buffer);
     ToStringTemplate.forSubject(subject).addToBuffer(buffer);
   }

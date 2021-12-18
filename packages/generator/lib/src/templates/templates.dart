@@ -1,4 +1,4 @@
-export 'copy_with_type_safe_template.dart';
+export 'copy_with_templates/copy_with_function_template.dart';
 export 'ice_template.dart';
 export 'ice_union_template.dart';
 export 'method_template.dart';
