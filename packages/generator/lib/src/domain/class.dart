@@ -66,8 +66,18 @@ class Class {
   /// checks for abstract then returns
   ///
   /// (abstract)? class extends [name] with EquatableMixin
-  String get classEntry {
-    return 'abstract class $genName with EquatableMixin';
+  String get classHeader {
+    final equatable = metaSettings(
+      methodCallback: (_) => false,
+      iceCallback: (settings) => settings.equatable,
+      settingsCallback: (settings) => settings.equatable,
+    );
+    var mixins = '';
+
+    if (equatable) {
+      mixins = ' with EquatableMixin';
+    }
+    return 'abstract class $genName$mixins';
   }
 
   /// checks settings from annotations, ([methodCallback], [iceCallback])

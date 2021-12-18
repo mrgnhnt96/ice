@@ -32,7 +32,7 @@ class IceTemplate extends Template {
     final copyWithTemplate = CopyWithTemplate.forSubject(subject);
 
     buffer.writeObject(
-      subject.classEntry,
+      subject.classHeader,
       body: () {
         buffer
           ..writeln('const ${subject.genName}();')
