@@ -1,16 +1,8 @@
-import 'package:ice_annotation/src/methods/copy_with.dart';
 import 'package:ice_annotation/src/methods/ignore_prop.dart';
 import 'package:ice_annotation/src/methods/props.dart';
 import 'package:ice_annotation/src/methods/to_string.dart';
 
-/// {@macro copywith}
-const copyWith = CopyWith();
-
-/// {@macro copywith_nullable}
-const copyWithNullable = CopyWithTypeSafe();
-
-/// {@macro copywith_entrypoint}
-const copyWithEntryPoint = CopyWithEntryPoint();
+export 'package:ice_annotation/src/methods/copy_with.dart';
 
 /// {@macro ignore_prop}
 const ignoreProp = IgnoreProp();

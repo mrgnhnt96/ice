@@ -7,22 +7,23 @@ import 'package:meta/meta_meta.dart';
 @Target({TargetKind.classType})
 class CopyWith extends MethodAnnotation {
   /// {@macro copywith}
-  const CopyWith();
+  const CopyWith._();
+
+  /// Generates a simple copyWith method.
+  static const simple = CopyWith._();
+
+  /// Generates a type safe copyWith method
+  static const typeSafe = CopyWith._();
+
+  /// The constructor to be used in the generated copyWith method
+  static const constructor = _CopyWithConstructor();
 }
 
-/// {@template copywith_entrypoint}
+/// {@template copy_with_constructor}
 /// The constructor of the class that will be used
 /// as the copyWith entrypoint.
 /// {@endtemplate}
-class CopyWithEntryPoint {
-  /// {@macro copywith_entrypoint}
-  const CopyWithEntryPoint();
-}
-
-/// {@template copywith_nullable}
-/// Whether the copyWith method should accept nullable types.
-/// {@endtemplate}
-class CopyWithTypeSafe extends MethodAnnotation {
-  /// {@macro copywith_nullable}
-  const CopyWithTypeSafe();
+class _CopyWithConstructor {
+  /// {@macro copy_with_constructor}
+  const _CopyWithConstructor();
 }
