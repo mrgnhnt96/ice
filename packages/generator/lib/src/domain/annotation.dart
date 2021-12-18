@@ -137,44 +137,19 @@ class IceAnnotation implements Ice {
   }
 
   @override
-  final bool copyWith;
+  final bool? copyWith;
 
   @override
-  final CopyWithType copyWithType;
+  final CopyWithType? copyWithType;
 
   @override
-  final bool equatable;
+  final bool? equatable;
 
   @override
-  final bool tostring;
+  final bool? tostring;
 
   @override
-  final bool ignoreGettersAsProps;
-
-  /// whether the [name] can be generated into code
-  bool shouldGenerate(IceOptions option) {
-    switch (option) {
-      case IceOptions.copyWithSimple:
-        if (!copyWith) {
-          return false;
-        }
-
-        return copyWithType.isSimple;
-      case IceOptions.copyWithFunction:
-        if (!copyWith) {
-          return false;
-        }
-
-        return copyWithType.isTypeSafe;
-      case IceOptions.equatable:
-        return equatable;
-      case IceOptions.tostring:
-        return tostring;
-      case IceOptions.toJson:
-      case IceOptions.other:
-        return true;
-    }
-  }
+  final bool? ignoreGettersAsProps;
 }
 
 /// The methods that will be generated with the [Ice] annotation

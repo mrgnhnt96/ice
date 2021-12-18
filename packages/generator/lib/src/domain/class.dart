@@ -4,9 +4,8 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:ice/ice.dart';
 import 'package:ice/src/domain/class_annotations.dart';
 import 'package:ice/src/domain/domain.dart';
-import 'package:ice/src/domain/enums/copy_with_type_ext.dart';
 import 'package:ice/src/domain/field.dart';
-import 'package:ice_annotation/ice.dart';
+import 'package:ice/src/domain/ice_settings.dart';
 
 /// {@template class}
 /// The class that [CopyWith] will be generated for
@@ -71,49 +70,57 @@ class Class {
     return 'abstract class $genName with EquatableMixin';
   }
 
+  /// checks settings from annotations, ([methodCallback], [iceCallback])
+  /// then build configuration ([settingsCallback])
+  T metaSettings<T>({
+    required T? Function(MethodAnnotations) methodCallback,
+    required T? Function(IceAnnotation) iceCallback,
+    required T Function(IceSettings) settingsCallback,
+  }) {
+    final methods = annotations.methods;
+    final ice = annotations.ice;
+
+    if (methods != null) {
+      final result = methodCallback(methods);
+
+      if (result != null) {
+        return result;
+      }
+    }
+
+    if (ice != null) {
+      final result = iceCallback(ice);
+
+      if (result != null) {
+        return result;
+      }
+    }
+
+    return settingsCallback(iceSettings);
+  }
+
   /// whether a method can be generated
   ///
   /// returns false if the method already exists
   bool canGeneratedMethod(IceOptions option) {
-    final methods = annotations.methods;
-    final ice = annotations.ice;
-
-    bool generate({
-      required bool Function(MethodAnnotations) methodCallback,
-      required bool Function(IceAnnotation) iceCallback,
-    }) {
-      if (methods != null) {
-        return methodCallback(methods);
-      }
-
-      if (ice != null) {
-        return iceCallback(ice);
-      }
-
-      return true;
-    }
-
-    bool generateCopyWith(bool Function(CopyWithType) callback) {
-      return generate(
-        iceCallback: (ice) => callback(ice.copyWithType),
-        methodCallback: (method) => callback(method.copyWithType),
-      );
-    }
-
     switch (option) {
-      case IceOptions.copyWithSimple:
-        return generateCopyWith((type) => type.isSimple);
-      case IceOptions.copyWithFunction:
-        return generateCopyWith((type) => type.isTypeSafe);
+      case IceOptions.copyWith:
+        return metaSettings(
+          iceCallback: (ice) => ice.copyWith,
+          methodCallback: (method) => method.hasCopyWith,
+          settingsCallback: (settings) => settings.copyWith,
+        );
       case IceOptions.equatable:
-        return generate(
+        return metaSettings(
           iceCallback: (ice) => ice.equatable,
           methodCallback: (methods) => methods.hasProps,
+          settingsCallback: (settings) => settings.equatable,
         );
       case IceOptions.tostring:
-        return generate(
+        return metaSettings(
           iceCallback: (ice) => ice.tostring,
           methodCallback: (methods) => methods.hasToString,
+          settingsCallback: (settings) => settings.tostring,
         );
       case IceOptions.toJson:
         return annotations.createToJson;
