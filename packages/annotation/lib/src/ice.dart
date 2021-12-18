@@ -11,30 +11,30 @@ class Ice {
   /// {@macro ice}
   const Ice({
     this.copyWith,
-    this.tostring,
-    this.equatable,
     this.copyWithType,
+    this.equatable,
     this.ignoreGettersAsProps,
+    this.tostring,
   });
 
   /// generates the copyWith method
   final bool? copyWith;
 
-  /// generates the `toString` method
-  final bool? tostring;
-
-  /// adds `EquatableMixin` and provides prop
-  final bool? equatable;
-
   /// whether the copyWith method is generated
   /// with simple or nullable arguments
   final CopyWithType? copyWithType;
+
+  /// adds `EquatableMixin` and provides prop
+  final bool? equatable;
 
   /// whether to ignore getter methods as fields
   /// to be included in `Equatable`'s props list
   ///
   /// Does nothing if [equatable] is `false`
   final bool? ignoreGettersAsProps;
+
+  /// generates the `toString` method
+  final bool? tostring;
 }
 
 /// {@template ice_union_base}
