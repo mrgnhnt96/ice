@@ -15,9 +15,25 @@
 import 'package:build/build.dart';
 import 'package:ice/ice_builder.dart';
 import 'package:ice/src/domain/ice_settings.dart';
+import 'package:meta/meta.dart';
 
 /// the settings for the [IceBuilder] from the build.yaml file
-late final IceSettings iceSettings;
+IceSettings get iceSettings {
+  final settings = _iceSettings;
+
+  if (settings == null) {
+    throw StateError('iceSettings is not set');
+  }
+
+  return settings;
+}
+
+@visibleForTesting
+set iceSettings(IceSettings value) {
+  _iceSettings = value;
+}
+
+IceSettings? _iceSettings;
 
 /// Not meant to be invoked by hand-authored code.
 Builder iceBuilder(BuilderOptions options) {
