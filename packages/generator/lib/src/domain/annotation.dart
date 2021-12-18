@@ -154,11 +154,8 @@ class IceAnnotation implements Ice {
 
 /// The methods that will be generated with the [Ice] annotation
 enum IceOptions {
-  /// the simple copyWith will be generated
-  copyWithSimple,
-
-  /// the copyWith function will be generated
-  copyWithFunction,
+  /// the copyWith method will be generated
+  copyWith,
 
   /// [Equatable] will be generated
   equatable,
