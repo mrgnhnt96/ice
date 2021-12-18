@@ -29,13 +29,9 @@ enum AnnotationTypes {
   @EnumValue(serializedValue: 'IceUnion.of')
   unionOf,
 
-  /// [CopyWithEntryPoint]
-  @EnumValue(serializedValue: 'copyWithEntryPoint')
-  copyWithEntryPoint,
-
-  /// [UnionEntryPoint]
-  @EnumValue(serializedValue: 'unionEntryPoint')
-  unionEntryPoint,
+  /// [CopyWithConstructor]
+  @EnumValue(serializedValue: 'CopyWith.constructor')
+  copyWithConstructor,
 
   /// [Props]
   @EnumValue(serializedValue: 'props')
@@ -50,11 +46,11 @@ enum AnnotationTypes {
   tostring,
 
   /// [CopyWith]
-  @EnumValue(serializedValue: 'copyWith')
-  copyWith,
+  @EnumValue(serializedValue: 'CopyWith.simple')
+  copyWithSimple,
 
   /// [CopyWithTypeSafe]
-  @EnumValue(serializedValue: 'copyWithTypeSafe')
+  @EnumValue(serializedValue: 'CopyWith.typeSafe')
   copyWithTypeSafe,
 
   /// any other annotation
@@ -75,11 +71,8 @@ extension AnnotationTypesXX on AnnotationTypes {
   /// The [IceUnion] annotation
   bool get isUnionOf => this == AnnotationTypes.unionOf;
 
-  /// The [CopyWithEntryPoint] annotation
-  bool get isCopyWithEntryPoint => this == AnnotationTypes.copyWithEntryPoint;
-
-  /// The [UnionEntryPoint] annotation
-  bool get isUnionEntryPoint => this == AnnotationTypes.unionEntryPoint;
+  /// The [CopyWithConstructor] annotation
+  bool get isCopyWithConstructor => this == AnnotationTypes.copyWithConstructor;
 
   /// The [Props] annotation
   bool get isProps => this == AnnotationTypes.props;
@@ -91,7 +84,7 @@ extension AnnotationTypesXX on AnnotationTypes {
   bool get isToString => this == AnnotationTypes.tostring;
 
   /// The [CopyWith] annotation
-  bool get isCopyWith => this == AnnotationTypes.copyWith;
+  bool get isCopyWithSimple => this == AnnotationTypes.copyWithSimple;
 
   /// The [CopyWithTypeSafe] annotation
   bool get isCopyWithTypeSafe => this == AnnotationTypes.copyWithTypeSafe;

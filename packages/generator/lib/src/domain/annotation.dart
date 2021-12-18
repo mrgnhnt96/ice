@@ -51,7 +51,7 @@ class MethodAnnotations {
   /// All [AnnotationTypes] associated with [MethodAnnotations]
   static Set<AnnotationTypes> get annotationTypes => {
         AnnotationTypes.props,
-        AnnotationTypes.copyWith,
+        AnnotationTypes.copyWithSimple,
         AnnotationTypes.copyWithTypeSafe,
         AnnotationTypes.tostring,
       };
@@ -81,7 +81,7 @@ class MethodAnnotations {
     switch (type) {
       case AnnotationTypes.props:
         return copyWith(hasProps: true);
-      case AnnotationTypes.copyWith:
+      case AnnotationTypes.copyWithSimple:
         return copyWith(hasCopyWith: true);
       case AnnotationTypes.copyWithTypeSafe:
         return copyWith(hasCopyWith: true, copyWithType: CopyWithType.typeSafe);

@@ -17,13 +17,12 @@ extension AnnotationTypesX on AnnotationTypes {
     required T jsonKey,
     required T unionBase,
     required T unionOf,
-    required T copyWithEntryPoint,
-    required T unionEntryPoint,
+    required T copyWithConstructor,
     required T props,
     required T ignoreProp,
     required T tostring,
-    required T copyWith,
-    required T copyWithNullable,
+    required T copyWithSimple,
+    required T copyWithTypeSafe,
     required T other,
   }) {
     switch (this) {
@@ -37,20 +36,18 @@ extension AnnotationTypesX on AnnotationTypes {
         return unionBase;
       case AnnotationTypes.unionOf:
         return unionOf;
-      case AnnotationTypes.copyWithEntryPoint:
-        return copyWithEntryPoint;
-      case AnnotationTypes.unionEntryPoint:
-        return unionEntryPoint;
+      case AnnotationTypes.copyWithConstructor:
+        return copyWithConstructor;
       case AnnotationTypes.props:
         return props;
       case AnnotationTypes.ignoreProp:
         return ignoreProp;
       case AnnotationTypes.tostring:
         return tostring;
-      case AnnotationTypes.copyWith:
-        return copyWith;
+      case AnnotationTypes.copyWithSimple:
+        return copyWithSimple;
       case AnnotationTypes.copyWithTypeSafe:
-        return copyWithNullable;
+        return copyWithTypeSafe;
       case AnnotationTypes.other:
         return other;
     }
@@ -66,13 +63,12 @@ extension AnnotationTypesX on AnnotationTypes {
     T? jsonKey,
     T? unionBase,
     T? unionOf,
-    T? copyWithEntryPoint,
-    T? unionEntryPoint,
+    T? copyWithConstructor,
     T? props,
     T? ignoreProp,
     T? tostring,
-    T? copyWith,
-    T? copyWithNullable,
+    T? copyWithSimple,
+    T? copyWithTypeSafe,
     T? other,
   }) {
     var isNullable = true;
@@ -98,12 +94,9 @@ extension AnnotationTypesX on AnnotationTypes {
       case AnnotationTypes.unionOf:
         if (unionOf == null && !isNullable) return orElse;
         return unionOf as T;
-      case AnnotationTypes.copyWithEntryPoint:
-        if (copyWithEntryPoint == null && !isNullable) return orElse;
-        return copyWithEntryPoint as T;
-      case AnnotationTypes.unionEntryPoint:
-        if (unionEntryPoint == null && !isNullable) return orElse;
-        return unionEntryPoint as T;
+      case AnnotationTypes.copyWithConstructor:
+        if (copyWithConstructor == null && !isNullable) return orElse;
+        return copyWithConstructor as T;
       case AnnotationTypes.props:
         if (props == null && !isNullable) return orElse;
         return props as T;
@@ -113,12 +106,12 @@ extension AnnotationTypesX on AnnotationTypes {
       case AnnotationTypes.tostring:
         if (tostring == null && !isNullable) return orElse;
         return tostring as T;
-      case AnnotationTypes.copyWith:
-        if (copyWith == null && !isNullable) return orElse;
-        return copyWith as T;
+      case AnnotationTypes.copyWithSimple:
+        if (copyWithSimple == null && !isNullable) return orElse;
+        return copyWithSimple as T;
       case AnnotationTypes.copyWithTypeSafe:
-        if (copyWithNullable == null && !isNullable) return orElse;
-        return copyWithNullable as T;
+        if (copyWithTypeSafe == null && !isNullable) return orElse;
+        return copyWithTypeSafe as T;
       case AnnotationTypes.other:
         if (other == null && !isNullable) return orElse;
         return other as T;
@@ -133,13 +126,12 @@ extension AnnotationTypesX on AnnotationTypes {
       jsonKey: 'jsonKey',
       unionBase: 'unionBase',
       unionOf: 'unionOf',
-      copyWithEntryPoint: 'copyWithEntryPoint',
-      unionEntryPoint: 'unionEntryPoint',
+      copyWithConstructor: 'copyWithConstructor',
       props: 'props',
       ignoreProp: 'ignoreProp',
       tostring: 'tostring',
-      copyWith: 'copyWith',
-      copyWithNullable: 'copyWithNullable',
+      copyWithSimple: 'copyWithSimple',
+      copyWithTypeSafe: 'copyWithTypeSafe',
       other: 'other',
     );
   }
@@ -152,14 +144,13 @@ extension AnnotationTypesX on AnnotationTypes {
       jsonKey: 2,
       unionBase: 3,
       unionOf: 4,
-      copyWithEntryPoint: 5,
-      unionEntryPoint: 6,
-      props: 7,
-      ignoreProp: 8,
-      tostring: 9,
-      copyWith: 10,
-      copyWithNullable: 11,
-      other: 12,
+      copyWithConstructor: 5,
+      props: 6,
+      ignoreProp: 7,
+      tostring: 8,
+      copyWithSimple: 9,
+      copyWithTypeSafe: 10,
+      other: 11,
     );
   }
 
@@ -172,13 +163,12 @@ extension AnnotationTypesX on AnnotationTypes {
       jsonKey: 'Json Key',
       unionBase: 'Union Base',
       unionOf: 'Union Of',
-      copyWithEntryPoint: 'Copy With Entry Point',
-      unionEntryPoint: 'Union Entry Point',
+      copyWithConstructor: 'Copy With Constructor',
       props: 'Props',
       ignoreProp: 'Ignore Prop',
       tostring: 'Tostring',
-      copyWith: 'Copy With',
-      copyWithNullable: 'Copy With Nullable',
+      copyWithSimple: 'Copy With Simple',
+      copyWithTypeSafe: 'Copy With Type Safe',
       other: 'Other',
     );
   }
@@ -198,19 +188,17 @@ extension AnnotationTypesX on AnnotationTypes {
 [IceUnion]''',
       unionOf: '''
 [IceUnion]''',
-      copyWithEntryPoint: '''
-[CopyWithEntryPoint]''',
-      unionEntryPoint: '''
-[UnionEntryPoint]''',
+      copyWithConstructor: '''
+[CopyWithConstructor]''',
       props: '''
 [Props]''',
       ignoreProp: '''
 [IgnoreProp]''',
       tostring: '''
 [ToString]''',
-      copyWith: '''
+      copyWithSimple: '''
 [CopyWith]''',
-      copyWithNullable: '''
+      copyWithTypeSafe: '''
 [CopyWithTypeSafe]''',
       other: '''
 any other annotation''',
@@ -225,13 +213,12 @@ any other annotation''',
       jsonKey: AnnotationTypesConv._jsonKeyName,
       unionBase: AnnotationTypesConv._unionBaseName,
       unionOf: AnnotationTypesConv._unionOfName,
-      copyWithEntryPoint: AnnotationTypesConv._copyWithEntryPointName,
-      unionEntryPoint: AnnotationTypesConv._unionEntryPointName,
+      copyWithConstructor: AnnotationTypesConv._copyWithConstructorName,
       props: AnnotationTypesConv._propsName,
       ignoreProp: AnnotationTypesConv._ignorePropName,
       tostring: AnnotationTypesConv._tostringName,
-      copyWith: AnnotationTypesConv._copyWithName,
-      copyWithNullable: AnnotationTypesConv._copyWithNullableName,
+      copyWithSimple: AnnotationTypesConv._copyWithSimpleName,
+      copyWithTypeSafe: AnnotationTypesConv._copyWithTypeSafeName,
       other: AnnotationTypesConv._otherName,
     );
   }
@@ -262,13 +249,12 @@ class AnnotationTypesConv extends JsonConverter<AnnotationTypes, Object> {
   static const _jsonKeyName = 'JsonKey';
   static const _unionBaseName = 'IceUnion.create';
   static const _unionOfName = 'IceUnion.of';
-  static const _copyWithEntryPointName = 'copyWithEntryPoint';
-  static const _unionEntryPointName = 'unionEntryPoint';
+  static const _copyWithConstructorName = 'CopyWith.constructor';
   static const _propsName = 'props';
   static const _ignorePropName = 'ignoreProp';
   static const _tostringName = 'toString';
-  static const _copyWithName = 'copyWith';
-  static const _copyWithNullableName = 'copyWithTypeSafe';
+  static const _copyWithSimpleName = 'CopyWith.simple';
+  static const _copyWithTypeSafeName = 'CopyWith.typeSafe';
   static const _otherName = 'other';
 
   @override
@@ -284,19 +270,17 @@ class AnnotationTypesConv extends JsonConverter<AnnotationTypes, Object> {
         return AnnotationTypes.unionBase;
       case _unionOfName:
         return AnnotationTypes.unionOf;
-      case _copyWithEntryPointName:
-        return AnnotationTypes.copyWithEntryPoint;
-      case _unionEntryPointName:
-        return AnnotationTypes.unionEntryPoint;
+      case _copyWithConstructorName:
+        return AnnotationTypes.copyWithConstructor;
       case _propsName:
         return AnnotationTypes.props;
       case _ignorePropName:
         return AnnotationTypes.ignoreProp;
       case _tostringName:
         return AnnotationTypes.tostring;
-      case _copyWithName:
-        return AnnotationTypes.copyWith;
-      case _copyWithNullableName:
+      case _copyWithSimpleName:
+        return AnnotationTypes.copyWithSimple;
+      case _copyWithTypeSafeName:
         return AnnotationTypes.copyWithTypeSafe;
       case _otherName:
         return AnnotationTypes.other;
@@ -339,19 +323,17 @@ class _AnnotationTypesNullableConv
         return AnnotationTypes.unionBase;
       case AnnotationTypesConv._unionOfName:
         return AnnotationTypes.unionOf;
-      case AnnotationTypesConv._copyWithEntryPointName:
-        return AnnotationTypes.copyWithEntryPoint;
-      case AnnotationTypesConv._unionEntryPointName:
-        return AnnotationTypes.unionEntryPoint;
+      case AnnotationTypesConv._copyWithConstructorName:
+        return AnnotationTypes.copyWithConstructor;
       case AnnotationTypesConv._propsName:
         return AnnotationTypes.props;
       case AnnotationTypesConv._ignorePropName:
         return AnnotationTypes.ignoreProp;
       case AnnotationTypesConv._tostringName:
         return AnnotationTypes.tostring;
-      case AnnotationTypesConv._copyWithName:
-        return AnnotationTypes.copyWith;
-      case AnnotationTypesConv._copyWithNullableName:
+      case AnnotationTypesConv._copyWithSimpleName:
+        return AnnotationTypes.copyWithSimple;
+      case AnnotationTypesConv._copyWithTypeSafeName:
         return AnnotationTypes.copyWithTypeSafe;
       case AnnotationTypesConv._otherName:
         return AnnotationTypes.other;
