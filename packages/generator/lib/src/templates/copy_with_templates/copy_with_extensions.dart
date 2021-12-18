@@ -2,14 +2,9 @@ import 'package:ice/src/domain/domain.dart';
 
 /// ext on [Class]
 extension ClassXX on Class {
-  /// the extension header
-  String get extension {
-    return 'extension ${name}X on $name';
-  }
-
   /// the header for copyWith
   String get copyWithHeader {
-    return '$genName copyWith';
+    return '$name copyWith';
   }
 }
 

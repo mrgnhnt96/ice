@@ -29,23 +29,37 @@ class IceTemplate extends Template {
 
   @override
   void generate(StringBuffer buffer) {
-    buffer.writeObject(
-      subject.classEntry,
-      body: () {
-        buffer
-          ..writeln('const ${subject.genName}();')
-          ..writeln()
-          ..writeAll(subject.fieldGetters, '\n');
+    buffer
+      ..writeObject(
+        subject.classEntry,
+        body: () {
+          buffer
+            ..writeln('const ${subject.genName}();')
+            ..writeln()
+            ..writeAll(subject.fieldGetters, '\n')
+            ..writeln('\n');
 
-        CopyWithTemplate.forSubject(subject, asExtension: false)
-            .addToBuffer(buffer);
+          CopyWithTemplate.forSubject(subject).addToBuffer(buffer);
+          buffer.writeln();
 
-        PropsTemplate.forSubject(subject).addToBuffer(buffer);
+          PropsTemplate.forSubject(
+            subject,
+            asFunction: false,
+          ).addToBuffer(buffer);
+          buffer.writeln();
 
-        ToJsonTemplate.forSubject(subject).addToBuffer(buffer);
-
-        ToStringTemplate.forSubject(subject).addToBuffer(buffer);
-      },
-    );
+          ToStringTemplate.forSubject(
+            subject,
+            asFunction: false,
+          ).addToBuffer(buffer);
+        },
+      )
+      ..writeObject(
+        'extension on ${subject.name}',
+        body: () {
+          ToJsonTemplate.forSubject(subject).addToBuffer(buffer);
+        },
+      )
+      ..writeln();
   }
 }

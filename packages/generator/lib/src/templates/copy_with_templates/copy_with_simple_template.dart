@@ -19,43 +19,26 @@ extension on Param {
 /// {@endtemplate}
 class CopyWithSimpleTemplate extends CopyWithTemplate {
   /// {@macro copy_with_method}
-  CopyWithSimpleTemplate.forSubject(
-    Class subject, {
-    bool asExtension = false,
-  }) : super(
+  CopyWithSimpleTemplate.forSubject(Class subject)
+      : super(
           subject,
-          asExtension: asExtension,
           name: IceOptions.copyWithSimple,
           type: CopyWithType.simple,
         );
 
   @override
   void generate(StringBuffer buffer) {
-    if (asExtension) {
-      buffer.writeObject(
-        '',
-        body: () => _copyWithMethod(buffer),
-      );
-
-      return;
-    }
-
-    _copyWithMethod(buffer);
-  }
-
-  void _copyWithMethod(StringBuffer buffer) {
-    final returnVal = 'return ${subject.genName}${constructor.name}';
-
+    final args = constructor.arguments((p) => p.asArgument());
     buffer.writeMethod(
       subject.copyWithHeader,
       params: constructor.parameters((p) => p.forConstructor()),
       body: () {
         buffer.writeObject(
-          returnVal,
+          'return ${constructor.displayName}',
           open: '(',
-          body: () =>
-              buffer.writeAll(constructor.arguments((p) => p.asArgument())),
-          close: ');',
+          includeSpaceBetweenOpen: false,
+          body: () => buffer.writeAll(args, ',\n'),
+          close: '${args.length >= 3 ? ',' : ''});',
         );
       },
     );

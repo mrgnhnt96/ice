@@ -1,4 +1,6 @@
+import 'package:ice/ice.dart';
 import 'package:ice/src/domain/domain.dart';
+import 'package:ice/src/domain/field.dart';
 import 'package:ice/src/templates/template.dart';
 import 'package:ice/src/util/string_buffer_ext.dart';
 
@@ -7,13 +9,22 @@ import 'package:ice/src/util/string_buffer_ext.dart';
 /// {@endtemplate}
 class PropsTemplate extends Template {
   /// {@macro props_template}
-  const PropsTemplate.forSubject(Class subject)
-      : super(subject, name: IceOptions.equatable);
+  const PropsTemplate.forSubject(
+    Class subject, {
+    required this.asFunction,
+  }) : super(subject, name: IceOptions.equatable);
+
+  /// whether to generate the props as a function
+  final bool asFunction;
 
   @override
   void generate(StringBuffer buffer) {
+    if (asFunction) {
+      _writeAsFunction(buffer);
+      return;
+    }
+
     _writeAsOverride(buffer);
-    // _writeAsPrivateFunction(buffer);
   }
 
   void _writeAsOverride(StringBuffer buffer) {
@@ -27,11 +38,9 @@ class PropsTemplate extends Template {
       );
   }
 
-  void _writeAsPrivateFunction(StringBuffer buffer) {
-    final genName = subject.genName;
-
+  void _writeAsFunction(StringBuffer buffer) {
     buffer.writeObject(
-      'List<Object?> _\$${subject.cleanName}Props($genName instance)',
+      'List<Object?> _\$${subject.cleanName}Props(${subject.name} instance)',
       body: () {
         _writeReturn(buffer, withInstance: true);
       },
@@ -42,15 +51,28 @@ class PropsTemplate extends Template {
     buffer
       ..write('return [')
       ..writeAll(
-        subject.fields.map<String>((e) {
-          if (withInstance) {
-            return 'instance.${e.name}';
-          }
-
-          return e.name;
-        }),
+        subject.fields.returnProps(withInstance: withInstance),
         ', ',
       )
       ..writeln('];');
+  }
+}
+
+extension on List<Field> {
+  Iterable<String> returnProps({bool withInstance = false}) {
+    final props = <String>[];
+
+    for (final field in this) {
+      if (field.includeInProps) {
+        if (withInstance) {
+          props.add('instance.${field.name}');
+          continue;
+        }
+
+        props.add(field.name);
+      }
+    }
+
+    return props;
   }
 }

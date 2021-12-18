@@ -43,36 +43,27 @@ abstract class CopyWithTemplate extends Template {
   /// {@macro copy_with}
   CopyWithTemplate(
     Class subject, {
-    required this.asExtension,
     required IceOptions name,
     required this.type,
   })  : _constructor = subject.copyWithConstructor(),
         super(subject, name: name);
 
   /// {@macro copy_with}
-  factory CopyWithTemplate.forSubject(
-    Class subject, {
-    required bool asExtension,
-  }) {
+  factory CopyWithTemplate.forSubject(Class subject) {
     switch (subject.copyWithType) {
       case CopyWithType.simple:
         return CopyWithSimpleTemplate.forSubject(
           subject,
-          asExtension: asExtension,
         );
       case CopyWithType.typeSafe:
         return CopyWithFunctionTemplate.forSubject(
           subject,
-          asExtension: asExtension,
         );
     }
   }
 
   /// the type of the copyWith method
   final CopyWithType type;
-
-  /// whether the method is an extension to the class
-  final bool asExtension;
 
   /// the doc comment of the copyWith method
   String get docComment => type.docComment;

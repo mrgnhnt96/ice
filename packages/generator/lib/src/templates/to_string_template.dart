@@ -4,12 +4,12 @@ import 'package:ice/src/templates/template.dart';
 import 'package:ice/src/util/string_buffer_ext.dart';
 
 extension on List<Field> {
-  Iterable<String> asArgs({bool withInstance = false}) {
+  Iterable<String> asArgs({bool fromInstance = false}) {
     final args = <String>[];
-    final access = withInstance ? 'instance.' : '';
 
     for (final field in this) {
-      final arg = '${field.name}: \${$access${field.name}}';
+      final arg =
+          '\t${field.name}: \$${field.value(fromInstance: fromInstance)}';
 
       args.add(arg);
     }
@@ -18,21 +18,51 @@ extension on List<Field> {
   }
 }
 
+extension on Field {
+  String value({required bool fromInstance}) {
+    if (fromInstance) {
+      return '{instance.$name}';
+    }
+
+    return name;
+  }
+}
+
 /// {@template to_string_template}
 /// Generates a toString method for the Class and its fields.
 /// {@endtemplate}
 class ToStringTemplate extends Template {
   /// {@macro to_string_template}
-  const ToStringTemplate.forSubject(Class subject)
-      : super(
+  const ToStringTemplate.forSubject(
+    Class subject, {
+    required this.asFunction,
+  }) : super(
           subject,
           name: IceOptions.tostring,
         );
 
+  /// whether to generate the method as a function
+  ///
+  /// if false, it will be generated as an override method
+  final bool asFunction;
+
   @override
   void generate(StringBuffer buffer) {
+    if (asFunction) {
+      _writeAsFuntion(buffer);
+      return;
+    }
+
     _writeAsOverride(buffer);
-    // _writeAsPrivateFunction(buffer);
+  }
+
+  void _writeAsFuntion(StringBuffer buffer) {
+    buffer.writeObject(
+      'String _\$${subject.cleanName}ToString(${subject.name} instance)',
+      body: () {
+        _writeReturn(buffer, fromInstance: true);
+      },
+    );
   }
 
   void _writeAsOverride(StringBuffer buffer) {
@@ -46,23 +76,11 @@ class ToStringTemplate extends Template {
       );
   }
 
-  void _writeAsPrivateFunction(StringBuffer buffer) {
-    final genName = subject.genName;
-
-    buffer.writeObject(
-      'String _\$${subject.cleanName}ToString($genName instance)',
-      body: () {
-        _writeReturn(buffer, withInstance: true);
-      },
-    );
-  }
-
-  void _writeReturn(StringBuffer buffer, {bool withInstance = false}) {
-    final genName = subject.genName;
-
+  void _writeReturn(StringBuffer buffer, {bool fromInstance = false}) {
     buffer
-      ..write("return '$genName{")
-      ..writeAll(subject.fields.asArgs(withInstance: withInstance), ', ')
-      ..writeln("}';");
+      ..writeln("return '''\n${subject.name}(")
+      ..writeAll(subject.fields.asArgs(fromInstance: fromInstance), ',\n')
+      ..writeln(',')
+      ..writeln(")''';");
   }
 }
