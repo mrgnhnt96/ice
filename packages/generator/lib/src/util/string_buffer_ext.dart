@@ -39,14 +39,27 @@ extension StringBufferX on StringBuffer {
     String entry, {
     Iterable<String> params = const <String>[],
     required void Function() body,
-    String separator = ', ',
   }) {
-    final argOpen = params.isEmpty ? '(' : '({';
-    final argClose = params.isEmpty ? ')' : '})';
+    late final String open, close, seperateWith;
 
-    writeln('$entry $argOpen');
-    writeAll(params, separator);
-    writeln('$argClose {');
+    if (params.isEmpty) {
+      open = '(';
+      close = ')';
+      seperateWith = '';
+    } else {
+      open = '({';
+      close = '})';
+
+      if (params.length >= 3) {
+        seperateWith = ',\n';
+      } else {
+        seperateWith = ', ';
+      }
+    }
+
+    writeln('$entry $open');
+    writeAll(params, seperateWith);
+    writeln('$close {');
     body();
     writeln('}');
   }
