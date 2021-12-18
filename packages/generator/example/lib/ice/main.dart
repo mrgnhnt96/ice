@@ -4,11 +4,9 @@ import 'package:json_annotation/json_annotation.dart';
 part 'main.ice.dart';
 part 'main.g.dart';
 
-@copyWith
-@props
-@toString
+@Ice()
 @JsonSerializable()
-class Example extends Equatable {
+class Example extends _$Example {
   const Example({
     this.text,
     this.whole,
@@ -20,9 +18,6 @@ class Example extends Equatable {
     this.set,
     this.example,
   });
-
-  factory Example.fromJson(Map<String, dynamic> json) =>
-      _$ExampleFromJson(json);
 
   @copyWithEntryPoint
   const Example.empty()
@@ -37,6 +32,9 @@ class Example extends Equatable {
           example: const Example.empty(),
         );
 
+  factory Example.fromJson(Map<String, dynamic> json) =>
+      _$ExampleFromJson(json);
+
   final String? text;
   final int? whole;
   final double? decimal;
@@ -46,10 +44,4 @@ class Example extends Equatable {
   final Map<String, String>? map;
   final Set<String>? set;
   final Example? example;
-
-  @override
-  List<Object?> get props => _$ExampleProps(this);
-
-  @override
-  String toString() => _$ExampleToString(this);
 }

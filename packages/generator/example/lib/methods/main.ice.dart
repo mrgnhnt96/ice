@@ -8,18 +8,12 @@ part of 'main.dart';
 // IceGenerator
 // **************************************************************************
 
-extension ExampleX on Example {
-  Example copyWith({
-    String? text,
-    int? whole,
-    double? decimal,
-  }) {
-    return Example.fromJson(
-      text: text ?? this.text,
-      whole: whole ?? this.whole,
-      decimal: decimal ?? this.decimal,
-    );
+extension on Example {
+  Example copyWith() {
+    return Example.empty();
   }
+
+  Map<String, dynamic> toJson() => _$ExampleToJson(this);
 }
 
 List<Object?> _$ExampleProps(Example instance) {
@@ -32,11 +26,21 @@ List<Object?> _$ExampleProps(Example instance) {
     instance.list,
     instance.map,
     instance.set,
-    instance.example,
-    instance.props
+    instance.example
   ];
 }
 
 String _$ExampleToString(Example instance) {
-  return 'Example{text: ${instance.text}, whole: ${instance.whole}, decimal: ${instance.decimal}, flag: ${instance.flag}, date: ${instance.date}, list: ${instance.list}, map: ${instance.map}, set: ${instance.set}, example: ${instance.example}, props: ${instance.props}}';
+  return '''
+Example(
+	text: ${instance.text},
+	whole: ${instance.whole},
+	decimal: ${instance.decimal},
+	flag: ${instance.flag},
+	date: ${instance.date},
+	list: ${instance.list},
+	map: ${instance.map},
+	set: ${instance.set},
+	example: ${instance.example},
+)''';
 }
