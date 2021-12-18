@@ -63,23 +63,6 @@ class Class {
     return _generatedName = '_\$$clean';
   }
 
-  /// checks for abstract then returns
-  ///
-  /// (abstract)? class extends [name] with EquatableMixin
-  String get classHeader {
-    final equatable = metaSettings(
-      methodCallback: (_) => false,
-      iceCallback: (settings) => settings.equatable,
-      settingsCallback: (settings) => settings.equatable,
-    );
-    var mixins = '';
-
-    if (equatable) {
-      mixins = ' with EquatableMixin';
-    }
-    return 'abstract class $genName$mixins';
-  }
-
   /// checks settings from annotations, ([methodCallback], [iceCallback])
   /// then build configuration ([settingsCallback])
   T metaSettings<T>({
@@ -167,5 +150,20 @@ class Class {
   /// removes all `_` and `$`
   String get cleanName {
     return name.replaceFirst(RegExp(r'^[_|$]+'), '');
+  }
+
+  /// formats all fields as getters
+  ///
+  /// ```dart
+  /// Type? get name;
+  /// ```
+  Iterable<String> get fieldGetters {
+    final getters = <String>[];
+
+    for (final field in fields) {
+      getters.add('${field.type} get ${field.name};');
+    }
+
+    return getters;
   }
 }

@@ -9,14 +9,18 @@ import 'package:ice/src/templates/to_string_template.dart';
 import 'package:ice/src/util/string_buffer_ext.dart';
 
 extension on Class {
-  Iterable<String> get fieldGetters {
-    final getters = <String>[];
+  String get classHeader {
+    final hasEquatable = metaSettings(
+      methodCallback: (_) => false,
+      iceCallback: (settings) => settings.equatable,
+      settingsCallback: (settings) => settings.equatable,
+    );
+    var mixins = '';
 
-    for (final field in fields) {
-      getters.add('${field.type} get ${field.name};');
+    if (hasEquatable) {
+      mixins = ' with EquatableMixin';
     }
-
-    return getters;
+    return 'abstract class $genName$mixins';
   }
 }
 
