@@ -22,7 +22,6 @@ class CopyWithSimpleTemplate extends CopyWithTemplate {
   CopyWithSimpleTemplate.forSubject(Class subject)
       : super(
           subject,
-          name: IceOptions.copyWithSimple,
           type: CopyWithType.simple,
         );
 
@@ -43,4 +42,7 @@ class CopyWithSimpleTemplate extends CopyWithTemplate {
       },
     );
   }
+
+  @override
+  void writeSupport(StringBuffer buffer) {}
 }
