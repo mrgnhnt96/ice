@@ -40,7 +40,7 @@ extension StringBufferX on StringBuffer {
     Iterable<String> params = const <String>[],
     required void Function() body,
   }) {
-    late final String open, close, seperateWith;
+    late final String open, close, seperateWith, beforeClose;
 
     if (params.isEmpty) {
       open = '(';
@@ -57,9 +57,15 @@ extension StringBufferX on StringBuffer {
       }
     }
 
+    if (params.length >= 3) {
+      beforeClose = ',';
+    } else {
+      beforeClose = '';
+    }
+
     writeln('$entry $open');
     writeAll(params, seperateWith);
-    writeln('$close {');
+    writeln('$beforeClose$close {');
     body();
     writeln('}');
   }
