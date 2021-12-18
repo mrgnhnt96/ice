@@ -8,11 +8,11 @@ import 'package:ice_annotation/ice.dart';
 
 extension on Param {
   String forConstructor() {
-    return '$nullableType $name';
+    return 'CopyCallback<$type>? $name';
   }
 
   String asArgument() {
-    return '$name: $name ?? this.$name';
+    return '$name: $name == null ? this.$name : $name(this.$name)';
   }
 }
 
@@ -25,9 +25,13 @@ class CopyWithFunctionTemplate extends CopyWithTemplate {
     Class subject,
   ) : super(
           subject,
-          name: IceOptions.copyWithFunction,
           type: CopyWithType.typeSafe,
         );
+
+  @override
+  void writeSupport(StringBuffer buffer) {
+    buffer.writeln('typedef CopyCallback<T> = T Function(T);');
+  }
 
   @override
   void generate(StringBuffer buffer) {
