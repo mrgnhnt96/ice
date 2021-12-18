@@ -16,13 +16,17 @@ class MethodTemplate extends Template {
     final methods = subject.annotations.methods;
     if (methods == null) return;
 
+    final copyWithTemplate = CopyWithTemplate.forSubject(subject);
+
     buffer.writeObject(
       'extension on ${subject.name}',
       body: () {
-        CopyWithTemplate.forSubject(subject).addToBuffer(buffer);
+        copyWithTemplate.addToBuffer(buffer);
         ToJsonTemplate.forSubject(subject).addToBuffer(buffer);
       },
     );
+
+    copyWithTemplate.writeSupport(buffer);
 
     PropsTemplate.forSubject(
       subject,

@@ -29,31 +29,36 @@ class IceTemplate extends Template {
 
   @override
   void generate(StringBuffer buffer) {
+    final copyWithTemplate = CopyWithTemplate.forSubject(subject);
+
+    buffer.writeObject(
+      subject.classEntry,
+      body: () {
+        buffer
+          ..writeln('const ${subject.genName}();')
+          ..writeln()
+          ..writeAll(subject.fieldGetters, '\n')
+          ..writeln('\n');
+
+        copyWithTemplate.addToBuffer(buffer);
+        buffer.writeln();
+
+        PropsTemplate.forSubject(
+          subject,
+          asFunction: false,
+        ).addToBuffer(buffer);
+        buffer.writeln();
+
+        ToStringTemplate.forSubject(
+          subject,
+          asFunction: false,
+        ).addToBuffer(buffer);
+      },
+    );
+
+    copyWithTemplate.writeSupport(buffer);
+
     buffer
-      ..writeObject(
-        subject.classEntry,
-        body: () {
-          buffer
-            ..writeln('const ${subject.genName}();')
-            ..writeln()
-            ..writeAll(subject.fieldGetters, '\n')
-            ..writeln('\n');
-
-          CopyWithTemplate.forSubject(subject).addToBuffer(buffer);
-          buffer.writeln();
-
-          PropsTemplate.forSubject(
-            subject,
-            asFunction: false,
-          ).addToBuffer(buffer);
-          buffer.writeln();
-
-          ToStringTemplate.forSubject(
-            subject,
-            asFunction: false,
-          ).addToBuffer(buffer);
-        },
-      )
       ..writeObject(
         'extension on ${subject.name}',
         body: () {
