@@ -1,16 +1,18 @@
 /// The type of copyWith method that will be generated
 enum CopyWithType {
-  /// follows convention of
+  /// If `null` is passed within the `copyWith` method,
+  /// the current value will be returned.
   ///
   /// ```dart
   /// myClass.copyWith(field: newValue);
   /// ```
   simple,
 
-  /// follows convention of
+  /// if `null` is passed within the `copyWith` method,
+  /// `null` will be returned.
   ///
   /// ```dart
   /// myClass.copyWith(field: (currentValue) => newValue);
   /// ```
-  nullable,
+  typeSafe,
 }

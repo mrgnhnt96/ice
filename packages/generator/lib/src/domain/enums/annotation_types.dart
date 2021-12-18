@@ -55,7 +55,7 @@ enum AnnotationTypes {
 
   /// [CopyWithTypeSafe]
   @EnumValue(serializedValue: 'copyWithTypeSafe')
-  copyWithNullable,
+  copyWithTypeSafe,
 
   /// any other annotation
   other,
@@ -94,7 +94,7 @@ extension AnnotationTypesXX on AnnotationTypes {
   bool get isCopyWith => this == AnnotationTypes.copyWith;
 
   /// The [CopyWithTypeSafe] annotation
-  bool get isCopyWithTypeSafe => this == AnnotationTypes.copyWithNullable;
+  bool get isCopyWithTypeSafe => this == AnnotationTypes.copyWithTypeSafe;
 
   /// any other annotation
   bool get isOther => this == AnnotationTypes.other;

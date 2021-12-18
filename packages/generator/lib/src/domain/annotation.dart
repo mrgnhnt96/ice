@@ -52,7 +52,7 @@ class MethodAnnotations {
   static Set<AnnotationTypes> get annotationTypes => {
         AnnotationTypes.props,
         AnnotationTypes.copyWith,
-        AnnotationTypes.copyWithNullable,
+        AnnotationTypes.copyWithTypeSafe,
         AnnotationTypes.tostring,
       };
 
@@ -83,8 +83,8 @@ class MethodAnnotations {
         return copyWith(hasProps: true);
       case AnnotationTypes.copyWith:
         return copyWith(hasCopyWith: true);
-      case AnnotationTypes.copyWithNullable:
-        return copyWith(hasCopyWith: true, copyWithType: CopyWithType.nullable);
+      case AnnotationTypes.copyWithTypeSafe:
+        return copyWith(hasCopyWith: true, copyWithType: CopyWithType.typeSafe);
       case AnnotationTypes.tostring:
         return copyWith(hasToString: true);
       default:
@@ -160,12 +160,12 @@ class IceAnnotation implements Ice {
         }
 
         return copyWithType.isSimple;
-      case IceOptions.copyWithNullable:
+      case IceOptions.copyWithFunction:
         if (!copyWith) {
           return false;
         }
 
-        return copyWithType.isNullable;
+        return copyWithType.isTypeSafe;
       case IceOptions.equatable:
         return equatable;
       case IceOptions.tostring:
@@ -179,19 +179,19 @@ class IceAnnotation implements Ice {
 
 /// The methods that will be generated with the [Ice] annotation
 enum IceOptions {
-  /// [CopyWith] will be generated
+  /// the simple copyWith will be generated
   copyWithSimple,
 
-  /// [CopyWithNullable] will be generated
-  copyWithNullable,
+  /// the copyWith function will be generated
+  copyWithFunction,
 
   /// [Equatable] will be generated
   equatable,
 
-  /// [ToString] will be generated
+  /// toString will be generated
   tostring,
 
-  /// [toJson] will be generated
+  /// toJson will be generated
   toJson,
 
   /// any other option

@@ -49,7 +49,7 @@ extension AnnotationTypesX on AnnotationTypes {
         return tostring;
       case AnnotationTypes.copyWith:
         return copyWith;
-      case AnnotationTypes.copyWithNullable:
+      case AnnotationTypes.copyWithTypeSafe:
         return copyWithNullable;
       case AnnotationTypes.other:
         return other;
@@ -116,7 +116,7 @@ extension AnnotationTypesX on AnnotationTypes {
       case AnnotationTypes.copyWith:
         if (copyWith == null && !isNullable) return orElse;
         return copyWith as T;
-      case AnnotationTypes.copyWithNullable:
+      case AnnotationTypes.copyWithTypeSafe:
         if (copyWithNullable == null && !isNullable) return orElse;
         return copyWithNullable as T;
       case AnnotationTypes.other:
@@ -297,7 +297,7 @@ class AnnotationTypesConv extends JsonConverter<AnnotationTypes, Object> {
       case _copyWithName:
         return AnnotationTypes.copyWith;
       case _copyWithNullableName:
-        return AnnotationTypes.copyWithNullable;
+        return AnnotationTypes.copyWithTypeSafe;
       case _otherName:
         return AnnotationTypes.other;
       default:
@@ -352,7 +352,7 @@ class _AnnotationTypesNullableConv
       case AnnotationTypesConv._copyWithName:
         return AnnotationTypes.copyWith;
       case AnnotationTypesConv._copyWithNullableName:
-        return AnnotationTypes.copyWithNullable;
+        return AnnotationTypes.copyWithTypeSafe;
       case AnnotationTypesConv._otherName:
         return AnnotationTypes.other;
       default:

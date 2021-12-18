@@ -9,13 +9,13 @@ extension CopyWithTypeX on CopyWithType {
   /// Map of all values of the enum
   T map<T extends Object?>({
     required T simple,
-    required T nullable,
+    required T typeSafe,
   }) {
     switch (this) {
       case CopyWithType.simple:
         return simple;
-      case CopyWithType.nullable:
-        return nullable;
+      case CopyWithType.typeSafe:
+        return typeSafe;
     }
   }
 
@@ -25,7 +25,7 @@ extension CopyWithTypeX on CopyWithType {
   T maybeMap<T extends Object?>({
     required T orElse,
     T? simple,
-    T? nullable,
+    T? typeSafe,
   }) {
     var isNullable = true;
     try {
@@ -38,9 +38,9 @@ extension CopyWithTypeX on CopyWithType {
       case CopyWithType.simple:
         if (simple == null && !isNullable) return orElse;
         return simple as T;
-      case CopyWithType.nullable:
-        if (nullable == null && !isNullable) return orElse;
-        return nullable as T;
+      case CopyWithType.typeSafe:
+        if (typeSafe == null && !isNullable) return orElse;
+        return typeSafe as T;
     }
   }
 
@@ -48,7 +48,7 @@ extension CopyWithTypeX on CopyWithType {
   String get name {
     return map<String>(
       simple: 'simple',
-      nullable: 'nullable',
+      typeSafe: 'typeSafe',
     );
   }
 
@@ -56,7 +56,7 @@ extension CopyWithTypeX on CopyWithType {
   int get toInt {
     return map<int>(
       simple: 0,
-      nullable: 1,
+      typeSafe: 1,
     );
   }
 
@@ -65,7 +65,7 @@ extension CopyWithTypeX on CopyWithType {
   String get readable {
     return map<String>(
       simple: 'Simple',
-      nullable: 'Nullable',
+      typeSafe: 'Type Safe',
     );
   }
 
@@ -74,8 +74,20 @@ extension CopyWithTypeX on CopyWithType {
   /// If the description is null, the doc comment of the enum field is returned.
   String? get description {
     return map<String?>(
-      simple: null,
-      nullable: null,
+      simple: '''
+If `null` is passed within the `copyWith` method,
+the current value will be returned.
+
+```dart
+myClass.copyWith(field: newValue);
+```''',
+      typeSafe: '''
+if `null` is passed within the `copyWith` method,
+`null` will be returned.
+
+```dart
+myClass.copyWith(field: (currentValue) => newValue);
+```''',
     );
   }
 
@@ -83,15 +95,15 @@ extension CopyWithTypeX on CopyWithType {
   Object get serialized {
     return map<Object>(
       simple: CopyWithTypeConv._simpleName,
-      nullable: CopyWithTypeConv._nullableName,
+      typeSafe: CopyWithTypeConv._typeSafeName,
     );
   }
 
-  /// if the enum is simple
+  /// if the enum value is `simple`
   bool get isSimple => this == CopyWithType.simple;
 
-  /// if the enum is nullable
-  bool get isNullable => this == CopyWithType.nullable;
+  /// if the enum value is `typeSafe`
+  bool get isTypeSafe => this == CopyWithType.typeSafe;
 }
 
 /// {@template copy_with_type.json_converter}
@@ -115,15 +127,15 @@ class CopyWithTypeConv extends JsonConverter<CopyWithType, Object> {
   static const nullable = _CopyWithTypeNullableConv();
 
   static const _simpleName = 'simple';
-  static const _nullableName = 'nullable';
+  static const _typeSafeName = 'typeSafe';
 
   @override
   CopyWithType fromJson(Object json) {
     switch (json) {
       case _simpleName:
         return CopyWithType.simple;
-      case _nullableName:
-        return CopyWithType.nullable;
+      case _typeSafeName:
+        return CopyWithType.typeSafe;
       default:
         if (defaultValue != null) return defaultValue!;
 
@@ -154,8 +166,8 @@ class _CopyWithTypeNullableConv extends JsonConverter<CopyWithType?, Object?> {
     switch (json) {
       case CopyWithTypeConv._simpleName:
         return CopyWithType.simple;
-      case CopyWithTypeConv._nullableName:
-        return CopyWithType.nullable;
+      case CopyWithTypeConv._typeSafeName:
+        return CopyWithType.typeSafe;
       default:
         return null;
     }
