@@ -4,6 +4,7 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:ice/src/domain/domain.dart';
 import 'package:ice/src/templates/templates.dart';
+import 'package:ice/src/util/build_step_ext.dart';
 import 'package:ice_annotation/src/ice.dart';
 import 'package:source_gen/source_gen.dart';
 
@@ -39,15 +40,7 @@ class IceGenerator extends GeneratorForAnnotation<Ice> {
     Class? union;
 
     if (unionType != null && !subject.annotations.isUnionBase) {
-      final library = await buildStep.resolver.libraryFor(buildStep.inputId);
-      final libraryReader = LibraryReader(library);
-      final result = libraryReader.findType(unionType);
-
-      if (result == null) {
-        throw 'Union type `$unionType` not found in library `${library.name}`.';
-      }
-
-      union = Class.fromElement(result);
+      union = await buildStep.unionClass(unionType);
     }
 
     final ice = IceTemplate.forSubject(
