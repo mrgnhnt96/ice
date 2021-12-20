@@ -29,7 +29,15 @@ extension on Class {
 /// - Equatable Props
 /// - toString()
 class IceTemplate extends Template {
-  const IceTemplate.forSubject(Class subject) : super.wrapper(subject);
+  const IceTemplate.forSubject(
+    Class subject, {
+    required this.union,
+  }) : super.wrapper(subject);
+
+  final Class? union;
+
+  bool get isOfUnion => union != null;
+  bool get isUnionBase => subject.annotations.isUnionBase;
 
   @override
   void generate(StringBuffer buffer) {

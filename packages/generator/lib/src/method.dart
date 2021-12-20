@@ -3,7 +3,6 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:ice/src/domain/domain.dart';
-import 'package:ice/src/ice.dart';
 import 'package:ice/src/templates/templates.dart';
 import 'package:ice_annotation/src/methods/methods.dart';
 import 'package:source_gen/source_gen.dart';
@@ -33,11 +32,6 @@ class MethodGenerator extends GeneratorForAnnotation<MethodAnnotation> {
     }
 
     final subject = Class.fromElement(element);
-
-    if (IceGenerator.subjects.hasGenerated(subject)) {
-      // an empty string will generate no code
-      return '';
-    }
 
     final template = MethodTemplate.forSubject(subject);
 

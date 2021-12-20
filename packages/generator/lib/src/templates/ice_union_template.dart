@@ -3,7 +3,6 @@
 import 'package:change_case/change_case.dart';
 import 'package:ice/src/domain/domain.dart';
 import 'package:ice/src/domain/enums/position_type.dart';
-import 'package:ice/src/ice.dart';
 import 'package:ice/src/templates/copy_with_templates/copy_with_template.dart';
 import 'package:ice/src/templates/templates.dart';
 import 'package:ice/src/util/string_buffer_ext.dart';
@@ -126,11 +125,6 @@ class IceUnionBaseTemplate extends Template {
 
     _writeSubUnion(subject, buffer);
     _writeUnionBase(buffer);
-    final subClasses = IceGenerator.subjects.getUnions(subject);
-
-    for (final subClass in subClasses) {
-      _writeSubUnion(subClass, buffer);
-    }
   }
 
   final stateType = r'$StateType';
@@ -208,10 +202,6 @@ class IceUnionBaseTemplate extends Template {
       asFunction: false,
     ).addToBuffer(buffer);
   }
-
-  List<Class> get subtypes =>
-      _subtypes ??= IceGenerator.subjects.getUnions(subject);
-  List<Class>? _subtypes;
 
   String methodEntry(String methodName, {bool isNullable = false}) {
     final nullableStr = isNullable ? '?' : '';
