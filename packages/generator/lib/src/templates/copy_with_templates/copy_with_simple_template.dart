@@ -44,5 +44,5 @@ class CopyWithSimpleTemplate extends CopyWithTemplate {
   }
 
   @override
-  void writeSupport(StringBuffer buffer) {}
+  void support(StringBuffer buffer) {}
 }

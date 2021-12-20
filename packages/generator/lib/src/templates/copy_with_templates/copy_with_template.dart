@@ -4,6 +4,7 @@ import 'package:ice/src/templates/copy_with_templates/copy_with_function_templat
 import 'package:ice/src/templates/copy_with_templates/copy_with_simple_template.dart';
 import 'package:ice/src/templates/template.dart';
 import 'package:ice_annotation/ice.dart';
+import 'package:meta/meta.dart';
 
 extension on Class {
   CopyWithType get copyWithType {
@@ -69,7 +70,20 @@ abstract class CopyWithTemplate extends Template {
   /// the doc comment of the copyWith method
   String get docComment => type.docComment;
 
+  @override
+  bool get canBeGenerated {
+    if (!super.canBeGenerated) {
+      return false;
+    }
+
+    return !subject.annotations.isUnionBase;
+  }
+
   /// any preparation/support that is needed for the copyWith method
   /// to succeffully generate
-  void writeSupport(StringBuffer buffer);
+  void writeSupport(StringBuffer buffer) => gate(buffer, support);
+
+  /// any preparation/support that is needed for the copyWith method
+  /// to succeffully generate
+  void support(StringBuffer buffer);
 }

@@ -29,7 +29,7 @@ class CopyWithFunctionTemplate extends CopyWithTemplate {
         );
 
   @override
-  void writeSupport(StringBuffer buffer) {
+  void support(StringBuffer buffer) {
     buffer.writeln('typedef CopyCallback<T> = T Function(T);');
   }
 
