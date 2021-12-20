@@ -51,17 +51,23 @@ class PropsTemplate extends Template {
   }
 
   void _writeReturn(StringBuffer buffer, {bool withInstance = false}) {
-    final unionFields = union?.fields.returnProps(withInstance: withInstance);
+    final unionFields =
+        union?.fields.returnProps(withInstance: withInstance) ?? [];
+    final fields = subject.fields.returnProps(withInstance: withInstance);
+
+    final allFields = [
+      ...fields,
+      ...unionFields,
+    ];
+
+    if (allFields.isEmpty) {
+      buffer.write('return [];');
+      return;
+    }
 
     buffer
       ..write('return [')
-      ..writeAll(
-        <String>[
-          ...subject.fields.returnProps(withInstance: withInstance),
-          ...(unionFields ?? [])
-        ],
-        ', ',
-      )
+      ..writeAll(allFields, ', ')
       ..writeln('];');
   }
 }
