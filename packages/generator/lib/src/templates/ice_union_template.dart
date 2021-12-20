@@ -2,12 +2,32 @@
 
 import 'package:change_case/change_case.dart';
 import 'package:ice/src/domain/domain.dart';
+import 'package:ice/src/domain/enums/position_type.dart';
 import 'package:ice/src/ice.dart';
+import 'package:ice/src/templates/copy_with_templates/copy_with_template.dart';
 import 'package:ice/src/templates/templates.dart';
 import 'package:ice/src/util/string_buffer_ext.dart';
 
 extension on Class {
-  String get nameAsArg => genName.toCamelCase();
+  String get unionBase => '\$$cleanName';
+  String get union => '_\$$cleanName';
+  String get unionMixin => '_\$${cleanName}Mixin';
+
+  String get classHeader {
+    final hasEquatable = metaSettings(
+      methodCallback: (_) => false,
+      iceCallback: (settings) => settings.equatable,
+      settingsCallback: (settings) => settings.equatable,
+    );
+    var equatable = '';
+
+    if (hasEquatable) {
+      equatable = ', EquatableMixin';
+    }
+    return 'abstract $union with $unionMixin$equatable implements $unionBase';
+  }
+
+  String get nameAsArg => nonPrivateName.toCamelCase();
 
   String resultArg({bool isRequired = false}) {
     final nullableStr = isRequired ? '' : '?';
@@ -51,6 +71,25 @@ extension on Class {
   String get unionName => name;
 }
 
+extension on Constructor {
+  String get args {
+    final args = <String>[];
+
+    for (final param in params) {
+      final name = param.name;
+
+      if (param.positionType.isNamed) {
+        args.add('$name: $name');
+        continue;
+      }
+
+      args.add(name);
+    }
+
+    return args.join(',\n');
+  }
+}
+
 extension on StringBuffer {
   void returnMap(
     Iterable<Class> classes,
@@ -84,7 +123,90 @@ class IceUnionBaseTemplate extends Template {
     //       'typedef _Result<R, T extends ${subject.unionName}> = R Function(T);',
     //     )
     //     ..writeln('typedef _NoResult<R> = R Function();');
-    _writeClass(buffer);
+
+    _writeSubUnion(subject, buffer);
+    _writeUnionBase(buffer);
+    final subClasses = IceGenerator.subjects.getUnions(subject);
+
+    for (final subClass in subClasses) {
+      _writeSubUnion(subClass, buffer);
+    }
+  }
+
+  final stateType = r'$StateType';
+
+  void _writeUnionBase(StringBuffer buffer) {
+    buffer.writeObject(
+      'abstract class ${subject.unionBase}',
+      body: () {
+        buffer
+          ..writeln('const ${subject.unionBase}')
+          ..writeln('String get $stateType;');
+      },
+    );
+  }
+
+  void _writeUnion(StringBuffer buffer) {
+    buffer.writeObject(
+      subject.classHeader,
+      body: () {
+        buffer
+          ..writeln('const ${subject.genName}')
+          ..writeln()
+          ..writeAll(subject.fieldGetters, '\n')
+          ..writeln()
+          ..writeln('@override')
+          ..writeln("String get $stateType => '${subject.name}';")
+          ..writeln('\n');
+
+        PropsTemplate.forSubject(
+          subject,
+          asFunction: false,
+        ).addToBuffer(buffer);
+        buffer.writeln();
+
+        ToStringTemplate.forSubject(
+          subject,
+          asFunction: false,
+        ).addToBuffer(buffer);
+      },
+    );
+  }
+
+  void _writeSubUnion(Class subClass, StringBuffer buffer) {
+    buffer
+      ..writeln('abstract class ${subClass.union} extends ${subject.name}')
+      ..writeAll(
+        subject.constructors.map<String>((superConst) {
+          final constStr = superConst.isConst ? 'const ' : '';
+          return '$constStr${subClass.genName}${superConst.declaration} : super(${superConst.args});';
+        }),
+      );
+    buffer
+      ..writeln()
+      ..writeAll(subClass.fieldGetters, '\n')
+      ..writeln('\n');
+
+    // TODO(mrgnhnt96): check if any of the subClasses need copyWith to `writeSupport`
+
+    CopyWithTemplate.forSubject(subClass).addToBuffer(buffer);
+
+    buffer
+      ..writeln()
+      ..writeln('@override')
+      ..writeln('String get $stateType => ${subject.name}')
+      ..writeln();
+
+    PropsTemplate.forSubject(
+      subClass,
+      asFunction: false,
+    ).addToBuffer(buffer);
+    buffer.writeln();
+
+    ToStringTemplate.forSubject(
+      subClass,
+      asFunction: false,
+    ).addToBuffer(buffer);
   }
 
   List<Class> get subtypes =>
@@ -95,185 +217,113 @@ class IceUnionBaseTemplate extends Template {
     final nullableStr = isNullable ? '?' : '';
     return 'R$nullableStr $methodName<R extends Object?>';
   }
-
-  void _writePatternMatch(
-    String name,
-    StringBuffer buffer, {
-    required Iterable<String> nullableParams,
-    required Iterable<String> requiredParams,
-    String Function(Class)? base,
-    required String Function(Class) maybe,
-    required String Function(Class) orNull,
-    bool mapWithSwitch = false,
-  }) {
-    if (!mapWithSwitch) {
-      assert(base != null, 'base is required when mapWithSwitch is false');
-    }
-
-    final camelName = name.toCamelCase();
-    final pascalName = name.toPascalCase();
-
-    buffer
-      ..writeMethod(
-        methodEntry(camelName),
-        params: requiredParams,
-        body: () {
-          if (mapWithSwitch) {
-            buffer.writeObject(
-              'switch (this.runtimeType)',
-              body: () {
-                buffer
-                  ..writeAll(subtypes.map<String>((e) => e.switchCase))
-                  ..writeln('default:')
-                  ..writeln(
-                    r"throw UnsupportedError('Unsupported type: $this');",
-                  );
-              },
-            );
-          } else {
-            buffer.returnMap(subtypes, base!);
-          }
-        },
-      )
-      ..writeMethod(
-        methodEntry('maybe$pascalName'),
-        params: {
-          ...nullableParams,
-          'required _NoResult<R> orElse',
-        },
-        body: () {
-          buffer.returnMap(subtypes, maybe);
-        },
-      )
-      ..writeMethod(
-        methodEntry('${camelName}OrNull', isNullable: true),
-        params: nullableParams,
-        body: () {
-          buffer.returnMap(subtypes, orNull);
-        },
-      );
-  }
-
-  void _writeProperties(StringBuffer buffer) {
-    final requiredParams =
-        subtypes.map<String>((e) => e.resultArg(isRequired: true));
-    final nullableParams = subtypes.map<String>((e) => e.resultArg());
-
-    _writePatternMatch(
-      'map',
-      buffer,
-      requiredParams: requiredParams,
-      nullableParams: nullableParams,
-      maybe: (subject) {
-        final varName = subject.nameAsArg;
-        return '$varName: (state) => '
-            '$varName?.call(state) ?? orElse()';
-      },
-      orNull: (subject) {
-        final varName = subject.nameAsArg;
-        return '$varName: (state) => '
-            '$varName?.call(state)';
-      },
-      mapWithSwitch: true,
-    );
-
-    final requiredWhenParams =
-        subtypes.map<String>((e) => e.whenParams(isRequired: true));
-    final nullableWhenParams = subtypes.map<String>((e) => e.whenParams());
-
-    _writePatternMatch(
-      'when',
-      buffer,
-      requiredParams: requiredWhenParams,
-      nullableParams: nullableWhenParams,
-      base: (subject) {
-        final varName = subject.nameAsArg;
-        return '$varName: (state) => $varName(${subject.whenArgs})';
-      },
-      maybe: (subject) {
-        final varName = subject.nameAsArg;
-        return '$varName: (state) => '
-            '$varName?.call(${subject.whenArgs}) ?? orElse()';
-      },
-      orNull: (subject) {
-        final varName = subject.nameAsArg;
-        return '$varName: (state) => $varName?.call(${subject.whenArgs})';
-      },
-    );
-
-    buffer.writeAll(subtypes.map<String>((e) => e.toIsType()), '\n');
-  }
-
-  void _writeSerialize(StringBuffer buffer) {
-    buffer.writeObject(
-      '${subject.unionName} _\$${subject.nonPrivateName}'
-      'UnionFromJson(Map<String, dynamic> json, '
-      '[${subject.unionName}? orElse])',
-      body: () {
-        buffer.writeObject(
-          "switch (json['runtimeType'] as String?)",
-          body: () {
-            buffer
-              ..writeAll(
-                subtypes.map<String>((e) {
-                  final name = e.genName;
-                  return "case '$name':\n" 'return $name.fromJson(json);';
-                }),
-                '\n',
-              )
-              ..writeln('default:\n' 'if (orElse != null) return orElse;')
-              ..writeln()
-              ..writeln(
-                r"throw UnsupportedError('Unsupported type: $json');",
-              );
-          },
-        );
-      },
-    );
-
-    // ignore: cascade_invocations
-    buffer
-      ..writeln()
-      ..writeObject(
-        'Map<String, dynamic> _\$${subject.cleanName}'
-        'UnionToJson(${subject.unionName} instance, '
-        '{bool includeRuntimeType = true})',
-        body: () {
-          buffer
-            ..writeln('final runtimeTypeMap = <String, dynamic>{};')
-            ..writeObject(
-              'if (includeRuntimeType)',
-              body: () {
-                buffer.writeln(
-                  r"runtimeTypeMap['runtimeType'] = '${instance.runtimeType}';",
-                );
-              },
-            )
-            ..writeln()
-            ..returnMap(
-              subtypes,
-              (c) {
-                final varName = c.nameAsArg;
-
-                return '$varName: ($varName) => '
-                    '$varName.toJson()..addAll(runtimeTypeMap)';
-              },
-              'instance.',
-            );
-        },
-      );
-  }
-
-  void _writeClass(StringBuffer buffer) {
-    buffer
-      ..writeln()
-      ..writeObject(
-        'mixin _\$${subject.cleanName}Union',
-        body: () {
-          _writeProperties(buffer);
-        },
-      )
-      ..writeln();
-    _writeSerialize(buffer);
-  }
 }
+
+
+// void _writeMixin(StringBuffer buffer) {
+//   void _writePatternMatch(
+//     String name,
+//     StringBuffer buffer, {
+//     required Iterable<String> nullableParams,
+//     required Iterable<String> requiredParams,
+//     String Function(Class)? base,
+//     required String Function(Class) maybe,
+//     required String Function(Class) orNull,
+//     bool mapWithSwitch = false,
+//   }) {
+//     if (!mapWithSwitch) {
+//       assert(base != null, 'base is required when mapWithSwitch is false');
+//     }
+
+//     final camelName = name.toCamelCase();
+//     final pascalName = name.toPascalCase();
+
+//     buffer
+//       ..writeMethod(
+//         methodEntry(camelName),
+//         params: requiredParams,
+//         body: () {
+//           if (mapWithSwitch) {
+//             buffer.writeObject(
+//               'switch (this.runtimeType)',
+//               body: () {
+//                 buffer
+//                   ..writeAll(subtypes.map<String>((e) => e.switchCase))
+//                   ..writeln('default:')
+//                   ..writeln(
+//                     r"throw UnsupportedError('Unsupported type: $this');",
+//                   );
+//               },
+//             );
+//           } else {
+//             buffer.returnMap(subtypes, base!);
+//           }
+//         },
+//       )
+//       ..writeMethod(
+//         methodEntry('maybe$pascalName'),
+//         params: {
+//           ...nullableParams,
+//           'required _NoResult<R> orElse',
+//         },
+//         body: () {
+//           buffer.returnMap(subtypes, maybe);
+//         },
+//       )
+//       ..writeMethod(
+//         methodEntry('${camelName}OrNull', isNullable: true),
+//         params: nullableParams,
+//         body: () {
+//           buffer.returnMap(subtypes, orNull);
+//         },
+//       );
+//   }
+
+//   final requiredParams =
+//       subtypes.map<String>((e) => e.resultArg(isRequired: true));
+//   final nullableParams = subtypes.map<String>((e) => e.resultArg());
+
+//   _writePatternMatch(
+//     'map',
+//     buffer,
+//     requiredParams: requiredParams,
+//     nullableParams: nullableParams,
+//     maybe: (subject) {
+//       final varName = subject.nameAsArg;
+//       return '$varName: (state) => '
+//           '$varName?.call(state) ?? orElse()';
+//     },
+//     orNull: (subject) {
+//       final varName = subject.nameAsArg;
+//       return '$varName: (state) => '
+//           '$varName?.call(state)';
+//     },
+//     mapWithSwitch: true,
+//   );
+
+//   final requiredWhenParams =
+//       subtypes.map<String>((e) => e.whenParams(isRequired: true));
+//   final nullableWhenParams = subtypes.map<String>((e) => e.whenParams());
+
+//   _writePatternMatch(
+//     'when',
+//     buffer,
+//     requiredParams: requiredWhenParams,
+//     nullableParams: nullableWhenParams,
+//     base: (subject) {
+//       final varName = subject.nameAsArg;
+//       return '$varName: (state) => $varName(${subject.whenArgs})';
+//     },
+//     maybe: (subject) {
+//       final varName = subject.nameAsArg;
+//       return '$varName: (state) => '
+//           '$varName?.call(${subject.whenArgs}) ?? orElse()';
+//     },
+//     orNull: (subject) {
+//       final varName = subject.nameAsArg;
+//       return '$varName: (state) => $varName?.call(${subject.whenArgs})';
+//     },
+//   );
+
+//   buffer.writeAll(subtypes.map<String>((e) => e.toIsType()), '\n');
+// }
