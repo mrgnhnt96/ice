@@ -1,5 +1,7 @@
 // ignore_for_file: parameter_assignments
 
+import 'dart:async';
+
 import 'package:build/build.dart';
 import 'package:source_gen/source_gen.dart';
 
@@ -35,11 +37,11 @@ class UnifiedGenerator extends Generator {
     for (final generator in _generators) {
       final lib = library.annotatedWith(generator.typeChecker);
       for (final annotatedElement in lib) {
-        final generatedValue = generator.generateForAnnotatedElement(
+        final generatedValue = await generator.generateForAnnotatedElement(
           annotatedElement.element,
           annotatedElement.annotation,
           buildStep,
-        ) as String;
+        ) as FutureOr<String>;
 
         final output = _normalizeGeneratorOutput(generatedValue);
 
