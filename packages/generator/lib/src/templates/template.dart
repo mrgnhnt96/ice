@@ -1,4 +1,5 @@
 import 'package:ice/src/domain/domain.dart';
+import 'package:meta/meta.dart';
 
 /// The abstraction for a template
 abstract class Template {
@@ -23,14 +24,19 @@ abstract class Template {
   /// whether the template can be generated
   ///
   /// should be called before [addToBuffer] or [toString]
+  @mustCallSuper
   bool get canBeGenerated {
     return subject.canGeneratedMethod(name);
   }
 
   /// checks if the template can be generated
-  void gate(StringBuffer buffer) {
+  void gate(StringBuffer buffer, [void Function(StringBuffer)? generator]) {
     if (canBeGenerated) {
-      generate(buffer);
+      if (generator != null) {
+        return generator(buffer);
+      }
+
+      return generate(buffer);
     }
   }
 
