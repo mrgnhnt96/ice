@@ -89,24 +89,6 @@ extension on Constructor {
   }
 }
 
-extension on StringBuffer {
-  void returnMap(
-    Iterable<Class> classes,
-    String Function(Class) f, [
-    String prepend = '',
-  ]) {
-    writeObject(
-      'return ${prepend}map',
-      open: '(',
-      close: ');',
-      includeSpaceBetweenOpen: false,
-      body: () {
-        writeAll(classes.map<String>((e) => f(e)), ',\n');
-      },
-    );
-  }
-}
-
 /// A template to generate methods for
 /// - copyWith()
 /// - Equatable Props
@@ -122,9 +104,7 @@ class IceUnionBaseTemplate extends Template {
     //       'typedef _Result<R, T extends ${subject.unionName}> = R Function(T);',
     //     )
     //     ..writeln('typedef _NoResult<R> = R Function();');
-
-    _writeSubUnion(subject, buffer);
-    _writeUnionBase(buffer);
+    buffer.writeln('mixin _\$${subject.name}Mixin {}');
   }
 
   final stateType = r'$StateType';
