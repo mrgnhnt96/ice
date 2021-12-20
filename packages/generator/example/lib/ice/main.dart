@@ -4,7 +4,13 @@ import 'package:json_annotation/json_annotation.dart';
 part 'main.ice.dart';
 part 'main.g.dart';
 
-@Ice()
+// Ice Annotation:
+// remove equatable on false
+
+@Ice(
+  equatable: false,
+  copyWithType: CopyWithType.simple,
+)
 @JsonSerializable()
 class Example extends _$Example {
   const Example({
@@ -18,19 +24,6 @@ class Example extends _$Example {
     this.set,
     this.example,
   });
-
-  @copyWithEntryPoint
-  const Example.empty()
-      : this(
-          text: '',
-          whole: 0,
-          decimal: 0.0,
-          flag: false,
-          list: const [],
-          map: const {},
-          set: const {},
-          example: const Example.empty(),
-        );
 
   factory Example.fromJson(Map<String, dynamic> json) =>
       _$ExampleFromJson(json);

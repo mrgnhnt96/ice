@@ -4,7 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'main.ice.dart';
 part 'main.g.dart';
 
-@copyWith
+@CopyWith.typeSafe
 @props
 @toString
 @JsonSerializable()
@@ -23,19 +23,6 @@ class Example extends Equatable {
 
   factory Example.fromJson(Map<String, dynamic> json) =>
       _$ExampleFromJson(json);
-
-  @copyWithEntryPoint
-  const Example.empty()
-      : this(
-          text: '',
-          whole: 0,
-          decimal: 0.0,
-          flag: false,
-          list: const [],
-          map: const {},
-          set: const {},
-          example: const Example.empty(),
-        );
 
   final String? text;
   final int? whole;
