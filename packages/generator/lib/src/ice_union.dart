@@ -4,6 +4,7 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:ice/src/domain/domain.dart';
 import 'package:ice/src/templates/templates.dart';
+import 'package:ice/src/util/build_step_ext.dart';
 import 'package:ice_annotation/src/ice.dart';
 import 'package:source_gen/source_gen.dart';
 
@@ -15,11 +16,11 @@ class IceUnionGenerator extends GeneratorForAnnotation<IceUnion> {
   const IceUnionGenerator() : super();
 
   @override
-  String generateForAnnotatedElement(
+  Future<String> generateForAnnotatedElement(
     Element element,
     ConstantReader annotation,
     BuildStep buildStep,
-  ) {
+  ) async {
     // print(IceGenerator.unions);
     // print(element);
     // print(annotation);
@@ -34,10 +35,26 @@ class IceUnionGenerator extends GeneratorForAnnotation<IceUnion> {
 
     final subject = Class.fromElement(element);
 
-    final union = IceUnionBaseTemplate.forSubject(subject);
+    Class? union;
+    final unionType = subject.annotations.ofUnionType;
 
-    final result = union.toString();
+    if (unionType != null && !subject.annotations.isUnionBase) {
+      union = await buildStep.unionClass(unionType);
+    }
 
-    return result;
+    final iceTemplate = IceTemplate.forSubject(
+      subject,
+      union: union,
+    );
+    final unionTemplate = IceUnionBaseTemplate.forSubject(subject);
+
+    final buffer = StringBuffer();
+
+    iceTemplate.addToBuffer(buffer);
+    if (subject.annotations.isUnionBase) {
+      unionTemplate.addToBuffer(buffer);
+    }
+
+    return buffer.toString();
   }
 }
