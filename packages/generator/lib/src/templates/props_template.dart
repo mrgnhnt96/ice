@@ -1,4 +1,3 @@
-import 'package:ice/ice.dart';
 import 'package:ice/src/domain/domain.dart';
 import 'package:ice/src/domain/field.dart';
 import 'package:ice/src/templates/template.dart';
@@ -12,10 +11,14 @@ class PropsTemplate extends Template {
   const PropsTemplate.forSubject(
     Class subject, {
     required this.asFunction,
+    this.union,
   }) : super(subject, name: IceOptions.equatable);
 
   /// whether to generate the props as a function
   final bool asFunction;
+
+  /// the union of the [subject]
+  final Class? union;
 
   @override
   void generate(StringBuffer buffer) {
@@ -48,10 +51,15 @@ class PropsTemplate extends Template {
   }
 
   void _writeReturn(StringBuffer buffer, {bool withInstance = false}) {
+    final unionFields = union?.fields.returnProps(withInstance: withInstance);
+
     buffer
       ..write('return [')
       ..writeAll(
-        subject.fields.returnProps(withInstance: withInstance),
+        <String>[
+          ...subject.fields.returnProps(withInstance: withInstance),
+          ...(unionFields ?? [])
+        ],
         ', ',
       )
       ..writeln('];');
