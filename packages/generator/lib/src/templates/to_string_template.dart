@@ -77,9 +77,16 @@ class ToStringTemplate extends Template {
   }
 
   void _writeReturn(StringBuffer buffer, {bool fromInstance = false}) {
+    final args = subject.fields.asArgs(fromInstance: fromInstance);
+
+    if (args.isEmpty) {
+      buffer.write("return '${subject.name}()';");
+      return;
+    }
+
     buffer
       ..writeln("return '''\n${subject.name}(")
-      ..writeAll(subject.fields.asArgs(fromInstance: fromInstance), ',\n')
+      ..writeAll(args, ',\n')
       ..writeln(',')
       ..writeln(")''';");
   }
