@@ -7,8 +7,8 @@ part 'output/basic_copy_with_type_safe.dart';
 
 @JsonSerializable()
 @Ice(copyWithType: CopyWithType.simple)
-class State extends _$State {
-  const State(
+class Example extends _$State {
+  const Example(
     this.name,
     this.age, {
     this.money,
@@ -22,7 +22,7 @@ class State extends _$State {
           date: date,
         );
 
-  factory State.fromJson(Map<String, dynamic> json) => _$StateFromJson(json);
+  factory Example.fromJson(Map<String, dynamic> json) => _$StateFromJson(json);
 
   final String name;
   final int? age;
@@ -32,4 +32,4 @@ class State extends _$State {
 }
 
 Map<String, dynamic> _$StateToJson(_$State state) => <String, dynamic>{};
-State _$StateFromJson(Map<String, dynamic> json) => const State('', 1);
+Example _$StateFromJson(Map<String, dynamic> json) => const Example('', 1);

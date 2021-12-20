@@ -5,10 +5,7 @@ import 'package:ice_annotation/ice.dart';
 
 part 'output/basic.dart';
 
-@CopyWith.simple
 @Ice()
-@props
-@IceUnion.of(State)
 @JsonSerializable(
   createToJson: false,
 )

@@ -43,13 +43,19 @@ class IceGenerator extends GeneratorForAnnotation<Ice> {
       union = await buildStep.unionClass(unionType);
     }
 
-    final ice = IceTemplate.forSubject(
+    final iceTemplate = IceTemplate.forSubject(
       subject,
       union: union,
     );
 
-    final result = ice.toString();
+    final buffer = StringBuffer();
 
-    return result;
+    iceTemplate.addToBuffer(buffer);
+
+    if (subject.annotations.isUnionBase) {
+      IceUnionBaseTemplate.forSubject(subject).addToBuffer(buffer);
+    }
+
+    return buffer.toString();
   }
 }

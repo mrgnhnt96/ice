@@ -7,7 +7,6 @@ import 'package:ice/ice.dart';
 import 'package:ice/ice_builder.dart';
 import 'package:ice/src/domain/ice_settings.dart';
 import 'package:ice/src/ice.dart';
-import 'package:ice/src/ice_union.dart';
 import 'package:ice/src/method.dart';
 import 'package:ice/src/util/unified_generator.dart';
 import 'package:mocktail/mocktail.dart';

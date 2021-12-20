@@ -41,7 +41,7 @@ class Ice {
 /// the base of the union
 ///  {@endtemplate}
 @Target({TargetKind.classType})
-class IceUnion {
+class IceUnion extends Ice {
   /// {@macro ice_union_base}
   const IceUnion.of(this.base);
 

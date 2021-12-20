@@ -2,7 +2,6 @@ import 'package:build/build.dart';
 import 'package:ice/ice.dart';
 import 'package:ice/src/domain/package_builder.dart';
 import 'package:ice/src/ice.dart';
-import 'package:ice/src/ice_union.dart';
 import 'package:ice/src/method.dart';
 import 'package:ice/src/util/unified_generator.dart';
 import 'package:meta/meta.dart';
@@ -20,7 +19,6 @@ class IceBuilder extends PackageBuilder {
         UnifiedGenerator(
           [
             const IceGenerator(),
-            const IceUnionGenerator(),
             const MethodGenerator(),
           ],
           name: name,

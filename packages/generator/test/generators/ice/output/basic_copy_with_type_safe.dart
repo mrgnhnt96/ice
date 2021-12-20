@@ -13,7 +13,7 @@ class _$State with EquatableMixin {
     double? money,
     bool? isCool,
     DateTime? date,
-  }) = State;
+  }) = Example;
 
   const _$State.ice(
     this.name,
@@ -29,14 +29,14 @@ class _$State with EquatableMixin {
   final bool? isCool;
   final DateTime? date;
 
-  State copyWith({
+  Example copyWith({
     CopyCallback<String>? name,
     CopyCallback<int?>? age,
     CopyCallback<double?>? money,
     CopyCallback<bool?>? isCool,
     CopyCallback<DateTime?>? date,
   }) {
-    return State(
+    return Example(
       name == null ? this.name : name(this.name),
       age == null ? this.age : age(this.age),
       money: money == null ? this.money : money(this.money),
