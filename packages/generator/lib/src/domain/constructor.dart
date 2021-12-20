@@ -16,6 +16,7 @@ class Constructor {
     required this.params,
     required this.declaration,
     required this.isGenerative,
+    required this.isConst,
   });
 
   /// Gets the constructor from the [ConstructorElement]
@@ -42,6 +43,7 @@ class Constructor {
       declaration: declaration,
       isGenerative: isGenerative,
       isCopyWithConstructor: isCopyWithConstructor,
+      isConst: element.isConst,
     );
   }
 
@@ -70,6 +72,9 @@ class Constructor {
 
   /// the declaration of the constructor
   final String declaration;
+
+  /// whether the constructor is const
+  final bool isConst;
 
   /// if the constructor is the default constructor
   bool get isDefault => name.isEmpty;
