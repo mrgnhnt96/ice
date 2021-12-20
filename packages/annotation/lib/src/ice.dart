@@ -52,14 +52,3 @@ class IceUnion {
   // ignore: prefer_constructors_over_static_methods
   static const IceUnion create = IceUnion.of(IceUnion);
 }
-
-/// {@template ice_union_entry_point}
-/// the entry point of the union
-/// {@endtemplate}
-class UnionEntryPoint {
-  /// {@macro ice_union_entry_point}
-  const UnionEntryPoint();
-}
-
-/// {@macro ice_union_entry_point}
-const unionEntryPoint = UnionEntryPoint();
