@@ -5,7 +5,7 @@ import 'package:ice_annotation/ice.dart';
 
 part 'output/basic.dart';
 
-@copyWith
+@CopyWith.simple
 @Ice()
 @props
 @IceUnion.of(State)
@@ -22,7 +22,7 @@ class State extends _$State {
     this.father = 'dad',
   });
 
-  @copyWithEntryPoint
+  @CopyWith.constructor
   factory State.fromJson(Map<String, dynamic> json) => _$StateFromJson(json);
 
   String? _pet;

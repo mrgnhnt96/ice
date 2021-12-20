@@ -47,12 +47,12 @@ abstract class _$Ready extends State {
   @override
   String get $StateType => '_Ready';
 
-  @override
-  List<Object> get props => [code, message];
-
   _Ready copyWith({String? message}) {
     return _Ready(message ?? this.message);
   }
+
+  @override
+  List<Object> get props => [code, message];
 
   @override
   String toString() {
