@@ -19,11 +19,11 @@ class IceGenerator extends GeneratorForAnnotation<Ice> {
   static IceSubjects subjects = IceSubjects();
 
   @override
-  String generateForAnnotatedElement(
+  Future<String> generateForAnnotatedElement(
     Element element,
     ConstantReader annotation,
     BuildStep buildStep,
-  ) {
+  ) async {
     // print(element);
     // print(annotation);
     // print(buildStep);
@@ -36,6 +36,16 @@ class IceGenerator extends GeneratorForAnnotation<Ice> {
     }
 
     final subject = Class.fromElement(element);
+    final unionType = subject.annotations.ofUnionType;
+
+    if (unionType != null) {
+      final library = await buildStep.resolver.libraryFor(buildStep.inputId);
+      final libraryReader = LibraryReader(library);
+      final result = libraryReader.findType(unionType);
+      if (result == null) {
+        throw 'Union type `$unionType` not found in library `${library.name}`.';
+      }
+    }
 
     final ice = IceTemplate.forSubject(subject);
     subjects.add(subject);
