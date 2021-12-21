@@ -53,7 +53,9 @@ class UnionClassTemplate extends IceTemplate {
     if (subjectIsOfUnion) {
       buffer
         ..writeAll(
-          union!.constructors.map<String>((superConst) {
+          union!.constructors
+              .where((c) => c.isGenerative)
+              .map<String>((superConst) {
             final constStr = superConst.isConst ? 'const ' : '';
             var superName = superConst.name;
             if (superName.isNotEmpty) {
