@@ -17,16 +17,23 @@ class MethodTemplate extends Template {
     if (methods == null) return;
 
     final copyWithTemplate = CopyWithTemplate.forSubject(subject);
+    final toJsonTemplate = ToJsonTemplate.forSubject(subject);
 
-    buffer.writeObject(
-      'extension on ${subject.name}',
-      body: () {
-        copyWithTemplate.addToBuffer(buffer);
-        ToJsonTemplate.forSubject(subject).addToBuffer(buffer);
-      },
-    );
+    if (toJsonTemplate.canBeGenerated || copyWithTemplate.canBeGenerated) {
+      buffer.writeObject(
+        'extension on ${subject.name}',
+        body: () {
+          copyWithTemplate.addToBuffer(buffer);
+          toJsonTemplate.addToBuffer(buffer);
+        },
+      );
+    }
 
-    copyWithTemplate.writeSupport(buffer);
+    if (copyWithTemplate.support.isNotEmpty) {
+      buffer
+        ..writeln(copyWithTemplate.support)
+        ..writeln();
+    }
 
     PropsTemplate.forSubject(
       subject,

@@ -1,6 +1,7 @@
 import 'package:ice/src/domain/domain.dart';
 import 'package:ice/src/domain/enums/copy_with_type_ext.dart';
 import 'package:ice/src/domain/enums/position_type.dart';
+import 'package:ice/src/domain/ice_support.dart';
 import 'package:ice/src/templates/copy_with_templates/copy_with_function_template.dart';
 import 'package:ice/src/templates/copy_with_templates/copy_with_simple_template.dart';
 import 'package:ice/src/templates/template.dart';
@@ -135,9 +136,14 @@ abstract class CopyWithTemplate extends Template {
 
   /// any preparation/support that is needed for the copyWith method
   /// to succeffully generate
-  void writeSupport(StringBuffer buffer) => gate(buffer, support);
+  String get support => '';
 
-  /// any preparation/support that is needed for the copyWith method
-  /// to succeffully generate
-  void support(StringBuffer buffer);
+  /// adds support to [IceSupport]
+  void addSupport() {
+    if (!canBeGenerated) {
+      return;
+    }
+
+    IceSupport().add(support);
+  }
 }

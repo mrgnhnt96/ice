@@ -24,9 +24,6 @@ class CopyWithSimpleTemplate extends CopyWithTemplate {
         );
 
   @override
-  void support(StringBuffer buffer) {}
-
-  @override
   String argReturnValue(Param arg) => arg.argReturnValue;
 
   @override

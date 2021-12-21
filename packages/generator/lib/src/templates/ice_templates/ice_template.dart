@@ -1,4 +1,5 @@
 import 'package:ice/src/domain/domain.dart';
+import 'package:ice/src/domain/ice_support.dart';
 import 'package:ice/src/templates/ice_templates/union_class_template.dart';
 import 'package:ice/src/templates/templates.dart';
 import 'package:ice/src/templates/to_json_template.dart';
@@ -96,7 +97,7 @@ class IceTemplate extends Template {
       },
     );
 
-    writeCopyWithSupport(buffer);
+    writeCopyWithSupport();
 
     writeToJson(buffer);
   }
@@ -129,9 +130,9 @@ class IceTemplate extends Template {
   }
 
   ///
-  void writeCopyWithSupport(StringBuffer buffer) {
+  void writeCopyWithSupport() {
     if (generateProperties) {
-      copyWithTemplate.writeSupport(buffer);
+      IceSupport().add(copyWithTemplate.support);
     }
   }
 

@@ -30,8 +30,8 @@ class CopyWithFunctionTemplate extends CopyWithTemplate {
   String get callback => r'_$CopyCallback';
 
   @override
-  void support(StringBuffer buffer) {
-    buffer.writeln('typedef $callback<T> = T Function(T);');
+  String get support {
+    return 'typedef $callback<T> = T Function(T);';
   }
 
   @override
