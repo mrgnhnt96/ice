@@ -3,6 +3,7 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:ice/src/domain/domain.dart';
+import 'package:ice/src/domain/ice_subjects.dart';
 import 'package:ice/src/templates/ice_templates/ice_template.dart';
 import 'package:ice/src/templates/templates.dart';
 import 'package:ice/src/templates/union_mixin_template.dart';
@@ -18,6 +19,7 @@ class IceGenerator extends GeneratorForAnnotation<Ice> {
   const IceGenerator() : super();
 
   /// {@macro unions}
+  static IceSubjects subjects = IceSubjects();
 
   @override
   Future<String> generateForAnnotatedElement(
@@ -37,9 +39,10 @@ class IceGenerator extends GeneratorForAnnotation<Ice> {
     }
 
     final subject = Class.fromElement(element);
-    final unionType = subject.annotations.ofUnionType;
+    subjects.add(subject);
 
     Class? union;
+    final unionType = subject.annotations.ofUnionType;
 
     if (unionType != null && !subject.annotations.isUnionBase) {
       union = await buildStep.unionClass(unionType);
@@ -50,14 +53,6 @@ class IceGenerator extends GeneratorForAnnotation<Ice> {
       union: union,
     );
 
-    final buffer = StringBuffer();
-
-    iceTemplate.addToBuffer(buffer);
-
-    if (subject.annotations.isUnionBase) {
-      UnionMixinTemplate.forSubject(subject).addToBuffer(buffer);
-    }
-
-    return buffer.toString();
+    return iceTemplate.toString();
   }
 }

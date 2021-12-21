@@ -93,7 +93,11 @@ extension on Constructor {
 /// - Equatable Props
 /// - toString()
 class UnionMixinTemplate extends Template {
-  UnionMixinTemplate.forSubject(Class subject) : super.wrapper(subject);
+  UnionMixinTemplate.forSubject(
+    Class subject,
+    this.subClasses,
+  ) : super.wrapper(subject);
+  final List<Class> subClasses;
 
   @override
   void generate(StringBuffer buffer) {
