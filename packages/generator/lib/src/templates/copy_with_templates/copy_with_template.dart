@@ -1,8 +1,10 @@
 import 'package:ice/src/domain/domain.dart';
 import 'package:ice/src/domain/enums/copy_with_type_ext.dart';
+import 'package:ice/src/domain/enums/position_type.dart';
 import 'package:ice/src/templates/copy_with_templates/copy_with_function_template.dart';
 import 'package:ice/src/templates/copy_with_templates/copy_with_simple_template.dart';
 import 'package:ice/src/templates/template.dart';
+import 'package:ice/src/util/string_buffer_ext.dart';
 import 'package:ice_annotation/ice.dart';
 
 extension on Class {
@@ -12,6 +14,18 @@ extension on Class {
       iceCallback: (ice) => ice.copyWithType,
       settingsCallback: (settings) => settings.copyWithType,
     );
+  }
+}
+
+extension on Constructor {
+  /// the params
+  Iterable<String> parameters(String Function(Param) callback) {
+    return params.map((p) => callback(p));
+  }
+
+  /// the args
+  Iterable<String> arguments(String Function(Param) callback) {
+    return params.map((p) => callback(p));
   }
 }
 
@@ -80,6 +94,43 @@ abstract class CopyWithTemplate extends Template {
     }
 
     return true;
+  }
+
+  ///
+  String get header => '${subject.name} copyWith';
+
+  ///
+  String constructorParam(Param param);
+
+  ///
+  String argReturnValue(Param arg);
+
+  @override
+  void generate(StringBuffer buffer) {
+    buffer
+      ..writeln(docComment)
+      ..writeMethod(
+        header,
+        params: constructor.parameters(constructorParam),
+        body: () {
+          buffer.writeObject(
+            'return ${constructor.displayName}',
+            open: '(',
+            includeSpaceBetweenOpen: false,
+            body: () => buffer.writeAll(
+              constructor.arguments((p) {
+                if (p.positionType.isPositional) {
+                  return argReturnValue(p);
+                }
+
+                return '${p.name}: ${argReturnValue(p)}';
+              }),
+              ',\n',
+            ),
+            close: ');',
+          );
+        },
+      );
   }
 
   /// any preparation/support that is needed for the copyWith method

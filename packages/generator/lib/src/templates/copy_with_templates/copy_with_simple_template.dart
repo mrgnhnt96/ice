@@ -1,16 +1,14 @@
 import 'package:ice/src/domain/domain.dart';
-import 'package:ice/src/templates/copy_with_templates/copy_with_extensions.dart';
 import 'package:ice/src/templates/copy_with_templates/copy_with_template.dart';
-import 'package:ice/src/util/string_buffer_ext.dart';
 import 'package:ice_annotation/ice.dart';
 
 extension on Param {
-  String forConstructor() {
+  String get constructorParam {
     return '$nullableType $name';
   }
 
-  String asArgument() {
-    return '$name: $name ?? this.$name';
+  String get argReturnValue {
+    return '$name ?? this.$name';
   }
 }
 
@@ -26,23 +24,11 @@ class CopyWithSimpleTemplate extends CopyWithTemplate {
         );
 
   @override
-  void generate(StringBuffer buffer) {
-    final args = constructor.arguments((p) => p.asArgument());
-    buffer.writeMethod(
-      subject.copyWithHeader,
-      params: constructor.parameters((p) => p.forConstructor()),
-      body: () {
-        buffer.writeObject(
-          'return ${constructor.displayName}',
-          open: '(',
-          includeSpaceBetweenOpen: false,
-          body: () => buffer.writeAll(args, ',\n'),
-          close: '${args.length >= 3 ? ',' : ''});',
-        );
-      },
-    );
-  }
+  void support(StringBuffer buffer) {}
 
   @override
-  void support(StringBuffer buffer) {}
+  String argReturnValue(Param arg) => arg.argReturnValue;
+
+  @override
+  String constructorParam(Param param) => param.constructorParam;
 }

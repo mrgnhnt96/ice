@@ -1,18 +1,16 @@
 // ignore_for_file: dead_code
 
 import 'package:ice/src/domain/domain.dart';
-import 'package:ice/src/templates/copy_with_templates/copy_with_extensions.dart';
 import 'package:ice/src/templates/copy_with_templates/copy_with_template.dart';
-import 'package:ice/src/util/string_buffer_ext.dart';
 import 'package:ice_annotation/ice.dart';
 
 extension on Param {
-  String forConstructor() {
-    return 'CopyCallback<$type>? $name';
+  String get constructorParam {
+    return '<$type>? $name';
   }
 
-  String asArgument() {
-    return '$name: $name == null ? this.$name : $name(this.$name)';
+  String get argReturnValue {
+    return '$name == null ? this.$name : $name(this.$name)';
   }
 }
 
@@ -28,28 +26,17 @@ class CopyWithFunctionTemplate extends CopyWithTemplate {
           type: CopyWithType.typeSafe,
         );
 
+  /// the callback name for the copyWith method
+  String get callback => r'_$CopyCallback';
+
   @override
   void support(StringBuffer buffer) {
-    buffer.writeln('typedef CopyCallback<T> = T Function(T);');
+    buffer.writeln('typedef $callback<T> = T Function(T);');
   }
 
   @override
-  void generate(StringBuffer buffer) {
-    buffer.writeMethod(
-      subject.copyWithHeader,
-      params: constructor.parameters((p) => p.forConstructor()),
-      body: () {
-        buffer.writeObject(
-          'return ${constructor.displayName}',
-          open: '(',
-          includeSpaceBetweenOpen: false,
-          body: () => buffer.writeAll(
-            constructor.arguments((p) => p.asArgument()),
-            ',\n',
-          ),
-          close: ');',
-        );
-      },
-    );
-  }
+  String argReturnValue(Param arg) => arg.argReturnValue;
+
+  @override
+  String constructorParam(Param param) => '$callback${param.constructorParam}';
 }
