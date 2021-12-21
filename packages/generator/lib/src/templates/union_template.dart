@@ -74,8 +74,8 @@ extension on Constructor {
 /// - copyWith()
 /// - Equatable Props
 /// - toString()
-class UnionMixinTemplate extends Template {
-  UnionMixinTemplate.forSubject(
+class UnionTemplate extends Template {
+  UnionTemplate.forSubject(
     Class subject,
     this.subClasses,
   ) : super.wrapper(subject);

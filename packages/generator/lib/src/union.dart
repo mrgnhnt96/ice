@@ -3,7 +3,7 @@ import 'package:build/build.dart';
 import 'package:ice/src/domain/domain.dart';
 import 'package:ice/src/domain/ice_support.dart';
 import 'package:ice/src/ice.dart';
-import 'package:ice/src/templates/union_mixin_template.dart';
+import 'package:ice/src/templates/union_template.dart';
 import 'package:ice_annotation/ice.dart';
 import 'package:source_gen/source_gen.dart';
 
@@ -33,7 +33,7 @@ class UnionGenerator extends GeneratorForAnnotation<IceUnion> {
     final support = IceSupport().get();
     buffer.writeAll(support, '\n\n');
 
-    UnionMixinTemplate.forSubject(subject, subClasses).addToBuffer(buffer);
+    UnionTemplate.forSubject(subject, subClasses).addToBuffer(buffer);
 
     return buffer.toString();
   }
