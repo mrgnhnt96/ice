@@ -3,16 +3,17 @@
 import 'package:change_case/change_case.dart';
 import 'package:ice/src/domain/domain.dart';
 import 'package:ice/src/domain/enums/position_type.dart';
+import 'package:ice/src/domain/ice_support.dart';
 import 'package:ice/src/templates/templates.dart';
 import 'package:ice/src/util/string_buffer_ext.dart';
 
 extension on Class {
   String get nameAsArg => nonPrivateName.toCamelCase();
 
-  String mapParams({bool isRequired = false}) {
+  String mapParams(String result, {bool isRequired = false}) {
     final nullableStr = isRequired ? '' : '?';
     final keyword = isRequired ? 'required ' : '';
-    return '${keyword}_Result<R, $genName>$nullableStr $nameAsArg';
+    return '$keyword$result<R, $genName>$nullableStr $nameAsArg';
   }
 
   String whenParams({bool isRequired = false}) {
@@ -81,11 +82,12 @@ class UnionTemplate extends Template {
   ) : super.wrapper(subject);
   final List<Class> subClasses;
 
-  String get result => '_Result';
+  String get result => '_\$${subject.cleanName}Callback';
+  String get noResult => '_\$No${subject.cleanName}Callback';
 
   @override
   void generate(StringBuffer buffer) {
-    _writeSupport(buffer);
+    _writeSupport();
     _writeUnionBase(buffer);
 
     buffer.writeObject(
@@ -101,12 +103,11 @@ class UnionTemplate extends Template {
     buffer.writeAll(subClasses.map<String>((e) => e.toIsType()), '\n');
   }
 
-  void _writeSupport(StringBuffer buffer) {
-    buffer
-      ..writeln(
-        'typedef _Result<R, T extends ${subject.unionName}> = R Function(T);',
-      )
-      ..writeln('typedef _NoResult<R> = R Function();');
+  void _writeSupport() {
+    IceSupport().addAll([
+      'typedef $result<R, T extends ${subject.unionName}> = R Function(T);',
+      'typedef $noResult<R> = R Function();'
+    ]);
   }
 
   void _writeUnionBase(StringBuffer buffer) {
@@ -148,6 +149,7 @@ class UnionTemplate extends Template {
       for (final item in subClasses) {
         final param = pattern.param(
           item,
+          result: result,
           isRequired: type.map(
             base: true,
             maybe: false,
@@ -162,7 +164,7 @@ class UnionTemplate extends Template {
         }
       }
 
-      final additionalParam = type.additionalParam;
+      final additionalParam = type.additionalParam(noResult);
       if (additionalParam != null) {
         params.add(additionalParam);
       }
@@ -240,10 +242,11 @@ extension on Pattern {
 
   String param(
     Class sub, {
+    required String result,
     required bool isRequired,
   }) {
     return map(
-      map: sub.mapParams(isRequired: isRequired),
+      map: sub.mapParams(result, isRequired: isRequired),
       when: sub.whenParams(isRequired: isRequired),
     );
   }
@@ -335,9 +338,9 @@ extension on PatternType {
     return getArg();
   }
 
-  String? get additionalParam {
+  String? additionalParam(String noResult) {
     return mapOrNull(
-      maybe: 'required _NoResult<R> orElse',
+      maybe: 'required $noResult<R> orElse',
     );
   }
 }
