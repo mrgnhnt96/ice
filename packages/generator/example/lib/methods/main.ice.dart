@@ -9,16 +9,22 @@ part of 'main.dart';
 // **************************************************************************
 
 extension on Example {
+  /// if `null` is passed within the `copyWith` method,
+  /// `null` will be returned.
+  ///
+  /// ```dart
+  /// myClass.copyWith(field: (currentValue) => newValue);
+  /// ```
   Example copyWith({
-    CopyCallback<String?>? text,
-    CopyCallback<int?>? whole,
-    CopyCallback<double?>? decimal,
-    CopyCallback<bool?>? flag,
-    CopyCallback<DateTime?>? date,
-    CopyCallback<List<String>?>? list,
-    CopyCallback<Map<String, String>?>? map,
-    CopyCallback<Set<String>?>? set,
-    CopyCallback<Example?>? example,
+    _$CopyCallback<String?>? text,
+    _$CopyCallback<int?>? whole,
+    _$CopyCallback<double?>? decimal,
+    _$CopyCallback<bool?>? flag,
+    _$CopyCallback<DateTime?>? date,
+    _$CopyCallback<List<String>?>? list,
+    _$CopyCallback<Map<String, String>?>? map,
+    _$CopyCallback<Set<String>?>? set,
+    _$CopyCallback<Example?>? example,
   }) {
     return Example(
         text: text == null ? this.text : text(this.text),
@@ -35,7 +41,8 @@ extension on Example {
   Map<String, dynamic> toJson() => _$ExampleToJson(this);
 }
 
-typedef CopyCallback<T> = T Function(T);
+typedef _$CopyCallback<T> = T Function(T);
+
 List<Object?> _$ExampleProps(Example instance) {
   return [
     instance.text,

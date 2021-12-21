@@ -14,9 +14,6 @@ Example _$ExampleFromJson(Map json) => Example(
       date:
           json['date'] == null ? null : DateTime.parse(json['date'] as String),
       list: (json['list'] as List<dynamic>?)?.map((e) => e as String).toList(),
-      map: (json['map'] as Map?)?.map(
-        (k, e) => MapEntry(k as String, e as String),
-      ),
       set: (json['set'] as List<dynamic>?)?.map((e) => e as String).toSet(),
       example: json['example'] == null
           ? null
@@ -38,7 +35,6 @@ Map<String, dynamic> _$ExampleToJson(Example instance) {
   writeNotNull('flag', instance.flag);
   writeNotNull('date', instance.date?.toIso8601String());
   writeNotNull('list', instance.list);
-  writeNotNull('map', instance.map);
   writeNotNull('set', instance.set?.toList());
   writeNotNull('example', instance.example?.toJson());
   return val;
