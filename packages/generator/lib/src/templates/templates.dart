@@ -1,6 +1,5 @@
-export 'copy_with_templates/copy_with_function_template.dart';
-export 'ice_template.dart';
-export 'ice_union_template.dart';
+export 'copy_with_templates/copy_with_template.dart';
+export 'ice_templates/ice_template.dart';
 export 'method_template.dart';
 export 'props_template.dart';
 export 'template.dart';
