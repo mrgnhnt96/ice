@@ -4,7 +4,6 @@ import 'package:build/build.dart';
 import 'package:build_test/build_test.dart';
 import 'package:generator_test/generator_test.dart';
 import 'package:ice/ice.dart';
-import 'package:ice/ice_builder.dart';
 import 'package:ice/src/ice.dart';
 import 'package:ice/src/method.dart';
 import 'package:ice/src/util/unified_generator.dart';
@@ -12,8 +11,6 @@ import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 
 void main() {
-  const iceBuilder = IceBuilder();
-
   setUp(() {
     const base = 'test/builder';
     GeneratorPath.setDirPath(
@@ -25,9 +22,9 @@ void main() {
   test('builder', () async {
     await testPackageBuilder(
       'basic',
-      builder: iceBuilder.entryPoint,
-      extension: iceBuilder.extension,
-      header: iceBuilder.header,
+      builder: iceBuilder,
+      extension: iceExtension,
+      header: iceHeader,
     );
   });
 }

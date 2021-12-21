@@ -13,11 +13,14 @@
 /// you are creating a custom compilation pipeline. See documentation for
 /// details, and `build.yaml` for how these builders are configured by default.
 import 'package:build/build.dart';
-import 'package:ice/ice_builder.dart';
 import 'package:ice/src/domain/ice_settings.dart';
+import 'package:ice/src/ice.dart';
+import 'package:ice/src/method.dart';
+import 'package:ice/src/util/unified_generator.dart';
 import 'package:meta/meta.dart';
+import 'package:source_gen/source_gen.dart';
 
-/// the settings for the [IceBuilder] from the build.yaml file
+/// the settings from the build.yaml file
 IceSettings get iceSettings {
   final settings = _iceSettings;
 
@@ -35,11 +38,38 @@ set iceSettings(IceSettings value) {
 
 IceSettings? _iceSettings;
 
+/// the list of ignore_for_file
+const _ignores = <String>[];
+
+/// the list of ignore_for_file for the generated file
+final iceIgnoreForFile = '// ignore_for_file: ${_ignores.join(',')}'.trim();
+
+/// the header to use for generated file
+String get iceHeader => '''
+// coverage:ignore-file
+$defaultFileHeader
+$iceIgnoreForFile
+''';
+
+/// the extension of the generated file
+const iceExtension = '.ice.dart';
+
 /// Not meant to be invoked by hand-authored code.
 Builder iceBuilder(BuilderOptions options) {
   // get settings from the build file
   iceSettings = IceSettings.fromOptions(options.config);
-  const ice = IceBuilder();
 
-  return ice.builder;
+  return PartBuilder(
+    [
+      const UnifiedGenerator(
+        [
+          IceGenerator(),
+          MethodGenerator(),
+        ],
+        name: 'IceGenerator',
+      )
+    ],
+    '.ice.dart',
+    header: iceHeader,
+  );
 }

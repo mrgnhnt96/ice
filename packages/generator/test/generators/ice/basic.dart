@@ -6,6 +6,7 @@ import 'package:ice_annotation/ice.dart';
 part 'output/basic.dart';
 
 @Ice()
+@IceUnion.create
 @JsonSerializable(
   createToJson: false,
 )
@@ -41,3 +42,8 @@ class State extends _$State {
 
 Map<String, dynamic> _$StateToJson(_$State state) => <String, dynamic>{};
 State _$StateFromJson(Map<String, dynamic> json) => State('', 1);
+
+@IceUnion.of(State)
+class Ready {
+  const Ready();
+}
