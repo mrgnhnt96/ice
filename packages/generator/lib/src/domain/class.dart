@@ -154,7 +154,7 @@ class Class {
 
   /// the name of the union base class
   String get unionBase {
-    return '\$$cleanName';
+    return '_\$${cleanName}Union';
   }
 
   /// formats all fields as getters

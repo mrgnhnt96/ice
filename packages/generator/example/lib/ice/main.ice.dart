@@ -114,7 +114,9 @@ abstract class _$Error extends State {
   String get $StateType => 'Error';
 }
 
-abstract class _$State with EquatableMixin, _$StateMixin implements $State {
+abstract class _$State
+    with EquatableMixin, _$StateMixin
+    implements _$StateUnion {
   const _$State();
 
   int get code;
@@ -139,8 +141,8 @@ typedef _$CopyCallback<T> = T Function(T);
 typedef _Result<R, T extends State> = R Function(T);
 typedef _NoResult<R> = R Function();
 
-abstract class $State {
-  const $State();
+abstract class _$StateUnion {
+  const _$StateUnion();
 
   String get $StateType;
 }
