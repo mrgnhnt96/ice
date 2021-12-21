@@ -152,6 +152,11 @@ class Class {
     return name.replaceFirst(RegExp(r'^[_|$]+'), '');
   }
 
+  /// the name of the union base class
+  String get unionBase {
+    return '\$$cleanName';
+  }
+
   /// formats all fields as getters
   ///
   /// ```dart

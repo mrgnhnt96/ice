@@ -4,40 +4,6 @@ import 'package:ice/src/domain/domain.dart';
 import 'package:ice/src/domain/enums/position_type.dart';
 import 'package:ice/src/templates/ice_templates/ice_template.dart';
 
-extension on Class {
-  String get baseName => '\$$cleanName';
-
-  String classHeader([Class? union]) {
-    if (union != null) {
-      if (!annotations.isUnionBase) {
-        return 'abstract class $genName extends ${union.name}';
-      }
-
-      return union.classHeader();
-    }
-
-    final hasEquatable = metaSettings(
-      methodCallback: (_) => false,
-      iceCallback: (settings) => settings.equatable,
-      settingsCallback: (settings) => settings.equatable,
-    );
-    var mixins = '';
-    var implements = '';
-
-    if (hasEquatable) {
-      mixins = ' with EquatableMixin';
-    }
-
-    if (annotations.isUnionBase) {
-      implements = ' implements $baseName';
-      final unionMixin = '_\$${cleanName}Mixin';
-      mixins = '$mixins, $unionMixin';
-    }
-
-    return 'abstract class $genName$mixins$implements';
-  }
-}
-
 extension on Constructor {
   String get args {
     final args = <String>[];
@@ -66,9 +32,6 @@ class UnionClassTemplate extends IceTemplate {
     Class subject, {
     required Class? union,
   }) : super.wrapper(subject, union: union);
-
-  @override
-  String get classHeader => subject.classHeader(union);
 
   @override
   void writeProperties(StringBuffer buffer) {

@@ -1,5 +1,4 @@
 import 'package:ice/src/domain/domain.dart';
-import 'package:ice/src/templates/copy_with_templates/copy_with_template.dart';
 import 'package:ice/src/templates/ice_templates/union_class_template.dart';
 import 'package:ice/src/templates/templates.dart';
 import 'package:ice/src/templates/to_json_template.dart';
@@ -7,8 +6,6 @@ import 'package:ice/src/util/string_buffer_ext.dart';
 import 'package:meta/meta.dart';
 
 extension on Class {
-  String get baseName => '\$$cleanName';
-
   String classHeader([Class? union]) {
     if (union != null) {
       if (!annotations.isUnionBase) {
@@ -31,7 +28,7 @@ extension on Class {
     }
 
     if (annotations.isUnionBase) {
-      implements = ' implements $baseName';
+      implements = ' implements $unionBase';
       final unionMixin = '_\$${cleanName}Mixin';
       mixins = '$mixins, $unionMixin';
     }
