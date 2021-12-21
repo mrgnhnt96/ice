@@ -4,6 +4,7 @@ import 'package:change_case/change_case.dart';
 import 'package:ice/src/domain/domain.dart';
 import 'package:ice/src/domain/enums/position_type.dart';
 import 'package:ice/src/templates/templates.dart';
+import 'package:ice/src/util/string_buffer_ext.dart';
 
 extension on Class {
   String get unionBase => '\$$cleanName';
@@ -91,8 +92,8 @@ extension on Constructor {
 /// - copyWith()
 /// - Equatable Props
 /// - toString()
-class IceUnionBaseTemplate extends Template {
-  IceUnionBaseTemplate.forSubject(Class subject) : super.wrapper(subject);
+class UnionMixinTemplate extends Template {
+  UnionMixinTemplate.forSubject(Class subject) : super.wrapper(subject);
 
   @override
   void generate(StringBuffer buffer) {
@@ -102,7 +103,17 @@ class IceUnionBaseTemplate extends Template {
     //       'typedef _Result<R, T extends ${subject.unionName}> = R Function(T);',
     //     )
     //     ..writeln('typedef _NoResult<R> = R Function();');
-    buffer.writeln('mixin _\$${subject.name}Mixin {}');
+    buffer
+      ..writeObject(
+        'abstract class ${subject.unionBase}',
+        body: () {
+          buffer
+            ..writeln('const ${subject.unionBase}();')
+            ..writeln()
+            ..writeln('String get \$${subject.cleanName}Type;');
+        },
+      )
+      ..writeln('mixin _\$${subject.name}Mixin {}');
   }
 
   String methodEntry(String methodName, {bool isNullable = false}) {
