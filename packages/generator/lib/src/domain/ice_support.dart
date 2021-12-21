@@ -24,4 +24,11 @@ class IceSupport {
 
     _support.add(support);
   }
+
+  /// adds support
+  void addAll(Iterable<String> support) {
+    if (support.isEmpty) return;
+
+    _support.addAll(support.where((e) => e.isNotEmpty));
+  }
 }
