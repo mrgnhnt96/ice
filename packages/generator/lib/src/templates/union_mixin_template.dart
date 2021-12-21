@@ -70,22 +70,6 @@ extension on Constructor {
   }
 }
 
-extension on StringBuffer {
-  void writeMap(
-    Iterable<Class> classes,
-    String Function(Class) returnStr,
-  ) {
-    writeObject(
-      'return map',
-      open: '(',
-      close: ');',
-      body: () {
-        writeAll(classes.map<String>(returnStr), ',\n');
-      },
-    );
-  }
-}
-
 /// A template to generate methods for
 /// - copyWith()
 /// - Equatable Props
@@ -140,7 +124,7 @@ class UnionMixinTemplate extends Template {
   void _writePatternMatches(StringBuffer buffer) {
     void writeSwitch() {
       buffer.writeObject(
-        'switch (this.runtimeType)',
+        'switch (runtimeType)',
         body: () {
           buffer
             ..writeAll(subClasses.map<String>((e) => e.switchCase))
@@ -198,6 +182,9 @@ class UnionMixinTemplate extends Template {
             close: ');',
             body: () {
               buffer.writeAll(args, ',\n');
+              if (args.isNotEmpty) {
+                buffer.writeln(',');
+              }
             },
           );
         },

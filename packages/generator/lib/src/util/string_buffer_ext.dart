@@ -47,21 +47,12 @@ extension StringBufferX on StringBuffer {
       open = '(';
       close = ')';
       seperateWith = '';
+      beforeClose = '';
     } else {
+      seperateWith = ',\n';
+      beforeClose = ',';
       open = '({';
       close = '})';
-
-      if (params.length >= 3) {
-        seperateWith = ',\n';
-      } else {
-        seperateWith = ', ';
-      }
-    }
-
-    if (params.length >= 3) {
-      beforeClose = ',';
-    } else {
-      beforeClose = '';
     }
 
     writeln('$entry $open');

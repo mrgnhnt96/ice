@@ -86,7 +86,9 @@ abstract class _$Other extends State {
   /// ```dart
   /// myClass.copyWith(field: newValue);
   /// ```
-  Other copyWith({int? code}) {
+  Other copyWith({
+    int? code,
+  }) {
     return Other(code ?? this.code);
   }
 
@@ -149,7 +151,7 @@ mixin _$StateMixin {
     required _Result<R, _$Other> other,
     required _Result<R, _$Error> error,
   }) {
-    switch (this.runtimeType) {
+    switch (runtimeType) {
       case _$Example:
         return example(this as _$Example);
       case _$Other:
@@ -177,18 +179,19 @@ mixin _$StateMixin {
     required R Function() error,
   }) {
     return map(
-        example: (u) => example(
-              u.text,
-              u.whole,
-              u.decimal,
-              u.flag,
-              u.date,
-              u.list,
-              u.set,
-              u.example,
-            ),
-        other: (u) => other(),
-        error: (u) => error());
+      example: (u) => example(
+        u.text,
+        u.whole,
+        u.decimal,
+        u.flag,
+        u.date,
+        u.list,
+        u.set,
+        u.example,
+      ),
+      other: (u) => other(),
+      error: (u) => error(),
+    );
   }
 
   R maybeMap<R extends Object?>({
@@ -198,9 +201,10 @@ mixin _$StateMixin {
     required _NoResult<R> orElse,
   }) {
     return map(
-        example: (u) => example?.call(u) ?? orElse(),
-        other: (u) => other?.call(u) ?? orElse(),
-        error: (u) => error?.call(u) ?? orElse());
+      example: (u) => example?.call(u) ?? orElse(),
+      other: (u) => other?.call(u) ?? orElse(),
+      error: (u) => error?.call(u) ?? orElse(),
+    );
   }
 
   R maybeWhen<R extends Object?>({
@@ -220,20 +224,21 @@ mixin _$StateMixin {
     required _NoResult<R> orElse,
   }) {
     return map(
-        example: (u) =>
-            example?.call(
-              u.text,
-              u.whole,
-              u.decimal,
-              u.flag,
-              u.date,
-              u.list,
-              u.set,
-              u.example,
-            ) ??
-            orElse(),
-        other: (u) => other?.call() ?? orElse(),
-        error: (u) => error?.call() ?? orElse());
+      example: (u) =>
+          example?.call(
+            u.text,
+            u.whole,
+            u.decimal,
+            u.flag,
+            u.date,
+            u.list,
+            u.set,
+            u.example,
+          ) ??
+          orElse(),
+      other: (u) => other?.call() ?? orElse(),
+      error: (u) => error?.call() ?? orElse(),
+    );
   }
 
   R? mapOrNull<R extends Object?>({
@@ -242,9 +247,10 @@ mixin _$StateMixin {
     _Result<R, _$Error>? error,
   }) {
     return map(
-        example: (u) => example?.call(u),
-        other: (u) => other?.call(u),
-        error: (u) => error?.call(u));
+      example: (u) => example?.call(u),
+      other: (u) => other?.call(u),
+      error: (u) => error?.call(u),
+    );
   }
 
   R? whenOrNull<R extends Object?>({
@@ -263,18 +269,19 @@ mixin _$StateMixin {
     R Function()? error,
   }) {
     return map(
-        example: (u) => example?.call(
-              u.text,
-              u.whole,
-              u.decimal,
-              u.flag,
-              u.date,
-              u.list,
-              u.set,
-              u.example,
-            ),
-        other: (u) => other?.call(),
-        error: (u) => error?.call());
+      example: (u) => example?.call(
+        u.text,
+        u.whole,
+        u.decimal,
+        u.flag,
+        u.date,
+        u.list,
+        u.set,
+        u.example,
+      ),
+      other: (u) => other?.call(),
+      error: (u) => error?.call(),
+    );
   }
 
   bool get isExample => this is _$Example;
