@@ -6,7 +6,6 @@ import 'package:ice/src/domain/domain.dart';
 import 'package:ice/src/domain/ice_subjects.dart';
 import 'package:ice/src/templates/ice_templates/ice_template.dart';
 import 'package:ice/src/templates/templates.dart';
-import 'package:ice/src/templates/union_mixin_template.dart';
 import 'package:ice/src/util/build_step_ext.dart';
 import 'package:ice_annotation/src/ice.dart';
 import 'package:source_gen/source_gen.dart';
