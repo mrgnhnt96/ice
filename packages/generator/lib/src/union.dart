@@ -29,13 +29,11 @@ class UnionGenerator extends GeneratorForAnnotation<IceUnion> {
 
     final subClasses = IceGenerator.subjects.getUnions(subject);
 
-    final unionMixin = UnionMixinTemplate.forSubject(subject, subClasses);
-
     final buffer = StringBuffer();
-    unionMixin.addToBuffer(buffer);
-
     final support = IceSupport().get();
     buffer.writeAll(support, '\n\n');
+
+    UnionMixinTemplate.forSubject(subject, subClasses).addToBuffer(buffer);
 
     return buffer.toString();
   }
