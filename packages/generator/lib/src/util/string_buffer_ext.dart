@@ -41,6 +41,7 @@ extension StringBufferX on StringBuffer {
     required void Function() body,
   }) {
     late final String open, close, seperateWith, beforeClose;
+    params = params.where((e) => e.isNotEmpty);
 
     if (params.isEmpty) {
       open = '(';
