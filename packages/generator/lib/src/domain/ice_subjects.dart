@@ -22,7 +22,8 @@ class IceSubjects {
   /// gets the classes assotiated with the union [base]
   List<Class> getUnions(Class base) {
     final union = base.name;
-    final classNames = _supertypes[union] ?? {};
+    final classNames = {..._supertypes[union] ?? {}};
+    _supertypes[union] = {};
 
     return classNames.map((name) => _classes[name]).whereType<Class>().toList();
   }
