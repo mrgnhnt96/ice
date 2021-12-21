@@ -7,24 +7,6 @@ import 'package:ice/src/templates/templates.dart';
 import 'package:ice/src/util/string_buffer_ext.dart';
 
 extension on Class {
-  String get unionBase => '\$$cleanName';
-  String get union => '_\$$cleanName';
-  String get unionMixin => '_\$${cleanName}Mixin';
-
-  String get classHeader {
-    final hasEquatable = metaSettings(
-      methodCallback: (_) => false,
-      iceCallback: (settings) => settings.equatable,
-      settingsCallback: (settings) => settings.equatable,
-    );
-    var equatable = '';
-
-    if (hasEquatable) {
-      equatable = ', EquatableMixin';
-    }
-    return 'abstract $union with $unionMixin$equatable implements $unionBase';
-  }
-
   String get nameAsArg => nonPrivateName.toCamelCase();
 
   String mapParams({bool isRequired = false}) {
@@ -39,7 +21,7 @@ extension on Class {
     var paramsStr = '()';
 
     if (params.isNotEmpty) {
-      paramsStr = '(${params.join(', ')})';
+      paramsStr = '(${params.join(', ')},)';
     }
 
     final nullableStr = isRequired ? '' : '?';
@@ -48,14 +30,14 @@ extension on Class {
     return '${keyword}R Function$paramsStr$nullableStr $nameAsArg';
   }
 
-  String get whenArgs {
-    final params = fields.map((e) => 'state.${e.name}');
+  String whenArgs(String union) {
+    final params = fields.map((e) => '$union.${e.name}');
 
     if (params.isEmpty) {
       return '';
     }
 
-    return params.join(', ');
+    return '${params.join(', ')},';
   }
 
   String get switchCase {
@@ -191,7 +173,7 @@ class UnionMixinTemplate extends Template {
         params.add(param);
 
         if (!toWriteSwitch) {
-          final arg = type.arg(pattern, item, subject.cleanName);
+          final arg = type.arg(pattern, item);
           args.add(arg);
         }
       }
@@ -331,10 +313,10 @@ extension on PatternType {
     return methodEntry(getName(), isNullable: isNullable);
   }
 
-  String arg(Pattern pattern, Class sub, String unionName) {
+  String arg(Pattern pattern, Class sub) {
     final name = sub.nameAsArg;
-    final args = sub.whenArgs;
-    final union = unionName.toCamelCase();
+    const union = 'u';
+    final args = sub.whenArgs(union);
 
     final getArg = map(
       base: pattern.map(
