@@ -3,7 +3,9 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:ice/src/domain/domain.dart';
+import 'package:ice/src/templates/ice_templates/ice_template.dart';
 import 'package:ice/src/templates/templates.dart';
+import 'package:ice/src/templates/union_mixin_template.dart';
 import 'package:ice/src/util/build_step_ext.dart';
 import 'package:ice_annotation/src/ice.dart';
 import 'package:source_gen/source_gen.dart';
@@ -53,7 +55,7 @@ class IceGenerator extends GeneratorForAnnotation<Ice> {
     iceTemplate.addToBuffer(buffer);
 
     if (subject.annotations.isUnionBase) {
-      IceUnionBaseTemplate.forSubject(subject).addToBuffer(buffer);
+      UnionMixinTemplate.forSubject(subject).addToBuffer(buffer);
     }
 
     return buffer.toString();
