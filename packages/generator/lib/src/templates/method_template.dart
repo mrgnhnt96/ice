@@ -20,7 +20,7 @@ class MethodTemplate extends Template {
 
     if (toJsonTemplate.canBeGenerated || copyWithTemplate.canBeGenerated) {
       buffer.writeObject(
-        'extension on ${subject.name}',
+        'extension \$${subject.cleanName}X on ${subject.name}',
         body: () {
           copyWithTemplate.addToBuffer(buffer);
           toJsonTemplate.addToBuffer(buffer);

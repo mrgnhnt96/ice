@@ -8,7 +8,7 @@ part of 'main.dart';
 // IceGenerator
 // **************************************************************************
 
-extension on Example {
+extension $ExampleX on Example {
   /// if `null` is passed within the `copyWith` method,
   /// `null` will be returned.
   ///

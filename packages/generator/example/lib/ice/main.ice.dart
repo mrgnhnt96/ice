@@ -72,7 +72,7 @@ Example(
   String get $StateType => 'Example';
 }
 
-extension _$ExampleX on Example {
+extension $ExampleX on Example {
   Map<String, dynamic> toJson() => _$ExampleToJson(this);
 }
 
