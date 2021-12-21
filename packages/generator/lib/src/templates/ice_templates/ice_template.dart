@@ -144,7 +144,7 @@ class IceTemplate extends Template {
 
     if (toJsonTemplate.canBeGenerated) {
       buffer.writeObject(
-        'extension on ${subject.name}',
+        'extension _\$${subject.cleanName}X on ${subject.name}',
         body: () {
           toJsonTemplate.addToBuffer(buffer);
         },
