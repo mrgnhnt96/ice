@@ -16,6 +16,7 @@ import 'package:build/build.dart';
 import 'package:ice/src/domain/ice_settings.dart';
 import 'package:ice/src/ice.dart';
 import 'package:ice/src/method.dart';
+import 'package:ice/src/union.dart';
 import 'package:ice/src/util/unified_generator.dart';
 import 'package:meta/meta.dart';
 import 'package:source_gen/source_gen.dart';
@@ -65,6 +66,7 @@ Builder iceBuilder(BuilderOptions options) {
         [
           IceGenerator(),
           MethodGenerator(),
+          UnionGenerator(),
         ],
         name: 'IceGenerator',
       )
