@@ -3,9 +3,7 @@
 import 'package:change_case/change_case.dart';
 import 'package:ice/src/domain/domain.dart';
 import 'package:ice/src/domain/enums/position_type.dart';
-import 'package:ice/src/templates/copy_with_templates/copy_with_template.dart';
 import 'package:ice/src/templates/templates.dart';
-import 'package:ice/src/util/string_buffer_ext.dart';
 
 extension on Class {
   String get unionBase => '\$$cleanName';
@@ -107,88 +105,10 @@ class IceUnionBaseTemplate extends Template {
     buffer.writeln('mixin _\$${subject.name}Mixin {}');
   }
 
-  final stateType = r'$StateType';
-
-  void _writeUnionBase(StringBuffer buffer) {
-    buffer.writeObject(
-      'abstract class ${subject.unionBase}',
-      body: () {
-        buffer
-          ..writeln('const ${subject.unionBase}')
-          ..writeln('String get $stateType;');
-      },
-    );
-  }
-
-  void _writeUnion(StringBuffer buffer) {
-    buffer.writeObject(
-      subject.classHeader,
-      body: () {
-        buffer
-          ..writeln('const ${subject.genName}')
-          ..writeln()
-          ..writeAll(subject.fieldGetters, '\n')
-          ..writeln()
-          ..writeln('@override')
-          ..writeln("String get $stateType => '${subject.name}';")
-          ..writeln('\n');
-
-        PropsTemplate.forSubject(
-          subject,
-          asFunction: false,
-        ).addToBuffer(buffer);
-        buffer.writeln();
-
-        ToStringTemplate.forSubject(
-          subject,
-          asFunction: false,
-        ).addToBuffer(buffer);
-      },
-    );
-  }
-
-  void _writeSubUnion(Class subClass, StringBuffer buffer) {
-    buffer
-      ..writeln('abstract class ${subClass.union} extends ${subject.name}')
-      ..writeAll(
-        subject.constructors.map<String>((superConst) {
-          final constStr = superConst.isConst ? 'const ' : '';
-          return '$constStr${subClass.genName}${superConst.declaration} : super(${superConst.args});';
-        }),
-      );
-    buffer
-      ..writeln()
-      ..writeAll(subClass.fieldGetters, '\n')
-      ..writeln('\n');
-
-    // TODO(mrgnhnt96): check if any of the subClasses need copyWith to `writeSupport`
-
-    CopyWithTemplate.forSubject(subClass).addToBuffer(buffer);
-
-    buffer
-      ..writeln()
-      ..writeln('@override')
-      ..writeln('String get $stateType => ${subject.name}')
-      ..writeln();
-
-    PropsTemplate.forSubject(
-      subClass,
-      asFunction: false,
-    ).addToBuffer(buffer);
-    buffer.writeln();
-
-    ToStringTemplate.forSubject(
-      subClass,
-      asFunction: false,
-    ).addToBuffer(buffer);
-  }
-
   String methodEntry(String methodName, {bool isNullable = false}) {
     final nullableStr = isNullable ? '?' : '';
     return 'R$nullableStr $methodName<R extends Object?>';
   }
-}
-
 
 // void _writeMixin(StringBuffer buffer) {
 //   void _writePatternMatch(
@@ -297,3 +217,5 @@ class IceUnionBaseTemplate extends Template {
 
 //   buffer.writeAll(subtypes.map<String>((e) => e.toIsType()), '\n');
 // }
+
+}
