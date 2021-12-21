@@ -5,10 +5,20 @@ import 'package:ice_annotation/ice.dart';
 
 part 'output/basic.dart';
 
-@CopyWith.simple
-@Ice()
-@props
 @IceUnion.of(State)
+class Ready {
+  const Ready();
+}
+
+@IceUnion.of(State)
+class Error {
+  const Error();
+}
+
+@Ice(
+  copyWithType: CopyWithType.typeSafe,
+)
+@IceUnion.create
 @JsonSerializable(
   createToJson: false,
 )
@@ -42,5 +52,5 @@ class State extends _$State {
   final DateTime? date;
 }
 
-Map<String, dynamic> _$StateToJson(State state) => <String, dynamic>{};
+Map<String, dynamic> _$StateToJson(_$State state) => <String, dynamic>{};
 State _$StateFromJson(Map<String, dynamic> json) => State('', 1);
