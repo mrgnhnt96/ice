@@ -6,4 +6,4 @@ export 'package:equatable/equatable.dart';
 
 export 'src/enums/enums.dart';
 export 'src/ice.dart';
-export 'src/methods/annotations.dart';
+export 'src/methods.dart';

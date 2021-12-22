@@ -1,7 +1,10 @@
 // ignore_for_file: avoid_field_initializers_in_const_classes
 
 import 'package:ice_annotation/src/enums/copy_with_type.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta_meta.dart';
+
+export 'package:json_annotation/json_annotation.dart';
 
 /// {@template ice}
 /// Annotation used to mark a class to generate a ice method.
@@ -14,7 +17,8 @@ class Ice {
     this.copyWithType,
     this.equatable,
     this.ignoreGettersAsProps,
-    this.tostring,
+    this.iceToString,
+    this.jsonSerializable = const JsonSerializable(),
   });
 
   /// generates the copyWith method
@@ -33,17 +37,28 @@ class Ice {
   /// Does nothing if [equatable] is `false`
   final bool? ignoreGettersAsProps;
 
-  /// generates the `toString` method
-  final bool? tostring;
+  /// generates the `iceToString` method
+  final bool? iceToString;
+
+  /// generates the serializable methods
+  final JsonSerializable? jsonSerializable;
 }
 
 /// {@template ice_union_base}
 /// the base of the union
 ///  {@endtemplate}
 @Target({TargetKind.classType})
-class IceUnion extends Ice {
+class IceUnion implements Ice {
   /// {@macro ice_union_base}
-  const IceUnion.of(this.base);
+  const IceUnion.of(
+    this.base, {
+    this.copyWith,
+    this.copyWithType,
+    this.equatable,
+    this.iceToString,
+    this.ignoreGettersAsProps,
+    this.jsonSerializable = const JsonSerializable(),
+  });
 
   /// the base of the union
   final Type base;
@@ -51,4 +66,22 @@ class IceUnion extends Ice {
   /// {@macro ice_union_base}
   // ignore: prefer_constructors_over_static_methods
   static const IceUnion create = IceUnion.of(IceUnion);
+
+  @override
+  final bool? copyWith;
+
+  @override
+  final CopyWithType? copyWithType;
+
+  @override
+  final bool? equatable;
+
+  @override
+  final bool? iceToString;
+
+  @override
+  final bool? ignoreGettersAsProps;
+
+  @override
+  final JsonSerializable? jsonSerializable;
 }
