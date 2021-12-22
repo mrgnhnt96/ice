@@ -4,9 +4,9 @@ import 'package:json_annotation/json_annotation.dart';
 part 'main.ice.dart';
 part 'main.g.dart';
 
-@CopyWith.typeSafe
-@props
-@toString
+@IceCopyWith.typeSafe
+@iceProps
+@iceToString
 @JsonSerializable()
 class Example extends Equatable {
   const Example({

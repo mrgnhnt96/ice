@@ -6,6 +6,7 @@ import 'package:ice/ice.dart';
 import 'package:ice/src/domain/enums/enums.dart';
 import 'package:ice/src/util/enum_ext.dart';
 import 'package:ice_annotation/ice.dart';
+import 'package:json_serializable/builder.dart';
 import 'package:source_gen/source_gen.dart';
 
 /// {@template method_annotations}
@@ -30,13 +31,13 @@ class MethodAnnotations {
           copyWithType: CopyWithType.simple,
         );
 
-  /// [props]
+  /// [iceProps]
   final bool hasProps;
 
   /// [copyWith]
   final bool hasCopyWith;
 
-  /// [toString]
+  /// [iceToString]
   final bool hasToString;
 
   /// [copyWithType]
@@ -49,10 +50,10 @@ class MethodAnnotations {
 
   /// All [AnnotationTypes] associated with [MethodAnnotations]
   static Set<AnnotationTypes> get annotationTypes => {
-        AnnotationTypes.props,
+        AnnotationTypes.iceProps,
         AnnotationTypes.copyWithSimple,
         AnnotationTypes.copyWithTypeSafe,
-        AnnotationTypes.tostring,
+        AnnotationTypes.iceToString,
       };
 
   /// returns a copy of [MethodAnnotations]
@@ -78,13 +79,13 @@ class MethodAnnotations {
     }
 
     switch (type) {
-      case AnnotationTypes.props:
+      case AnnotationTypes.iceProps:
         return copyWith(hasProps: true);
       case AnnotationTypes.copyWithSimple:
         return copyWith(hasCopyWith: true);
       case AnnotationTypes.copyWithTypeSafe:
         return copyWith(hasCopyWith: true, copyWithType: CopyWithType.typeSafe);
-      case AnnotationTypes.tostring:
+      case AnnotationTypes.iceToString:
         return copyWith(hasToString: true);
       default:
         return this;
@@ -101,8 +102,9 @@ class IceAnnotation implements Ice {
     required this.copyWith,
     required this.copyWithType,
     required this.equatable,
-    required this.tostring,
+    required this.iceToString,
     required this.ignoreGettersAsProps,
+    required this.jsonSerializable,
   });
 
   /// gets the annotation from the [ElementAnnotation]
@@ -121,17 +123,19 @@ class IceAnnotation implements Ice {
 
     final copyWith = get<bool>('copyWith') ?? iceSettings.copyWith;
     final equatable = get<bool>('equatable') ?? iceSettings.equatable;
-    final tostring = get<bool>('tostring') ?? iceSettings.tostring;
+    final iceToString = get<bool>('iceToString') ?? iceSettings.iceToString;
     final ignoreGettersAsProps =
         get<bool>('ignoreGettersAsProps') ?? iceSettings.ignoreGettersAsProps;
     final copyWithType = CopyWithType.values.fromReader(reader, 'copyWithType');
+    const jsonSerializable = JsonSerializable();
 
     return IceAnnotation(
       equatable: equatable,
       copyWith: copyWith,
       copyWithType: copyWithType ?? CopyWithType.simple,
-      tostring: tostring,
+      iceToString: iceToString,
       ignoreGettersAsProps: ignoreGettersAsProps,
+      jsonSerializable: jsonSerializable,
     );
   }
 
@@ -145,10 +149,13 @@ class IceAnnotation implements Ice {
   final bool? equatable;
 
   @override
-  final bool? tostring;
+  final bool? iceToString;
 
   @override
   final bool? ignoreGettersAsProps;
+
+  @override
+  final JsonSerializable? jsonSerializable;
 }
 
 /// The methods that will be generated with the [Ice] annotation
@@ -159,8 +166,8 @@ enum IceOptions {
   /// [Equatable] will be generated
   equatable,
 
-  /// toString will be generated
-  tostring,
+  /// iceToString will be generated
+  iceToString,
 
   /// toJson will be generated
   toJson,

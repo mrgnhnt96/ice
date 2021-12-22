@@ -1,4 +1,7 @@
+// ignore_for_file: implementation_imports
+
 import 'package:ice/src/domain/domain.dart';
+import 'package:ice_annotation/src/methods.dart';
 import 'package:meta/meta.dart';
 
 /// The abstraction for a template
@@ -23,7 +26,7 @@ abstract class Template {
 
   /// whether the template can be generated
   ///
-  /// should be called before [addToBuffer] or [toString]
+  /// should be called before [addToBuffer] or [iceToString]
   @mustCallSuper
   bool get canBeGenerated {
     return subject.canGeneratedMethod(name);

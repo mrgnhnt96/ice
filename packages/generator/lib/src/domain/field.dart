@@ -36,7 +36,7 @@ class Field {
           continue;
         }
 
-        if (annotationName == AnnotationTypes.ignoreProp.serialized) {
+        if (annotationName == AnnotationTypes.iceIgnoreProp.serialized) {
           hasIgnoreProp = true;
           continue;
         }

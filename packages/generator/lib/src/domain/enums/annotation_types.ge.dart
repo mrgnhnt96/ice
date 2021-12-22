@@ -15,12 +15,12 @@ extension AnnotationTypesX on AnnotationTypes {
     required T ice,
     required T jsonSerializable,
     required T jsonKey,
-    required T unionBase,
+    required T unionCreate,
     required T unionOf,
     required T copyWithConstructor,
-    required T props,
-    required T ignoreProp,
-    required T tostring,
+    required T iceProps,
+    required T iceIgnoreProp,
+    required T iceToString,
     required T copyWithSimple,
     required T copyWithTypeSafe,
     required T other,
@@ -32,18 +32,18 @@ extension AnnotationTypesX on AnnotationTypes {
         return jsonSerializable;
       case AnnotationTypes.jsonKey:
         return jsonKey;
-      case AnnotationTypes.unionBase:
-        return unionBase;
+      case AnnotationTypes.unionCreate:
+        return unionCreate;
       case AnnotationTypes.unionOf:
         return unionOf;
       case AnnotationTypes.copyWithConstructor:
         return copyWithConstructor;
-      case AnnotationTypes.props:
-        return props;
-      case AnnotationTypes.ignoreProp:
-        return ignoreProp;
-      case AnnotationTypes.tostring:
-        return tostring;
+      case AnnotationTypes.iceProps:
+        return iceProps;
+      case AnnotationTypes.iceIgnoreProp:
+        return iceIgnoreProp;
+      case AnnotationTypes.iceToString:
+        return iceToString;
       case AnnotationTypes.copyWithSimple:
         return copyWithSimple;
       case AnnotationTypes.copyWithTypeSafe:
@@ -61,12 +61,12 @@ extension AnnotationTypesX on AnnotationTypes {
     T? ice,
     T? jsonSerializable,
     T? jsonKey,
-    T? unionBase,
+    T? unionCreate,
     T? unionOf,
     T? copyWithConstructor,
-    T? props,
-    T? ignoreProp,
-    T? tostring,
+    T? iceProps,
+    T? iceIgnoreProp,
+    T? iceToString,
     T? copyWithSimple,
     T? copyWithTypeSafe,
     T? other,
@@ -88,24 +88,24 @@ extension AnnotationTypesX on AnnotationTypes {
       case AnnotationTypes.jsonKey:
         if (jsonKey == null && !isNullable) return orElse;
         return jsonKey as T;
-      case AnnotationTypes.unionBase:
-        if (unionBase == null && !isNullable) return orElse;
-        return unionBase as T;
+      case AnnotationTypes.unionCreate:
+        if (unionCreate == null && !isNullable) return orElse;
+        return unionCreate as T;
       case AnnotationTypes.unionOf:
         if (unionOf == null && !isNullable) return orElse;
         return unionOf as T;
       case AnnotationTypes.copyWithConstructor:
         if (copyWithConstructor == null && !isNullable) return orElse;
         return copyWithConstructor as T;
-      case AnnotationTypes.props:
-        if (props == null && !isNullable) return orElse;
-        return props as T;
-      case AnnotationTypes.ignoreProp:
-        if (ignoreProp == null && !isNullable) return orElse;
-        return ignoreProp as T;
-      case AnnotationTypes.tostring:
-        if (tostring == null && !isNullable) return orElse;
-        return tostring as T;
+      case AnnotationTypes.iceProps:
+        if (iceProps == null && !isNullable) return orElse;
+        return iceProps as T;
+      case AnnotationTypes.iceIgnoreProp:
+        if (iceIgnoreProp == null && !isNullable) return orElse;
+        return iceIgnoreProp as T;
+      case AnnotationTypes.iceToString:
+        if (iceToString == null && !isNullable) return orElse;
+        return iceToString as T;
       case AnnotationTypes.copyWithSimple:
         if (copyWithSimple == null && !isNullable) return orElse;
         return copyWithSimple as T;
@@ -124,12 +124,12 @@ extension AnnotationTypesX on AnnotationTypes {
       ice: 'ice',
       jsonSerializable: 'jsonSerializable',
       jsonKey: 'jsonKey',
-      unionBase: 'unionBase',
+      unionCreate: 'unionCreate',
       unionOf: 'unionOf',
       copyWithConstructor: 'copyWithConstructor',
-      props: 'props',
-      ignoreProp: 'ignoreProp',
-      tostring: 'tostring',
+      iceProps: 'iceProps',
+      iceIgnoreProp: 'iceIgnoreProp',
+      iceToString: 'iceToString',
       copyWithSimple: 'copyWithSimple',
       copyWithTypeSafe: 'copyWithTypeSafe',
       other: 'other',
@@ -142,12 +142,12 @@ extension AnnotationTypesX on AnnotationTypes {
       ice: 0,
       jsonSerializable: 1,
       jsonKey: 2,
-      unionBase: 3,
+      unionCreate: 3,
       unionOf: 4,
       copyWithConstructor: 5,
-      props: 6,
-      ignoreProp: 7,
-      tostring: 8,
+      iceProps: 6,
+      iceIgnoreProp: 7,
+      iceToString: 8,
       copyWithSimple: 9,
       copyWithTypeSafe: 10,
       other: 11,
@@ -161,12 +161,12 @@ extension AnnotationTypesX on AnnotationTypes {
       ice: 'Ice',
       jsonSerializable: 'Json Serializable',
       jsonKey: 'Json Key',
-      unionBase: 'Union Base',
+      unionCreate: 'Union Create',
       unionOf: 'Union Of',
       copyWithConstructor: 'Copy With Constructor',
-      props: 'Props',
-      ignoreProp: 'Ignore Prop',
-      tostring: 'Tostring',
+      iceProps: 'Ice Props',
+      iceIgnoreProp: 'Ice Ignore Prop',
+      iceToString: 'Ice To String',
       copyWithSimple: 'Copy With Simple',
       copyWithTypeSafe: 'Copy With Type Safe',
       other: 'Other',
@@ -184,20 +184,20 @@ extension AnnotationTypesX on AnnotationTypes {
 [JsonSerializable]''',
       jsonKey: '''
 [JsonKey]''',
-      unionBase: '''
+      unionCreate: '''
 [IceUnion]''',
       unionOf: '''
 [IceUnion]''',
       copyWithConstructor: '''
 [CopyWithConstructor]''',
-      props: '''
+      iceProps: '''
 [Props]''',
-      ignoreProp: '''
+      iceIgnoreProp: '''
 [IgnoreProp]''',
-      tostring: '''
+      iceToString: '''
 [ToString]''',
       copyWithSimple: '''
-[CopyWith]''',
+[IceCopyWith]''',
       copyWithTypeSafe: '''
 [CopyWithTypeSafe]''',
       other: '''
@@ -211,12 +211,12 @@ any other annotation''',
       ice: AnnotationTypesConv._iceName,
       jsonSerializable: AnnotationTypesConv._jsonSerializableName,
       jsonKey: AnnotationTypesConv._jsonKeyName,
-      unionBase: AnnotationTypesConv._unionBaseName,
+      unionCreate: AnnotationTypesConv._unionCreateName,
       unionOf: AnnotationTypesConv._unionOfName,
       copyWithConstructor: AnnotationTypesConv._copyWithConstructorName,
-      props: AnnotationTypesConv._propsName,
-      ignoreProp: AnnotationTypesConv._ignorePropName,
-      tostring: AnnotationTypesConv._tostringName,
+      iceProps: AnnotationTypesConv._icePropsName,
+      iceIgnoreProp: AnnotationTypesConv._iceIgnorePropName,
+      iceToString: AnnotationTypesConv._iceToStringName,
       copyWithSimple: AnnotationTypesConv._copyWithSimpleName,
       copyWithTypeSafe: AnnotationTypesConv._copyWithTypeSafeName,
       other: AnnotationTypesConv._otherName,
@@ -247,14 +247,14 @@ class AnnotationTypesConv extends JsonConverter<AnnotationTypes, Object> {
   static const _iceName = 'Ice';
   static const _jsonSerializableName = 'JsonSerializable';
   static const _jsonKeyName = 'JsonKey';
-  static const _unionBaseName = 'IceUnion.create';
+  static const _unionCreateName = 'IceUnion.create';
   static const _unionOfName = 'IceUnion.of';
-  static const _copyWithConstructorName = 'CopyWith.constructor';
-  static const _propsName = 'props';
-  static const _ignorePropName = 'ignoreProp';
-  static const _tostringName = 'toString';
-  static const _copyWithSimpleName = 'CopyWith.simple';
-  static const _copyWithTypeSafeName = 'CopyWith.typeSafe';
+  static const _copyWithConstructorName = 'IceCopyWith.constructor';
+  static const _icePropsName = 'iceProps';
+  static const _iceIgnorePropName = 'iceIgnoreProp';
+  static const _iceToStringName = 'iceToString';
+  static const _copyWithSimpleName = 'IceCopyWith.simple';
+  static const _copyWithTypeSafeName = 'IceCopyWith.typeSafe';
   static const _otherName = 'other';
 
   @override
@@ -266,18 +266,18 @@ class AnnotationTypesConv extends JsonConverter<AnnotationTypes, Object> {
         return AnnotationTypes.jsonSerializable;
       case _jsonKeyName:
         return AnnotationTypes.jsonKey;
-      case _unionBaseName:
-        return AnnotationTypes.unionBase;
+      case _unionCreateName:
+        return AnnotationTypes.unionCreate;
       case _unionOfName:
         return AnnotationTypes.unionOf;
       case _copyWithConstructorName:
         return AnnotationTypes.copyWithConstructor;
-      case _propsName:
-        return AnnotationTypes.props;
-      case _ignorePropName:
-        return AnnotationTypes.ignoreProp;
-      case _tostringName:
-        return AnnotationTypes.tostring;
+      case _icePropsName:
+        return AnnotationTypes.iceProps;
+      case _iceIgnorePropName:
+        return AnnotationTypes.iceIgnoreProp;
+      case _iceToStringName:
+        return AnnotationTypes.iceToString;
       case _copyWithSimpleName:
         return AnnotationTypes.copyWithSimple;
       case _copyWithTypeSafeName:
@@ -319,18 +319,18 @@ class _AnnotationTypesNullableConv
         return AnnotationTypes.jsonSerializable;
       case AnnotationTypesConv._jsonKeyName:
         return AnnotationTypes.jsonKey;
-      case AnnotationTypesConv._unionBaseName:
-        return AnnotationTypes.unionBase;
+      case AnnotationTypesConv._unionCreateName:
+        return AnnotationTypes.unionCreate;
       case AnnotationTypesConv._unionOfName:
         return AnnotationTypes.unionOf;
       case AnnotationTypesConv._copyWithConstructorName:
         return AnnotationTypes.copyWithConstructor;
-      case AnnotationTypesConv._propsName:
-        return AnnotationTypes.props;
-      case AnnotationTypesConv._ignorePropName:
-        return AnnotationTypes.ignoreProp;
-      case AnnotationTypesConv._tostringName:
-        return AnnotationTypes.tostring;
+      case AnnotationTypesConv._icePropsName:
+        return AnnotationTypes.iceProps;
+      case AnnotationTypesConv._iceIgnorePropName:
+        return AnnotationTypes.iceIgnoreProp;
+      case AnnotationTypesConv._iceToStringName:
+        return AnnotationTypes.iceToString;
       case AnnotationTypesConv._copyWithSimpleName:
         return AnnotationTypes.copyWithSimple;
       case AnnotationTypesConv._copyWithTypeSafeName:

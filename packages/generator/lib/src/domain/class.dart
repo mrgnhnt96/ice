@@ -8,7 +8,7 @@ import 'package:ice/src/domain/field.dart';
 import 'package:ice/src/domain/ice_settings.dart';
 
 /// {@template class}
-/// The class that [CopyWith] will be generated for
+/// The class that [IceCopyWith] will be generated for
 /// {@endtemplate}
 class Class {
   /// {@macro constructor}
@@ -109,11 +109,11 @@ class Class {
           methodCallback: (methods) => methods.hasProps,
           settingsCallback: (settings) => settings.equatable,
         );
-      case IceOptions.tostring:
+      case IceOptions.iceToString:
         return metaSettings(
-          iceCallback: (ice) => ice.tostring,
+          iceCallback: (ice) => ice.iceToString,
           methodCallback: (methods) => methods.hasToString,
-          settingsCallback: (settings) => settings.tostring,
+          settingsCallback: (settings) => settings.iceToString,
         );
       case IceOptions.toJson:
         return annotations.createToJson;

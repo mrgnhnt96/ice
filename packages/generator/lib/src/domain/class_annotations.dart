@@ -31,7 +31,7 @@ class ClassAnnotations {
       AnnotationTypes.jsonSerializable.serialized,
       AnnotationTypes.ice.serialized,
       AnnotationTypes.unionOf.serialized,
-      AnnotationTypes.unionBase.serialized,
+      AnnotationTypes.unionCreate.serialized,
       ...MethodAnnotations.annotationTypes.map((e) => e.serialized),
     };
 
@@ -53,7 +53,7 @@ class ClassAnnotations {
             unionType = unionType!.substring(0, unionType.length - 1);
           }
           continue;
-        case AnnotationTypes.unionBase:
+        case AnnotationTypes.unionCreate:
           isUnionBase = true;
           continue;
         case AnnotationTypes.jsonSerializable:

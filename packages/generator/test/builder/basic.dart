@@ -5,52 +5,26 @@ import 'package:ice_annotation/ice.dart';
 
 part 'output/basic.dart';
 
-@IceUnion.of(State)
-class Ready {
-  const Ready();
-}
-
-@IceUnion.of(State)
-class Error {
-  const Error();
-}
-
 @Ice(
   copyWithType: CopyWithType.typeSafe,
 )
-@IceUnion.create
-@JsonSerializable(
-  createToJson: false,
-)
-class State extends _$State {
-  State(
-    this.name,
-    this.age, {
-    this.money,
-    this.isCool,
-    this.date,
-    this.father = 'dad',
-  });
-
-  @CopyWith.constructor
-  factory State.fromJson(Map<String, dynamic> json) => _$StateFromJson(json);
-
-  String? _pet;
-
-  String get pet => _pet ?? 'No pet';
-  set pet(String value) {
-    _pet = value;
-  }
-
-  String father;
+@IceUnion.of(State)
+@JsonSerializable()
+class Example extends _$Example {
+  Example(this.name);
   final String name;
-  @ignoreProp
-  final int? age;
-  final double? money;
-  final bool? isCool;
-  @JsonKey(ignore: true)
-  final DateTime? date;
 }
 
-Map<String, dynamic> _$StateToJson(_$State state) => <String, dynamic>{};
-State _$StateFromJson(Map<String, dynamic> json) => State('', 1);
+@Ice()
+@IceUnion.of(State)
+class Other extends _$Other {}
+
+@IceUnion.of(State)
+class Error extends _$Error {}
+
+@IceUnion.create
+class State extends _$State {}
+
+dynamic _$StateToJson(_$State state) => null;
+Map<String, dynamic> _$ExampleToJson(_$State state) => <String, dynamic>{};
+dynamic _$StateFromJson(Map<String, dynamic> json) => null;

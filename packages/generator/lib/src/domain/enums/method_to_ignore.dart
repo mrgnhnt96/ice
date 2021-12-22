@@ -11,7 +11,7 @@ enum MethodsToIgnore {
   toJson,
 
   /// a method named string
-  @EnumValue(serializedValue: 'toString')
+  @EnumValue(serializedValue: 'iceToString')
   string,
 
   /// a method named props

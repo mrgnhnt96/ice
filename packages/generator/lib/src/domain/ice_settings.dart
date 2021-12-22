@@ -10,8 +10,9 @@ class IceSettings implements Ice {
     required this.copyWith,
     required this.copyWithType,
     required this.equatable,
-    required this.tostring,
+    required this.iceToString,
     required this.ignoreGettersAsProps,
+    required this.jsonSerializable,
   });
 
   /// the default settings for ice
@@ -20,8 +21,9 @@ class IceSettings implements Ice {
           copyWith: true,
           copyWithType: CopyWithType.simple,
           equatable: true,
-          tostring: true,
+          iceToString: true,
           ignoreGettersAsProps: true,
+          jsonSerializable: const JsonSerializable(),
         );
 
   /// {@macro ice_settings}
@@ -31,14 +33,16 @@ class IceSettings implements Ice {
     const conv = CopyWithTypeConv.nullable;
     final copyWithType = conv.fromJson(config['copy_with_type'] as String?) ??
         defaultValues.copyWithType;
+    const jsonSerializable = JsonSerializable();
 
     return IceSettings(
       copyWith: config['copy_with'] as bool? ?? defaultValues.copyWith,
       copyWithType: copyWithType,
       equatable: config['equatable'] as bool? ?? defaultValues.equatable,
-      tostring: config['to_string'] as bool? ?? defaultValues.tostring,
+      iceToString: config['to_string'] as bool? ?? defaultValues.iceToString,
       ignoreGettersAsProps: config['ignore_getters_as_props'] as bool? ??
           defaultValues.ignoreGettersAsProps,
+      jsonSerializable: jsonSerializable,
     );
   }
 
@@ -52,8 +56,11 @@ class IceSettings implements Ice {
   final bool equatable;
 
   @override
-  final bool tostring;
+  final bool iceToString;
 
   @override
   final bool ignoreGettersAsProps;
+
+  @override
+  final JsonSerializable? jsonSerializable;
 }

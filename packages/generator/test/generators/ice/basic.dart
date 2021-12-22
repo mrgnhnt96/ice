@@ -20,7 +20,7 @@ class State extends _$State {
     this.father = 'dad',
   });
 
-  @CopyWith.constructor
+  @IceCopyWith.constructor
   factory State.fromJson(Map<String, dynamic> json) => _$StateFromJson(json);
 
   String? _pet;
@@ -32,7 +32,7 @@ class State extends _$State {
 
   String father;
   final String name;
-  @ignoreProp
+  @iceIgnorePro
   final int? age;
   final double? money;
   final bool? isCool;

@@ -9,17 +9,9 @@ part of 'main.dart';
 // **************************************************************************
 
 abstract class _$Example extends State {
-  const _$Example(int code) : super(code);
-  const _$Example.empty() : super.empty();
+  _$Example() : super();
 
-  String? get text;
-  int? get whole;
-  double? get decimal;
-  bool? get flag;
-  DateTime? get date;
-  List<String>? get list;
-  Set<String>? get set;
-  Example? get example;
+  String get name;
 
   /// if `null` is passed within the `copyWith` method,
   /// `null` will be returned.
@@ -28,43 +20,21 @@ abstract class _$Example extends State {
   /// myClass.copyWith(field: (currentValue) => newValue);
   /// ```
   Example copyWith({
-    _$CopyCallback<String?>? text,
-    _$CopyCallback<int?>? whole,
-    _$CopyCallback<double?>? decimal,
-    _$CopyCallback<bool?>? flag,
-    _$CopyCallback<DateTime?>? date,
-    _$CopyCallback<List<String>?>? list,
-    _$CopyCallback<Set<String>?>? set,
-    _$CopyCallback<Example?>? example,
+    _$CopyCallback<String>? name,
   }) {
-    return Example(
-        text: text == null ? this.text : text(this.text),
-        whole: whole == null ? this.whole : whole(this.whole),
-        decimal: decimal == null ? this.decimal : decimal(this.decimal),
-        flag: flag == null ? this.flag : flag(this.flag),
-        date: date == null ? this.date : date(this.date),
-        list: list == null ? this.list : list(this.list),
-        set: set == null ? this.set : set(this.set),
-        example: example == null ? this.example : example(this.example));
+    return Example(name == null ? this.name : name(this.name));
   }
 
   @override
   List<Object?> get props {
-    return [text, whole, decimal, flag, date, list, set, example, code];
+    return [name];
   }
 
   @override
   String toString() {
     return '''
 Example(
-	text: $text,
-	whole: $whole,
-	decimal: $decimal,
-	flag: $flag,
-	date: $date,
-	list: $list,
-	set: $set,
-	example: $example,
+	name: $name,
 )''';
   }
 
@@ -77,8 +47,7 @@ extension $ExampleX on Example {
 }
 
 abstract class _$Other extends State {
-  const _$Other(int code) : super(code);
-  const _$Other.empty() : super.empty();
+  _$Other() : super();
 
   /// If `null` is passed within the `copyWith` method,
   /// the current value will be returned.
@@ -86,15 +55,13 @@ abstract class _$Other extends State {
   /// ```dart
   /// myClass.copyWith(field: newValue);
   /// ```
-  Other copyWith({
-    int? code,
-  }) {
-    return Other(code ?? this.code);
+  Other copyWith() {
+    return Other();
   }
 
   @override
   List<Object?> get props {
-    return [code];
+    return [];
   }
 
   @override
@@ -107,8 +74,7 @@ abstract class _$Other extends State {
 }
 
 abstract class _$Error extends State {
-  const _$Error(int code) : super(code);
-  const _$Error.empty() : super.empty();
+  _$Error() : super();
 
   @override
   String get $StateType => 'Error';
@@ -119,18 +85,14 @@ abstract class _$State
     implements _$StateUnion {
   const _$State();
 
-  int get code;
   @override
   List<Object?> get props {
-    return [code];
+    return [];
   }
 
   @override
   String toString() {
-    return '''
-State(
-	code: $code,
-)''';
+    return 'State()';
   }
 
   @override
@@ -163,14 +125,7 @@ mixin _$StateMixin {
 
   R when<R extends Object?>({
     required R Function(
-      String? text,
-      int? whole,
-      double? decimal,
-      bool? flag,
-      DateTime? date,
-      List<String>? list,
-      Set<String>? set,
-      Example? example,
+      String name,
     )
         example,
     required R Function() other,
@@ -178,14 +133,7 @@ mixin _$StateMixin {
   }) {
     return map(
       example: (u) => example(
-        u.text,
-        u.whole,
-        u.decimal,
-        u.flag,
-        u.date,
-        u.list,
-        u.set,
-        u.example,
+        u.name,
       ),
       other: (u) => other(),
       error: (u) => error(),
@@ -207,14 +155,7 @@ mixin _$StateMixin {
 
   R maybeWhen<R extends Object?>({
     R Function(
-      String? text,
-      int? whole,
-      double? decimal,
-      bool? flag,
-      DateTime? date,
-      List<String>? list,
-      Set<String>? set,
-      Example? example,
+      String name,
     )?
         example,
     R Function()? other,
@@ -224,14 +165,7 @@ mixin _$StateMixin {
     return map(
       example: (u) =>
           example?.call(
-            u.text,
-            u.whole,
-            u.decimal,
-            u.flag,
-            u.date,
-            u.list,
-            u.set,
-            u.example,
+            u.name,
           ) ??
           orElse(),
       other: (u) => other?.call() ?? orElse(),
@@ -253,14 +187,7 @@ mixin _$StateMixin {
 
   R? whenOrNull<R extends Object?>({
     R Function(
-      String? text,
-      int? whole,
-      double? decimal,
-      bool? flag,
-      DateTime? date,
-      List<String>? list,
-      Set<String>? set,
-      Example? example,
+      String name,
     )?
         example,
     R Function()? other,
@@ -268,14 +195,7 @@ mixin _$StateMixin {
   }) {
     return map(
       example: (u) => example?.call(
-        u.text,
-        u.whole,
-        u.decimal,
-        u.flag,
-        u.date,
-        u.list,
-        u.set,
-        u.example,
+        u.name,
       ),
       other: (u) => other?.call(),
       error: (u) => error?.call(),

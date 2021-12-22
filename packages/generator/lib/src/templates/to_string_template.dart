@@ -29,7 +29,7 @@ extension on Field {
 }
 
 /// {@template to_string_template}
-/// Generates a toString method for the Class and its fields.
+/// Generates a iceToString method for the Class and its fields.
 /// {@endtemplate}
 class ToStringTemplate extends Template {
   /// {@macro to_string_template}
@@ -38,7 +38,7 @@ class ToStringTemplate extends Template {
     required this.asFunction,
   }) : super(
           subject,
-          name: IceOptions.tostring,
+          name: IceOptions.iceToString,
         );
 
   /// whether to generate the method as a function

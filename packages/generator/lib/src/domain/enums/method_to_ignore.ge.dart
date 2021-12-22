@@ -156,7 +156,7 @@ class MethodsToIgnoreConv extends JsonConverter<MethodsToIgnore, Object> {
   static const nullable = _MethodsToIgnoreNullableConv();
 
   static const _toJsonName = 'toJson';
-  static const _stringName = 'toString';
+  static const _stringName = 'iceToString';
   static const _propsName = 'props';
   static const _copyWithName = 'copyWith';
   static const _otherName = 'other';

@@ -4,7 +4,6 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/src/dart/element/element.dart';
 import 'package:enum_assist_annotation/enum_assist_annotation.dart';
 import 'package:ice_annotation/src/ice.dart';
-import 'package:ice_annotation/src/methods/methods.dart';
 
 part 'annotation_types.ge.dart';
 
@@ -25,34 +24,34 @@ enum AnnotationTypes {
 
   /// [IceUnion]
   @EnumValue(serializedValue: 'IceUnion.create')
-  unionBase,
+  unionCreate,
 
   /// [IceUnion]
   @EnumValue(serializedValue: 'IceUnion.of')
   unionOf,
 
   /// [CopyWithConstructor]
-  @EnumValue(serializedValue: 'CopyWith.constructor')
+  @EnumValue(serializedValue: 'IceCopyWith.constructor')
   copyWithConstructor,
 
   /// [Props]
-  @EnumValue(serializedValue: 'props')
-  props,
+  @EnumValue(serializedValue: 'iceProps')
+  iceProps,
 
   /// [IgnoreProp]
-  @EnumValue(serializedValue: 'ignoreProp')
-  ignoreProp,
+  @EnumValue(serializedValue: 'iceIgnoreProp')
+  iceIgnoreProp,
 
   /// [ToString]
-  @EnumValue(serializedValue: 'toString')
-  tostring,
+  @EnumValue(serializedValue: 'iceToString')
+  iceToString,
 
-  /// [CopyWith]
-  @EnumValue(serializedValue: 'CopyWith.simple')
+  /// [IceCopyWith]
+  @EnumValue(serializedValue: 'IceCopyWith.simple')
   copyWithSimple,
 
   /// [CopyWithTypeSafe]
-  @EnumValue(serializedValue: 'CopyWith.typeSafe')
+  @EnumValue(serializedValue: 'IceCopyWith.typeSafe')
   copyWithTypeSafe,
 
   /// any other annotation
@@ -96,7 +95,7 @@ extension AnnotationTypesXX on AnnotationTypes {
   bool get isIce => this == AnnotationTypes.ice;
 
   /// The [IceUnion] annotation
-  bool get isUnionBase => this == AnnotationTypes.unionBase;
+  bool get isUnionBase => this == AnnotationTypes.unionCreate;
 
   /// The [JsonKey] annotation
   bool get isJsonKey => this == AnnotationTypes.jsonKey;
@@ -108,15 +107,15 @@ extension AnnotationTypesXX on AnnotationTypes {
   bool get isCopyWithConstructor => this == AnnotationTypes.copyWithConstructor;
 
   /// The [Props] annotation
-  bool get isProps => this == AnnotationTypes.props;
+  bool get isProps => this == AnnotationTypes.iceProps;
 
   /// The [IgnoreProp] annotation
-  bool get isIgnoreProp => this == AnnotationTypes.ignoreProp;
+  bool get isIgnoreProp => this == AnnotationTypes.iceIgnoreProp;
 
   /// The [ToString] annotation
-  bool get isToString => this == AnnotationTypes.tostring;
+  bool get isToString => this == AnnotationTypes.iceToString;
 
-  /// The [CopyWith] annotation
+  /// The [IceCopyWith] annotation
   bool get isCopyWithSimple => this == AnnotationTypes.copyWithSimple;
 
   /// The [CopyWithTypeSafe] annotation
