@@ -1,9 +1,8 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
-import 'package:ice/src/domain/domain.dart';
 import 'package:ice/src/domain/ice_support.dart';
-import 'package:ice/src/ice.dart';
 import 'package:ice/src/templates/union_template.dart';
+import 'package:ice/src/util/build_step_ext.dart';
 import 'package:ice_annotation/ice.dart';
 import 'package:source_gen/source_gen.dart';
 
@@ -14,20 +13,21 @@ class UnionGenerator extends GeneratorForAnnotation<IceUnion> {
   /// {@macro union_generator}
   const UnionGenerator();
   @override
-  String generateForAnnotatedElement(
+  Future<String> generateForAnnotatedElement(
     Element element,
     ConstantReader annotation,
     BuildStep buildStep,
-  ) {
+  ) async {
     final unionType = annotation.peek('base')?.typeValue.toString();
 
     if (!(unionType?.startsWith('$IceUnion') ?? true)) {
       return '';
     }
 
-    final subject = Class.fromElement(element as ClassElement);
-
-    final subClasses = IceGenerator.subjects.getUnions(subject);
+    final subClasses = (await buildStep.classesOf(typeChecker)).toList();
+    final subjectIndex = subClasses.indexWhere((e) => e.name == element.name);
+    final subject = subClasses[subjectIndex];
+    subClasses.removeAt(subjectIndex);
 
     final buffer = StringBuffer();
 
