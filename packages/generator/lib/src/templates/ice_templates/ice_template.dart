@@ -38,13 +38,18 @@ extension on Class {
     return 'abstract class $genName$mixins$implements';
   }
 
-  Constructor? get fromJsonConstructor {
+  Constructor get fromJsonConstructor {
+    Constructor? defaultCtor;
     for (final ctor in constructors) {
-      // TODO(mrgnhnt96): Check for `iceFromJson` annotation
-      if (ctor.isDefault) {
+      if (ctor.isJsonConstructor) {
         return ctor;
       }
+      if (ctor.isDefault) {
+        defaultCtor = ctor;
+      }
     }
+
+    return defaultCtor ?? constructors.first;
   }
 }
 
@@ -96,38 +101,46 @@ class IceTemplate extends Template {
 
   /// generates the constructor that json_serializable uses
   void toJsonConstructor(StringBuffer buffer) {
-    final defaultConstructor = subject.fromJsonConstructor;
-    if (defaultConstructor == null) {
-      throw 'No default constructor found for ${subject.name}';
-    }
+    final constructor = subject.fromJsonConstructor;
+    final constStr = constructor.isConst ? 'const ' : '';
 
     buffer
       ..writeObject(
-        'const factory ${subject.genName}._',
+        '${constStr}factory ${subject.genName}._',
         open: '(',
         close: ')',
         body: () {
-          buffer.writeAll(defaultConstructor.params.formatted(), ',\n');
+          buffer.writeAll(constructor.params.formatted(), ',\n');
         },
       )
-      ..writeln('= ${defaultConstructor.displayName};');
+      ..writeln('= ${constructor.displayName};');
+  }
+
+  ///
+  void jsonSerializableAnnotation(StringBuffer buffer) {
+    final iceJsonSerializable = subject.annotations.ice?.iceJsonSerializable;
+
+    if (iceJsonSerializable == null) {
+      return;
+    }
+
+    buffer.writeln(iceJsonSerializable.asAnnotation);
   }
 
   @override
   void generate(StringBuffer buffer) {
-    buffer
-      ..writeln("@JsonSerializable(constructor: '_')")
-      ..writeObject(
-        classHeader,
-        body: () {
-          toJsonConstructor(buffer);
-          constructor(buffer);
+    jsonSerializableAnnotation(buffer);
+    buffer.writeObject(
+      classHeader,
+      body: () {
+        toJsonConstructor(buffer);
+        constructor(buffer);
 
-          writeFields(buffer);
+        writeFields(buffer);
 
-          writeProperties(buffer);
-        },
-      );
+        writeProperties(buffer);
+      },
+    );
 
     includeCopyWithSupport();
 
