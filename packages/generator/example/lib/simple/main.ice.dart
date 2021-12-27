@@ -8,7 +8,13 @@ part of 'main.dart';
 // IceGenerator
 // **************************************************************************
 
+@JsonSerializable(
+  constructor: '_',
+)
 abstract class _$Example extends State {
+  factory _$Example._(
+    String name,
+  ) = Example;
   _$Example() : super();
 
   String get name;
@@ -39,14 +45,28 @@ Example(
   }
 
   @override
-  String get $StateType => 'Example';
+  String get $unionType => 'Example';
 }
 
 extension $ExampleX on Example {
-  Map<String, dynamic> toJson() => _$ExampleToJson(this);
+  Map<String, dynamic> toJson({bool includeUnionType = true}) {
+    final map = _$$ExampleToJson(this);
+    if (includeUnionType) {
+      map[r'$unionType'] = 'Example';
+    }
+    return map;
+  }
 }
 
+Example _$ExampleFromJson(Map<String, dynamic> json) {
+  return _$$ExampleFromJson(json) as Example;
+}
+
+@JsonSerializable(
+  constructor: '_',
+)
 abstract class _$Other extends State {
+  factory _$Other._() = Other;
   _$Other() : super();
 
   /// If `null` is passed within the `copyWith` method,
@@ -70,19 +90,72 @@ abstract class _$Other extends State {
   }
 
   @override
-  String get $StateType => 'Other';
+  String get $unionType => 'Other';
 }
 
+extension $OtherX on Other {
+  Map<String, dynamic> toJson({bool includeUnionType = true}) {
+    final map = _$$OtherToJson(this);
+    if (includeUnionType) {
+      map[r'$unionType'] = 'Other';
+    }
+    return map;
+  }
+}
+
+Other _$OtherFromJson(Map<String, dynamic> json) {
+  return _$$OtherFromJson(json) as Other;
+}
+
+@JsonSerializable(
+  constructor: '_',
+)
 abstract class _$Error extends State {
+  factory _$Error._() = Error;
   _$Error() : super();
 
+  /// If `null` is passed within the `copyWith` method,
+  /// the current value will be returned.
+  ///
+  /// ```dart
+  /// myClass.copyWith(field: newValue);
+  /// ```
+  Error copyWith() {
+    return Error();
+  }
+
   @override
-  String get $StateType => 'Error';
+  List<Object?> get props {
+    return [];
+  }
+
+  @override
+  String toString() {
+    return 'Error()';
+  }
+
+  @override
+  String get $unionType => 'Error';
+}
+
+extension $ErrorX on Error {
+  Map<String, dynamic> toJson({bool includeUnionType = true}) {
+    final map = _$$ErrorToJson(this);
+    if (includeUnionType) {
+      map[r'$unionType'] = 'Error';
+    }
+    return map;
+  }
+}
+
+Error _$ErrorFromJson(Map<String, dynamic> json) {
+  return _$$ErrorFromJson(json) as Error;
 }
 
 abstract class _$State
     with EquatableMixin, _$StateMixin
     implements _$StateUnion {
+  factory _$State._() = State;
   const _$State();
 
   @override
@@ -96,13 +169,13 @@ abstract class _$State
   }
 
   @override
-  String get $StateType => 'State';
+  String get $unionType => 'State';
 }
 
 abstract class _$StateUnion {
   const _$StateUnion();
 
-  String get $StateType;
+  String get $unionType;
 }
 
 mixin _$StateMixin {

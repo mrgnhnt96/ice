@@ -1,23 +1,23 @@
 import 'package:ice_annotation/ice.dart';
-import 'package:json_annotation/json_annotation.dart';
 
 part 'main.ice.dart';
 part 'main.g.dart';
 // Ice Annotation:
 // remove equatable on false
 
-@Ice(
+@IceUnion.of(
+  State,
   copyWithType: CopyWithType.typeSafe,
 )
-@IceUnion.of(State)
-@JsonSerializable()
 class Example extends _$Example {
   Example(this.name);
 
   final String name;
+
+  factory Example.fromJson(Map<String, dynamic> json) =>
+      _$ExampleFromJson(json);
 }
 
-@Ice()
 @IceUnion.of(State)
 class Other extends _$Other {}
 
@@ -26,5 +26,5 @@ class Error extends _$Error {
   Error();
 }
 
-@IceUnion.create
+@IceUnion.create()
 class State extends _$State {}

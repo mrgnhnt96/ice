@@ -1,6 +1,5 @@
 // ignore_for_file: overridden_fields, annotate_overrides
 
-import 'package:enum_assist_annotation/enum_assist_annotation.dart';
 import 'package:ice_annotation/ice.dart';
 
 part 'output/basic_copy_with_type_safe.dart';

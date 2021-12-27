@@ -4,9 +4,7 @@ targets:
     builders:
       ice:
         enabled: true
-      json_serializable:
-        enabled: true
         options:
           explicit_to_json: true
-          include_if_null: false
+          include_if_null: true
           any_map: true

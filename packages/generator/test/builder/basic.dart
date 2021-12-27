@@ -1,28 +1,36 @@
 // ignore_for_file: overridden_fields, annotate_overrides
 
-import 'package:enum_assist_annotation/enum_assist_annotation.dart';
 import 'package:ice_annotation/ice.dart';
 
 part 'output/basic.dart';
 
-@Ice(
-  copyWithType: CopyWithType.typeSafe,
+@IceUnion.of(
+  State,
+  iceJsonSerializable: null,
 )
-@IceUnion.of(State)
-@JsonSerializable()
 class Example extends _$Example {
   Example(this.name);
+  @iceJsonConstructor
+  Example._() : name = '';
+
   final String name;
 }
 
-@Ice()
-@IceUnion.of(State)
+@IceUnion.of(
+  State,
+  iceJsonSerializable: null,
+)
 class Other extends _$Other {}
 
-@IceUnion.of(State)
+@IceUnion.of(
+  State,
+  iceJsonSerializable: null,
+)
 class Error extends _$Error {}
 
-@IceUnion.create
+@IceUnion.create(
+  iceJsonSerializable: null,
+)
 class State extends _$State {}
 
 dynamic _$StateToJson(_$State state) => null;

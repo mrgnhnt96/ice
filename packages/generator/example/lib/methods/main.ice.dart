@@ -39,35 +39,24 @@ extension $ExampleX on Example {
   }
 
   Map<String, dynamic> toJson() => _$ExampleToJson(this);
+  List<Object?> get _$props {
+    return [text, whole, decimal, flag, date, list, map, set, example];
+  }
+
+  String _$toString() {
+    return '''
+Example(
+	text: $text,
+	whole: $whole,
+	decimal: $decimal,
+	flag: $flag,
+	date: $date,
+	list: $list,
+	map: $map,
+	set: $set,
+	example: $example,
+)''';
+  }
 }
 
 typedef _$CopyCallback<T> = T Function(T);
-
-List<Object?> _$ExampleProps(Example instance) {
-  return [
-    instance.text,
-    instance.whole,
-    instance.decimal,
-    instance.flag,
-    instance.date,
-    instance.list,
-    instance.map,
-    instance.set,
-    instance.example
-  ];
-}
-
-String _$ExampleToString(Example instance) {
-  return '''
-Example(
-	text: ${instance.text},
-	whole: ${instance.whole},
-	decimal: ${instance.decimal},
-	flag: ${instance.flag},
-	date: ${instance.date},
-	list: ${instance.list},
-	map: ${instance.map},
-	set: ${instance.set},
-	example: ${instance.example},
-)''';
-}

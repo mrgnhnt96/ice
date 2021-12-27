@@ -6,7 +6,7 @@ part of 'main.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Example _$ExampleFromJson(Map json) => Example(
+Example _$ExampleFromJson(Map<String, dynamic> json) => Example(
       text: json['text'] as String?,
       whole: json['whole'] as int?,
       decimal: (json['decimal'] as num?)?.toDouble(),
@@ -14,32 +14,23 @@ Example _$ExampleFromJson(Map json) => Example(
       date:
           json['date'] == null ? null : DateTime.parse(json['date'] as String),
       list: (json['list'] as List<dynamic>?)?.map((e) => e as String).toList(),
-      map: (json['map'] as Map?)?.map(
-        (k, e) => MapEntry(k as String, e as String),
+      map: (json['map'] as Map<String, dynamic>?)?.map(
+        (k, e) => MapEntry(k, e as String),
       ),
       set: (json['set'] as List<dynamic>?)?.map((e) => e as String).toSet(),
       example: json['example'] == null
           ? null
-          : Example.fromJson(Map<String, dynamic>.from(json['example'] as Map)),
+          : Example.fromJson(json['example'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$ExampleToJson(Example instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('text', instance.text);
-  writeNotNull('whole', instance.whole);
-  writeNotNull('decimal', instance.decimal);
-  writeNotNull('flag', instance.flag);
-  writeNotNull('date', instance.date?.toIso8601String());
-  writeNotNull('list', instance.list);
-  writeNotNull('map', instance.map);
-  writeNotNull('set', instance.set?.toList());
-  writeNotNull('example', instance.example?.toJson());
-  return val;
-}
+Map<String, dynamic> _$ExampleToJson(Example instance) => <String, dynamic>{
+      'text': instance.text,
+      'whole': instance.whole,
+      'decimal': instance.decimal,
+      'flag': instance.flag,
+      'date': instance.date?.toIso8601String(),
+      'list': instance.list,
+      'map': instance.map,
+      'set': instance.set?.toList(),
+      'example': instance.example,
+    };

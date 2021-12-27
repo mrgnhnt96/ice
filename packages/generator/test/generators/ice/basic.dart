@@ -1,15 +1,10 @@
 // ignore_for_file: overridden_fields, annotate_overrides
 
-import 'package:enum_assist_annotation/enum_assist_annotation.dart';
 import 'package:ice_annotation/ice.dart';
 
 part 'output/basic.dart';
 
-@Ice()
-@IceUnion.create
-@JsonSerializable(
-  createToJson: false,
-)
+@IceUnion.create()
 class State extends _$State {
   State(
     this.name,
@@ -32,7 +27,7 @@ class State extends _$State {
 
   String father;
   final String name;
-  @iceIgnorePro
+  @iceIgnoreProp
   final int? age;
   final double? money;
   final bool? isCool;

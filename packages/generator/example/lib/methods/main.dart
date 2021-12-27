@@ -1,8 +1,8 @@
 import 'package:ice_annotation/ice.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'main.ice.dart';
 part 'main.g.dart';
+part 'main.ice.dart';
 
 @IceCopyWith.typeSafe
 @iceProps
@@ -35,8 +35,8 @@ class Example extends Equatable {
   final Example? example;
 
   @override
-  List<Object?> get props => _$ExampleProps(this);
+  List<Object?> get props => _$props;
 
   @override
-  String toString() => _$ExampleToString(this);
+  String toString() => _$toString();
 }

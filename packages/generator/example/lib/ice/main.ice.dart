@@ -8,7 +8,19 @@ part of 'main.dart';
 // IceGenerator
 // **************************************************************************
 
+@JsonSerializable(
+  constructor: '_',
+)
 abstract class _$Example extends State {
+  const factory _$Example._({
+    String? text,
+    int? whole,
+    double? decimal,
+    bool? flag,
+    DateTime? date,
+    List<String>? list,
+    Set<String>? set,
+  }) = Example;
   const _$Example(int code) : super(code);
   const _$Example.empty() : super.empty();
 
@@ -19,38 +31,35 @@ abstract class _$Example extends State {
   DateTime? get date;
   List<String>? get list;
   Set<String>? get set;
-  Example? get example;
 
-  /// if `null` is passed within the `copyWith` method,
-  /// `null` will be returned.
+  /// If `null` is passed within the `copyWith` method,
+  /// the current value will be returned.
   ///
   /// ```dart
-  /// myClass.copyWith(field: (currentValue) => newValue);
+  /// myClass.copyWith(field: newValue);
   /// ```
   Example copyWith({
-    _$CopyCallback<String?>? text,
-    _$CopyCallback<int?>? whole,
-    _$CopyCallback<double?>? decimal,
-    _$CopyCallback<bool?>? flag,
-    _$CopyCallback<DateTime?>? date,
-    _$CopyCallback<List<String>?>? list,
-    _$CopyCallback<Set<String>?>? set,
-    _$CopyCallback<Example?>? example,
+    String? text,
+    int? whole,
+    double? decimal,
+    bool? flag,
+    DateTime? date,
+    List<String>? list,
+    Set<String>? set,
   }) {
     return Example(
-        text: text == null ? this.text : text(this.text),
-        whole: whole == null ? this.whole : whole(this.whole),
-        decimal: decimal == null ? this.decimal : decimal(this.decimal),
-        flag: flag == null ? this.flag : flag(this.flag),
-        date: date == null ? this.date : date(this.date),
-        list: list == null ? this.list : list(this.list),
-        set: set == null ? this.set : set(this.set),
-        example: example == null ? this.example : example(this.example));
+        text: text ?? this.text,
+        whole: whole ?? this.whole,
+        decimal: decimal ?? this.decimal,
+        flag: flag ?? this.flag,
+        date: date ?? this.date,
+        list: list ?? this.list,
+        set: set ?? this.set);
   }
 
   @override
   List<Object?> get props {
-    return [text, whole, decimal, flag, date, list, set, example, code];
+    return [text, whole, decimal, flag, date, list, set, code];
   }
 
   @override
@@ -64,19 +73,34 @@ Example(
 	date: $date,
 	list: $list,
 	set: $set,
-	example: $example,
 )''';
   }
 
   @override
-  String get $StateType => 'Example';
+  String get $unionType => 'Example';
 }
 
 extension $ExampleX on Example {
-  Map<String, dynamic> toJson() => _$ExampleToJson(this);
+  Map<String, dynamic> toJson({bool includeUnionType = true}) {
+    final map = _$$ExampleToJson(this);
+    if (includeUnionType) {
+      map[r'$unionType'] = 'Example';
+    }
+    return map;
+  }
 }
 
+Example _$ExampleFromJson(Map<String, dynamic> json) {
+  return _$$ExampleFromJson(json) as Example;
+}
+
+@JsonSerializable(
+  constructor: '_',
+)
 abstract class _$Other extends State {
+  const factory _$Other._(
+    int code,
+  ) = Other;
   const _$Other(int code) : super(code);
   const _$Other.empty() : super.empty();
 
@@ -103,20 +127,79 @@ abstract class _$Other extends State {
   }
 
   @override
-  String get $StateType => 'Other';
+  String get $unionType => 'Other';
 }
 
+extension $OtherX on Other {
+  Map<String, dynamic> toJson({bool includeUnionType = true}) {
+    final map = _$$OtherToJson(this);
+    if (includeUnionType) {
+      map[r'$unionType'] = 'Other';
+    }
+    return map;
+  }
+}
+
+Other _$OtherFromJson(Map<String, dynamic> json) {
+  return _$$OtherFromJson(json) as Other;
+}
+
+@JsonSerializable(
+  constructor: '_',
+)
 abstract class _$Error extends State {
+  const factory _$Error._(
+    int code,
+  ) = Error;
   const _$Error(int code) : super(code);
   const _$Error.empty() : super.empty();
 
+  /// If `null` is passed within the `copyWith` method,
+  /// the current value will be returned.
+  ///
+  /// ```dart
+  /// myClass.copyWith(field: newValue);
+  /// ```
+  Error copyWith({
+    int? code,
+  }) {
+    return Error(code ?? this.code);
+  }
+
   @override
-  String get $StateType => 'Error';
+  List<Object?> get props {
+    return [code];
+  }
+
+  @override
+  String toString() {
+    return 'Error()';
+  }
+
+  @override
+  String get $unionType => 'Error';
+}
+
+extension $ErrorX on Error {
+  Map<String, dynamic> toJson({bool includeUnionType = true}) {
+    final map = _$$ErrorToJson(this);
+    if (includeUnionType) {
+      map[r'$unionType'] = 'Error';
+    }
+    return map;
+  }
+}
+
+Error _$ErrorFromJson(Map<String, dynamic> json) {
+  return _$$ErrorFromJson(json) as Error;
 }
 
 abstract class _$State
     with EquatableMixin, _$StateMixin
     implements _$StateUnion {
+  const factory _$State._(
+    int code,
+  ) = State;
   const _$State();
 
   int get code;
@@ -134,13 +217,13 @@ State(
   }
 
   @override
-  String get $StateType => 'State';
+  String get $unionType => 'State';
 }
 
 abstract class _$StateUnion {
   const _$StateUnion();
 
-  String get $StateType;
+  String get $unionType;
 }
 
 mixin _$StateMixin {
@@ -170,7 +253,6 @@ mixin _$StateMixin {
       DateTime? date,
       List<String>? list,
       Set<String>? set,
-      Example? example,
     )
         example,
     required R Function() other,
@@ -185,7 +267,6 @@ mixin _$StateMixin {
         u.date,
         u.list,
         u.set,
-        u.example,
       ),
       other: (u) => other(),
       error: (u) => error(),
@@ -214,7 +295,6 @@ mixin _$StateMixin {
       DateTime? date,
       List<String>? list,
       Set<String>? set,
-      Example? example,
     )?
         example,
     R Function()? other,
@@ -231,7 +311,6 @@ mixin _$StateMixin {
             u.date,
             u.list,
             u.set,
-            u.example,
           ) ??
           orElse(),
       other: (u) => other?.call() ?? orElse(),
@@ -260,7 +339,6 @@ mixin _$StateMixin {
       DateTime? date,
       List<String>? list,
       Set<String>? set,
-      Example? example,
     )?
         example,
     R Function()? other,
@@ -275,7 +353,6 @@ mixin _$StateMixin {
         u.date,
         u.list,
         u.set,
-        u.example,
       ),
       other: (u) => other?.call(),
       error: (u) => error?.call(),
@@ -287,6 +364,5 @@ mixin _$StateMixin {
   bool get isError => this is _$Error;
 }
 
-typedef _$CopyCallback<T> = T Function(T);
 typedef _$StateCallback<R, T extends State> = R Function(T);
 typedef _$NoStateCallback<R> = R Function();

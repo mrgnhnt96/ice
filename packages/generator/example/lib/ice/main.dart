@@ -1,5 +1,4 @@
 import 'package:ice_annotation/ice.dart';
-import 'package:json_annotation/json_annotation.dart';
 
 part 'main.ice.dart';
 part 'main.g.dart';
@@ -8,12 +7,11 @@ part 'state.dart';
 // Ice Annotation:
 // remove equatable on false
 
-@Ice(
-  copyWithType: CopyWithType.typeSafe,
+@IceUnion.of(
+  State,
 )
-@IceUnion.of(State)
-@JsonSerializable()
 class Example extends _$Example {
+  @iceJsonConstructor
   const Example({
     this.text,
     this.whole,
@@ -22,7 +20,6 @@ class Example extends _$Example {
     this.date,
     this.list,
     this.set,
-    this.example,
   }) : super.empty();
 
   factory Example.fromJson(Map<String, dynamic> json) =>
@@ -35,18 +32,22 @@ class Example extends _$Example {
   final DateTime? date;
   final List<String>? list;
   final Set<String>? set;
-  final Example? example;
 }
 
-@Ice(
-  copyWithType: CopyWithType.simple,
+@IceUnion.of(
+  State,
 )
-@IceUnion.of(State)
 class Other extends _$Other {
-  Other(int code) : super(code);
+  const Other(int code) : super(code);
+
+  factory Other.fromJson(Map<String, dynamic> json) => _$OtherFromJson(json);
 }
 
-@IceUnion.of(State)
+@IceUnion.of(
+  State,
+)
 class Error extends _$Error {
-  Error(int code) : super(code);
+  const Error(int code) : super(code);
+
+  factory Error.fromJson(Map<String, dynamic> json) => _$ErrorFromJson(json);
 }
