@@ -4,7 +4,9 @@ import 'package:change_case/change_case.dart';
 import 'package:ice/src/domain/domain.dart';
 import 'package:ice/src/domain/enums/position_type.dart';
 import 'package:ice/src/domain/ice_support.dart';
+import 'package:ice/src/templates/from_json_template.dart';
 import 'package:ice/src/templates/templates.dart';
+import 'package:ice/src/templates/to_json_template.dart';
 import 'package:ice/src/util/string_buffer_ext.dart';
 
 extension on Class {
@@ -76,11 +78,10 @@ extension on Constructor {
 /// - Equatable Props
 /// - toString()
 class UnionTemplate extends Template {
-  UnionTemplate.forSubject(
-    Class subject,
-    this.subClasses,
-  ) : super.wrapper(subject);
-  final List<Class> subClasses;
+  UnionTemplate.forSubject(Class subject, this.subClasses)
+      : super.wrapper(subject);
+
+  final Iterable<Class> subClasses;
 
   String get result => '_\$${subject.cleanName}Callback';
   String get noResult => '_\$No${subject.cleanName}Callback';
@@ -95,8 +96,11 @@ class UnionTemplate extends Template {
       body: () {
         _writePatternMatches(buffer);
         _writeIsType(buffer);
+        ToJsonTemplate.forUnion(subject, subClasses).addToBuffer(buffer);
       },
     );
+
+    FromJsonTemplate.forUnion(subject, subClasses).addToBuffer(buffer);
   }
 
   void _writeIsType(StringBuffer buffer) {
@@ -117,7 +121,7 @@ class UnionTemplate extends Template {
         buffer
           ..writeln('const ${subject.unionBase}();')
           ..writeln()
-          ..writeln('String get \$${subject.cleanName}Type;');
+          ..writeln(r'String get $unionType;');
       },
     );
   }
