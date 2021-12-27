@@ -1,5 +1,6 @@
 import 'package:ice/src/domain/domain.dart';
 import 'package:ice/src/domain/ice_support.dart';
+import 'package:ice/src/templates/from_json_template.dart';
 import 'package:ice/src/templates/ice_templates/union_class_template.dart';
 import 'package:ice/src/templates/templates.dart';
 import 'package:ice/src/templates/to_json_template.dart';
@@ -35,6 +36,15 @@ extension on Class {
     }
 
     return 'abstract class $genName$mixins$implements';
+  }
+
+  Constructor? get fromJsonConstructor {
+    for (final ctor in constructors) {
+      // TODO(mrgnhnt96): Check for `iceFromJson` annotation
+      if (ctor.isDefault) {
+        return ctor;
+      }
+    }
   }
 }
 
@@ -84,22 +94,46 @@ class IceTemplate extends Template {
     buffer.writeln('const ${subject.genName}();');
   }
 
+  /// generates the constructor that json_serializable uses
+  void toJsonConstructor(StringBuffer buffer) {
+    final defaultConstructor = subject.fromJsonConstructor;
+    if (defaultConstructor == null) {
+      throw 'No default constructor found for ${subject.name}';
+    }
+
+    buffer
+      ..writeObject(
+        'const factory ${subject.genName}._',
+        open: '(',
+        close: ')',
+        body: () {
+          buffer.writeAll(defaultConstructor.params.formatted(), ',\n');
+        },
+      )
+      ..writeln('= ${defaultConstructor.displayName};');
+  }
+
   @override
   void generate(StringBuffer buffer) {
-    buffer.writeObject(
-      classHeader,
-      body: () {
-        constructor(buffer);
+    buffer
+      ..writeln("@JsonSerializable(constructor: '_')")
+      ..writeObject(
+        classHeader,
+        body: () {
+          toJsonConstructor(buffer);
+          constructor(buffer);
 
-        writeFields(buffer);
+          writeFields(buffer);
 
-        writeProperties(buffer);
-      },
-    );
+          writeProperties(buffer);
+        },
+      );
 
-    writeCopyWithSupport();
+    includeCopyWithSupport();
 
     writeToJson(buffer);
+
+    writeFromJson(buffer);
   }
 
   ///
@@ -130,7 +164,7 @@ class IceTemplate extends Template {
   }
 
   ///
-  void writeCopyWithSupport() {
+  void includeCopyWithSupport() {
     if (generateProperties) {
       IceSupport().add(copyWithTemplate.support);
     }
@@ -148,5 +182,10 @@ class IceTemplate extends Template {
         },
       );
     }
+  }
+
+  ///
+  void writeFromJson(StringBuffer buffer) {
+    FromJsonTemplate.forSubject(subject).addToBuffer(buffer);
   }
 }
