@@ -11,6 +11,12 @@ class _IgnoreProp extends MethodAnnotation {
   const _IgnoreProp();
 }
 
+///
+class _JsonConstructor {
+  ///
+  const _JsonConstructor();
+}
+
 /// {@template copy_with_constructor}
 /// The constructor of the class that will be used
 /// as the copyWith entrypoint.
@@ -57,10 +63,13 @@ class IceCopyWith extends MethodAnnotation {
 }
 
 /// {@macro ignore_prop}
-const iceIgnorePro = _IgnoreProp();
+const iceIgnoreProp = _IgnoreProp();
 
 /// {@macro to_string}
 const iceToString = _ToString();
 
 /// {@macro props}
 const iceProps = _Props();
+
+/// {@macro json_constructor}
+const iceJsonConstructor = _JsonConstructor();

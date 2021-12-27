@@ -1,6 +1,7 @@
-// ignore_for_file: avoid_field_initializers_in_const_classes
+// ignore_for_file: avoid_field_initializers_in_const_classes, overridden_fields
 
 import 'package:ice_annotation/src/enums/copy_with_type.dart';
+import 'package:ice_annotation/src/ice_json_serializable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta_meta.dart';
 
@@ -18,7 +19,7 @@ class Ice {
     this.equatable,
     this.ignoreGettersAsProps,
     this.iceToString,
-    this.jsonSerializable = const JsonSerializable(),
+    this.iceJsonSerializable = const IceJsonSerializable(),
   });
 
   /// generates the copyWith method
@@ -41,7 +42,7 @@ class Ice {
   final bool? iceToString;
 
   /// generates the serializable methods
-  final JsonSerializable? jsonSerializable;
+  final IceJsonSerializable? iceJsonSerializable;
 }
 
 /// {@template ice_union_base}
@@ -57,15 +58,21 @@ class IceUnion implements Ice {
     this.equatable,
     this.iceToString,
     this.ignoreGettersAsProps,
-    this.jsonSerializable = const JsonSerializable(),
+    this.iceJsonSerializable = const IceJsonSerializable(),
   });
+
+  /// {@macro ice_union_base}
+  const IceUnion.create({
+    this.copyWith,
+    this.copyWithType,
+    this.equatable,
+    this.iceToString,
+    this.ignoreGettersAsProps,
+    this.iceJsonSerializable = const IceJsonSerializable(),
+  }) : base = IceUnion;
 
   /// the base of the union
   final Type base;
-
-  /// {@macro ice_union_base}
-  // ignore: prefer_constructors_over_static_methods
-  static const IceUnion create = IceUnion.of(IceUnion);
 
   @override
   final bool? copyWith;
@@ -83,5 +90,23 @@ class IceUnion implements Ice {
   final bool? ignoreGettersAsProps;
 
   @override
-  final JsonSerializable? jsonSerializable;
+  final IceJsonSerializable? iceJsonSerializable;
+}
+
+///
+extension JsonSerializableX on JsonSerializable {
+  ///
+  IceJsonSerializable toIce() {
+    return IceJsonSerializable(
+      anyMap: anyMap,
+      checked: checked,
+      createFactory: createFactory,
+      createToJson: createToJson,
+      disallowUnrecognizedKeys: disallowUnrecognizedKeys,
+      explicitToJson: explicitToJson,
+      fieldRename: fieldRename,
+      ignoreUnannotated: ignoreUnannotated,
+      includeIfNull: includeIfNull,
+    );
+  }
 }

@@ -10,7 +10,7 @@ void main() {
     });
 
     test('base is $IceUnion when #create', () {
-      const union = IceUnion.create;
+      const union = IceUnion.create();
 
       expect(union.base, '$IceUnion');
     });
