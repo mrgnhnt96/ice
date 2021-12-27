@@ -76,7 +76,7 @@ class ToJsonTemplate extends Template {
   void _writeToJson(StringBuffer buffer) {
     buffer.writeln(
       'Map<String, dynamic> toJson() => '
-      '_\$\$${subject.nonPrivateName}ToJson(this); as ${subject.name}',
+      '_\$\$${subject.nonPrivateName}ToJson(this);',
     );
   }
 
