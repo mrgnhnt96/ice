@@ -16,6 +16,7 @@ class ClassAnnotations {
     required this.methods,
     required this.ofUnionType,
     required this.createToJson,
+    required this.createFromJson,
     required this.isUnionBase,
   });
 
@@ -25,6 +26,7 @@ class ClassAnnotations {
     MethodAnnotations? methods;
     String? unionType;
     var createToJson = false;
+    var createFromJson = false;
     var isUnionBase = false;
 
     final types = {
@@ -57,8 +59,10 @@ class ClassAnnotations {
           isUnionBase = true;
           continue;
         case AnnotationTypes.jsonSerializable:
+          // TODO(mrgnhnt96): use ice.jsonSerializable instead JSON annotation
           final reader = ConstantReader(annotation.computeConstantValue());
           createToJson = reader.peek('createToJson')?.boolValue ?? true;
+          createFromJson = reader.peek('createConstructor')?.boolValue ?? true;
           continue;
         default:
           if (ice != null) {
@@ -86,6 +90,7 @@ class ClassAnnotations {
       methods: methods,
       ofUnionType: unionType,
       createToJson: createToJson,
+      createFromJson: createFromJson,
       isUnionBase: isUnionBase,
     );
   }
@@ -104,6 +109,14 @@ class ClassAnnotations {
   /// retrieved from the `JsonSerializable` annotation
   final bool createToJson;
 
+  /// whether the `fromJson` function should be generated
+  ///
+  /// retrieved from the `JsonSerializable` annotation
+  final bool createFromJson;
+
   /// whether the class is the union base
   final bool isUnionBase;
+
+  /// whether the class is a union
+  bool get isUnionType => ofUnionType != null;
 }
