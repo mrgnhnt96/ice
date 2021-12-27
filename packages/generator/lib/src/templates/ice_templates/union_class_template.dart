@@ -38,12 +38,11 @@ class UnionClassTemplate extends IceTemplate {
     super.writeProperties(buffer);
 
     if (union != null || subjectIsUnionBase) {
-      final name = union?.cleanName ?? subject.cleanName;
       buffer
         ..writeln()
         ..writeln('@override')
         ..writeln(
-          "String get \$${name}Type => '${subject.name}';",
+          r"String get $unionType => '${subject.name}';",
         );
     }
   }
