@@ -1,6 +1,7 @@
-// ignore_for_file: comment_references
+// ignore_for_file: comment_references, implementation_imports
 
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/src/dart/element/element.dart';
 import 'package:ice/src/domain/domain.dart';
 import 'package:ice/src/domain/enums/enums.dart';
 
@@ -17,12 +18,25 @@ class Constructor {
     required this.declaration,
     required this.isGenerative,
     required this.isConst,
+    required this.isJsonConstructor,
   });
 
   /// Gets the constructor from the [ConstructorElement]
   factory Constructor.fromElement(ConstructorElement element) {
-    final isCopyWithConstructor = element.metadata
-        .containsAnnotation(AnnotationTypes.copyWithConstructor);
+    var isCopyWithConstructor = false;
+    var isJsonConstructor = false;
+
+    for (final metadata in element.metadata) {
+      final name = (metadata as ElementAnnotationImpl).annotationAst.name.name;
+      if (name == AnnotationTypes.copyWithConstructor.serialized) {
+        isCopyWithConstructor = true;
+        continue;
+      }
+      if (name == AnnotationTypes.iceJsonConstructor.serialized) {
+        isJsonConstructor = true;
+        continue;
+      }
+    }
 
     final params = Param.fromElements(element.parameters);
 
@@ -44,6 +58,7 @@ class Constructor {
       isGenerative: isGenerative,
       isCopyWithConstructor: isCopyWithConstructor,
       isConst: element.isConst,
+      isJsonConstructor: isJsonConstructor,
     );
   }
 
@@ -86,6 +101,10 @@ class Constructor {
   ///
   /// is false if the constructor is factory or static
   final bool isGenerative;
+
+  /// whether the constructor is the factory constructor
+  /// for json_serializable
+  final bool isJsonConstructor;
 
   /// gets the args wrapped in a super call
   String superArgs() {
