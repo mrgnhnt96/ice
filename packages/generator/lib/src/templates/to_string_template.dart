@@ -4,27 +4,16 @@ import 'package:ice/src/templates/template.dart';
 import 'package:ice/src/util/string_buffer_ext.dart';
 
 extension on List<Field> {
-  Iterable<String> asArgs({bool fromInstance = false}) {
+  Iterable<String> asArgs() {
     final args = <String>[];
 
     for (final field in this) {
-      final arg =
-          '\t${field.name}: \$${field.value(fromInstance: fromInstance)}';
+      final arg = '\t${field.name}: \$${field.name}';
 
       args.add(arg);
     }
 
     return args;
-  }
-}
-
-extension on Field {
-  String value({required bool fromInstance}) {
-    if (fromInstance) {
-      return '{instance.$name}';
-    }
-
-    return name;
   }
 }
 
@@ -35,7 +24,7 @@ class ToStringTemplate extends Template {
   /// {@macro to_string_template}
   const ToStringTemplate.forSubject(
     Class subject, {
-    required this.asFunction,
+    required this.asExtension,
   }) : super(
           subject,
           name: IceOptions.iceToString,
@@ -44,23 +33,23 @@ class ToStringTemplate extends Template {
   /// whether to generate the method as a function
   ///
   /// if false, it will be generated as an override method
-  final bool asFunction;
+  final bool asExtension;
 
   @override
   void generate(StringBuffer buffer) {
-    if (asFunction) {
-      _writeAsFuntion(buffer);
+    if (asExtension) {
+      _writeAsExtension(buffer);
       return;
     }
 
     _writeAsOverride(buffer);
   }
 
-  void _writeAsFuntion(StringBuffer buffer) {
+  void _writeAsExtension(StringBuffer buffer) {
     buffer.writeObject(
-      'String _\$${subject.cleanName}ToString(${subject.name} instance)',
+      r'String _$toString()',
       body: () {
-        _writeReturn(buffer, fromInstance: true);
+        _writeReturn(buffer);
       },
     );
   }
@@ -76,8 +65,8 @@ class ToStringTemplate extends Template {
       );
   }
 
-  void _writeReturn(StringBuffer buffer, {bool fromInstance = false}) {
-    final args = subject.fields.asArgs(fromInstance: fromInstance);
+  void _writeReturn(StringBuffer buffer) {
+    final args = subject.fields.asArgs();
 
     if (args.isEmpty) {
       buffer.write("return '${subject.name}()';");

@@ -23,7 +23,18 @@ class MethodTemplate extends Template {
         'extension \$${subject.cleanName}X on ${subject.name}',
         body: () {
           copyWithTemplate.addToBuffer(buffer);
+
           toJsonTemplate.addToBuffer(buffer);
+
+          PropsTemplate.forSubject(
+            subject,
+            asExtension: true,
+          ).addToBuffer(buffer);
+
+          ToStringTemplate.forSubject(
+            subject,
+            asExtension: true,
+          ).addToBuffer(buffer);
         },
       );
     }
@@ -33,15 +44,5 @@ class MethodTemplate extends Template {
         ..writeln(copyWithTemplate.support)
         ..writeln();
     }
-
-    PropsTemplate.forSubject(
-      subject,
-      asFunction: true,
-    ).addToBuffer(buffer);
-
-    ToStringTemplate.forSubject(
-      subject,
-      asFunction: true,
-    ).addToBuffer(buffer);
   }
 }

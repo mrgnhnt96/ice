@@ -164,13 +164,13 @@ class IceTemplate extends Template {
       PropsTemplate.forSubject(
         subject,
         union: union,
-        asFunction: false,
+        asExtension: false,
       ).addToBuffer(buffer);
       buffer.writeln();
 
       ToStringTemplate.forSubject(
         subject,
-        asFunction: false,
+        asExtension: false,
       ).addToBuffer(buffer);
       buffer.writeln();
     }

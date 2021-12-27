@@ -10,20 +10,20 @@ class PropsTemplate extends Template {
   /// {@macro props_template}
   const PropsTemplate.forSubject(
     Class subject, {
-    required this.asFunction,
+    required this.asExtension,
     this.union,
   }) : super(subject, name: IceOptions.equatable);
 
   /// whether to generate the props as a function
-  final bool asFunction;
+  final bool asExtension;
 
   /// the union of the [subject]
   final Class? union;
 
   @override
   void generate(StringBuffer buffer) {
-    if (asFunction) {
-      _writeAsFunction(buffer);
+    if (asExtension) {
+      _writeAsExtension(buffer);
       return;
     }
 
@@ -41,19 +41,18 @@ class PropsTemplate extends Template {
       );
   }
 
-  void _writeAsFunction(StringBuffer buffer) {
+  void _writeAsExtension(StringBuffer buffer) {
     buffer.writeObject(
-      'List<Object?> _\$${subject.cleanName}Props(${subject.name} instance)',
+      r'List<Object?> get _$props',
       body: () {
-        _writeReturn(buffer, withInstance: true);
+        _writeReturn(buffer);
       },
     );
   }
 
-  void _writeReturn(StringBuffer buffer, {bool withInstance = false}) {
-    final unionFields =
-        union?.fields.returnProps(withInstance: withInstance) ?? [];
-    final fields = subject.fields.returnProps(withInstance: withInstance);
+  void _writeReturn(StringBuffer buffer) {
+    final unionFields = union?.fields.returnProps() ?? [];
+    final fields = subject.fields.returnProps();
 
     final allFields = [
       ...fields,
@@ -73,16 +72,11 @@ class PropsTemplate extends Template {
 }
 
 extension on List<Field> {
-  Iterable<String> returnProps({bool withInstance = false}) {
+  Iterable<String> returnProps() {
     final props = <String>[];
 
     for (final field in this) {
       if (field.includeInProps) {
-        if (withInstance) {
-          props.add('instance.${field.name}');
-          continue;
-        }
-
         props.add(field.name);
       }
     }
