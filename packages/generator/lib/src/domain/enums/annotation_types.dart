@@ -54,6 +54,10 @@ enum AnnotationTypes {
   @EnumValue(serializedValue: 'IceCopyWith.typeSafe')
   copyWithTypeSafe,
 
+  /// [IceJsonConstructor]
+  @EnumValue(serializedValue: 'iceJsonConstructor')
+  iceJsonConstructor,
+
   /// any other annotation
   other,
 }
@@ -120,6 +124,9 @@ extension AnnotationTypesXX on AnnotationTypes {
 
   /// The [CopyWithTypeSafe] annotation
   bool get isCopyWithTypeSafe => this == AnnotationTypes.copyWithTypeSafe;
+
+  /// The [IceJsonConstructor] annotation
+  bool get isIceJsonConstructor => this == AnnotationTypes.iceJsonConstructor;
 
   /// any other annotation
   bool get isOther => this == AnnotationTypes.other;

@@ -23,6 +23,7 @@ extension AnnotationTypesX on AnnotationTypes {
     required T iceToString,
     required T copyWithSimple,
     required T copyWithTypeSafe,
+    required T iceJsonConstructor,
     required T other,
   }) {
     switch (this) {
@@ -48,6 +49,8 @@ extension AnnotationTypesX on AnnotationTypes {
         return copyWithSimple;
       case AnnotationTypes.copyWithTypeSafe:
         return copyWithTypeSafe;
+      case AnnotationTypes.iceJsonConstructor:
+        return iceJsonConstructor;
       case AnnotationTypes.other:
         return other;
     }
@@ -69,6 +72,7 @@ extension AnnotationTypesX on AnnotationTypes {
     T? iceToString,
     T? copyWithSimple,
     T? copyWithTypeSafe,
+    T? iceJsonConstructor,
     T? other,
   }) {
     var isNullable = true;
@@ -112,6 +116,9 @@ extension AnnotationTypesX on AnnotationTypes {
       case AnnotationTypes.copyWithTypeSafe:
         if (copyWithTypeSafe == null && !isNullable) return orElse;
         return copyWithTypeSafe as T;
+      case AnnotationTypes.iceJsonConstructor:
+        if (iceJsonConstructor == null && !isNullable) return orElse;
+        return iceJsonConstructor as T;
       case AnnotationTypes.other:
         if (other == null && !isNullable) return orElse;
         return other as T;
@@ -132,6 +139,7 @@ extension AnnotationTypesX on AnnotationTypes {
       iceToString: 'iceToString',
       copyWithSimple: 'copyWithSimple',
       copyWithTypeSafe: 'copyWithTypeSafe',
+      iceJsonConstructor: 'iceJsonConstructor',
       other: 'other',
     );
   }
@@ -150,7 +158,8 @@ extension AnnotationTypesX on AnnotationTypes {
       iceToString: 8,
       copyWithSimple: 9,
       copyWithTypeSafe: 10,
-      other: 11,
+      iceJsonConstructor: 11,
+      other: 12,
     );
   }
 
@@ -169,6 +178,7 @@ extension AnnotationTypesX on AnnotationTypes {
       iceToString: 'Ice To String',
       copyWithSimple: 'Copy With Simple',
       copyWithTypeSafe: 'Copy With Type Safe',
+      iceJsonConstructor: 'Ice Json Constructor',
       other: 'Other',
     );
   }
@@ -200,6 +210,8 @@ extension AnnotationTypesX on AnnotationTypes {
 [IceCopyWith]''',
       copyWithTypeSafe: '''
 [CopyWithTypeSafe]''',
+      iceJsonConstructor: '''
+[IceJsonConstructor]''',
       other: '''
 any other annotation''',
     );
@@ -219,6 +231,7 @@ any other annotation''',
       iceToString: AnnotationTypesConv._iceToStringName,
       copyWithSimple: AnnotationTypesConv._copyWithSimpleName,
       copyWithTypeSafe: AnnotationTypesConv._copyWithTypeSafeName,
+      iceJsonConstructor: AnnotationTypesConv._iceJsonConstructorName,
       other: AnnotationTypesConv._otherName,
     );
   }
@@ -255,6 +268,7 @@ class AnnotationTypesConv extends JsonConverter<AnnotationTypes, Object> {
   static const _iceToStringName = 'iceToString';
   static const _copyWithSimpleName = 'IceCopyWith.simple';
   static const _copyWithTypeSafeName = 'IceCopyWith.typeSafe';
+  static const _iceJsonConstructorName = 'iceJsonConstructor';
   static const _otherName = 'other';
 
   @override
@@ -282,6 +296,8 @@ class AnnotationTypesConv extends JsonConverter<AnnotationTypes, Object> {
         return AnnotationTypes.copyWithSimple;
       case _copyWithTypeSafeName:
         return AnnotationTypes.copyWithTypeSafe;
+      case _iceJsonConstructorName:
+        return AnnotationTypes.iceJsonConstructor;
       case _otherName:
         return AnnotationTypes.other;
       default:
@@ -335,6 +351,8 @@ class _AnnotationTypesNullableConv
         return AnnotationTypes.copyWithSimple;
       case AnnotationTypesConv._copyWithTypeSafeName:
         return AnnotationTypes.copyWithTypeSafe;
+      case AnnotationTypesConv._iceJsonConstructorName:
+        return AnnotationTypes.iceJsonConstructor;
       case AnnotationTypesConv._otherName:
         return AnnotationTypes.other;
       default:
