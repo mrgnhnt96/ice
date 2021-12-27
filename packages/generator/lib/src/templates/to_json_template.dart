@@ -74,9 +74,20 @@ class ToJsonTemplate extends Template {
   }
 
   void _writeToJson(StringBuffer buffer) {
+    final writeAsGeneratedJson = subject.metaSettings(
+      methodCallback: (method) => false,
+      iceCallback: (ice) => true,
+      settingsCallback: (settings) => true,
+    );
+
+    var genSign = r'$';
+    if (writeAsGeneratedJson) {
+      genSign += r'$';
+    }
+
     buffer.writeln(
       'Map<String, dynamic> toJson() => '
-      '_\$\$${subject.nonPrivateName}ToJson(this);',
+      '_$genSign${subject.nonPrivateName}ToJson(this);',
     );
   }
 
