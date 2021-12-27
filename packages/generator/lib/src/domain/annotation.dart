@@ -103,7 +103,7 @@ class IceAnnotation implements Ice {
     required this.equatable,
     required this.iceToString,
     required this.ignoreGettersAsProps,
-    required this.jsonSerializable,
+    required this.iceJsonSerializable,
   });
 
   /// gets the annotation from the [ElementAnnotation]
@@ -116,8 +116,8 @@ class IceAnnotation implements Ice {
 
     final reader = ConstantReader(annotation.computeConstantValue());
 
-    T? get<T>(String name) {
-      return reader.peek(name)?.literalValue as T?;
+    T? get<T>(String name, [ConstantReader? _reader]) {
+      return (_reader ?? reader).peek(name)?.literalValue as T?;
     }
 
     final copyWith = get<bool>('copyWith') ?? iceSettings.copyWith;
@@ -126,7 +126,25 @@ class IceAnnotation implements Ice {
     final ignoreGettersAsProps =
         get<bool>('ignoreGettersAsProps') ?? iceSettings.ignoreGettersAsProps;
     final copyWithType = CopyWithType.values.fromReader(reader, 'copyWithType');
-    const jsonSerializable = JsonSerializable();
+    final iceJsonAnnotation = reader.peek('iceJsonSerializable')?.objectValue;
+
+    IceJsonSerializable? iceJsonSerializable;
+
+    if (iceJsonAnnotation != null) {
+      final jsonReader = ConstantReader(iceJsonAnnotation);
+      iceJsonSerializable = IceJsonSerializable(
+        anyMap: get<bool?>('anyMap', jsonReader),
+        checked: get<bool?>('checked', jsonReader),
+        createFactory: get<bool?>('createFactory', jsonReader),
+        createToJson: get<bool?>('createToJson', jsonReader),
+        disallowUnrecognizedKeys:
+            get<bool?>('disallowUnrecognizedKeys', jsonReader),
+        explicitToJson: get<bool?>('explicitToJson', jsonReader),
+        fieldRename: FieldRename.values.fromReader(jsonReader, 'fieldRename'),
+        ignoreUnannotated: get<bool?>('ignoreUnannotated', jsonReader),
+        includeIfNull: get<bool?>('includeIfNull', jsonReader),
+      );
+    }
 
     return IceAnnotation(
       equatable: equatable,
@@ -134,7 +152,7 @@ class IceAnnotation implements Ice {
       copyWithType: copyWithType ?? CopyWithType.simple,
       iceToString: iceToString,
       ignoreGettersAsProps: ignoreGettersAsProps,
-      jsonSerializable: jsonSerializable,
+      iceJsonSerializable: iceJsonSerializable,
     );
   }
 
@@ -154,7 +172,7 @@ class IceAnnotation implements Ice {
   final bool? ignoreGettersAsProps;
 
   @override
-  final JsonSerializable? jsonSerializable;
+  final IceJsonSerializable? iceJsonSerializable;
 }
 
 /// The methods that will be generated with the [Ice] annotation
