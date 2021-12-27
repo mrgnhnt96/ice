@@ -81,3 +81,74 @@ class Param {
     );
   }
 }
+
+/// extension for Param
+extension ParamListX on Iterable<Param> {
+  /// formats the params as bracket inserted, positioned params
+  Iterable<String> formatted() sync* {
+    String? closeBracket;
+
+    String setUpBrackets(PositionType type) {
+      if (closeBracket != null) {
+        // brackets already set
+        return '';
+      }
+
+      var open = '';
+
+      type.map(
+        named: () {
+          open = '{';
+          closeBracket = '}';
+        },
+        positioned: () {
+          open = '[';
+          closeBracket = ']';
+        },
+      )();
+
+      return open;
+    }
+
+    String checkForBracket(
+      PositionType position,
+      Requiredness requiredness,
+    ) {
+      if (position.isPositional && requiredness.isOptional) {
+        final bracket = setUpBrackets(position);
+
+        return bracket;
+      }
+
+      if (position.isNamed) {
+        final bracket = setUpBrackets(position);
+
+        return bracket;
+      }
+
+      return '';
+    }
+
+    String positionParam(Param param, {bool isLast = false}) {
+      final paramWithType = '${param.type} ${param.name}';
+
+      if (isLast) {
+        return '$paramWithType, ${closeBracket ?? ''}';
+      }
+
+      final openBracket = checkForBracket(
+        param.positionType,
+        param.requiredness,
+      );
+
+      return '$openBracket' '$paramWithType';
+    }
+
+    for (var i = 0; i < length; i++) {
+      final param = elementAt(i);
+      final isLast = i == length - 1;
+
+      yield positionParam(param, isLast: isLast);
+    }
+  }
+}
