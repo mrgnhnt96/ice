@@ -3,7 +3,6 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:ice/src/domain/domain.dart';
-import 'package:ice/src/domain/ice_subjects.dart';
 import 'package:ice/src/templates/ice_templates/ice_template.dart';
 import 'package:ice/src/templates/templates.dart';
 import 'package:ice/src/util/build_step_ext.dart';
@@ -18,7 +17,6 @@ class IceGenerator extends GeneratorForAnnotation<Ice> {
   const IceGenerator() : super();
 
   /// {@macro unions}
-  static IceSubjects subjects = IceSubjects();
 
   @override
   Future<String> generateForAnnotatedElement(
@@ -38,7 +36,6 @@ class IceGenerator extends GeneratorForAnnotation<Ice> {
     }
 
     final subject = Class.fromElement(element);
-    subjects.add(subject);
 
     Class? union;
     final unionType = subject.annotations.ofUnionType;
