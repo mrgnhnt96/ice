@@ -1,7 +1,9 @@
-// ignore_for_file: comment_references, lines_longer_than_80_chars
+// ignore_for_file: comment_references, lines_longer_than_80_chars, implementation_imports
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
+import 'package:analyzer/src/dart/element/element.dart';
+import 'package:enum_assist_annotation/enum_assist_annotation.dart';
 import 'package:ice/src/domain/domain.dart';
 import 'package:ice/src/domain/enums/enums.dart';
 import 'package:source_gen/source_gen.dart';
@@ -18,6 +20,7 @@ class Field {
     required this.isPrivate,
     required this.includeInProps,
     required this.isTrueField,
+    required this.jsonKeyDeclaration,
   });
 
   /// retrieves the field from the [FieldElement]
@@ -26,6 +29,7 @@ class Field {
 
     var hasIgnoreProp = false;
     var hasJsonIgnore = false;
+    String? jsonKeyDeclaration;
 
     final annotations = element.metadata;
 
@@ -42,6 +46,8 @@ class Field {
         }
 
         if (annotationName == AnnotationTypes.jsonKey.serialized) {
+          jsonKeyDeclaration =
+              (annotation as ElementAnnotationImpl).annotationAst.toString();
           final reader = ConstantReader(annotation.computeConstantValue());
           hasJsonIgnore = reader.peek('ignore')?.boolValue ?? true;
           continue;
@@ -63,6 +69,7 @@ class Field {
       isPrivate: element.isPrivate,
       includeInProps: includeInProps,
       isTrueField: isTrueField,
+      jsonKeyDeclaration: jsonKeyDeclaration,
     );
   }
 
@@ -106,4 +113,7 @@ class Field {
   ///
   /// getters are read as "synthetic" fields
   final bool isTrueField;
+
+  /// the declaration of [JsonKey] if it exists
+  final String? jsonKeyDeclaration;
 }
