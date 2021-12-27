@@ -42,7 +42,7 @@ class UnionClassTemplate extends IceTemplate {
         ..writeln()
         ..writeln('@override')
         ..writeln(
-          r"String get $unionType => '${subject.name}';",
+          "String get \$unionType => '${subject.name}';",
         );
     }
   }
