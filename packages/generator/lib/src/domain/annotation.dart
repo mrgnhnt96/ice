@@ -171,6 +171,9 @@ enum IceOptions {
   /// toJson will be generated
   toJson,
 
+  /// fromJson will be generated
+  fromJson,
+
   /// any other option
   other,
 }
