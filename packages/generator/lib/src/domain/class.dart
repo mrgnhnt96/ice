@@ -117,6 +117,8 @@ class Class {
         );
       case IceOptions.toJson:
         return annotations.createToJson;
+      case IceOptions.fromJson:
+        return annotations.createFromJson;
       case IceOptions.other:
         return true;
     }
@@ -166,7 +168,13 @@ class Class {
     final getters = <String>[];
 
     for (final field in fields) {
-      getters.add('${field.type} get ${field.name};');
+      final getter = '${field.type} get ${field.name};';
+      var jsonKey = '';
+      if (field.jsonKeyDeclaration != null) {
+        jsonKey = '${field.jsonKeyDeclaration}\n';
+      }
+
+      getters.add(jsonKey + getter);
     }
 
     return getters;
