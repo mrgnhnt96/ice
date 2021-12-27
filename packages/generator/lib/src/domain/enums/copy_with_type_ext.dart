@@ -1,7 +1,6 @@
 // coverage:ignore-file
 // ignore_for_file: constant_identifier_names,prefer_const_declarations,unused_local_variable,prefer_int_literals,lines_longer_than_80_chars,prefer_const_constructors
 
-import 'package:enum_assist_annotation/enum_assist_annotation.dart';
 import 'package:ice_annotation/ice.dart';
 
 /// Extensions for the enum CopyWithType
