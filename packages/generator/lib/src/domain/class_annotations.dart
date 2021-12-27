@@ -43,9 +43,29 @@ class ClassAnnotations {
         continue;
       }
 
+      void checkForJson([ConstantReader? reader]) {
+        if (reader == null) {
+          final annotationReader =
+              ConstantReader(annotation.computeConstantValue());
+
+          final iceJsonAnnotation =
+              annotationReader.peek('iceJsonSerializable')?.objectValue;
+
+          if (iceJsonAnnotation != null) {
+            return checkForJson(ConstantReader(iceJsonAnnotation));
+          }
+          return;
+        }
+
+        createToJson = reader.peek('createToJson')?.boolValue ?? true;
+        createFromJson = reader.peek('createFactory')?.boolValue ?? true;
+      }
+
       switch (type) {
         case AnnotationTypes.ice:
           ice = IceAnnotation.fromElement(annotation);
+          checkForJson();
+
           continue;
         case AnnotationTypes.unionOf:
           final reader = ConstantReader(annotation.computeConstantValue());
@@ -54,15 +74,23 @@ class ClassAnnotations {
           if (unionType?.endsWith('*') ?? false) {
             unionType = unionType!.substring(0, unionType.length - 1);
           }
+
+          ice = IceAnnotation.fromElement(annotation);
+
+          final iceJsonAnnotation =
+              reader.peek('iceJsonSerializable')?.objectValue;
+          if (iceJsonAnnotation != null) {
+            checkForJson(ConstantReader(iceJsonAnnotation));
+          }
+
           continue;
         case AnnotationTypes.unionCreate:
           isUnionBase = true;
+
           continue;
         case AnnotationTypes.jsonSerializable:
-          // TODO(mrgnhnt96): use ice.jsonSerializable instead JSON annotation
-          final reader = ConstantReader(annotation.computeConstantValue());
-          createToJson = reader.peek('createToJson')?.boolValue ?? true;
-          createFromJson = reader.peek('createConstructor')?.boolValue ?? true;
+          checkForJson(ConstantReader(annotation.computeConstantValue()));
+
           continue;
         default:
           if (ice != null) {
@@ -77,6 +105,7 @@ class ClassAnnotations {
 
               methods = null;
             }
+
             continue;
           }
 
