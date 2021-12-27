@@ -6,7 +6,6 @@ import 'package:ice/ice.dart';
 import 'package:ice/src/domain/enums/enums.dart';
 import 'package:ice/src/util/enum_ext.dart';
 import 'package:ice_annotation/ice.dart';
-import 'package:json_serializable/builder.dart';
 import 'package:source_gen/source_gen.dart';
 
 /// {@template method_annotations}
