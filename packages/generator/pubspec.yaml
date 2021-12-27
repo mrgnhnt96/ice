@@ -18,8 +18,6 @@ dependencies:
       path: 'packages/annotation'
   # ice_annotation:
   #   path: ../annotation
-  json_annotation: ^4.4.0
-  json_serializable: ^6.1.3
   meta: ^1.7.0
   source_gen: ^1.2.1
   source_helper: ^1.3.1
