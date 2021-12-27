@@ -15,3 +15,12 @@ enum Requiredness {
   @EnumValue(readable: '')
   optional,
 }
+
+/// ext on requiredness
+extension RequirednessXX on Requiredness {
+  /// whether this is required
+  bool get isRequired => this == Requiredness.required;
+
+  /// whether this is optional
+  bool get isOptional => this == Requiredness.optional;
+}
