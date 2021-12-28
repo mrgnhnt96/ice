@@ -8,6 +8,126 @@ part of 'main.dart';
 // IceGenerator
 // **************************************************************************
 
+abstract class _$StateUnion {
+  const _$StateUnion();
+
+  String get $unionType;
+}
+
+mixin _$StateMixin {
+  R map<R extends Object?>({
+    required _$StateCallback<R, _$Example> example,
+    required _$StateCallback<R, _$Other> other,
+    required _$StateCallback<R, _$Error> error,
+  }) {
+    switch (runtimeType) {
+      case _$Example:
+        return example(this as _$Example);
+      case _$Other:
+        return other(this as _$Other);
+      case _$Error:
+        return error(this as _$Error);
+      default:
+        throw UnsupportedError('Unsupported type: $this');
+    }
+  }
+
+  R when<R extends Object?>({
+    required R Function(
+      String name,
+    )
+        example,
+    required R Function() other,
+    required R Function() error,
+  }) {
+    return map(
+      example: (u) => example(
+        u.name,
+      ),
+      other: (u) => other(),
+      error: (u) => error(),
+    );
+  }
+
+  R maybeMap<R extends Object?>({
+    _$StateCallback<R, _$Example>? example,
+    _$StateCallback<R, _$Other>? other,
+    _$StateCallback<R, _$Error>? error,
+    required _$NoStateCallback<R> orElse,
+  }) {
+    return map(
+      example: (u) => example?.call(u) ?? orElse(),
+      other: (u) => other?.call(u) ?? orElse(),
+      error: (u) => error?.call(u) ?? orElse(),
+    );
+  }
+
+  R maybeWhen<R extends Object?>({
+    R Function(
+      String name,
+    )?
+        example,
+    R Function()? other,
+    R Function()? error,
+    required _$NoStateCallback<R> orElse,
+  }) {
+    return map(
+      example: (u) =>
+          example?.call(
+            u.name,
+          ) ??
+          orElse(),
+      other: (u) => other?.call() ?? orElse(),
+      error: (u) => error?.call() ?? orElse(),
+    );
+  }
+
+  R? mapOrNull<R extends Object?>({
+    _$StateCallback<R, _$Example>? example,
+    _$StateCallback<R, _$Other>? other,
+    _$StateCallback<R, _$Error>? error,
+  }) {
+    return map(
+      example: (u) => example?.call(u),
+      other: (u) => other?.call(u),
+      error: (u) => error?.call(u),
+    );
+  }
+
+  R? whenOrNull<R extends Object?>({
+    R Function(
+      String name,
+    )?
+        example,
+    R Function()? other,
+    R Function()? error,
+  }) {
+    return map(
+      example: (u) => example?.call(
+        u.name,
+      ),
+      other: (u) => other?.call(),
+      error: (u) => error?.call(),
+    );
+  }
+
+  bool get isExample => this is _$Example;
+  bool get isOther => this is _$Other;
+  bool get isError => this is _$Error;
+}
+_$StateFromJson(Map<String, dynamic> json) {
+  switch (json[r'$unionType'] as String) {
+    case 'Example':
+      return Example.fromJson(json);
+    case 'Other':
+      return Other.fromJson(json);
+    case 'Error':
+      return Error.fromJson(json);
+    default:
+      throw FallThroughError();
+  }
+}
+
 @JsonSerializable(
   constructor: '_',
 )
@@ -152,6 +272,9 @@ Error _$ErrorFromJson(Map<String, dynamic> json) {
   return _$$ErrorFromJson(json) as Error;
 }
 
+@JsonSerializable(
+  constructor: '_',
+)
 abstract class _$State
     with EquatableMixin, _$StateMixin
     implements _$StateUnion {
@@ -172,114 +295,8 @@ abstract class _$State
   String get $unionType => 'State';
 }
 
-abstract class _$StateUnion {
-  const _$StateUnion();
+extension $StateX on State {}
 
-  String get $unionType;
-}
-
-mixin _$StateMixin {
-  R map<R extends Object?>({
-    required _$StateCallback<R, _$Example> example,
-    required _$StateCallback<R, _$Other> other,
-    required _$StateCallback<R, _$Error> error,
-  }) {
-    switch (runtimeType) {
-      case _$Example:
-        return example(this as _$Example);
-      case _$Other:
-        return other(this as _$Other);
-      case _$Error:
-        return error(this as _$Error);
-      default:
-        throw UnsupportedError('Unsupported type: $this');
-    }
-  }
-
-  R when<R extends Object?>({
-    required R Function(
-      String name,
-    )
-        example,
-    required R Function() other,
-    required R Function() error,
-  }) {
-    return map(
-      example: (u) => example(
-        u.name,
-      ),
-      other: (u) => other(),
-      error: (u) => error(),
-    );
-  }
-
-  R maybeMap<R extends Object?>({
-    _$StateCallback<R, _$Example>? example,
-    _$StateCallback<R, _$Other>? other,
-    _$StateCallback<R, _$Error>? error,
-    required _$NoStateCallback<R> orElse,
-  }) {
-    return map(
-      example: (u) => example?.call(u) ?? orElse(),
-      other: (u) => other?.call(u) ?? orElse(),
-      error: (u) => error?.call(u) ?? orElse(),
-    );
-  }
-
-  R maybeWhen<R extends Object?>({
-    R Function(
-      String name,
-    )?
-        example,
-    R Function()? other,
-    R Function()? error,
-    required _$NoStateCallback<R> orElse,
-  }) {
-    return map(
-      example: (u) =>
-          example?.call(
-            u.name,
-          ) ??
-          orElse(),
-      other: (u) => other?.call() ?? orElse(),
-      error: (u) => error?.call() ?? orElse(),
-    );
-  }
-
-  R? mapOrNull<R extends Object?>({
-    _$StateCallback<R, _$Example>? example,
-    _$StateCallback<R, _$Other>? other,
-    _$StateCallback<R, _$Error>? error,
-  }) {
-    return map(
-      example: (u) => example?.call(u),
-      other: (u) => other?.call(u),
-      error: (u) => error?.call(u),
-    );
-  }
-
-  R? whenOrNull<R extends Object?>({
-    R Function(
-      String name,
-    )?
-        example,
-    R Function()? other,
-    R Function()? error,
-  }) {
-    return map(
-      example: (u) => example?.call(
-        u.name,
-      ),
-      other: (u) => other?.call(),
-      error: (u) => error?.call(),
-    );
-  }
-
-  bool get isExample => this is _$Example;
-  bool get isOther => this is _$Other;
-  bool get isError => this is _$Error;
-}
-
-typedef _$CopyCallback<T> = T Function(T);
 typedef _$StateCallback<R, T extends State> = R Function(T);
 typedef _$NoStateCallback<R> = R Function();
+typedef _$CopyCallback<T> = T Function(T);

@@ -19,12 +19,18 @@ class Example extends _$Example {
 }
 
 @IceUnion.of(State)
-class Other extends _$Other {}
+class Other extends _$Other {
+  Other();
+  factory Other.fromJson(Map<String, dynamic> json) => _$OtherFromJson(json);
+}
 
 @IceUnion.of(State)
 class Error extends _$Error {
   Error();
+  factory Error.fromJson(Map<String, dynamic> json) => _$ErrorFromJson(json);
 }
 
 @IceUnion.create()
-class State extends _$State {}
+class State extends _$State {
+  State();
+}

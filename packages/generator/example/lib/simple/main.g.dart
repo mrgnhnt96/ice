@@ -21,3 +21,7 @@ Map<String, dynamic> _$$OtherToJson(_$Other instance) => <String, dynamic>{};
 _$Error _$$ErrorFromJson(Map<String, dynamic> json) => _$Error._();
 
 Map<String, dynamic> _$$ErrorToJson(_$Error instance) => <String, dynamic>{};
+
+_$State _$$StateFromJson(Map<String, dynamic> json) => _$State._();
+
+Map<String, dynamic> _$$StateToJson(_$State instance) => <String, dynamic>{};

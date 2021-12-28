@@ -1,5 +1,4 @@
 import 'package:ice_annotation/ice.dart';
-import 'package:json_annotation/json_annotation.dart';
 
 part 'main.g.dart';
 part 'main.ice.dart';

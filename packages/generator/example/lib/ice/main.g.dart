@@ -42,3 +42,11 @@ _$Error _$$ErrorFromJson(Map<String, dynamic> json) => _$Error._(
 Map<String, dynamic> _$$ErrorToJson(_$Error instance) => <String, dynamic>{
       'code': instance.code,
     };
+
+_$State _$$StateFromJson(Map<String, dynamic> json) => _$State._(
+      json['code'] as int,
+    );
+
+Map<String, dynamic> _$$StateToJson(_$State instance) => <String, dynamic>{
+      'code': instance.code,
+    };

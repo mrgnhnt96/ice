@@ -38,7 +38,6 @@ extension $ExampleX on Example {
         example: example == null ? this.example : example(this.example));
   }
 
-  Map<String, dynamic> toJson() => _$ExampleToJson(this);
   List<Object?> get _$props {
     return [text, whole, decimal, flag, date, list, map, set, example];
   }
