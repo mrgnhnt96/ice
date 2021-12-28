@@ -117,7 +117,6 @@ abstract class CopyWithTemplate extends Template {
           buffer.writeObject(
             'return ${constructor.displayName}',
             open: '(',
-            includeSpaceBetweenOpen: false,
             body: () => buffer.writeAll(
               constructor.arguments((p) {
                 if (p.positionType.isPositional) {
