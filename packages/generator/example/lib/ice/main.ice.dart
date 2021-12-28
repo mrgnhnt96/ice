@@ -8,11 +8,204 @@ part of 'main.dart';
 // IceGenerator
 // **************************************************************************
 
-abstract class _$StateUnion {
-  const _$StateUnion();
+@JsonSerializable(
+  constructor: '_',
+)
+abstract class _$Example extends State {
+  const _$Example(int code) : super(code);
+  const _$Example.empty() : super.empty();
 
-  String get $unionType;
+  const factory _$Example._({
+    String? text,
+    int? whole,
+    double? decimal,
+    bool? flag,
+    DateTime? date,
+    List<String>? list,
+    Set<String>? set,
+  }) = Example;
+
+  String? get text;
+  int? get whole;
+  double? get decimal;
+  bool? get flag;
+  DateTime? get date;
+  List<String>? get list;
+  Set<String>? get set;
+
+  /// If `null` is passed within the `copyWith` method,
+  /// the current value will be returned.
+  ///
+  /// ```dart
+  /// myClass.copyWith(field: newValue);
+  /// ```
+  Example copyWith({
+    String? text,
+    int? whole,
+    double? decimal,
+    bool? flag,
+    DateTime? date,
+    List<String>? list,
+    Set<String>? set,
+  }) {
+    return Example(
+        text: text ?? this.text,
+        whole: whole ?? this.whole,
+        decimal: decimal ?? this.decimal,
+        flag: flag ?? this.flag,
+        date: date ?? this.date,
+        list: list ?? this.list,
+        set: set ?? this.set);
+  }
+
+  @override
+  List<Object?> get props {
+    return [text, whole, decimal, flag, date, list, set, code];
+  }
+
+  @override
+  String toString() {
+    return '''
+Example(
+	text: $text,
+	whole: $whole,
+	decimal: $decimal,
+	flag: $flag,
+	date: $date,
+	list: $list,
+	set: $set,
+)''';
+  }
+
+  Map<String, dynamic> toJson({bool includeUnionType = true}) {
+    final map = _$$ExampleToJson(this);
+    if (includeUnionType) {
+      map[r'$unionType'] = r'Example';
+    }
+    return map;
+  }
 }
+
+Example _$ExampleFromJson(Map<String, dynamic> json) {
+  return _$$ExampleFromJson(json) as Example;
+}
+
+@JsonSerializable(
+  constructor: '_',
+)
+abstract class _$Other extends State {
+  const _$Other(int code) : super(code);
+  const _$Other.empty() : super.empty();
+
+  const factory _$Other._(
+    int code,
+  ) = Other;
+  factory _$Other.fromJson(Map<String, dynamic> json) => _$$OtherFromJson(json);
+
+  /// If `null` is passed within the `copyWith` method,
+  /// the current value will be returned.
+  ///
+  /// ```dart
+  /// myClass.copyWith(field: newValue);
+  /// ```
+  Other copyWith({
+    int? code,
+  }) {
+    return Other(code ?? this.code);
+  }
+
+  @override
+  List<Object?> get props {
+    return [code];
+  }
+
+  @override
+  String toString() {
+    return 'Other()';
+  }
+
+  Map<String, dynamic> toJson({bool includeUnionType = true}) {
+    final map = _$$OtherToJson(this);
+    if (includeUnionType) {
+      map[r'$unionType'] = r'Other';
+    }
+    return map;
+  }
+}
+
+@JsonSerializable(
+  constructor: '_',
+)
+abstract class _$Error extends State {
+  const _$Error(int code) : super(code);
+  const _$Error.empty() : super.empty();
+
+  const factory _$Error._(
+    int code,
+  ) = Error;
+  factory _$Error.fromJson(Map<String, dynamic> json) => _$$ErrorFromJson(json);
+
+  /// If `null` is passed within the `copyWith` method,
+  /// the current value will be returned.
+  ///
+  /// ```dart
+  /// myClass.copyWith(field: newValue);
+  /// ```
+  Error copyWith({
+    int? code,
+  }) {
+    return Error(code ?? this.code);
+  }
+
+  @override
+  List<Object?> get props {
+    return [code];
+  }
+
+  @override
+  String toString() {
+    return 'Error()';
+  }
+
+  Map<String, dynamic> toJson({bool includeUnionType = true}) {
+    final map = _$$ErrorToJson(this);
+    if (includeUnionType) {
+      map[r'$unionType'] = r'Error';
+    }
+    return map;
+  }
+}
+
+@JsonSerializable(
+  constructor: '_',
+)
+abstract class _$State
+    with EquatableMixin, _$StateMixin
+    implements _$StateUnion {
+  const _$State();
+
+  const factory _$State._(
+    int code,
+  ) = State;
+  factory _$State.fromJson(Map<String, dynamic> json) => _$$StateFromJson(json);
+
+  int get code;
+
+  @override
+  List<Object?> get props {
+    return [code];
+  }
+
+  @override
+  String toString() {
+    return '''
+State(
+	code: $code,
+)''';
+  }
+}
+
+abstract class _$StateUnion {}
 
 mixin _$StateMixin {
   R map<R extends Object?>({
@@ -150,236 +343,34 @@ mixin _$StateMixin {
   bool get isExample => this is _$Example;
   bool get isOther => this is _$Other;
   bool get isError => this is _$Error;
+  Map<String, dynamic> toJson({bool includeUnionType = true}) {
+    switch (runtimeType) {
+      case Example:
+        return (this as Example).toJson(includeUnionType: includeUnionType);
+      case Other:
+        return (this as Other).toJson(includeUnionType: includeUnionType);
+      case Error:
+        return (this as Error).toJson(includeUnionType: includeUnionType);
+      default:
+        throw FallThroughError();
+    }
+  }
 }
-_$StateFromJson(Map<String, dynamic> json) {
-  switch (json[r'$unionType'] as String) {
-    case 'Example':
+State _$StateFromJson(Map<String, dynamic> json, [State? defaultValue]) {
+  switch (json[r'$unionType'] as String?) {
+    case r'Example':
       return Example.fromJson(json);
-    case 'Other':
-      return Other.fromJson(json);
-    case 'Error':
-      return Error.fromJson(json);
+    case r'Other':
+      return _$Other.fromJson(json);
+    case r'Error':
+      return _$Error.fromJson(json);
     default:
+      if (defaultValue != null) {
+        return defaultValue;
+      }
       throw FallThroughError();
   }
 }
-
-@JsonSerializable(
-  constructor: '_',
-)
-abstract class _$Example extends State {
-  const factory _$Example._({
-    String? text,
-    int? whole,
-    double? decimal,
-    bool? flag,
-    DateTime? date,
-    List<String>? list,
-    Set<String>? set,
-  }) = Example;
-  const _$Example(int code) : super(code);
-  const _$Example.empty() : super.empty();
-
-  String? get text;
-  int? get whole;
-  double? get decimal;
-  bool? get flag;
-  DateTime? get date;
-  List<String>? get list;
-  Set<String>? get set;
-
-  /// If `null` is passed within the `copyWith` method,
-  /// the current value will be returned.
-  ///
-  /// ```dart
-  /// myClass.copyWith(field: newValue);
-  /// ```
-  Example copyWith({
-    String? text,
-    int? whole,
-    double? decimal,
-    bool? flag,
-    DateTime? date,
-    List<String>? list,
-    Set<String>? set,
-  }) {
-    return Example(
-        text: text ?? this.text,
-        whole: whole ?? this.whole,
-        decimal: decimal ?? this.decimal,
-        flag: flag ?? this.flag,
-        date: date ?? this.date,
-        list: list ?? this.list,
-        set: set ?? this.set);
-  }
-
-  @override
-  List<Object?> get props {
-    return [text, whole, decimal, flag, date, list, set, code];
-  }
-
-  @override
-  String toString() {
-    return '''
-Example(
-	text: $text,
-	whole: $whole,
-	decimal: $decimal,
-	flag: $flag,
-	date: $date,
-	list: $list,
-	set: $set,
-)''';
-  }
-
-  @override
-  String get $unionType => 'Example';
-}
-
-extension $ExampleX on Example {
-  Map<String, dynamic> toJson({bool includeUnionType = true}) {
-    final map = _$$ExampleToJson(this);
-    if (includeUnionType) {
-      map[r'$unionType'] = 'Example';
-    }
-    return map;
-  }
-}
-
-Example _$ExampleFromJson(Map<String, dynamic> json) {
-  return _$$ExampleFromJson(json) as Example;
-}
-
-@JsonSerializable(
-  constructor: '_',
-)
-abstract class _$Other extends State {
-  const factory _$Other._(
-    int code,
-  ) = Other;
-  const _$Other(int code) : super(code);
-  const _$Other.empty() : super.empty();
-
-  /// If `null` is passed within the `copyWith` method,
-  /// the current value will be returned.
-  ///
-  /// ```dart
-  /// myClass.copyWith(field: newValue);
-  /// ```
-  Other copyWith({
-    int? code,
-  }) {
-    return Other(code ?? this.code);
-  }
-
-  @override
-  List<Object?> get props {
-    return [code];
-  }
-
-  @override
-  String toString() {
-    return 'Other()';
-  }
-
-  @override
-  String get $unionType => 'Other';
-}
-
-extension $OtherX on Other {
-  Map<String, dynamic> toJson({bool includeUnionType = true}) {
-    final map = _$$OtherToJson(this);
-    if (includeUnionType) {
-      map[r'$unionType'] = 'Other';
-    }
-    return map;
-  }
-}
-
-Other _$OtherFromJson(Map<String, dynamic> json) {
-  return _$$OtherFromJson(json) as Other;
-}
-
-@JsonSerializable(
-  constructor: '_',
-)
-abstract class _$Error extends State {
-  const factory _$Error._(
-    int code,
-  ) = Error;
-  const _$Error(int code) : super(code);
-  const _$Error.empty() : super.empty();
-
-  /// If `null` is passed within the `copyWith` method,
-  /// the current value will be returned.
-  ///
-  /// ```dart
-  /// myClass.copyWith(field: newValue);
-  /// ```
-  Error copyWith({
-    int? code,
-  }) {
-    return Error(code ?? this.code);
-  }
-
-  @override
-  List<Object?> get props {
-    return [code];
-  }
-
-  @override
-  String toString() {
-    return 'Error()';
-  }
-
-  @override
-  String get $unionType => 'Error';
-}
-
-extension $ErrorX on Error {
-  Map<String, dynamic> toJson({bool includeUnionType = true}) {
-    final map = _$$ErrorToJson(this);
-    if (includeUnionType) {
-      map[r'$unionType'] = 'Error';
-    }
-    return map;
-  }
-}
-
-Error _$ErrorFromJson(Map<String, dynamic> json) {
-  return _$$ErrorFromJson(json) as Error;
-}
-
-@JsonSerializable(
-  constructor: '_',
-)
-abstract class _$State
-    with EquatableMixin, _$StateMixin
-    implements _$StateUnion {
-  const factory _$State._(
-    int code,
-  ) = State;
-  const _$State();
-
-  int get code;
-  @override
-  List<Object?> get props {
-    return [code];
-  }
-
-  @override
-  String toString() {
-    return '''
-State(
-	code: $code,
-)''';
-  }
-
-  @override
-  String get $unionType => 'State';
-}
-
-extension $StateX on State {}
 
 typedef _$StateCallback<R, T extends State> = R Function(T);
 typedef _$NoStateCallback<R> = R Function();

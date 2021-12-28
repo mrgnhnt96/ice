@@ -7,9 +7,7 @@ part 'state.dart';
 // Ice Annotation:
 // remove equatable on false
 
-@IceUnion.of(
-  State,
-)
+@IceUnion.of(State)
 class Example extends _$Example {
   @iceJsonConstructor
   const Example({
@@ -34,20 +32,12 @@ class Example extends _$Example {
   final Set<String>? set;
 }
 
-@IceUnion.of(
-  State,
-)
+@IceUnion.of(State)
 class Other extends _$Other {
   const Other(int code) : super(code);
-
-  factory Other.fromJson(Map<String, dynamic> json) => _$OtherFromJson(json);
 }
 
-@IceUnion.of(
-  State,
-)
+@IceUnion.of(State)
 class Error extends _$Error {
   const Error(int code) : super(code);
-
-  factory Error.fromJson(Map<String, dynamic> json) => _$ErrorFromJson(json);
 }

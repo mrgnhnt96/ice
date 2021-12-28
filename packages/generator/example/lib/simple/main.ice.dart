@@ -8,11 +8,162 @@ part of 'main.dart';
 // IceGenerator
 // **************************************************************************
 
-abstract class _$StateUnion {
-  const _$StateUnion();
+@JsonSerializable(
+  constructor: '_',
+)
+abstract class _$Example extends State {
+  const _$Example() : super();
 
-  String get $unionType;
+  const factory _$Example._(
+    String name,
+  ) = Example;
+  factory _$Example.fromJson(Map<String, dynamic> json) =>
+      _$$ExampleFromJson(json);
+
+  String get name;
+
+  /// If `null` is passed within the `copyWith` method,
+  /// the current value will be returned.
+  ///
+  /// ```dart
+  /// myClass.copyWith(field: newValue);
+  /// ```
+  Example copyWith({
+    String? name,
+  }) {
+    return Example(name ?? this.name);
+  }
+
+  @override
+  List<Object?> get props {
+    return [name];
+  }
+
+  @override
+  String toString() {
+    return '''
+Example(
+	name: $name,
+)''';
+  }
+
+  Map<String, dynamic> toJson({bool includeUnionType = true}) {
+    final map = _$$ExampleToJson(this);
+    if (includeUnionType) {
+      map[r'runtimeType'] = r'$Something';
+    }
+    return map;
+  }
 }
+
+@JsonSerializable(
+  constructor: '_',
+)
+abstract class _$Other extends State {
+  const _$Other() : super();
+
+  const factory _$Other._(
+    String name,
+  ) = Other;
+  factory _$Other.fromJson(Map<String, dynamic> json) => _$$OtherFromJson(json);
+
+  String get name;
+
+  /// If `null` is passed within the `copyWith` method,
+  /// the current value will be returned.
+  ///
+  /// ```dart
+  /// myClass.copyWith(field: newValue);
+  /// ```
+  Other copyWith({
+    String? name,
+  }) {
+    return Other(name ?? this.name);
+  }
+
+  @override
+  List<Object?> get props {
+    return [name];
+  }
+
+  @override
+  String toString() {
+    return '''
+Other(
+	name: $name,
+)''';
+  }
+
+  Map<String, dynamic> toJson({bool includeUnionType = true}) {
+    final map = _$$OtherToJson(this);
+    if (includeUnionType) {
+      map[r'runtimeType'] = r'Other';
+    }
+    return map;
+  }
+}
+
+@JsonSerializable(
+  constructor: '_',
+)
+abstract class _$Error extends State {
+  const _$Error() : super();
+
+  const factory _$Error._() = Error;
+  factory _$Error.fromJson(Map<String, dynamic> json) => _$$ErrorFromJson(json);
+
+  /// If `null` is passed within the `copyWith` method,
+  /// the current value will be returned.
+  ///
+  /// ```dart
+  /// myClass.copyWith(field: newValue);
+  /// ```
+  Error copyWith() {
+    return Error();
+  }
+
+  @override
+  List<Object?> get props {
+    return [];
+  }
+
+  @override
+  String toString() {
+    return 'Error()';
+  }
+
+  Map<String, dynamic> toJson({bool includeUnionType = true}) {
+    final map = _$$ErrorToJson(this);
+    if (includeUnionType) {
+      map[r'runtimeType'] = r'Error';
+    }
+    return map;
+  }
+}
+
+@JsonSerializable(
+  constructor: '_',
+)
+abstract class _$State
+    with EquatableMixin, _$StateMixin
+    implements _$StateUnion {
+  const _$State();
+
+  const factory _$State._() = State;
+  factory _$State.fromJson(Map<String, dynamic> json) => _$$StateFromJson(json);
+
+  @override
+  List<Object?> get props {
+    return [];
+  }
+
+  @override
+  String toString() {
+    return 'State()';
+  }
+}
+
+abstract class _$StateUnion {}
 
 mixin _$StateMixin {
   R map<R extends Object?>({
@@ -37,14 +188,19 @@ mixin _$StateMixin {
       String name,
     )
         example,
-    required R Function() other,
+    required R Function(
+      String name,
+    )
+        other,
     required R Function() error,
   }) {
     return map(
       example: (u) => example(
         u.name,
       ),
-      other: (u) => other(),
+      other: (u) => other(
+        u.name,
+      ),
       error: (u) => error(),
     );
   }
@@ -67,7 +223,10 @@ mixin _$StateMixin {
       String name,
     )?
         example,
-    R Function()? other,
+    R Function(
+      String name,
+    )?
+        other,
     R Function()? error,
     required _$NoStateCallback<R> orElse,
   }) {
@@ -77,7 +236,11 @@ mixin _$StateMixin {
             u.name,
           ) ??
           orElse(),
-      other: (u) => other?.call() ?? orElse(),
+      other: (u) =>
+          other?.call(
+            u.name,
+          ) ??
+          orElse(),
       error: (u) => error?.call() ?? orElse(),
     );
   }
@@ -99,14 +262,19 @@ mixin _$StateMixin {
       String name,
     )?
         example,
-    R Function()? other,
+    R Function(
+      String name,
+    )?
+        other,
     R Function()? error,
   }) {
     return map(
       example: (u) => example?.call(
         u.name,
       ),
-      other: (u) => other?.call(),
+      other: (u) => other?.call(
+        u.name,
+      ),
       error: (u) => error?.call(),
     );
   }
@@ -114,189 +282,34 @@ mixin _$StateMixin {
   bool get isExample => this is _$Example;
   bool get isOther => this is _$Other;
   bool get isError => this is _$Error;
+  Map<String, dynamic> toJson({bool includeUnionType = true}) {
+    switch (runtimeType) {
+      case Example:
+        return (this as Example).toJson(includeUnionType: includeUnionType);
+      case Other:
+        return (this as Other).toJson(includeUnionType: includeUnionType);
+      case Error:
+        return (this as Error).toJson(includeUnionType: includeUnionType);
+      default:
+        throw FallThroughError();
+    }
+  }
 }
-_$StateFromJson(Map<String, dynamic> json) {
-  switch (json[r'$unionType'] as String) {
-    case 'Example':
-      return Example.fromJson(json);
-    case 'Other':
-      return Other.fromJson(json);
-    case 'Error':
-      return Error.fromJson(json);
+State _$StateFromJson(Map<String, dynamic> json, [State? defaultValue]) {
+  switch (json[r'runtimeType'] as String?) {
+    case r'$Something':
+      return _$Example.fromJson(json);
+    case r'Other':
+      return _$Other.fromJson(json);
+    case r'Error':
+      return _$Error.fromJson(json);
     default:
+      if (defaultValue != null) {
+        return defaultValue;
+      }
       throw FallThroughError();
   }
 }
 
-@JsonSerializable(
-  constructor: '_',
-)
-abstract class _$Example extends State {
-  factory _$Example._(
-    String name,
-  ) = Example;
-  _$Example() : super();
-
-  String get name;
-
-  /// if `null` is passed within the `copyWith` method,
-  /// `null` will be returned.
-  ///
-  /// ```dart
-  /// myClass.copyWith(field: (currentValue) => newValue);
-  /// ```
-  Example copyWith({
-    _$CopyCallback<String>? name,
-  }) {
-    return Example(name == null ? this.name : name(this.name));
-  }
-
-  @override
-  List<Object?> get props {
-    return [name];
-  }
-
-  @override
-  String toString() {
-    return '''
-Example(
-	name: $name,
-)''';
-  }
-
-  @override
-  String get $unionType => 'Example';
-}
-
-extension $ExampleX on Example {
-  Map<String, dynamic> toJson({bool includeUnionType = true}) {
-    final map = _$$ExampleToJson(this);
-    if (includeUnionType) {
-      map[r'$unionType'] = 'Example';
-    }
-    return map;
-  }
-}
-
-Example _$ExampleFromJson(Map<String, dynamic> json) {
-  return _$$ExampleFromJson(json) as Example;
-}
-
-@JsonSerializable(
-  constructor: '_',
-)
-abstract class _$Other extends State {
-  factory _$Other._() = Other;
-  _$Other() : super();
-
-  /// If `null` is passed within the `copyWith` method,
-  /// the current value will be returned.
-  ///
-  /// ```dart
-  /// myClass.copyWith(field: newValue);
-  /// ```
-  Other copyWith() {
-    return Other();
-  }
-
-  @override
-  List<Object?> get props {
-    return [];
-  }
-
-  @override
-  String toString() {
-    return 'Other()';
-  }
-
-  @override
-  String get $unionType => 'Other';
-}
-
-extension $OtherX on Other {
-  Map<String, dynamic> toJson({bool includeUnionType = true}) {
-    final map = _$$OtherToJson(this);
-    if (includeUnionType) {
-      map[r'$unionType'] = 'Other';
-    }
-    return map;
-  }
-}
-
-Other _$OtherFromJson(Map<String, dynamic> json) {
-  return _$$OtherFromJson(json) as Other;
-}
-
-@JsonSerializable(
-  constructor: '_',
-)
-abstract class _$Error extends State {
-  factory _$Error._() = Error;
-  _$Error() : super();
-
-  /// If `null` is passed within the `copyWith` method,
-  /// the current value will be returned.
-  ///
-  /// ```dart
-  /// myClass.copyWith(field: newValue);
-  /// ```
-  Error copyWith() {
-    return Error();
-  }
-
-  @override
-  List<Object?> get props {
-    return [];
-  }
-
-  @override
-  String toString() {
-    return 'Error()';
-  }
-
-  @override
-  String get $unionType => 'Error';
-}
-
-extension $ErrorX on Error {
-  Map<String, dynamic> toJson({bool includeUnionType = true}) {
-    final map = _$$ErrorToJson(this);
-    if (includeUnionType) {
-      map[r'$unionType'] = 'Error';
-    }
-    return map;
-  }
-}
-
-Error _$ErrorFromJson(Map<String, dynamic> json) {
-  return _$$ErrorFromJson(json) as Error;
-}
-
-@JsonSerializable(
-  constructor: '_',
-)
-abstract class _$State
-    with EquatableMixin, _$StateMixin
-    implements _$StateUnion {
-  factory _$State._() = State;
-  const _$State();
-
-  @override
-  List<Object?> get props {
-    return [];
-  }
-
-  @override
-  String toString() {
-    return 'State()';
-  }
-
-  @override
-  String get $unionType => 'State';
-}
-
-extension $StateX on State {}
-
 typedef _$StateCallback<R, T extends State> = R Function(T);
 typedef _$NoStateCallback<R> = R Function();
-typedef _$CopyCallback<T> = T Function(T);

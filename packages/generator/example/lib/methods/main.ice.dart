@@ -9,33 +9,33 @@ part of 'main.dart';
 // **************************************************************************
 
 extension $ExampleX on Example {
-  /// if `null` is passed within the `copyWith` method,
-  /// `null` will be returned.
+  /// If `null` is passed within the `copyWith` method,
+  /// the current value will be returned.
   ///
   /// ```dart
-  /// myClass.copyWith(field: (currentValue) => newValue);
+  /// myClass.copyWith(field: newValue);
   /// ```
   Example copyWith({
-    _$CopyCallback<String?>? text,
-    _$CopyCallback<int?>? whole,
-    _$CopyCallback<double?>? decimal,
-    _$CopyCallback<bool?>? flag,
-    _$CopyCallback<DateTime?>? date,
-    _$CopyCallback<List<String>?>? list,
-    _$CopyCallback<Map<String, String>?>? map,
-    _$CopyCallback<Set<String>?>? set,
-    _$CopyCallback<Example?>? example,
+    String? text,
+    int? whole,
+    double? decimal,
+    bool? flag,
+    DateTime? date,
+    List<String>? list,
+    Map<String, String>? map,
+    Set<String>? set,
+    Example? example,
   }) {
     return Example(
-        text: text == null ? this.text : text(this.text),
-        whole: whole == null ? this.whole : whole(this.whole),
-        decimal: decimal == null ? this.decimal : decimal(this.decimal),
-        flag: flag == null ? this.flag : flag(this.flag),
-        date: date == null ? this.date : date(this.date),
-        list: list == null ? this.list : list(this.list),
-        map: map == null ? this.map : map(this.map),
-        set: set == null ? this.set : set(this.set),
-        example: example == null ? this.example : example(this.example));
+        text: text ?? this.text,
+        whole: whole ?? this.whole,
+        decimal: decimal ?? this.decimal,
+        flag: flag ?? this.flag,
+        date: date ?? this.date,
+        list: list ?? this.list,
+        map: map ?? this.map,
+        set: set ?? this.set,
+        example: example ?? this.example);
   }
 
   List<Object?> get _$props {
@@ -57,5 +57,3 @@ Example(
 )''';
   }
 }
-
-typedef _$CopyCallback<T> = T Function(T);

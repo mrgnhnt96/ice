@@ -7,30 +7,32 @@ part 'main.g.dart';
 
 @IceUnion.of(
   State,
-  copyWithType: CopyWithType.typeSafe,
+  copyWith: CopyWith.simple,
+  unionTypeId: r'$Something',
 )
 class Example extends _$Example {
-  Example(this.name);
+  const Example(this.name);
 
   final String name;
-
-  factory Example.fromJson(Map<String, dynamic> json) =>
-      _$ExampleFromJson(json);
 }
 
 @IceUnion.of(State)
 class Other extends _$Other {
-  Other();
-  factory Other.fromJson(Map<String, dynamic> json) => _$OtherFromJson(json);
+  const Other(this.name);
+
+  final String name;
 }
 
 @IceUnion.of(State)
 class Error extends _$Error {
-  Error();
-  factory Error.fromJson(Map<String, dynamic> json) => _$ErrorFromJson(json);
+  const Error();
 }
 
-@IceUnion.create()
+@IceUnion.create(
+  unionTypeKey: 'runtimeType',
+)
 class State extends _$State {
-  State();
+  const State();
+
+  factory State.example(String name) = Example;
 }

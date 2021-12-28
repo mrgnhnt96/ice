@@ -14,9 +14,13 @@ Map<String, dynamic> _$$ExampleToJson(_$Example instance) => <String, dynamic>{
       'name': instance.name,
     };
 
-_$Other _$$OtherFromJson(Map<String, dynamic> json) => _$Other._();
+_$Other _$$OtherFromJson(Map<String, dynamic> json) => _$Other._(
+      json['name'] as String,
+    );
 
-Map<String, dynamic> _$$OtherToJson(_$Other instance) => <String, dynamic>{};
+Map<String, dynamic> _$$OtherToJson(_$Other instance) => <String, dynamic>{
+      'name': instance.name,
+    };
 
 _$Error _$$ErrorFromJson(Map<String, dynamic> json) => _$Error._();
 
