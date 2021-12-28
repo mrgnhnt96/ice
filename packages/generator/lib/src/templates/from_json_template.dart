@@ -31,11 +31,12 @@ class FromJsonTemplate extends Template {
 
   void _writeAsUnion(StringBuffer buffer) {
     buffer.writeObject(
-      '${subject.name} _\$${subject.name}FromJson(Map<String, dynamic> json)',
+      '${subject.name} _\$${subject.name}FromJson(Map<String, dynamic> json, '
+      '[${subject.name}? defaultValue])',
       body: () {
         buffer.writeObject(
           // TODO(mrgnhnt96): get unionType key
-          r"switch(json[r'$unionType'] as String)",
+          r"switch(json[r'$unionType'] as String?)",
           body: () {
             for (final union in unions) {
               buffer
@@ -46,6 +47,12 @@ class FromJsonTemplate extends Template {
 
             buffer
               ..writeln('default:')
+              ..writeObject(
+                'if (defaultValue != null)',
+                body: () {
+                  buffer.writeln('return defaultValue;');
+                },
+              )
               ..writeln('throw FallThroughError();');
           },
         );
