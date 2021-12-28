@@ -32,16 +32,20 @@ class ToJsonTemplate extends Template {
 
   void _writeAsUnionBase(StringBuffer buffer) {
     buffer.writeObject(
-      'Map<String, dynamic> toJson()',
+      'Map<String, dynamic> toJson({bool includeUnionType = true})',
       body: () {
         buffer.writeObject(
-          'switch(this.runtimeType)',
+          'switch(runtimeType)',
           body: () {
             for (final union in unions) {
               buffer
                 // TODO(mrgnhnt96): get unionType name for case
                 ..writeln('case ${union.name}:')
-                ..writeln('return (this as ${union.name}).toJson();');
+                ..writeln(
+                  // ignore: missing_whitespace_between_adjacent_strings
+                  'return (this as ${union.name})'
+                  '.toJson(includeUnionType: includeUnionType);',
+                );
             }
 
             buffer
