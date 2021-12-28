@@ -221,3 +221,24 @@ enum IceOptions {
   /// any other option
   wrapper,
 }
+
+///
+extension IceOptionsX on IceOptions {
+  ///
+  bool get isCopyWith => this == IceOptions.copyWith;
+
+  ///
+  bool get isEquatable => this == IceOptions.equatable;
+
+  ///
+  bool get isIceToString => this == IceOptions.iceToString;
+
+  ///
+  bool get isToJson => this == IceOptions.toJson;
+
+  ///
+  bool get isFromJson => this == IceOptions.fromJson;
+
+  ///
+  bool get isWrapper => this == IceOptions.wrapper;
+}
