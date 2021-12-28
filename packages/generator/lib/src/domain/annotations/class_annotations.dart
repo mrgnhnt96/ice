@@ -2,7 +2,7 @@
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
-import 'package:ice/src/domain/domain.dart';
+import 'package:ice/src/domain/annotations/annotations.dart';
 import 'package:ice/src/domain/enums/enums.dart';
 import 'package:source_gen/source_gen.dart';
 
@@ -12,18 +12,16 @@ import 'package:source_gen/source_gen.dart';
 class ClassAnnotations {
   /// {@macro class_annotations}
   const ClassAnnotations({
-    required this.ice,
+    required IceAnnotation? ice,
     required this.methods,
-    required this.ofUnionType,
-    required this.isUnionBase,
-  });
+    required this.union,
+  }) : _ice = ice;
 
   /// Retrieves the class annotations from the elements
   factory ClassAnnotations.fromElements(List<ElementAnnotation> elements) {
     IceAnnotation? ice;
     MethodAnnotations? methods;
-    String? unionType;
-    var isUnionBase = false;
+    UnionAnnotation? union;
 
     final types = {
       AnnotationTypes.jsonSerializable.serialized,
@@ -40,23 +38,12 @@ class ClassAnnotations {
       }
 
       switch (type) {
-        case AnnotationTypes.ice:
         case AnnotationTypes.unionOf:
         case AnnotationTypes.unionCreate:
+          union = UnionAnnotation.fromElement(annotation, type);
+          continue;
+        case AnnotationTypes.ice:
           ice = IceAnnotation.fromElement(annotation);
-
-          if (type.isUnionOf) {
-            final reader = ConstantReader(annotation.computeConstantValue());
-            unionType = reader.peek('base')?.typeValue.toString();
-
-            if (unionType?.endsWith('*') ?? false) {
-              unionType = unionType!.substring(0, unionType.length - 1);
-            }
-          }
-
-          if (type.isUnionBase) {
-            isUnionBase = true;
-          }
 
           continue;
 
@@ -98,28 +85,26 @@ class ClassAnnotations {
     return ClassAnnotations(
       ice: ice,
       methods: methods,
-      ofUnionType: unionType,
-      isUnionBase: isUnionBase,
+      union: union,
     );
   }
 
   /// the ice annotation
-  final IceAnnotation? ice;
+  final IceAnnotation? _ice;
+
+  IceAnnotation? get ice => _ice ?? union;
 
   /// the annotations for the methods to be generated
   final MethodAnnotations? methods;
 
-  /// the union type
-  final String? ofUnionType;
-
-  /// whether the class is the union base
-  final bool isUnionBase;
-
-  /// whether the class is a union
-  bool get isUnionType => ofUnionType != null;
+  /// the union annotation
+  final UnionAnnotation? union;
 
   /// if the class is annotated with [Ice] / [IceUnion]
   bool get isIceAnnotation => ice != null;
+
+  /// if the class is annotated with [IceUnion]
+  bool get isUnionAnnotation => union != null;
 
   /// if the class is annotated with [MethodAnnotation]
   bool get isMethodAnnotation => methods != null;
