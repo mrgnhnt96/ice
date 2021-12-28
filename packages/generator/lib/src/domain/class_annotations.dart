@@ -15,8 +15,6 @@ class ClassAnnotations {
     required this.ice,
     required this.methods,
     required this.ofUnionType,
-    required this.createToJson,
-    required this.createFromJson,
     required this.isUnionBase,
   });
 
@@ -25,8 +23,6 @@ class ClassAnnotations {
     IceAnnotation? ice;
     MethodAnnotations? methods;
     String? unionType;
-    var createToJson = false;
-    var createFromJson = false;
     var isUnionBase = false;
 
     final types = {
@@ -43,74 +39,59 @@ class ClassAnnotations {
         continue;
       }
 
-      void checkForJson([ConstantReader? reader]) {
-        if (reader == null) {
-          final annotationReader =
-              ConstantReader(annotation.computeConstantValue());
-
-          final iceJsonAnnotation =
-              annotationReader.peek('iceJsonSerializable')?.objectValue;
-
-          if (iceJsonAnnotation != null) {
-            return checkForJson(ConstantReader(iceJsonAnnotation));
-          }
-          return;
-        }
-
-        createToJson = reader.peek('createToJson')?.boolValue ?? true;
-        createFromJson = reader.peek('createFactory')?.boolValue ?? true;
-      }
-
       switch (type) {
         case AnnotationTypes.ice:
-          ice = IceAnnotation.fromElement(annotation);
-          checkForJson();
-
-          continue;
         case AnnotationTypes.unionOf:
-          final reader = ConstantReader(annotation.computeConstantValue());
-          unionType = reader.peek('base')?.typeValue.toString();
-
-          if (unionType?.endsWith('*') ?? false) {
-            unionType = unionType!.substring(0, unionType.length - 1);
-          }
-
+        case AnnotationTypes.unionCreate:
           ice = IceAnnotation.fromElement(annotation);
 
-          final iceJsonAnnotation =
-              reader.peek('iceJsonSerializable')?.objectValue;
-          if (iceJsonAnnotation != null) {
-            checkForJson(ConstantReader(iceJsonAnnotation));
+          if (type.isUnionOf) {
+            final reader = ConstantReader(annotation.computeConstantValue());
+            unionType = reader.peek('base')?.typeValue.toString();
+
+            if (unionType?.endsWith('*') ?? false) {
+              unionType = unionType!.substring(0, unionType.length - 1);
+            }
+          }
+
+          if (type.isUnionBase) {
+            isUnionBase = true;
           }
 
           continue;
-        case AnnotationTypes.unionCreate:
-          isUnionBase = true;
 
+        case AnnotationTypes.other:
           continue;
+
+        // handle method & json annotations
         case AnnotationTypes.jsonSerializable:
-          checkForJson(ConstantReader(annotation.computeConstantValue()));
-
-          continue;
         default:
-          if (ice != null) {
-            if (methods != null) {
-              // we do not want to create any methods if the class has been
-              // annotated with [Ice]
-              // ? throw an error?
-              log.info(
-                'This class has been annotated with '
-                '[Ice] and ${type.serialized}',
-              );
-
-              methods = null;
-            }
+          if (ice != null && methods != null) {
+            methods = null;
+            // we do not want to create any methods if the class has been
+            // annotated with [Ice]
+            // ? throw an error?
+            log.info(
+              'This class has been annotated with '
+              '[Ice] and ${type.serialized}',
+            );
 
             continue;
           }
 
-          methods = (methods ?? const MethodAnnotations.empty())
-              .checkAnnotationAndUpdate(type);
+          methods ??= const MethodAnnotations.empty();
+
+          if (type.isJsonSerializable) {
+            final reader = ConstantReader(annotation.computeConstantValue());
+            final createToJson = reader.peek('createToJson')?.boolValue;
+            final createFromJson = reader.peek('createFactory')?.boolValue;
+
+            methods = methods
+              ..updateToJson(createToJson ?? true)
+              ..updateFromJson(createFromJson ?? true);
+          } else {
+            methods = methods.checkAnnotationAndUpdate(type);
+          }
       }
     }
 
@@ -118,8 +99,6 @@ class ClassAnnotations {
       ice: ice,
       methods: methods,
       ofUnionType: unionType,
-      createToJson: createToJson,
-      createFromJson: createFromJson,
       isUnionBase: isUnionBase,
     );
   }
@@ -133,19 +112,15 @@ class ClassAnnotations {
   /// the union type
   final String? ofUnionType;
 
-  /// whether the `toJson` method should be generated
-  ///
-  /// retrieved from the `JsonSerializable` annotation
-  final bool createToJson;
-
-  /// whether the `fromJson` function should be generated
-  ///
-  /// retrieved from the `JsonSerializable` annotation
-  final bool createFromJson;
-
   /// whether the class is the union base
   final bool isUnionBase;
 
   /// whether the class is a union
   bool get isUnionType => ofUnionType != null;
+
+  /// if the class is annotated with [Ice] / [IceUnion]
+  bool get isIceAnnotation => ice != null;
+
+  /// if the class is annotated with [MethodAnnotation]
+  bool get isMethodAnnotation => methods != null;
 }
