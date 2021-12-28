@@ -21,14 +21,16 @@ extension on Class {
 /// - Equatable Props
 /// - toString()
 class ToJsonTemplate extends Template {
-  const ToJsonTemplate.forSubject(Class subject)
+  const ToJsonTemplate.forSubject(Class subject, [this.union])
       : unions = const [],
         super(subject, name: IceOptions.toJson);
 
   const ToJsonTemplate.forUnion(Class subject, this.unions)
-      : super(subject, name: IceOptions.toJson);
+      : union = null,
+        super(subject, name: IceOptions.toJson);
 
   final Iterable<Class> unions;
+  final Class? union;
 
   void _writeAsUnionBase(StringBuffer buffer) {
     buffer.writeObject(
@@ -39,7 +41,6 @@ class ToJsonTemplate extends Template {
           body: () {
             for (final union in unions) {
               buffer
-                // TODO(mrgnhnt96): get unionType name for case
                 ..writeln('case ${union.name}:')
                 ..writeln(
                   // ignore: missing_whitespace_between_adjacent_strings
@@ -58,6 +59,10 @@ class ToJsonTemplate extends Template {
   }
 
   void _writeAsSubclass(StringBuffer buffer) {
+    final unionTypeId = subject.annotations.union!.unionTypeId ?? subject.name;
+    final unionTypeKey =
+        union?.annotations.union!.unionTypeKey ?? r'$unionType';
+
     buffer.writeObject(
       'Map<String, dynamic> toJson({bool includeUnionType = true})',
       body: () {
@@ -68,7 +73,7 @@ class ToJsonTemplate extends Template {
           ..writeObject(
             'if (includeUnionType)',
             body: () {
-              buffer.writeln(r"map[r'$unionType'] = $unionType;");
+              buffer.writeln("map[r'$unionTypeKey'] = r'$unionTypeId';");
             },
           )
           ..writeln('return map;');
@@ -112,7 +117,7 @@ class ToJsonTemplate extends Template {
       if (unions.isNotEmpty) {
         _writeAsUnionBase(buffer);
       }
-    } else if (subject.annotations.isUnionType) {
+    } else if (subject.annotations.isSubUnion) {
       _writeAsSubclass(buffer);
     } else {
       _writeToJson(buffer);

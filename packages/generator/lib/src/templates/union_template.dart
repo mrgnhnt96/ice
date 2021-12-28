@@ -115,15 +115,7 @@ class UnionTemplate extends Template {
   }
 
   void _writeUnionBase(StringBuffer buffer) {
-    buffer.writeObject(
-      'abstract class ${subject.unionBase}',
-      body: () {
-        buffer
-          ..writeln('const ${subject.unionBase}();')
-          ..writeln()
-          ..writeln(r'String get $unionType;');
-      },
-    );
+    buffer.writeln('abstract class ${subject.unionBase} {}');
   }
 
   void _writePatternMatches(StringBuffer buffer) {

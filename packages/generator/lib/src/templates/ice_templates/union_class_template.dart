@@ -34,20 +34,6 @@ class UnionClassTemplate extends IceTemplate {
   }) : super.wrapper(subject, union: union);
 
   @override
-  void writeProperties(StringBuffer buffer) {
-    super.writeProperties(buffer);
-
-    if (union != null || subjectIsUnionBase) {
-      buffer
-        ..writeln()
-        ..writeln('@override')
-        ..writeln(
-          "String get \$unionType => '${subject.name}';",
-        );
-    }
-  }
-
-  @override
   void writeConstructors(StringBuffer buffer) {
     if (subjectIsOfUnion) {
       buffer
