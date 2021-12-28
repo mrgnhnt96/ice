@@ -101,7 +101,7 @@ class IceTemplate extends Template {
   }
 
   /// generates the constructor that json_serializable uses
-  void fromJsonConstructor(StringBuffer buffer) {
+  void fromJsonAccessConstructor(StringBuffer buffer) {
     final iceJsonSerializable = subject.annotations.ice?.jsonSerializable;
 
     if (iceJsonSerializable == null) {
@@ -121,7 +121,7 @@ class IceTemplate extends Template {
         open: '(',
         close: ')',
         body: () {
-          buffer.writeAll(constructor.params.formatted(), ',\n');
+          buffer.writeAll(constructor.params.formatted(), ',');
         },
       )
       ..writeln('= ${constructor.displayName};');
@@ -140,24 +140,30 @@ class IceTemplate extends Template {
 
   @override
   void generate(StringBuffer buffer) {
+    final fromJsonTemplate = FromJsonTemplate.forSubject(subject);
+
     jsonSerializableAnnotation(buffer);
     buffer.writeObject(
       classHeader,
       body: () {
         writeConstructors(buffer);
-        fromJsonConstructor(buffer);
+        fromJsonAccessConstructor(buffer);
+        fromJsonTemplate.writeConstructor(buffer);
 
+        buffer.writeln();
         writeFields(buffer);
 
+        buffer.writeln();
         writeProperties(buffer);
 
+        buffer.writeln();
         writeToJson(buffer);
       },
     );
 
     includeCopyWithSupport();
 
-    writeFromJson(buffer);
+    fromJsonTemplate.addToBuffer(buffer);
   }
 
   ///
@@ -197,10 +203,5 @@ class IceTemplate extends Template {
   ///
   void writeToJson(StringBuffer buffer) {
     ToJsonTemplate.forSubject(subject).addToBuffer(buffer);
-  }
-
-  ///
-  void writeFromJson(StringBuffer buffer) {
-    FromJsonTemplate.forSubject(subject).addToBuffer(buffer);
   }
 }
