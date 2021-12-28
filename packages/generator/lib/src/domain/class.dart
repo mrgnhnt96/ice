@@ -93,48 +93,6 @@ class Class {
     return settingsCallback(iceSettings);
   }
 
-  /// whether a method can be generated
-  ///
-  /// returns false if the method already exists
-  bool canGeneratedMethod(IceOptions option) {
-    switch (option) {
-      case IceOptions.wrapper:
-        return true;
-      case IceOptions.copyWith:
-        return metaSettings(
-          iceCallback: (ice) => ice.copyWith,
-          methodCallback: (method) => method.hasCopyWith,
-          settingsCallback: (settings) => settings.copyWith,
-        );
-      case IceOptions.equatable:
-        return metaSettings(
-          iceCallback: (ice) => ice.equatable,
-          methodCallback: (methods) => methods.hasProps,
-          settingsCallback: (settings) => settings.equatable,
-        );
-      case IceOptions.iceToString:
-        return metaSettings(
-          iceCallback: (ice) => ice.iceToString,
-          methodCallback: (methods) => methods.hasToString,
-          settingsCallback: (settings) => settings.iceToString,
-        );
-      case IceOptions.toJson:
-        return metaSettings(
-          iceCallback: (ice) => ice.jsonSerializable?.createToJson,
-          methodCallback: (methods) => methods.createToJson,
-          settingsCallback: (settings) =>
-              settings.jsonSerializable.createToJson,
-        );
-      case IceOptions.fromJson:
-        return metaSettings(
-          iceCallback: (ice) => ice.jsonSerializable?.createFactory,
-          methodCallback: (methods) => methods.createToJson,
-          settingsCallback: (settings) =>
-              settings.jsonSerializable.createFactory,
-        );
-    }
-  }
-
   /// the constructor to be used to to generate the copyWith method
   Constructor? copyWithConstructor() {
     if (constructors.isEmpty) return null;

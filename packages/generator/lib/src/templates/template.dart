@@ -1,5 +1,6 @@
 // ignore_for_file: implementation_imports
 
+import 'package:ice/ice.dart';
 import 'package:ice/src/domain/domain.dart';
 import 'package:ice_annotation/src/methods.dart';
 import 'package:meta/meta.dart';
@@ -29,7 +30,59 @@ abstract class Template {
   /// should be called before [addToBuffer] or [iceToString]
   @mustCallSuper
   bool get canBeGenerated {
-    return subject.canGeneratedMethod(name);
+    /// whether a method can be generated
+    ///
+    /// returns false if the method already exists
+    switch (name) {
+      case IceOptions.wrapper:
+        return true;
+      case IceOptions.copyWith:
+        return subject.metaSettings(
+          iceCallback: (ice) => ice.copyWith,
+          methodCallback: (method) => method.hasCopyWith,
+          settingsCallback: (settings) => settings.copyWith,
+        );
+      case IceOptions.equatable:
+        return subject.metaSettings(
+          iceCallback: (ice) => ice.equatable,
+          methodCallback: (methods) => methods.hasProps,
+          settingsCallback: (settings) => settings.equatable,
+        );
+      case IceOptions.iceToString:
+        return subject.metaSettings(
+          iceCallback: (ice) => ice.iceToString,
+          methodCallback: (methods) => methods.hasToString,
+          settingsCallback: (settings) => settings.iceToString,
+        );
+      case IceOptions.toJson:
+      case IceOptions.fromJson:
+        final annotations = subject.annotations;
+        if (annotations.isIceAnnotation) {
+          final json = annotations.ice!.jsonSerializable;
+          if (json == null) {
+            return false;
+          }
+
+          if (name.isFromJson) {
+            return json.createFactory ?? true;
+          }
+
+          return json.createToJson ?? true;
+        } else if (annotations.isMethodAnnotation) {
+          final methods = annotations.methods!;
+          if (name.isFromJson) {
+            return methods.createFromJson;
+          }
+
+          return methods.createToJson;
+        }
+
+        if (name.isFromJson) {
+          return iceSettings.jsonSerializable.createFactory;
+        }
+
+        return iceSettings.jsonSerializable.createToJson;
+    }
   }
 
   /// checks if the template can be generated
