@@ -150,12 +150,12 @@ class IceTemplate extends Template {
         writeFields(buffer);
 
         writeProperties(buffer);
+
+        writeToJson(buffer);
       },
     );
 
     includeCopyWithSupport();
-
-    writeToJson(buffer);
 
     writeFromJson(buffer);
   }
@@ -196,16 +196,7 @@ class IceTemplate extends Template {
 
   ///
   void writeToJson(StringBuffer buffer) {
-    final toJsonTemplate = ToJsonTemplate.forSubject(subject);
-
-    if (toJsonTemplate.canBeGenerated) {
-      buffer.writeObject(
-        'extension \$${subject.cleanName}X on ${subject.name}',
-        body: () {
-          toJsonTemplate.addToBuffer(buffer);
-        },
-      );
-    }
+    ToJsonTemplate.forSubject(subject).addToBuffer(buffer);
   }
 
   ///
