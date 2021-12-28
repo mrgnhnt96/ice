@@ -118,7 +118,7 @@ class IceTemplate extends Template {
 
   ///
   void jsonSerializableAnnotation(StringBuffer buffer) {
-    final iceJsonSerializable = subject.annotations.ice?.iceJsonSerializable;
+    final iceJsonSerializable = subject.annotations.ice?.jsonSerializable;
 
     if (iceJsonSerializable == null) {
       return;
