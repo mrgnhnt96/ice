@@ -10,22 +10,22 @@ class IceSettings implements Ice {
   /// {@macro ice_settings}
   const IceSettings({
     required this.copyWith,
-    required this.copyWithType,
     required this.equatable,
     required this.iceToString,
     required this.ignoreGettersAsProps,
     required this.jsonSerializable,
+    required this.unionTypeKey,
   });
 
   /// the default settings for ice
   const IceSettings.defaultValues()
       : this(
-          copyWith: true,
-          copyWithType: CopyWithType.simple,
+          copyWith: CopyWith.simple,
           equatable: true,
           iceToString: true,
           ignoreGettersAsProps: true,
           jsonSerializable: const SettingJsonSerializable._default(),
+          unionTypeKey: r'$unionType',
         );
 
   /// {@macro ice_settings}
@@ -33,14 +33,15 @@ class IceSettings implements Ice {
     const defaultValues = IceSettings.defaultValues();
 
     const conv = CopyWithTypeConv.nullable;
-    final copyWithType = conv.fromJson(config['copy_with_type'] as String?) ??
-        defaultValues.copyWithType;
+    final copyWithType =
+        conv.fromJson(config['copy_with'] as String?) ?? defaultValues.copyWith;
     final iceJsonSerializable = JsonSerializable.fromJson(config).toIce();
 
     return IceSettings(
-      copyWith: config['copy_with'] as bool? ?? defaultValues.copyWith,
-      copyWithType: copyWithType,
+      copyWith: copyWithType,
       equatable: config['equatable'] as bool? ?? defaultValues.equatable,
+      unionTypeKey:
+          config['union_type_key'] as String? ?? defaultValues.unionTypeKey,
       iceToString: config['to_string'] as bool? ?? defaultValues.iceToString,
       ignoreGettersAsProps: config['ignore_getters_as_props'] as bool? ??
           defaultValues.ignoreGettersAsProps,
@@ -49,10 +50,7 @@ class IceSettings implements Ice {
   }
 
   @override
-  final bool copyWith;
-
-  @override
-  final CopyWithType copyWithType;
+  final CopyWith copyWith;
 
   @override
   final bool equatable;
@@ -65,6 +63,9 @@ class IceSettings implements Ice {
 
   @override
   final SettingJsonSerializable jsonSerializable;
+
+  /// the default key to be used for union serialization
+  final String unionTypeKey;
 }
 
 ///

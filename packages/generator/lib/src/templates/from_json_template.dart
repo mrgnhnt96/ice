@@ -70,8 +70,7 @@ class FromJsonTemplate extends Template {
       '${subject.name} _\$${subject.name}FromJson(Map<String, dynamic> json, '
       '[${subject.name}? defaultValue])',
       body: () {
-        final unionTypeKey =
-            subject.annotations.union!.unionTypeKey ?? r'$unionType';
+        final unionTypeKey = subject.annotations.union!.unionTypeKey;
         buffer.writeObject(
           "switch(json[r'$unionTypeKey'] as String?)",
           body: () {
