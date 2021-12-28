@@ -4,6 +4,7 @@ import 'package:analyzer/dart/element/element.dart';
 
 import 'package:ice/ice.dart';
 import 'package:ice/src/domain/class_annotations.dart';
+import 'package:ice/src/domain/do_not_generate.dart';
 import 'package:ice/src/domain/domain.dart';
 import 'package:ice/src/domain/field.dart';
 import 'package:ice/src/domain/ice_settings.dart';
@@ -18,12 +19,19 @@ class Class {
     required this.annotations,
     required this.fields,
     required this.name,
+    required this.doNotGenerate,
   });
 
   /// Retrieves the class data from the element
   factory Class.fromElement(ClassElement element) {
     final constructors = Constructor.fromElements(element.constructors);
     final annotations = ClassAnnotations.fromElements(element.metadata);
+    late DoNotGenerate doNotGenerate;
+    if (annotations.isMethodAnnotation) {
+      doNotGenerate = const DoNotGenerate.none();
+    } else {
+      doNotGenerate = DoNotGenerate.fromElement(element);
+    }
     final fields = Field.fromElements(
       element.fields,
       ignoreGettersAsProps: annotations.ice?.ignoreGettersAsProps ??
@@ -35,6 +43,7 @@ class Class {
       annotations: annotations,
       fields: fields,
       name: element.displayName,
+      doNotGenerate: doNotGenerate,
     );
   }
 
@@ -46,6 +55,10 @@ class Class {
 
   /// the fields in the class
   final List<Field> fields;
+
+  /// the elements of the generated code that
+  /// should be ignored
+  final DoNotGenerate doNotGenerate;
 
   /// The name of the class
   final String name;
@@ -91,26 +104,6 @@ class Class {
     }
 
     return settingsCallback(iceSettings);
-  }
-
-  /// the constructor to be used to to generate the copyWith method
-  Constructor? copyWithConstructor() {
-    if (constructors.isEmpty) return null;
-
-    final copyWithIndex =
-        constructors.indexWhere((c) => c.isCopyWithConstructor);
-
-    if (copyWithIndex != -1) {
-      return constructors[copyWithIndex];
-    }
-
-    final defaultIndex = constructors.indexWhere((c) => c.isDefault);
-
-    if (defaultIndex != -1) {
-      return constructors[defaultIndex];
-    }
-
-    return constructors.first;
   }
 
   /// removes all `_` from the start of the name
