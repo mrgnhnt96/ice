@@ -1,7 +1,5 @@
 // ignore_for_file: comment_references, implementation_imports
 
-import 'dart:async';
-
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/src/dart/element/element.dart';
 import 'package:build/build.dart';
@@ -20,7 +18,7 @@ class IceGenerator extends Generator {
   const IceGenerator() : super();
 
   @override
-  FutureOr<String?> generate(LibraryReader library, BuildStep buildStep) {
+  String? generate(LibraryReader library, BuildStep buildStep) {
     final classes = iceClassesFrom(library);
 
     final buffer = StringBuffer();
