@@ -37,18 +37,24 @@ abstract class Template {
       case IceOptions.wrapper:
         return true;
       case IceOptions.copyWith:
+        if (subject.doNotGenerate.copyWith) return false;
+
         return subject.metaSettings(
           iceCallback: (ice) => ice.copyWith,
           methodCallback: (method) => method.hasCopyWith,
           settingsCallback: (settings) => settings.copyWith,
         );
       case IceOptions.equatable:
+        if (subject.doNotGenerate.equatable) return false;
+
         return subject.metaSettings(
           iceCallback: (ice) => ice.equatable,
           methodCallback: (methods) => methods.hasProps,
           settingsCallback: (settings) => settings.equatable,
         );
       case IceOptions.iceToString:
+        if (subject.doNotGenerate.tostring) return false;
+
         return subject.metaSettings(
           iceCallback: (ice) => ice.iceToString,
           methodCallback: (methods) => methods.hasToString,
