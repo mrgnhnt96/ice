@@ -1,6 +1,7 @@
 // ignore_for_file: comment_references, avoid_dynamic_calls, no_default_cases
 // ignore_for_file: implementation_imports, avoid_positional_boolean_parameters
 
+import 'package:ice/ice.dart';
 import 'package:ice/src/domain/enums/enums.dart';
 import 'package:ice_annotation/ice.dart';
 
@@ -12,7 +13,6 @@ class MethodAnnotations {
   /// {@macro method_annotations}
   const MethodAnnotations({
     required this.hasProps,
-    required this.hasCopyWith,
     required this.hasToString,
     required this.copyWithType,
     this.createFromJson = false,
@@ -20,25 +20,21 @@ class MethodAnnotations {
   });
 
   /// {@macro method_annotations}
-  const MethodAnnotations.empty()
+  MethodAnnotations.empty()
       : this(
           hasProps: false,
-          hasCopyWith: false,
           hasToString: false,
-          copyWithType: CopyWithType.simple,
+          copyWithType: iceSettings.copyWith,
         );
 
   /// [iceProps]
   final bool hasProps;
 
-  /// [copyWith]
-  final bool hasCopyWith;
-
   /// [iceToString]
   final bool hasToString;
 
   /// [copyWithType]
-  final CopyWithType copyWithType;
+  final CopyWith copyWithType;
 
   /// whether the `toJson` method should be generated
   ///
@@ -49,11 +45,6 @@ class MethodAnnotations {
   ///
   /// retrieved from the `JsonSerializable` annotation
   final bool createFromJson;
-
-  /// if the [type] can be generated
-  bool canGenerateCopyWith(CopyWithType type) {
-    return hasCopyWith && copyWithType == type;
-  }
 
   /// updates [createToJson]
   MethodAnnotations updateToJson(bool value) {
@@ -76,15 +67,13 @@ class MethodAnnotations {
   /// returns a copy of [MethodAnnotations]
   MethodAnnotations copyWith({
     bool? hasProps,
-    bool? hasCopyWith,
     bool? hasToString,
-    CopyWithType? copyWithType,
+    CopyWith? copyWithType,
     bool? createToJson,
     bool? createFromJson,
   }) {
     return MethodAnnotations(
       hasProps: hasProps ?? this.hasProps,
-      hasCopyWith: hasCopyWith ?? this.hasCopyWith,
       hasToString: hasToString ?? this.hasToString,
       copyWithType: copyWithType ?? this.copyWithType,
       createToJson: createToJson ?? this.createToJson,
@@ -102,10 +91,11 @@ class MethodAnnotations {
     switch (type) {
       case AnnotationTypes.iceProps:
         return copyWith(hasProps: true);
+      // TODO(mrgnhnt96): find a better way to support this
       case AnnotationTypes.copyWithSimple:
-        return copyWith(hasCopyWith: true);
+        return copyWith(copyWithType: CopyWith.typeSafe);
       case AnnotationTypes.copyWithTypeSafe:
-        return copyWith(hasCopyWith: true, copyWithType: CopyWithType.typeSafe);
+        return copyWith(copyWithType: CopyWith.simple);
       case AnnotationTypes.iceToString:
         return copyWith(hasToString: true);
       default:

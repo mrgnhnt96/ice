@@ -14,7 +14,6 @@ class IceAnnotation implements Ice {
   /// {@macro ice_annotation}
   const IceAnnotation({
     required this.copyWith,
-    required this.copyWithType,
     required this.equatable,
     required this.iceToString,
     required this.ignoreGettersAsProps,
@@ -35,12 +34,11 @@ class IceAnnotation implements Ice {
       return (_reader ?? reader).peek(name)?.literalValue as T?;
     }
 
-    final copyWith = get<bool>('copyWith') ?? iceSettings.copyWith;
     final equatable = get<bool>('equatable') ?? iceSettings.equatable;
     final iceToString = get<bool>('iceToString') ?? iceSettings.iceToString;
     final ignoreGettersAsProps =
         get<bool>('ignoreGettersAsProps') ?? iceSettings.ignoreGettersAsProps;
-    final copyWithType = CopyWithType.values.fromReader(reader, 'copyWithType');
+    final copyWithType = CopyWith.values.fromReader(reader, 'copyWith');
     final iceJsonAnnotation = reader.peek('jsonSerializable')?.objectValue;
 
     IceJsonSerializable? iceJsonSerializable;
@@ -63,8 +61,7 @@ class IceAnnotation implements Ice {
 
     return IceAnnotation(
       equatable: equatable,
-      copyWith: copyWith,
-      copyWithType: copyWithType ?? CopyWithType.simple,
+      copyWith: copyWithType ?? iceSettings.copyWith,
       iceToString: iceToString,
       ignoreGettersAsProps: ignoreGettersAsProps,
       jsonSerializable: iceJsonSerializable,
@@ -72,19 +69,16 @@ class IceAnnotation implements Ice {
   }
 
   @override
-  final bool? copyWith;
+  final CopyWith copyWith;
 
   @override
-  final CopyWithType? copyWithType;
+  final bool equatable;
 
   @override
-  final bool? equatable;
+  final bool iceToString;
 
   @override
-  final bool? iceToString;
-
-  @override
-  final bool? ignoreGettersAsProps;
+  final bool ignoreGettersAsProps;
 
   @override
   final IceJsonSerializable? jsonSerializable;

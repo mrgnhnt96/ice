@@ -1,7 +1,7 @@
 // ignore_for_file: avoid_field_initializers_in_const_classes, overridden_fields
 // ignore_for_file: prefer_initializing_formals
 
-import 'package:ice_annotation/src/enums/copy_with_type.dart';
+import 'package:ice_annotation/src/enums/copy_with.dart';
 import 'package:ice_annotation/src/ice_json_serializable.dart';
 import 'package:meta/meta_meta.dart';
 
@@ -15,19 +15,15 @@ class Ice {
   /// {@macro ice}
   const Ice({
     this.copyWith,
-    this.copyWithType,
     this.equatable,
     this.ignoreGettersAsProps,
     this.iceToString,
     this.jsonSerializable = const IceJsonSerializable(),
   });
 
-  /// generates the copyWith method
-  final bool? copyWith;
-
   /// whether the copyWith method is generated
   /// with simple or nullable arguments
-  final CopyWithType? copyWithType;
+  final CopyWith? copyWith;
 
   /// adds `EquatableMixin` and provides prop
   final bool? equatable;
@@ -55,7 +51,6 @@ class IceUnion implements Ice {
     this.base, {
     this.unionTypeId,
     this.copyWith,
-    this.copyWithType,
     this.equatable,
     this.iceToString,
     this.ignoreGettersAsProps,
@@ -66,7 +61,6 @@ class IceUnion implements Ice {
   const IceUnion.create({
     this.unionTypeKey,
     this.copyWith,
-    this.copyWithType,
     this.equatable,
     this.iceToString,
     this.ignoreGettersAsProps,
@@ -99,10 +93,7 @@ class IceUnion implements Ice {
   final String? unionTypeId;
 
   @override
-  final bool? copyWith;
-
-  @override
-  final CopyWithType? copyWithType;
+  final CopyWith? copyWith;
 
   @override
   final bool? equatable;

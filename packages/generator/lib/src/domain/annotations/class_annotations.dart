@@ -66,7 +66,7 @@ class ClassAnnotations {
             continue;
           }
 
-          methods ??= const MethodAnnotations.empty();
+          methods ??= MethodAnnotations.empty();
 
           if (type.isJsonSerializable) {
             final reader = ConstantReader(annotation.computeConstantValue());

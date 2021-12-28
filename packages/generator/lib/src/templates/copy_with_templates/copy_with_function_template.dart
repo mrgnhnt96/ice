@@ -23,7 +23,7 @@ class CopyWithFunctionTemplate extends CopyWithTemplate {
     Class subject,
   ) : super(
           subject,
-          type: CopyWithType.typeSafe,
+          type: CopyWith.typeSafe,
         );
 
   /// the callback name for the copyWith method

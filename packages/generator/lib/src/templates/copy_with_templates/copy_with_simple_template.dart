@@ -20,7 +20,7 @@ class CopyWithSimpleTemplate extends CopyWithTemplate {
   CopyWithSimpleTemplate.forSubject(Class subject)
       : super(
           subject,
-          type: CopyWithType.simple,
+          type: CopyWith.simple,
         );
 
   @override

@@ -3,18 +3,21 @@
 
 import 'package:ice_annotation/ice.dart';
 
-/// Extensions for the enum CopyWithType
-extension CopyWithTypeX on CopyWithType {
+/// Extensions for the enum CopyWith
+extension CopyWithX on CopyWith {
   /// Map of all values of the enum
   T map<T extends Object?>({
     required T simple,
     required T typeSafe,
+    required T none,
   }) {
     switch (this) {
-      case CopyWithType.simple:
+      case CopyWith.simple:
         return simple;
-      case CopyWithType.typeSafe:
+      case CopyWith.typeSafe:
         return typeSafe;
+      case CopyWith.none:
+        return none;
     }
   }
 
@@ -25,6 +28,7 @@ extension CopyWithTypeX on CopyWithType {
     required T orElse,
     T? simple,
     T? typeSafe,
+    T? none,
   }) {
     var isNullable = true;
     try {
@@ -34,12 +38,15 @@ extension CopyWithTypeX on CopyWithType {
     }
 
     switch (this) {
-      case CopyWithType.simple:
+      case CopyWith.simple:
         if (simple == null && !isNullable) return orElse;
         return simple as T;
-      case CopyWithType.typeSafe:
+      case CopyWith.typeSafe:
         if (typeSafe == null && !isNullable) return orElse;
         return typeSafe as T;
+      case CopyWith.none:
+        if (none == null && !isNullable) return orElse;
+        return none as T;
     }
   }
 
@@ -48,6 +55,7 @@ extension CopyWithTypeX on CopyWithType {
     return map<String>(
       simple: 'simple',
       typeSafe: 'typeSafe',
+      none: 'none',
     );
   }
 
@@ -56,6 +64,7 @@ extension CopyWithTypeX on CopyWithType {
     return map<int>(
       simple: 0,
       typeSafe: 1,
+      none: 2,
     );
   }
 
@@ -65,6 +74,7 @@ extension CopyWithTypeX on CopyWithType {
     return map<String>(
       simple: 'Simple',
       typeSafe: 'Type Safe',
+      none: 'None',
     );
   }
 
@@ -87,54 +97,63 @@ if `null` is passed within the `copyWith` method,
 ```dart
 myClass.copyWith(field: (currentValue) => newValue);
 ```''',
+      none: '''
+does not generate a copyWith method''',
     );
   }
 
   /// Returns the serialized value of the enum field.
   Object get serialized {
     return map<Object>(
-      simple: CopyWithTypeConv._simpleName,
-      typeSafe: CopyWithTypeConv._typeSafeName,
+      simple: CopyWithConv._simpleName,
+      typeSafe: CopyWithConv._typeSafeName,
+      none: CopyWithConv._noneName,
     );
   }
 
   /// if the enum value is `simple`
-  bool get isSimple => this == CopyWithType.simple;
+  bool get isSimple => this == CopyWith.simple;
 
   /// if the enum value is `typeSafe`
-  bool get isTypeSafe => this == CopyWithType.typeSafe;
+  bool get isTypeSafe => this == CopyWith.typeSafe;
+
+  /// if the enum value is `none`
+  bool get isNone => this == CopyWith.none;
 }
 
-/// {@template copy_with_type.json_converter}
-/// Serializes [CopyWithType] to and from json
+/// {@template copy_with.json_converter}
+/// Serializes [CopyWith] to and from json
 ///
 /// Can be used as annotation for `json_serializable` classes
 ///
 /// ```dart
-/// @CopyWithTypeConv()
-/// final CopyWithType myEnum;
+/// @CopyWithConv()
+/// final CopyWith myEnum;
 /// ```
 /// {@endtemplate}
-class CopyWithTypeConv extends JsonConverter<CopyWithType, Object> {
-  /// {@macro copy_with_type.json_converter}
-  const CopyWithTypeConv({this.defaultValue});
+class CopyWithConv extends JsonConverter<CopyWith, Object> {
+  /// {@macro copy_with.json_converter}
+  const CopyWithConv({this.defaultValue});
 
   /// the value to be used when no match is found
-  final CopyWithType? defaultValue;
+  final CopyWith? defaultValue;
 
-  /// {@macro copy_with_type.json_converter_nullable}
-  static const nullable = _CopyWithTypeNullableConv();
+  /// {@macro copy_with.json_converter_nullable}
+  static const nullable = _CopyWithNullableConv();
 
   static const _simpleName = 'simple';
   static const _typeSafeName = 'typeSafe';
+  static const _noneName = 'none';
 
   @override
-  CopyWithType fromJson(Object json) {
+  CopyWith fromJson(Object json) {
     switch (json) {
       case _simpleName:
-        return CopyWithType.simple;
+        return CopyWith.simple;
       case _typeSafeName:
-        return CopyWithType.typeSafe;
+        return CopyWith.typeSafe;
+      case _noneName:
+        return CopyWith.none;
       default:
         if (defaultValue != null) return defaultValue!;
 
@@ -143,7 +162,80 @@ class CopyWithTypeConv extends JsonConverter<CopyWithType, Object> {
   }
 
   @override
-  Object toJson(CopyWithType object) => object.serialized;
+  Object toJson(CopyWith object) => object.serialized;
+}
+
+/// {@template copy_with.json_converter_nullable}
+/// Serializes [CopyWith?] to and from json
+///
+/// Can be used as annotation for `json_serializable` classes
+///
+/// ```dart
+/// @CopyWithConv.nullable
+/// final CopyWith? myEnum;
+/// ```
+/// {@endtemplate}
+class _CopyWithNullableConv extends JsonConverter<CopyWith?, Object?> {
+  /// {@macro copy_with.json_converter}
+  const _CopyWithNullableConv();
+
+  @override
+  CopyWith? fromJson(Object? json) {
+    switch (json) {
+      case CopyWithConv._simpleName:
+        return CopyWith.simple;
+      case CopyWithConv._typeSafeName:
+        return CopyWith.typeSafe;
+      case CopyWithConv._noneName:
+        return CopyWith.none;
+      default:
+        return null;
+    }
+  }
+
+  @override
+  Object? toJson(CopyWith? object) => object?.serialized;
+}
+
+/// {@template copy_with_type.json_converter}
+/// Serializes [CopyWith] to and from json
+///
+/// Can be used as annotation for `json_serializable` classes
+///
+/// ```dart
+/// @CopyWithTypeConv()
+/// final CopyWithType myEnum;
+/// ```
+/// {@endtemplate}
+class CopyWithTypeConv extends JsonConverter<CopyWith, Object> {
+  /// {@macro copy_with_type.json_converter}
+  const CopyWithTypeConv({this.defaultValue});
+
+  /// the value to be used when no match is found
+  final CopyWith? defaultValue;
+
+  /// {@macro copy_with_type.json_converter_nullable}
+  static const nullable = _CopyWithTypeNullableConv();
+
+  static const _simpleName = 'simple';
+  static const _typeSafeName = 'typeSafe';
+
+  @override
+  CopyWith fromJson(Object json) {
+    switch (json) {
+      case _simpleName:
+        return CopyWith.simple;
+      case _typeSafeName:
+        return CopyWith.typeSafe;
+      default:
+        if (defaultValue != null) return defaultValue!;
+
+        throw Exception('Unknown field: $json');
+    }
+  }
+
+  @override
+  Object toJson(CopyWith object) => object.serialized;
 }
 
 /// {@template copy_with_type.json_converter_nullable}
@@ -156,22 +248,22 @@ class CopyWithTypeConv extends JsonConverter<CopyWithType, Object> {
 /// final CopyWithType? myEnum;
 /// ```
 /// {@endtemplate}
-class _CopyWithTypeNullableConv extends JsonConverter<CopyWithType?, Object?> {
+class _CopyWithTypeNullableConv extends JsonConverter<CopyWith?, Object?> {
   /// {@macro copy_with_type.json_converter}
   const _CopyWithTypeNullableConv();
 
   @override
-  CopyWithType? fromJson(Object? json) {
+  CopyWith? fromJson(Object? json) {
     switch (json) {
       case CopyWithTypeConv._simpleName:
-        return CopyWithType.simple;
+        return CopyWith.simple;
       case CopyWithTypeConv._typeSafeName:
-        return CopyWithType.typeSafe;
+        return CopyWith.typeSafe;
       default:
         return null;
     }
   }
 
   @override
-  Object? toJson(CopyWithType? object) => object?.serialized;
+  Object? toJson(CopyWith? object) => object?.serialized;
 }

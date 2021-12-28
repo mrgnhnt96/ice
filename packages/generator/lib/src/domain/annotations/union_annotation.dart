@@ -2,6 +2,7 @@
 // ignore_for_file: implementation_imports, avoid_positional_boolean_parameters
 
 import 'package:analyzer/dart/element/element.dart';
+import 'package:ice/ice.dart';
 import 'package:ice/src/domain/domain.dart';
 import 'package:ice/src/domain/enums/enums.dart';
 import 'package:ice_annotation/ice.dart';
@@ -12,19 +13,17 @@ import 'package:source_gen/source_gen.dart';
 class UnionAnnotation extends IceAnnotation implements IceUnion {
   ///
   const UnionAnnotation({
-    bool? copyWith,
-    CopyWithType? copyWithType,
-    bool? equatable,
-    bool? iceToString,
-    bool? ignoreGettersAsProps,
     IceJsonSerializable? jsonSerializable,
+    required CopyWith copyWith,
+    required bool equatable,
+    required bool iceToString,
+    required bool ignoreGettersAsProps,
     required this.isBase,
     required this.ofUnionType,
     required this.unionTypeId,
     required this.unionTypeKey,
   }) : super(
           copyWith: copyWith,
-          copyWithType: copyWithType,
           equatable: equatable,
           iceToString: iceToString,
           ignoreGettersAsProps: ignoreGettersAsProps,
@@ -62,9 +61,8 @@ class UnionAnnotation extends IceAnnotation implements IceUnion {
       isBase: isBase,
       ofUnionType: unionType,
       unionTypeId: unionTypeId,
-      unionTypeKey: unionTypeKey,
+      unionTypeKey: unionTypeKey ?? iceSettings.unionTypeKey,
       copyWith: iceAnnotation.copyWith,
-      copyWithType: iceAnnotation.copyWithType,
       equatable: iceAnnotation.equatable,
       iceToString: iceAnnotation.iceToString,
       ignoreGettersAsProps: iceAnnotation.ignoreGettersAsProps,
@@ -83,7 +81,7 @@ class UnionAnnotation extends IceAnnotation implements IceUnion {
   final String? unionTypeId;
 
   @override
-  final String? unionTypeKey;
+  final String unionTypeKey;
 
   @override
   @internal
