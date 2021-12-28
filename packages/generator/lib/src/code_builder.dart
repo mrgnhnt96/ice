@@ -20,11 +20,17 @@ class CodeBuilder {
       if (annotations.isIceAnnotation) {
         iceClasses.add(subject);
 
-        if (annotations.isUnionBase) {
+        final union = annotations.union;
+
+        if (union == null) {
+          continue;
+        }
+
+        if (union.isBase) {
           unionClasses.add(subject);
-        } else if (annotations.isUnionType) {
+        } else if (union.isSubUnion) {
           /// sorts classes by the union name
-          final unionType = annotations.ofUnionType!;
+          final unionType = union.ofUnionType!;
           (subUnionClasses[unionType] ??= []).add(subject);
         }
       } else if (annotations.isMethodAnnotation) {
@@ -79,7 +85,7 @@ class CodeBuilder {
     final buffer = _buffer ?? StringBuffer();
 
     for (final subject in iceClasses.values) {
-      final unionType = subject.annotations.ofUnionType;
+      final unionType = subject.annotations.union?.ofUnionType;
       Class? union;
 
       if (unionType != null) {
@@ -96,9 +102,9 @@ class CodeBuilder {
   StringBuffer generate([StringBuffer? _buffer]) {
     final buffer = _buffer ?? StringBuffer();
 
-    generateMethods(buffer);
-    generateUnions(buffer);
     generateIceClasses(buffer);
+    generateUnions(buffer);
+    generateMethods(buffer);
 
     return buffer;
   }
