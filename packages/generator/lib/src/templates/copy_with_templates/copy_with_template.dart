@@ -16,6 +16,26 @@ extension on Class {
       settingsCallback: (settings) => settings.copyWithType,
     );
   }
+
+  /// the constructor to be used to to generate the copyWith method
+  Constructor? copyWithConstructor() {
+    if (constructors.isEmpty) return null;
+
+    final copyWithIndex =
+        constructors.indexWhere((c) => c.isCopyWithConstructor);
+
+    if (copyWithIndex != -1) {
+      return constructors[copyWithIndex];
+    }
+
+    final defaultIndex = constructors.indexWhere((c) => c.isDefault);
+
+    if (defaultIndex != -1) {
+      return constructors[defaultIndex];
+    }
+
+    return constructors.first;
+  }
 }
 
 extension on Constructor {
