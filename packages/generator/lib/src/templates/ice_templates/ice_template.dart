@@ -143,25 +143,28 @@ class IceTemplate extends Template {
     final fromJsonTemplate = FromJsonTemplate.forSubject(subject);
 
     jsonSerializableAnnotation(buffer);
-    buffer.writeObject(
-      classHeader,
-      body: () {
-        writeConstructors(buffer);
-        fromJsonAccessConstructor(buffer);
-        fromJsonTemplate.writeConstructor(buffer);
+    buffer
+      ..writeObject(
+        classHeader,
+        body: () {
+          writeConstructors(buffer);
+          fromJsonAccessConstructor(buffer);
+          fromJsonTemplate.writeConstructor(buffer);
 
-        buffer.writeln();
-        writeFields(buffer);
+          buffer.writeln();
+          writeFields(buffer);
 
-        buffer.writeln();
-        writeProperties(buffer);
+          buffer.writeln();
+          writeProperties(buffer);
 
-        buffer.writeln();
-        writeToJson(buffer);
-      },
-    );
+          buffer.writeln();
+          ToJsonTemplate.forSubject(subject, union).addToBuffer(buffer);
+        },
+      )
+      ..writeln();
 
     includeCopyWithSupport();
+    buffer.writeln();
 
     fromJsonTemplate.addToBuffer(buffer);
   }
@@ -198,10 +201,5 @@ class IceTemplate extends Template {
     if (generateProperties) {
       IceSupport().add(copyWithTemplate.support);
     }
-  }
-
-  ///
-  void writeToJson(StringBuffer buffer) {
-    ToJsonTemplate.forSubject(subject).addToBuffer(buffer);
   }
 }
