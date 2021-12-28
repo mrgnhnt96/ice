@@ -13,7 +13,7 @@ abstract class Template {
   });
 
   /// The template when it wraps sub-templates
-  const Template.wrapper(this.subject) : name = IceOptions.other;
+  const Template.wrapper(this.subject) : name = IceOptions.wrapper;
 
   /// adds the template to the [buffer]
   void addToBuffer(StringBuffer buffer) => gate(buffer);
