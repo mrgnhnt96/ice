@@ -31,6 +31,7 @@ class IceJsonSerializable extends JsonSerializable {
     final defaults = JsonSerializable.defaults;
 
     final allArgs = [
+      if (createFactory ?? true) "constructor: '_'",
       if (createToJson != null && createToJson != defaults.createToJson)
         'createToJson: $createToJson',
       if (createFactory != null && createFactory != defaults.createFactory)
@@ -51,12 +52,12 @@ class IceJsonSerializable extends JsonSerializable {
         'includeIfNull: $includeIfNull',
     ];
 
-    var args = ',';
+    var args = '';
 
     if (allArgs.isNotEmpty) {
       args += '${allArgs.join(', ')},';
     }
 
-    return "@JsonSerializable(constructor: '_'$args)";
+    return '@JsonSerializable($args)';
   }
 }
