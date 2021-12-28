@@ -1,5 +1,5 @@
 // ignore_for_file: comment_references, avoid_dynamic_calls, no_default_cases
-// ignore_for_file: implementation_imports
+// ignore_for_file: implementation_imports, avoid_positional_boolean_parameters
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:ice/ice.dart';
@@ -19,6 +19,8 @@ class MethodAnnotations {
     required this.hasCopyWith,
     required this.hasToString,
     required this.copyWithType,
+    this.createFromJson = false,
+    this.createToJson = false,
   });
 
   /// {@macro method_annotations}
@@ -42,9 +44,29 @@ class MethodAnnotations {
   /// [copyWithType]
   final CopyWithType copyWithType;
 
+  /// whether the `toJson` method should be generated
+  ///
+  /// retrieved from the `JsonSerializable` annotation
+  final bool createToJson;
+
+  /// whether the `fromJson` function should be generated
+  ///
+  /// retrieved from the `JsonSerializable` annotation
+  final bool createFromJson;
+
   /// if the [type] can be generated
   bool canGenerateCopyWith(CopyWithType type) {
     return hasCopyWith && copyWithType == type;
+  }
+
+  /// updates [createToJson]
+  MethodAnnotations updateToJson(bool value) {
+    return copyWith(createToJson: value);
+  }
+
+  /// updates [createFromJson]
+  MethodAnnotations updateFromJson(bool value) {
+    return copyWith(createFromJson: value);
   }
 
   /// All [AnnotationTypes] associated with [MethodAnnotations]
@@ -61,12 +83,16 @@ class MethodAnnotations {
     bool? hasCopyWith,
     bool? hasToString,
     CopyWithType? copyWithType,
+    bool? createToJson,
+    bool? createFromJson,
   }) {
     return MethodAnnotations(
       hasProps: hasProps ?? this.hasProps,
       hasCopyWith: hasCopyWith ?? this.hasCopyWith,
       hasToString: hasToString ?? this.hasToString,
       copyWithType: copyWithType ?? this.copyWithType,
+      createToJson: createToJson ?? this.createToJson,
+      createFromJson: createFromJson ?? this.createFromJson,
     );
   }
 
@@ -103,7 +129,7 @@ class IceAnnotation implements Ice {
     required this.equatable,
     required this.iceToString,
     required this.ignoreGettersAsProps,
-    required this.iceJsonSerializable,
+    required this.jsonSerializable,
   });
 
   /// gets the annotation from the [ElementAnnotation]
@@ -126,7 +152,7 @@ class IceAnnotation implements Ice {
     final ignoreGettersAsProps =
         get<bool>('ignoreGettersAsProps') ?? iceSettings.ignoreGettersAsProps;
     final copyWithType = CopyWithType.values.fromReader(reader, 'copyWithType');
-    final iceJsonAnnotation = reader.peek('iceJsonSerializable')?.objectValue;
+    final iceJsonAnnotation = reader.peek('jsonSerializable')?.objectValue;
 
     IceJsonSerializable? iceJsonSerializable;
 
@@ -152,7 +178,7 @@ class IceAnnotation implements Ice {
       copyWithType: copyWithType ?? CopyWithType.simple,
       iceToString: iceToString,
       ignoreGettersAsProps: ignoreGettersAsProps,
-      iceJsonSerializable: iceJsonSerializable,
+      jsonSerializable: iceJsonSerializable,
     );
   }
 
@@ -172,7 +198,7 @@ class IceAnnotation implements Ice {
   final bool? ignoreGettersAsProps;
 
   @override
-  final IceJsonSerializable? iceJsonSerializable;
+  final IceJsonSerializable? jsonSerializable;
 }
 
 /// The methods that will be generated with the [Ice] annotation
@@ -193,5 +219,5 @@ enum IceOptions {
   fromJson,
 
   /// any other option
-  other,
+  wrapper,
 }
