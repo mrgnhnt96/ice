@@ -94,7 +94,8 @@ class ToJsonTemplate extends Template {
   bool get canBeGenerated {
     if (subject.annotations.isUnionBase) {
       if (unions.isNotEmpty) {
-        return false;
+        // TODO(mrgnhnt96): check if all/any fields have toJson()
+        return true;
       }
     }
 
