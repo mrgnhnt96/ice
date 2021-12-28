@@ -130,4 +130,7 @@ extension AnnotationTypesXX on AnnotationTypes {
 
   /// any other annotation
   bool get isOther => this == AnnotationTypes.other;
+
+  /// The [JsonSerializable] annotation
+  bool get isJsonSerializable => this == AnnotationTypes.jsonSerializable;
 }
