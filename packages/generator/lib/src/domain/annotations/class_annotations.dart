@@ -92,6 +92,7 @@ class ClassAnnotations {
   /// the ice annotation
   final IceAnnotation? _ice;
 
+  /// gets the ice annotation from [Ice] or [IceUnion]
   IceAnnotation? get ice => _ice ?? union;
 
   /// the annotations for the methods to be generated
@@ -108,4 +109,10 @@ class ClassAnnotations {
 
   /// if the class is annotated with [MethodAnnotation]
   bool get isMethodAnnotation => methods != null;
+
+  /// check if class is the union base
+  bool get isUnionBase => union?.isBase ?? false;
+
+  /// check if class is a sub union
+  bool get isSubUnion => union?.isSubUnion ?? false;
 }
