@@ -31,7 +31,7 @@ class FromJsonTemplate extends Template {
 
   void _writeAsUnion(StringBuffer buffer) {
     buffer.writeObject(
-      '_\$${subject.name}FromJson(Map<String, dynamic> json)',
+      '${subject.name} _\$${subject.name}FromJson(Map<String, dynamic> json)',
       body: () {
         buffer.writeObject(
           // TODO(mrgnhnt96): get unionType key
