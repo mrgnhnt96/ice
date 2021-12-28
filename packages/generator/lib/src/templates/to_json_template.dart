@@ -68,7 +68,7 @@ class ToJsonTemplate extends Template {
           ..writeObject(
             'if (includeUnionType)',
             body: () {
-              buffer.writeln("map[r'\$unionType'] = '${subject.name}';");
+              buffer.writeln(r"map[r'$unionType'] = $unionType;");
             },
           )
           ..writeln('return map;');
