@@ -2,8 +2,12 @@
 
 import 'package:ice/ice.dart';
 import 'package:ice/src/domain/domain.dart';
-import 'package:ice_annotation/src/methods.dart';
+import 'package:ice_annotation/ice.dart';
 import 'package:meta/meta.dart';
+
+extension on CopyWith {
+  bool get isNone => this == CopyWith.none;
+}
 
 /// The abstraction for a template
 abstract class Template {
@@ -40,9 +44,9 @@ abstract class Template {
         if (subject.doNotGenerate.copyWith) return false;
 
         return subject.metaSettings(
-          iceCallback: (ice) => ice.copyWith,
-          methodCallback: (method) => method.hasCopyWith,
-          settingsCallback: (settings) => settings.copyWith,
+          iceCallback: (ice) => !ice.copyWith.isNone,
+          methodCallback: (method) => !method.copyWithType.isNone,
+          settingsCallback: (settings) => !settings.copyWith.isNone,
         );
       case IceOptions.equatable:
         if (subject.doNotGenerate.equatable) return false;

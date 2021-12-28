@@ -88,11 +88,6 @@ class IceTemplate extends Template {
       subject.annotations.ice != null || subjectIsUnionBase;
 
   ///
-  CopyWithTemplate get copyWithTemplate =>
-      _copyWithTemplate ??= CopyWithTemplate.forSubject(subject);
-  CopyWithTemplate? _copyWithTemplate;
-
-  ///
   String get classHeader => subject.classHeader(union);
 
   ///
@@ -163,9 +158,6 @@ class IceTemplate extends Template {
       )
       ..writeln();
 
-    includeCopyWithSupport();
-    buffer.writeln();
-
     fromJsonTemplate.addToBuffer(buffer);
   }
 
@@ -178,8 +170,12 @@ class IceTemplate extends Template {
   @mustCallSuper
   void writeProperties(StringBuffer buffer) {
     if (generateProperties) {
-      copyWithTemplate.addToBuffer(buffer);
-      buffer.writeln();
+      final copyWithTemplate = CopyWithTemplate.forSubject(subject);
+      if (copyWithTemplate != null) {
+        copyWithTemplate.addToBuffer(buffer);
+        IceSupport().add(copyWithTemplate.support);
+        buffer.writeln();
+      }
 
       PropsTemplate.forSubject(
         subject,
@@ -193,13 +189,6 @@ class IceTemplate extends Template {
         asExtension: false,
       ).addToBuffer(buffer);
       buffer.writeln();
-    }
-  }
-
-  ///
-  void includeCopyWithSupport() {
-    if (generateProperties) {
-      IceSupport().add(copyWithTemplate.support);
     }
   }
 }

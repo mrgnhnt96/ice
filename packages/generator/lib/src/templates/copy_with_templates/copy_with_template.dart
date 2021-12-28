@@ -9,11 +9,11 @@ import 'package:ice/src/util/string_buffer_ext.dart';
 import 'package:ice_annotation/ice.dart';
 
 extension on Class {
-  CopyWithType get copyWithType {
+  CopyWith get copyWith {
     return metaSettings(
       methodCallback: (method) => method.copyWithType,
-      iceCallback: (ice) => ice.copyWithType,
-      settingsCallback: (settings) => settings.copyWithType,
+      iceCallback: (ice) => ice.copyWith,
+      settingsCallback: (settings) => settings.copyWith,
     );
   }
 
@@ -50,7 +50,7 @@ extension on Constructor {
   }
 }
 
-extension on CopyWithType {
+extension on CopyWith {
   String get docComment {
     final desc = description;
 
@@ -75,21 +75,24 @@ abstract class CopyWithTemplate extends Template {
         super(subject, name: IceOptions.copyWith);
 
   /// {@macro copy_with}
-  factory CopyWithTemplate.forSubject(Class subject) {
-    switch (subject.copyWithType) {
-      case CopyWithType.simple:
-        return CopyWithSimpleTemplate.forSubject(
-          subject,
-        );
-      case CopyWithType.typeSafe:
+  static CopyWithTemplate? forSubject(Class subject) {
+    final type = subject.copyWith;
+    switch (type) {
+      case CopyWith.typeSafe:
         return CopyWithFunctionTemplate.forSubject(
           subject,
         );
+      case CopyWith.simple:
+        return CopyWithSimpleTemplate.forSubject(
+          subject,
+        );
+      case CopyWith.none:
+        return null;
     }
   }
 
   /// the type of the copyWith method
-  final CopyWithType type;
+  final CopyWith type;
   final Constructor? _constructor;
 
   /// the constructor of the class to be used for the copyWith method
@@ -106,15 +109,11 @@ abstract class CopyWithTemplate extends Template {
 
   @override
   bool get canBeGenerated {
-    if (!super.canBeGenerated) {
-      return false;
-    }
-
     if (subject.annotations.isUnionBase) {
       return false;
     }
 
-    return true;
+    return super.canBeGenerated;
   }
 
   ///
