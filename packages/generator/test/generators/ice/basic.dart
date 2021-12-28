@@ -42,3 +42,14 @@ State _$StateFromJson(Map<String, dynamic> json) => State('', 1);
 class Ready {
   const Ready();
 }
+
+@IceUnion.of(State)
+class NotReady {
+  const NotReady();
+}
+
+@IceCopyWith.simple
+class Something {}
+
+@Ice()
+class Else {}

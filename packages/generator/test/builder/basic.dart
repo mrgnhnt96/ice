@@ -6,7 +6,7 @@ part 'output/basic.dart';
 
 @IceUnion.of(
   State,
-  iceJsonSerializable: null,
+  jsonSerializable: null,
 )
 class Example extends _$Example {
   Example(this.name);
@@ -18,18 +18,18 @@ class Example extends _$Example {
 
 @IceUnion.of(
   State,
-  iceJsonSerializable: null,
+  jsonSerializable: null,
 )
 class Other extends _$Other {}
 
 @IceUnion.of(
   State,
-  iceJsonSerializable: null,
+  jsonSerializable: IceJsonSerializable(),
 )
 class Error extends _$Error {}
 
 @IceUnion.create(
-  iceJsonSerializable: null,
+  jsonSerializable: null,
 )
 class State extends _$State {}
 
