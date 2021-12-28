@@ -27,6 +27,7 @@ class IceJsonSerializable extends JsonSerializable {
 
   /// converts all values to the json_serializable annotation
   String get asAnnotation {
+    // ignore: deprecated_member_use
     final defaults = JsonSerializable.defaults;
 
     final allArgs = [
