@@ -1,4 +1,5 @@
 // ignore_for_file: avoid_field_initializers_in_const_classes, overridden_fields
+// ignore_for_file: prefer_initializing_formals
 
 import 'package:ice_annotation/src/enums/copy_with_type.dart';
 import 'package:ice_annotation/src/ice_json_serializable.dart';
@@ -52,26 +53,50 @@ class IceUnion implements Ice {
   /// {@macro ice_union_base}
   const IceUnion.of(
     this.base, {
+    this.unionTypeId,
     this.copyWith,
     this.copyWithType,
     this.equatable,
     this.iceToString,
     this.ignoreGettersAsProps,
     this.jsonSerializable = const IceJsonSerializable(),
-  });
+  }) : unionTypeKey = '';
 
   /// {@macro ice_union_base}
   const IceUnion.create({
+    this.unionTypeKey,
     this.copyWith,
     this.copyWithType,
     this.equatable,
     this.iceToString,
     this.ignoreGettersAsProps,
     this.jsonSerializable = const IceJsonSerializable(),
-  }) : base = IceUnion;
+  })  : base = IceUnion,
+        unionTypeId = '';
 
   /// the base of the union
   final Type base;
+
+  /// the key used to identify the union during serialization
+  ///
+  /// ```dart
+  /// {
+  ///   unionTypeKey: unionTypeId
+  /// }
+  /// ```
+  ///
+  /// default: `$unionType`
+  final String? unionTypeKey;
+
+  /// the id used as the union type during serialization
+  ///
+  /// ```dart
+  /// {
+  ///   unionTypeKey: unionTypeId
+  /// }
+  /// ```
+  /// defaults to the class name
+  final String? unionTypeId;
 
   @override
   final bool? copyWith;
