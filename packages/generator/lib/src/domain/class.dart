@@ -1,6 +1,7 @@
 // ignore_for_file: comment_references, implementation_imports, no_default_cases
 
 import 'package:analyzer/dart/element/element.dart';
+
 import 'package:ice/ice.dart';
 import 'package:ice/src/domain/class_annotations.dart';
 import 'package:ice/src/domain/domain.dart';
@@ -97,6 +98,8 @@ class Class {
   /// returns false if the method already exists
   bool canGeneratedMethod(IceOptions option) {
     switch (option) {
+      case IceOptions.wrapper:
+        return true;
       case IceOptions.copyWith:
         return metaSettings(
           iceCallback: (ice) => ice.copyWith,
@@ -116,11 +119,19 @@ class Class {
           settingsCallback: (settings) => settings.iceToString,
         );
       case IceOptions.toJson:
-        return annotations.createToJson;
+        return metaSettings(
+          iceCallback: (ice) => ice.jsonSerializable?.createToJson,
+          methodCallback: (methods) => methods.createToJson,
+          settingsCallback: (settings) =>
+              settings.jsonSerializable.createToJson,
+        );
       case IceOptions.fromJson:
-        return annotations.createFromJson;
-      case IceOptions.other:
-        return true;
+        return metaSettings(
+          iceCallback: (ice) => ice.jsonSerializable?.createFactory,
+          methodCallback: (methods) => methods.createToJson,
+          settingsCallback: (settings) =>
+              settings.jsonSerializable.createFactory,
+        );
     }
   }
 
@@ -178,5 +189,15 @@ class Class {
     }
 
     return getters;
+  }
+
+  @override
+  String toString() {
+    return 'Class('
+        'name: $name, '
+        'constructors: ${constructors.length}, '
+        'annotations: $annotations, '
+        'fields: ${fields.length}, '
+        ')';
   }
 }
