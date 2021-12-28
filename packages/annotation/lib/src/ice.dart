@@ -2,7 +2,6 @@
 
 import 'package:ice_annotation/src/enums/copy_with_type.dart';
 import 'package:ice_annotation/src/ice_json_serializable.dart';
-import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta_meta.dart';
 
 export 'package:json_annotation/json_annotation.dart';
@@ -19,7 +18,7 @@ class Ice {
     this.equatable,
     this.ignoreGettersAsProps,
     this.iceToString,
-    this.iceJsonSerializable = const IceJsonSerializable(),
+    this.jsonSerializable = const IceJsonSerializable(),
   });
 
   /// generates the copyWith method
@@ -42,7 +41,7 @@ class Ice {
   final bool? iceToString;
 
   /// generates the serializable methods
-  final IceJsonSerializable? iceJsonSerializable;
+  final IceJsonSerializable? jsonSerializable;
 }
 
 /// {@template ice_union_base}
@@ -58,7 +57,7 @@ class IceUnion implements Ice {
     this.equatable,
     this.iceToString,
     this.ignoreGettersAsProps,
-    this.iceJsonSerializable = const IceJsonSerializable(),
+    this.jsonSerializable = const IceJsonSerializable(),
   });
 
   /// {@macro ice_union_base}
@@ -68,7 +67,7 @@ class IceUnion implements Ice {
     this.equatable,
     this.iceToString,
     this.ignoreGettersAsProps,
-    this.iceJsonSerializable = const IceJsonSerializable(),
+    this.jsonSerializable = const IceJsonSerializable(),
   }) : base = IceUnion;
 
   /// the base of the union
@@ -90,23 +89,5 @@ class IceUnion implements Ice {
   final bool? ignoreGettersAsProps;
 
   @override
-  final IceJsonSerializable? iceJsonSerializable;
-}
-
-///
-extension JsonSerializableX on JsonSerializable {
-  ///
-  IceJsonSerializable toIce() {
-    return IceJsonSerializable(
-      anyMap: anyMap,
-      checked: checked,
-      createFactory: createFactory,
-      createToJson: createToJson,
-      disallowUnrecognizedKeys: disallowUnrecognizedKeys,
-      explicitToJson: explicitToJson,
-      fieldRename: fieldRename,
-      ignoreUnannotated: ignoreUnannotated,
-      includeIfNull: includeIfNull,
-    );
-  }
+  final IceJsonSerializable? jsonSerializable;
 }
