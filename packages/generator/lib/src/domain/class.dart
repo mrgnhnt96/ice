@@ -1,9 +1,8 @@
 // ignore_for_file: comment_references, implementation_imports, no_default_cases
 
 import 'package:analyzer/dart/element/element.dart';
-
 import 'package:ice/ice.dart';
-import 'package:ice/src/domain/class_annotations.dart';
+import 'package:ice/src/domain/annotations/annotations.dart';
 import 'package:ice/src/domain/do_not_generate.dart';
 import 'package:ice/src/domain/domain.dart';
 import 'package:ice/src/domain/field.dart';
