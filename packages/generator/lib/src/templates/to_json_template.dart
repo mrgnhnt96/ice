@@ -64,7 +64,6 @@ class ToJsonTemplate extends Template {
           ..writeObject(
             'if (includeUnionType)',
             body: () {
-              // TODO(mrgnhnt96): add ability to change the key from `$unionType`
               buffer.writeln("map[r'\$unionType'] = '${subject.name}';");
             },
           )
