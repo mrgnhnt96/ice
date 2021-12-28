@@ -44,6 +44,7 @@ extension on Class {
       if (ctor.isJsonConstructor) {
         return ctor;
       }
+
       if (ctor.isDefault) {
         defaultCtor = ctor;
       }
@@ -95,12 +96,22 @@ class IceTemplate extends Template {
   String get classHeader => subject.classHeader(union);
 
   ///
-  void constructor(StringBuffer buffer) {
+  void writeConstructors(StringBuffer buffer) {
     buffer.writeln('const ${subject.genName}();');
   }
 
   /// generates the constructor that json_serializable uses
-  void toJsonConstructor(StringBuffer buffer) {
+  void fromJsonConstructor(StringBuffer buffer) {
+    final iceJsonSerializable = subject.annotations.ice?.jsonSerializable;
+
+    if (iceJsonSerializable == null) {
+      return;
+    }
+
+    if (!(iceJsonSerializable.createFactory ?? true)) {
+      return;
+    }
+
     final constructor = subject.fromJsonConstructor;
     final constStr = constructor.isConst ? 'const ' : '';
 
@@ -133,8 +144,8 @@ class IceTemplate extends Template {
     buffer.writeObject(
       classHeader,
       body: () {
-        toJsonConstructor(buffer);
-        constructor(buffer);
+        fromJsonConstructor(buffer);
+        writeConstructors(buffer);
 
         writeFields(buffer);
 

@@ -48,7 +48,7 @@ class UnionClassTemplate extends IceTemplate {
   }
 
   @override
-  void constructor(StringBuffer buffer) {
+  void writeConstructors(StringBuffer buffer) {
     if (subjectIsOfUnion) {
       buffer
         ..writeAll(
