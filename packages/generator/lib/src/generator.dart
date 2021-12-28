@@ -8,6 +8,7 @@ import 'package:build/build.dart';
 import 'package:ice/src/code_builder.dart';
 import 'package:ice/src/domain/class.dart';
 import 'package:ice/src/domain/ice_support.dart';
+import 'package:ice/src/util/iterable_ext.dart';
 import 'package:ice_annotation/src/ice.dart';
 import 'package:source_gen/source_gen.dart';
 
@@ -68,17 +69,5 @@ class IceGenerator extends Generator {
 extension on ElementAnnotation {
   String get astName {
     return (this as ElementAnnotationImpl).annotationAst.name.name;
-  }
-}
-
-extension on List {
-  T? firstWhereOrNull<T>(bool Function(T) predicate) {
-    for (final element in this) {
-      if (predicate(element as T)) {
-        return element;
-      }
-    }
-
-    return null;
   }
 }
