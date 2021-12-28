@@ -8,11 +8,8 @@ extension StringBufferX on StringBuffer {
   void writeObject(
     String string, {
     required void Function() body,
-    int tab = 0,
     String? open,
     String? close,
-    bool appendNewLine = true,
-    bool includeSpaceBetweenOpen = true,
   }) {
     final openAndCloseAreNullOrNotNull = (open == null) ^ (close == null);
     if (openAndCloseAreNullOrNotNull) {
@@ -23,15 +20,10 @@ extension StringBufferX on StringBuffer {
 
     final opener = open ?? '{';
     final closer = close ?? '}';
-    final spacer = includeSpaceBetweenOpen ? ' ' : '';
 
-    writeln('$string$spacer$opener');
+    writeln('$string$opener');
     body();
-    if (appendNewLine) {
-      writeln(closer);
-    } else {
-      write(closer);
-    }
+    write(closer);
   }
 
   /// writes a method signature
