@@ -90,5 +90,5 @@ class UnionAnnotation extends IceAnnotation implements IceUnion {
   Type get base => throw UnimplementedError();
 
   /// whether the class is a union
-  bool get isUnionType => ofUnionType != null;
+  bool get isSubUnion => ofUnionType != null;
 }
