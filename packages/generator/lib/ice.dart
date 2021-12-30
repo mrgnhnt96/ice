@@ -57,9 +57,20 @@ Builder iceBuilder(BuilderOptions options) {
   // get settings from the build file
   iceSettings = IceSettings.fromOptions(options.config);
 
+  String Function(String)? formatter = (str) => str;
+
+  if (IceSettings.debugOutput) {
+    formatter = null;
+  } else {
+    if (iceSettings.formatOutput) {
+      formatter = null;
+    }
+  }
+
   return PartBuilder(
     [const IceGenerator()],
-    '.ice.dart',
+    iceExtension,
     header: iceHeader,
+    formatOutput: formatter,
   );
 }
