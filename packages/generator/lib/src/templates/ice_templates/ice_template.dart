@@ -5,7 +5,48 @@ import 'package:ice/src/templates/ice_templates/union_class_template.dart';
 import 'package:ice/src/templates/templates.dart';
 import 'package:ice/src/templates/to_json_template.dart';
 import 'package:ice/src/util/string_buffer_ext.dart';
+import 'package:ice_annotation/ice.dart'
+    show IceJsonSerializable, JsonSerializable;
 import 'package:meta/meta.dart';
+
+extension on IceJsonSerializable {
+  /// converts all values to the json_serializable annotation
+  String asAnnotation(String fromJsonAccessor) {
+    // ignore: deprecated_member_use
+    final defaults = JsonSerializable.defaults;
+
+    final allArgs = [
+      if (createFactory ?? true) "constructor: r'$fromJsonAccessor'",
+      if (createToJson != null && createToJson != defaults.createToJson)
+        'createToJson: $createToJson',
+      if (createFactory != null && createFactory != defaults.createFactory)
+        'createFactory: $createFactory',
+      if (explicitToJson != null && explicitToJson != defaults.explicitToJson)
+        'explicitToJson: $explicitToJson',
+      if (fieldRename != null && fieldRename != defaults.fieldRename)
+        'fieldRename: $fieldRename',
+      if (anyMap != null && anyMap != defaults.anyMap) 'anyMap: $anyMap',
+      if (this.checked != null && this.checked != defaults.checked)
+        'checked: ${this.checked}',
+      if (disallowUnrecognizedKeys != null &&
+          disallowUnrecognizedKeys != defaults.disallowUnrecognizedKeys)
+        'disallowUnrecognizedKeys: $disallowUnrecognizedKeys',
+      if (ignoreUnannotated != null &&
+          ignoreUnannotated != defaults.ignoreUnannotated)
+        'ignoreUnannotated: $ignoreUnannotated',
+      if (includeIfNull != null && includeIfNull != defaults.includeIfNull)
+        'includeIfNull: $includeIfNull',
+    ];
+
+    var args = '';
+
+    if (allArgs.isNotEmpty) {
+      args += '${allArgs.join(', ')},';
+    }
+
+    return '@JsonSerializable($args)';
+  }
+}
 
 extension on Class {
   String classHeader([Class? union]) {
@@ -36,21 +77,6 @@ extension on Class {
     }
 
     return 'abstract class $genName$mixins$implements';
-  }
-
-  Constructor get fromJsonConstructor {
-    Constructor? defaultCtor;
-    for (final ctor in constructors) {
-      if (ctor.isJsonConstructor) {
-        return ctor;
-      }
-
-      if (ctor.isDefault) {
-        defaultCtor = ctor;
-      }
-    }
-
-    return defaultCtor ?? constructors.first;
   }
 }
 
@@ -95,33 +121,6 @@ class IceTemplate extends Template {
     buffer.writeln('const ${subject.genName}();');
   }
 
-  /// generates the constructor that json_serializable uses
-  void fromJsonAccessConstructor(StringBuffer buffer) {
-    final iceJsonSerializable = subject.annotations.ice?.jsonSerializable;
-
-    if (iceJsonSerializable == null) {
-      return;
-    }
-
-    if (!(iceJsonSerializable.createFactory ?? true)) {
-      return;
-    }
-
-    final constructor = subject.fromJsonConstructor;
-    final constStr = constructor.isConst ? 'const ' : '';
-
-    buffer
-      ..writeObject(
-        '${constStr}factory ${subject.genName}._',
-        open: '(',
-        close: ')',
-        body: () {
-          buffer.writeAll(constructor.params.formatted(), ',');
-        },
-      )
-      ..writeln('= ${constructor.displayName};');
-  }
-
   ///
   void jsonSerializableAnnotation(StringBuffer buffer) {
     final iceJsonSerializable = subject.annotations.ice?.jsonSerializable;
@@ -130,7 +129,9 @@ class IceTemplate extends Template {
       return;
     }
 
-    buffer.writeln(iceJsonSerializable.asAnnotation);
+    buffer.writeln(
+      iceJsonSerializable.asAnnotation(FromJsonTemplate.fromJsonAccessor),
+    );
   }
 
   @override
@@ -143,7 +144,7 @@ class IceTemplate extends Template {
         classHeader,
         body: () {
           writeConstructors(buffer);
-          fromJsonAccessConstructor(buffer);
+
           fromJsonTemplate.writeConstructor(buffer);
 
           buffer.writeln();
