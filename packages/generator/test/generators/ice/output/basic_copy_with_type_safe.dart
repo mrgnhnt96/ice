@@ -6,8 +6,8 @@ part of '../basic_copy_with_type_safe.dart';
 
 typedef CopyCallback<T> = T Function(T);
 
-class _$State with EquatableMixin {
-  factory _$State(
+class _$Example with EquatableMixin {
+  factory _$Example(
     String name,
     int? age, {
     double? money,
@@ -15,7 +15,7 @@ class _$State with EquatableMixin {
     DateTime? date,
   }) = Example;
 
-  const _$State.ice(
+  const _$Example.ice(
     this.name,
     this.age, {
     this.money,
@@ -48,12 +48,12 @@ class _$State with EquatableMixin {
   @override
   List<Object?> get props => [name, age, money, isCool, date];
 
-  Map<String, dynamic> toJson() => _$StateToJson(this);
+  Map<String, dynamic> toJson() => _$ExampleToJson(this);
 
   @override
   String toString() {
     return '''
-State(
+Example(
   name: $name
   age: $age
   money: $money
