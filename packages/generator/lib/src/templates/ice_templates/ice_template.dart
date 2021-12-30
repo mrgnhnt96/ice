@@ -144,7 +144,7 @@ class IceTemplate extends Template {
         body: () {
           writeConstructors(buffer);
 
-          fromJsonTemplate.writeConstructor(buffer);
+          fromJsonTemplate.writeConstructors(buffer);
 
           buffer.writeln();
           writeFields(buffer);
