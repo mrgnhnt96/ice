@@ -109,7 +109,7 @@ class CodeBuilder {
         union = unionClasses[unionType];
       }
 
-      IceTemplate.forSubject(subject, union: union).addToBuffer(buffer);
+      IceClassTemplate.forSubject(subject, union: union).addToBuffer(buffer);
     }
 
     return buffer;

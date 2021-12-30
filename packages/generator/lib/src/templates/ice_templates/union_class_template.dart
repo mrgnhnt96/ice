@@ -1,13 +1,13 @@
 // ignore_for_file: unused_field, public_member_api_docs
 
 import 'package:ice/src/domain/domain.dart';
-import 'package:ice/src/templates/ice_templates/ice_template.dart';
+import 'package:ice/src/templates/ice_templates/ice_class_template.dart';
 
 /// A template to generate methods for
 /// - copyWith()
 /// - Equatable Props
 /// - toString()
-class UnionClassTemplate extends IceTemplate {
+class UnionClassTemplate extends IceClassTemplate {
   UnionClassTemplate.forSubject(
     Class subject, {
     required Class? union,

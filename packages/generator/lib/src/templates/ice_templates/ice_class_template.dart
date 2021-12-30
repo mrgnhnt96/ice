@@ -82,15 +82,15 @@ extension on Class {
 }
 
 ///
-class IceTemplate extends Template {
+class IceClassTemplate extends Template {
   ///
-  IceTemplate.wrapper(
+  IceClassTemplate.wrapper(
     Class subject, {
     this.union,
   }) : super.wrapper(subject);
 
   ///
-  factory IceTemplate.forSubject(
+  factory IceClassTemplate.forSubject(
     Class subject, {
     required Class? union,
   }) {
@@ -98,7 +98,7 @@ class IceTemplate extends Template {
       return UnionClassTemplate.forSubject(subject, union: union);
     }
 
-    return IceTemplate.wrapper(subject);
+    return IceClassTemplate.wrapper(subject);
   }
 
   ///
