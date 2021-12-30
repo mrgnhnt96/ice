@@ -2,7 +2,6 @@
 
 import 'package:change_case/change_case.dart';
 import 'package:ice/src/domain/domain.dart';
-import 'package:ice/src/domain/enums/position_type.dart';
 import 'package:ice/src/domain/ice_support.dart';
 import 'package:ice/src/templates/from_json_template.dart';
 import 'package:ice/src/templates/templates.dart';
@@ -10,8 +9,6 @@ import 'package:ice/src/templates/to_json_template.dart';
 import 'package:ice/src/util/string_buffer_ext.dart';
 
 extension on Class {
-  String get nameAsArg => nonPrivateName.toCamelCase();
-
   String mapParams(String result, {bool isRequired = false}) {
     final nullableStr = isRequired ? '' : '?';
     final keyword = isRequired ? 'required ' : '';
@@ -52,25 +49,6 @@ extension on Class {
   }
 
   String get unionName => name;
-}
-
-extension on Constructor {
-  String get args {
-    final args = <String>[];
-
-    for (final param in params) {
-      final name = param.name;
-
-      if (param.positionType.isNamed) {
-        args.add('$name: $name');
-        continue;
-      }
-
-      args.add(name);
-    }
-
-    return args.join(',\n');
-  }
 }
 
 /// A template to generate methods for
