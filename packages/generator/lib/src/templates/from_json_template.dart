@@ -50,40 +50,40 @@ class FromJsonTemplate extends Template {
 
     final constStr = constructor.isConst ? 'const ' : '';
 
-    buffer
-      ..writeln(
-        '${constStr}factory ${subject.genName}.$fromJsonAccessor'
-        '${constructor.declaration}',
-      )
-      ..writeln('= ${constructor.displayName};');
+    buffer.write(
+      '${constStr}factory ${subject.genName}.$fromJsonAccessor'
+      '${constructor.declaration}'
+      '= ${constructor.displayName};',
+    );
   }
 
-  void writeConstructor(StringBuffer buffer) {
+  void writeConstructors(StringBuffer buffer) {
     if (!canBeGenerated) {
       return;
     }
 
-    fromJsonAccessConstructor(buffer);
+    void writeConstructor() {
+      final constructor = subject.fromJsonConstructor;
 
-    if (subject.doNotGenerate.fromJsonConstructor) {
-      return;
-    }
+      if (constructor == null) {
+        log.info(
+          'this class has no constructors, but it should because '
+          'we need to get the default constructor',
+        );
+        return;
+      }
 
-    final constructor = subject.fromJsonConstructor;
-
-    if (constructor == null) {
-      log.info(
-        'this class has no constructors, but it should because '
-        'we need to get the default constructor',
+      buffer.writeln(
+        'factory ${subject.genName}'
+        '.fromJson(Map<String, dynamic> json) => '
+        '_\$\$${subject.name}FromJson(json);',
       );
-      return;
     }
 
-    buffer.writeln(
-      'factory ${subject.genName}'
-      '.fromJson(Map<String, dynamic> json) => '
-      '_\$\$${subject.name}FromJson(json);',
-    );
+    if (!subject.doNotGenerate.fromJsonConstructor) {
+      writeConstructor();
+    }
+    fromJsonAccessConstructor(buffer);
   }
 
   void _writeAsUnion(StringBuffer buffer) {
