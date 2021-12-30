@@ -1,6 +1,7 @@
 // ignore_for_file: comment_references, implementation_imports, no_default_cases
 
 import 'package:analyzer/dart/element/element.dart';
+import 'package:change_case/src/change_case.dart';
 import 'package:ice/ice.dart';
 import 'package:ice/src/domain/annotations/annotations.dart';
 import 'package:ice/src/domain/do_not_generate.dart';
@@ -118,6 +119,33 @@ class Class {
   /// the name of the union base class
   String get unionBase {
     return '_\$${cleanName}Union';
+  }
+
+  /// gets the name formatted in camelCase
+  String get nameAsArg => nonPrivateName.toCamelCase();
+
+  /// returns the default constructor if no constructors match [predicate]\
+  /// returns first constructor if no default constructor is found\
+  /// returns null if no constructors are found
+  Constructor? constructorWhere([bool Function(Constructor)? predicate]) {
+    if (constructors.isEmpty) return null;
+
+    Constructor? defaultCtor;
+    for (final ctor in constructors) {
+      if (predicate?.call(ctor) ?? false) {
+        return ctor;
+      }
+
+      if (ctor.isDefault) {
+        defaultCtor = ctor;
+      }
+
+      if (defaultCtor != null && predicate == null) {
+        return defaultCtor;
+      }
+    }
+
+    return defaultCtor ?? constructors.first;
   }
 
   /// formats all fields as getters
