@@ -2,6 +2,7 @@
 
 import 'package:ice/src/domain/enums/copy_with_type_ext.dart';
 import 'package:ice_annotation/ice.dart';
+import 'package:meta/meta.dart';
 
 /// {@template ice_settings}
 /// A class that contains the settings from the build.yaml
@@ -15,6 +16,7 @@ class IceSettings implements Ice {
     required this.ignoreGettersAsProps,
     required this.jsonSerializable,
     required this.unionTypeKey,
+    required this.formatOutput,
   });
 
   /// the default settings for ice
@@ -26,6 +28,7 @@ class IceSettings implements Ice {
           ignoreGettersAsProps: true,
           jsonSerializable: const SettingJsonSerializable._default(),
           unionTypeKey: r'$unionType',
+          formatOutput: false,
         );
 
   /// {@macro ice_settings}
@@ -46,8 +49,29 @@ class IceSettings implements Ice {
       ignoreGettersAsProps: config['ignore_getters_as_props'] as bool? ??
           defaultValues.ignoreGettersAsProps,
       jsonSerializable: iceJsonSerializable,
+      formatOutput:
+          config['format_output'] as bool? ?? defaultValues.formatOutput,
     );
   }
+
+  /// whether to format the output
+  static bool get debugOutput => _debugOutput;
+  @visibleForTesting
+  static set debugOutput(bool value) {
+    _debugOutput = value;
+    // ignore: avoid_print
+    print(
+      [
+        '',
+        '--- --- ---',
+        '(TESTING) FORMATTING OUTPUT',
+        '--- --- ---',
+        '',
+      ].join('\n'),
+    );
+  }
+
+  static bool _debugOutput = false;
 
   @override
   final CopyWith copyWith;
@@ -66,6 +90,10 @@ class IceSettings implements Ice {
 
   /// the default key to be used for union serialization
   final String unionTypeKey;
+
+  /// whether to format the output of the generated code
+  /// using the dartfmt tool
+  final bool formatOutput;
 }
 
 ///
@@ -133,7 +161,7 @@ extension on JsonSerializable {
 
     return SettingJsonSerializable(
       anyMap: anyMap ?? defaults.anyMap,
-      checked: checked ?? defaults.checked,
+      checked: this.checked ?? defaults.checked,
       createFactory: createFactory ?? defaults.createFactory,
       createToJson: createToJson ?? defaults.createToJson,
       disallowUnrecognizedKeys:
