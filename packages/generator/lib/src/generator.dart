@@ -1,5 +1,7 @@
 // ignore_for_file: comment_references, implementation_imports
 
+import 'dart:io';
+
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/src/dart/element/element.dart';
 import 'package:build/build.dart';
@@ -21,7 +23,43 @@ class IceGenerator extends Generator {
   String? generate(LibraryReader library, BuildStep buildStep) {
     final classes = iceClassesFrom(library);
 
+    if (classes.isEmpty) {
+      buildStep.reportUnusedAssets([buildStep.inputId]);
+      return null;
+    }
+
     final buffer = StringBuffer();
+
+    final assets = <AssetId>{};
+
+    for (final import in library.element.imports) {
+      final importedLibrary = import.importedLibrary;
+      var uri = importedLibrary?.identifier;
+      if (importedLibrary == null || uri == null) {
+        continue;
+      }
+
+      final importReader = LibraryReader(importedLibrary);
+      final classes = rawClassesFrom(importReader);
+
+      if (classes.isNotEmpty) {
+        continue;
+      }
+
+      uri = uri.replaceFirst('package:', '');
+
+      // possible dart import
+      if (uri.contains(':')) {
+        continue;
+      }
+      final separator = Platform.pathSeparator;
+      uri = uri.replaceFirst(separator, '|lib$separator');
+
+      final asset = AssetId.parse(uri);
+      assets.add(asset);
+    }
+
+    buildStep.reportUnusedAssets(assets);
 
     CodeBuilder(classes).generate(buffer);
 
@@ -33,12 +71,11 @@ class IceGenerator extends Generator {
     return buffer.toString();
   }
 
-  /// gets all the classes annottated with `(i|I)ce.*`
-  Iterable<Class> iceClassesFrom(LibraryReader library) {
+  /// checks for classes that have the [Ice] annotation
+  Iterable<ClassElement> rawClassesFrom(LibraryReader library) {
     final classes = library.classes;
 
     final iceClasses = <ClassElement>[];
-
     bool hasIceAnnotation(ElementAnnotation annotation) {
       final name = annotation.astName;
 
@@ -56,11 +93,14 @@ class IceGenerator extends Generator {
       }
     }
 
-    for (final subject in iceClasses) {
-      Class.fromElement(subject);
-    }
+    return iceClasses;
+  }
 
-    return iceClasses.map(Class.fromElement);
+  /// gets all the classes annottated with `(i|I)ce.*`
+  Iterable<Class> iceClassesFrom(LibraryReader library) {
+    final classes = rawClassesFrom(library);
+
+    return classes.map(Class.fromElement);
   }
 }
 
