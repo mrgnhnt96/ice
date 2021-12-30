@@ -3,7 +3,6 @@
 import 'package:build/build.dart';
 import 'package:ice/src/domain/domain.dart';
 import 'package:ice/src/templates/template.dart';
-import 'package:ice/src/util/iterable_ext.dart';
 import 'package:ice/src/util/string_buffer_ext.dart';
 
 extension on Class {
@@ -18,15 +17,7 @@ extension on Class {
   }
 
   Constructor? get fromJsonConstructor {
-    if (constructors.isEmpty) {
-      return null;
-    }
-
-    final ctor = constructors.firstWhereOrNull<Constructor>(
-      (e) => e.isDefault,
-    );
-
-    return ctor ?? constructors.first;
+    return constructorWhere((e) => e.isJsonConstructor);
   }
 }
 
@@ -43,8 +34,38 @@ class FromJsonTemplate extends Template {
 
   final Iterable<Class> unions;
 
+  static const String fromJsonAccessor = r'_$fromJson';
+
+  /// generates the constructor that json_serializable uses
+  void fromJsonAccessConstructor(StringBuffer buffer) {
+    final iceJsonSerializable = subject.annotations.ice?.jsonSerializable;
+    final createFactoryForJson = iceJsonSerializable?.createFactory ?? true;
+    final constructor = subject.fromJsonConstructor;
+
+    if (iceJsonSerializable == null ||
+        constructor == null ||
+        !createFactoryForJson) {
+      return;
+    }
+
+    final constStr = constructor.isConst ? 'const ' : '';
+
+    buffer
+      ..writeln(
+        '${constStr}factory ${subject.genName}.$fromJsonAccessor'
+        '${constructor.declaration}',
+      )
+      ..writeln('= ${constructor.displayName};');
+  }
+
   void writeConstructor(StringBuffer buffer) {
-    if (subject.doNotGenerate.fromJsonConstructor || !canBeGenerated) {
+    if (!canBeGenerated) {
+      return;
+    }
+
+    if (!subject.doNotGenerate.fromJsonConstructor) {
+      fromJsonAccessConstructor(buffer);
+    } else {
       return;
     }
 
