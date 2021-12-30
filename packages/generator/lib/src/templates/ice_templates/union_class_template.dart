@@ -1,27 +1,7 @@
 // ignore_for_file: unused_field, public_member_api_docs
 
 import 'package:ice/src/domain/domain.dart';
-import 'package:ice/src/domain/enums/position_type.dart';
 import 'package:ice/src/templates/ice_templates/ice_template.dart';
-
-extension on Constructor {
-  String get args {
-    final args = <String>[];
-
-    for (final param in params) {
-      final name = param.name;
-
-      if (param.positionType.isNamed) {
-        args.add('$name: $name');
-        continue;
-      }
-
-      args.add(name);
-    }
-
-    return args.join(',\n');
-  }
-}
 
 /// A template to generate methods for
 /// - copyWith()
