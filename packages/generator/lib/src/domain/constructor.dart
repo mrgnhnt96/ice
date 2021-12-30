@@ -125,6 +125,24 @@ class Constructor {
 
     return args.join();
   }
+
+  /// formats the params as args
+  String get args {
+    final args = <String>[];
+
+    for (final param in params) {
+      final name = param.name;
+
+      if (param.positionType.isNamed) {
+        args.add('$name: $name');
+        continue;
+      }
+
+      args.add(name);
+    }
+
+    return args.join(',\n');
+  }
 }
 
 /// ext for List<Constructor>
