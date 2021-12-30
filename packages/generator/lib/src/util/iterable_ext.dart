@@ -1,9 +1,9 @@
 ///
-extension IterableX on Iterable {
+extension IterableX<T> on Iterable<T> {
   ///
-  T? firstWhereOrNull<T>(bool Function(T) predicate) {
+  T? firstWhereOrNull(bool Function(T) predicate) {
     for (final element in this) {
-      if (predicate(element as T)) {
+      if (predicate(element)) {
         return element;
       }
     }
