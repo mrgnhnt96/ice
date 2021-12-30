@@ -3,7 +3,6 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/src/dart/element/element.dart';
-import 'package:enum_assist_annotation/enum_assist_annotation.dart';
 import 'package:ice/src/domain/domain.dart';
 import 'package:ice/src/domain/enums/enums.dart';
 import 'package:source_gen/source_gen.dart';
@@ -56,7 +55,7 @@ class Field {
     }
 
     final type = element.type;
-    final isTrueField = !element.isSynthetic;
+    final isTrueField = !element.isSynthetic && !element.isStatic;
 
     if (hasIgnoreProp || hasJsonIgnore) {
       includeInProps = false;
