@@ -1,9 +1,8 @@
-import 'package:enum_assist_annotation/enum_assist_annotation.dart';
+import 'package:ice_annotation/ice.dart';
 
 part 'position_type.ge.dart';
 
 /// The different types of params
-@EnumAssist(createDescription: false)
 enum PositionType {
   /// `Example({required String name})`
   /// `Example({String name = ''})`\

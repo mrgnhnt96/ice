@@ -2,60 +2,46 @@
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/src/dart/element/element.dart';
-import 'package:enum_assist_annotation/enum_assist_annotation.dart';
 import 'package:ice_annotation/src/ice.dart';
 
 part 'annotation_types.ge.dart';
 
 /// The different types of annotations that can be applied to a class
-@EnumAssist()
 enum AnnotationTypes {
   /// [Ice]
-  @EnumValue(serializedValue: 'Ice')
   ice,
 
   /// [JsonSerializable]
-  @EnumValue(serializedValue: 'JsonSerializable')
   jsonSerializable,
 
   /// [JsonKey]
-  @EnumValue(serializedValue: 'JsonKey')
   jsonKey,
 
   /// [IceUnion]
-  @EnumValue(serializedValue: 'IceUnion.create')
   unionCreate,
 
   /// [IceUnion]
-  @EnumValue(serializedValue: 'IceUnion.of')
   unionOf,
 
   /// [CopyWithConstructor]
-  @EnumValue(serializedValue: 'IceCopyWith.constructor')
   copyWithConstructor,
 
   /// [Props]
-  @EnumValue(serializedValue: 'iceProps')
   iceProps,
 
   /// [IgnoreProp]
-  @EnumValue(serializedValue: 'iceIgnoreProp')
   iceIgnoreProp,
 
   /// [ToString]
-  @EnumValue(serializedValue: 'iceToString')
   iceToString,
 
   /// [IceCopyWith]
-  @EnumValue(serializedValue: 'IceCopyWith.simple')
   copyWithSimple,
 
   /// [CopyWithTypeSafe]
-  @EnumValue(serializedValue: 'IceCopyWith.typeSafe')
   copyWithTypeSafe,
 
   /// [IceJsonConstructor]
-  @EnumValue(serializedValue: 'iceJsonConstructor')
   iceJsonConstructor,
 
   /// any other annotation

@@ -1,17 +1,15 @@
-import 'package:enum_assist_annotation/enum_assist_annotation.dart';
+import 'package:ice_annotation/ice.dart';
 
 part 'method_to_ignore.ge.dart';
 
 /// Methods that will be ignored by the generator
 ///
 /// `other` is the only option that will be generated
-@EnumAssist()
 enum MethodsToIgnore {
   /// a method named toJson
   toJson,
 
   /// a method named string
-  @EnumValue(serializedValue: 'iceToString')
   string,
 
   /// a method named props
