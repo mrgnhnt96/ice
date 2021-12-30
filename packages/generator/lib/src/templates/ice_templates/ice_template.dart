@@ -11,12 +11,13 @@ import 'package:meta/meta.dart';
 
 extension on IceJsonSerializable {
   /// converts all values to the json_serializable annotation
-  String asAnnotation(String fromJsonAccessor) {
+  String get asAnnotation {
     // ignore: deprecated_member_use
     final defaults = JsonSerializable.defaults;
 
     final allArgs = [
-      if (createFactory ?? true) "constructor: r'$fromJsonAccessor'",
+      if (createFactory ?? true)
+        "constructor: r'${FromJsonTemplate.fromJsonAccessor}'",
       if (createToJson != null && createToJson != defaults.createToJson)
         'createToJson: $createToJson',
       if (createFactory != null && createFactory != defaults.createFactory)
@@ -129,9 +130,7 @@ class IceTemplate extends Template {
       return;
     }
 
-    buffer.writeln(
-      iceJsonSerializable.asAnnotation(FromJsonTemplate.fromJsonAccessor),
-    );
+    buffer.writeln(iceJsonSerializable.asAnnotation);
   }
 
   @override
