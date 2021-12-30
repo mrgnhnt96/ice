@@ -2,6 +2,8 @@
 
 import 'package:ice_annotation/ice.dart';
 
+import 'basic_copy_with_type_safe.dart';
+
 part 'output/basic.dart';
 
 @IceUnion.create()
@@ -13,6 +15,7 @@ class State extends _$State {
     this.isCool,
     this.date,
     this.father = 'dad',
+    this.example,
   });
 
   @IceCopyWith.constructor
@@ -33,6 +36,7 @@ class State extends _$State {
   final bool? isCool;
   @JsonKey(ignore: true)
   final DateTime? date;
+  final Example? example;
 }
 
 Map<String, dynamic> _$StateToJson(_$State state) => <String, dynamic>{};
