@@ -1,6 +1,7 @@
 // ignore_for_file: comment_references
 
 import 'package:ice/src/domain/class.dart';
+import 'package:ice/src/templates/tear_off_template.dart';
 import 'package:ice/src/templates/templates.dart';
 
 /// {@template code_builder}
@@ -55,6 +56,17 @@ class CodeBuilder {
   /// non [Ice] or [IceUnion]
   late final Map<String, Class> methodClasses;
 
+  /// generates the code for [classes]
+  StringBuffer generate([StringBuffer? _buffer]) {
+    final buffer = _buffer ?? StringBuffer();
+
+    generateIceClasses(buffer);
+    generateUnions(buffer);
+    generateMethods(buffer);
+
+    return buffer;
+  }
+
   /// generates the code for [methodClasses]
   StringBuffer generateMethods([StringBuffer? _buffer]) {
     final buffer = _buffer ?? StringBuffer();
@@ -72,6 +84,11 @@ class CodeBuilder {
 
     for (final subject in unionClasses.entries) {
       final subClasses = subUnionClasses[subject.key];
+
+      if (subClasses != null) {
+        TearOffTemplate.forSubject(subject.value, subClasses)
+            .addToBuffer(buffer);
+      }
 
       UnionTemplate.forSubject(subject.value, subClasses ?? [])
           .addToBuffer(buffer);
@@ -94,17 +111,6 @@ class CodeBuilder {
 
       IceTemplate.forSubject(subject, union: union).addToBuffer(buffer);
     }
-
-    return buffer;
-  }
-
-  /// generates the code for [classes]
-  StringBuffer generate([StringBuffer? _buffer]) {
-    final buffer = _buffer ?? StringBuffer();
-
-    generateIceClasses(buffer);
-    generateUnions(buffer);
-    generateMethods(buffer);
 
     return buffer;
   }
