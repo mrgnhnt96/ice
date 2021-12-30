@@ -43,7 +43,7 @@ class Ice {
 
 /// {@template ice_union_base}
 /// the base of the union
-///  {@endtemplate}
+/// {@endtemplate}
 @Target({TargetKind.classType})
 class IceUnion implements Ice {
   /// {@macro ice_union_base}
