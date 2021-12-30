@@ -63,9 +63,9 @@ class FromJsonTemplate extends Template {
       return;
     }
 
-    if (!subject.doNotGenerate.fromJsonConstructor) {
-      fromJsonAccessConstructor(buffer);
-    } else {
+    fromJsonAccessConstructor(buffer);
+
+    if (subject.doNotGenerate.fromJsonConstructor) {
       return;
     }
 
