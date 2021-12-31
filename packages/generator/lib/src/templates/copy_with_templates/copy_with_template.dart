@@ -8,6 +8,7 @@ import 'package:ice/src/templates/copy_with_templates/copy_with_simple_template.
 import 'package:ice/src/templates/template.dart';
 import 'package:ice/src/util/string_buffer_ext.dart';
 import 'package:ice_annotation/ice.dart';
+import 'package:meta/meta.dart';
 
 extension on Class {
   CopyWith get copyWith {
@@ -158,10 +159,8 @@ abstract class CopyWithTemplate extends Template {
   /// to succeffully generate
   Iterable<String> get support => {};
 
-  /// adds support to [IceSupport]
-  ///
-  /// not intended to be overridden
-  void addSupport() {
+  /// adds copywith's support to [IceSupport]
+  void _addSupport() {
     if (!canBeGenerated) {
       return;
     }
@@ -171,5 +170,12 @@ abstract class CopyWithTemplate extends Template {
     }
 
     IceSupport().addAll(support);
+  }
+
+  @mustCallSuper
+  @override
+  void addToBuffer(StringBuffer buffer) {
+    _addSupport();
+    super.addToBuffer(buffer);
   }
 }
