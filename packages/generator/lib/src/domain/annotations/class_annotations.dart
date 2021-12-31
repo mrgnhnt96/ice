@@ -4,6 +4,7 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:ice/src/domain/annotations/annotations.dart';
 import 'package:ice/src/domain/enums/enums.dart';
+import 'package:ice/src/util/element_ext.dart';
 import 'package:source_gen/source_gen.dart';
 
 /// {@template class_annotations}
@@ -23,62 +24,68 @@ class ClassAnnotations {
     MethodAnnotations? methods;
     UnionAnnotation? union;
 
-    final types = {
-      AnnotationTypes.jsonSerializable.serialized,
-      AnnotationTypes.ice.serialized,
-      AnnotationTypes.unionOf.serialized,
-      AnnotationTypes.unionCreate.serialized,
-      ...MethodAnnotations.annotationTypes.map((e) => e.serialized),
-    };
+    void updateMethods(MethodAnnotations Function(MethodAnnotations) callback) {
+      if (ice != null) {
+        if (methods != null) {
+          methods = null;
+          // we do not want to create any methods if the class has been
+          // annotated with [Ice]
+          // ? throw an error?
+          log.info(
+            'This class has been annotated with '
+            '[Ice] and a Method',
+          );
+        }
+        return;
+      }
+      methods = callback(methods ??= MethodAnnotations.empty());
+    }
 
     for (final annotation in elements) {
-      final type = types.getAnnotationFrom(annotation);
+      final name = annotation.astName;
+      const conv = ClassAnnotationTypesConv.nullable;
+      final type = conv.fromJson(name);
+
       if (type == null) {
         continue;
       }
 
       switch (type) {
-        case AnnotationTypes.unionOf:
-        case AnnotationTypes.unionCreate:
+        case ClassAnnotationTypes.unionOf:
+        case ClassAnnotationTypes.unionCreate:
           union = UnionAnnotation.fromElement(annotation, type);
-          continue;
-        case AnnotationTypes.ice:
+
+          break;
+        case ClassAnnotationTypes.ice:
           ice = IceAnnotation.fromElement(annotation);
 
-          continue;
+          break;
 
-        case AnnotationTypes.other:
-          continue;
-
-        // handle method & json annotations
-        case AnnotationTypes.jsonSerializable:
-        default:
-          if (ice != null && methods != null) {
-            methods = null;
-            // we do not want to create any methods if the class has been
-            // annotated with [Ice]
-            // ? throw an error?
-            log.info(
-              'This class has been annotated with '
-              '[Ice] and ${type.serialized}',
-            );
-
-            continue;
-          }
-
-          methods ??= MethodAnnotations.empty();
-
-          if (type.isJsonSerializable) {
+        case ClassAnnotationTypes.jsonSerializable:
+          updateMethods((methods) {
             final reader = ConstantReader(annotation.computeConstantValue());
             final createToJson = reader.peek('createToJson')?.boolValue;
             final createFromJson = reader.peek('createFactory')?.boolValue;
 
-            methods = methods
-              ..updateToJson(createToJson ?? true)
-              ..updateFromJson(createFromJson ?? true);
-          } else {
-            methods = methods.checkAnnotationAndUpdate(type);
-          }
+            return methods
+                .copyWith(createToJson: createToJson)
+                .copyWith(createFromJson: createFromJson);
+          });
+
+          break;
+
+        case ClassAnnotationTypes.only:
+          updateMethods((methods) {
+            final onlyMethods = MethodAnnotations.fromElement(annotation);
+
+            return methods.copyWith(
+              copyWithType: onlyMethods.copyWithType,
+              hasProps: onlyMethods.hasProps,
+              hasToString: onlyMethods.hasToString,
+            );
+          });
+
+          break;
       }
     }
 
