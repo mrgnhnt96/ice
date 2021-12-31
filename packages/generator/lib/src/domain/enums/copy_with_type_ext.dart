@@ -8,14 +8,17 @@ extension CopyWithX on CopyWith {
   /// Map of all values of the enum
   T map<T extends Object?>({
     required T simple,
-    required T typeSafe,
+    required T anonymous,
+    required T nullSafe,
     required T none,
   }) {
     switch (this) {
       case CopyWith.simple:
         return simple;
-      case CopyWith.typeSafe:
-        return typeSafe;
+      case CopyWith.anonymous:
+        return anonymous;
+      case CopyWith.nullSafe:
+        return nullSafe;
       case CopyWith.none:
         return none;
     }
@@ -27,7 +30,8 @@ extension CopyWithX on CopyWith {
   T maybeMap<T extends Object?>({
     required T orElse,
     T? simple,
-    T? typeSafe,
+    T? anonymous,
+    T? nullSafe,
     T? none,
   }) {
     var isNullable = true;
@@ -41,9 +45,12 @@ extension CopyWithX on CopyWith {
       case CopyWith.simple:
         if (simple == null && !isNullable) return orElse;
         return simple as T;
-      case CopyWith.typeSafe:
-        if (typeSafe == null && !isNullable) return orElse;
-        return typeSafe as T;
+      case CopyWith.anonymous:
+        if (anonymous == null && !isNullable) return orElse;
+        return anonymous as T;
+      case CopyWith.nullSafe:
+        if (nullSafe == null && !isNullable) return orElse;
+        return nullSafe as T;
       case CopyWith.none:
         if (none == null && !isNullable) return orElse;
         return none as T;
@@ -54,7 +61,8 @@ extension CopyWithX on CopyWith {
   String get name {
     return map<String>(
       simple: 'simple',
-      typeSafe: 'typeSafe',
+      anonymous: 'anonymous',
+      nullSafe: 'nullSafe',
       none: 'none',
     );
   }
@@ -63,8 +71,9 @@ extension CopyWithX on CopyWith {
   int get toInt {
     return map<int>(
       simple: 0,
-      typeSafe: 1,
-      none: 2,
+      anonymous: 1,
+      nullSafe: 2,
+      none: 3,
     );
   }
 
@@ -73,7 +82,8 @@ extension CopyWithX on CopyWith {
   String get readable {
     return map<String>(
       simple: 'Simple',
-      typeSafe: 'Type Safe',
+      anonymous: 'Anonymous',
+      nullSafe: 'Null Safe',
       none: 'None',
     );
   }
@@ -84,18 +94,22 @@ extension CopyWithX on CopyWith {
   String? get description {
     return map<String?>(
       simple: '''
-If `null` is passed within the `copyWith` method,
-the current value will be returned.
+NOT `null` safe
 
 ```dart
 myClass.copyWith(field: newValue);
 ```''',
-      typeSafe: '''
-if `null` is passed within the `copyWith` method,
-`null` will be returned.
+      anonymous: '''
+'null' safe
 
 ```dart
 myClass.copyWith(field: (currentValue) => newValue);
+```''',
+      nullSafe: '''
+'null' safe
+
+```dart
+myClass.copyWith(field: newValue);
 ```''',
       none: '''
 does not generate a copyWith method''',
@@ -106,19 +120,11 @@ does not generate a copyWith method''',
   Object get serialized {
     return map<Object>(
       simple: CopyWithConv._simpleName,
-      typeSafe: CopyWithConv._typeSafeName,
+      anonymous: CopyWithConv._anonymousName,
+      nullSafe: CopyWithConv._nullSafeName,
       none: CopyWithConv._noneName,
     );
   }
-
-  /// if the enum value is `simple`
-  bool get isSimple => this == CopyWith.simple;
-
-  /// if the enum value is `typeSafe`
-  bool get isTypeSafe => this == CopyWith.typeSafe;
-
-  /// if the enum value is `none`
-  bool get isNone => this == CopyWith.none;
 }
 
 /// {@template copy_with.json_converter}
@@ -142,7 +148,8 @@ class CopyWithConv extends JsonConverter<CopyWith, Object> {
   static const nullable = _CopyWithNullableConv();
 
   static const _simpleName = 'simple';
-  static const _typeSafeName = 'typeSafe';
+  static const _anonymousName = 'anonymous';
+  static const _nullSafeName = 'nullSafe';
   static const _noneName = 'none';
 
   @override
@@ -150,8 +157,10 @@ class CopyWithConv extends JsonConverter<CopyWith, Object> {
     switch (json) {
       case _simpleName:
         return CopyWith.simple;
-      case _typeSafeName:
-        return CopyWith.typeSafe;
+      case _anonymousName:
+        return CopyWith.anonymous;
+      case _nullSafeName:
+        return CopyWith.nullSafe;
       case _noneName:
         return CopyWith.none;
       default:
@@ -184,81 +193,12 @@ class _CopyWithNullableConv extends JsonConverter<CopyWith?, Object?> {
     switch (json) {
       case CopyWithConv._simpleName:
         return CopyWith.simple;
-      case CopyWithConv._typeSafeName:
-        return CopyWith.typeSafe;
+      case CopyWithConv._anonymousName:
+        return CopyWith.anonymous;
+      case CopyWithConv._nullSafeName:
+        return CopyWith.nullSafe;
       case CopyWithConv._noneName:
         return CopyWith.none;
-      default:
-        return null;
-    }
-  }
-
-  @override
-  Object? toJson(CopyWith? object) => object?.serialized;
-}
-
-/// {@template copy_with_type.json_converter}
-/// Serializes [CopyWith] to and from json
-///
-/// Can be used as annotation for `json_serializable` classes
-///
-/// ```dart
-/// @CopyWithTypeConv()
-/// final CopyWithType myEnum;
-/// ```
-/// {@endtemplate}
-class CopyWithTypeConv extends JsonConverter<CopyWith, Object> {
-  /// {@macro copy_with_type.json_converter}
-  const CopyWithTypeConv({this.defaultValue});
-
-  /// the value to be used when no match is found
-  final CopyWith? defaultValue;
-
-  /// {@macro copy_with_type.json_converter_nullable}
-  static const nullable = _CopyWithTypeNullableConv();
-
-  static const _simpleName = 'simple';
-  static const _typeSafeName = 'typeSafe';
-
-  @override
-  CopyWith fromJson(Object json) {
-    switch (json) {
-      case _simpleName:
-        return CopyWith.simple;
-      case _typeSafeName:
-        return CopyWith.typeSafe;
-      default:
-        if (defaultValue != null) return defaultValue!;
-
-        throw Exception('Unknown field: $json');
-    }
-  }
-
-  @override
-  Object toJson(CopyWith object) => object.serialized;
-}
-
-/// {@template copy_with_type.json_converter_nullable}
-/// Serializes [CopyWithType?] to and from json
-///
-/// Can be used as annotation for `json_serializable` classes
-///
-/// ```dart
-/// @CopyWithTypeConv.nullable
-/// final CopyWithType? myEnum;
-/// ```
-/// {@endtemplate}
-class _CopyWithTypeNullableConv extends JsonConverter<CopyWith?, Object?> {
-  /// {@macro copy_with_type.json_converter}
-  const _CopyWithTypeNullableConv();
-
-  @override
-  CopyWith? fromJson(Object? json) {
-    switch (json) {
-      case CopyWithTypeConv._simpleName:
-        return CopyWith.simple;
-      case CopyWithTypeConv._typeSafeName:
-        return CopyWith.typeSafe;
       default:
         return null;
     }
