@@ -16,7 +16,6 @@ extension MethodsToIgnoreX on MethodsToIgnore {
     required T string,
     required T props,
     required T copyWith,
-    required T other,
   }) {
     switch (this) {
       case MethodsToIgnore.toJson:
@@ -27,8 +26,6 @@ extension MethodsToIgnoreX on MethodsToIgnore {
         return props;
       case MethodsToIgnore.copyWith:
         return copyWith;
-      case MethodsToIgnore.other:
-        return other;
     }
   }
 
@@ -41,7 +38,6 @@ extension MethodsToIgnoreX on MethodsToIgnore {
     T? string,
     T? props,
     T? copyWith,
-    T? other,
   }) {
     var isNullable = true;
     try {
@@ -63,9 +59,6 @@ extension MethodsToIgnoreX on MethodsToIgnore {
       case MethodsToIgnore.copyWith:
         if (copyWith == null && !isNullable) return orElse;
         return copyWith as T;
-      case MethodsToIgnore.other:
-        if (other == null && !isNullable) return orElse;
-        return other as T;
     }
   }
 
@@ -76,7 +69,6 @@ extension MethodsToIgnoreX on MethodsToIgnore {
       string: 'string',
       props: 'props',
       copyWith: 'copyWith',
-      other: 'other',
     );
   }
 
@@ -87,7 +79,6 @@ extension MethodsToIgnoreX on MethodsToIgnore {
       string: 1,
       props: 2,
       copyWith: 3,
-      other: 4,
     );
   }
 
@@ -99,7 +90,6 @@ extension MethodsToIgnoreX on MethodsToIgnore {
       string: 'String',
       props: 'Props',
       copyWith: 'Copy With',
-      other: 'Other',
     );
   }
 
@@ -116,10 +106,6 @@ a method named string''',
 a method named props''',
       copyWith: '''
 a method named copyWith''',
-      other: '''
-any other method
-
-`other` is the only option that will be generated''',
     );
   }
 
@@ -130,7 +116,6 @@ any other method
       string: MethodsToIgnoreConv._stringName,
       props: MethodsToIgnoreConv._propsName,
       copyWith: MethodsToIgnoreConv._copyWithName,
-      other: MethodsToIgnoreConv._otherName,
     );
   }
 }
@@ -156,10 +141,9 @@ class MethodsToIgnoreConv extends JsonConverter<MethodsToIgnore, Object> {
   static const nullable = _MethodsToIgnoreNullableConv();
 
   static const _toJsonName = 'toJson';
-  static const _stringName = 'iceToString';
+  static const _stringName = 'toString';
   static const _propsName = 'props';
   static const _copyWithName = 'copyWith';
-  static const _otherName = 'other';
 
   @override
   MethodsToIgnore fromJson(Object json) {
@@ -172,8 +156,6 @@ class MethodsToIgnoreConv extends JsonConverter<MethodsToIgnore, Object> {
         return MethodsToIgnore.props;
       case _copyWithName:
         return MethodsToIgnore.copyWith;
-      case _otherName:
-        return MethodsToIgnore.other;
       default:
         if (defaultValue != null) return defaultValue!;
 
@@ -211,8 +193,6 @@ class _MethodsToIgnoreNullableConv
         return MethodsToIgnore.props;
       case MethodsToIgnoreConv._copyWithName:
         return MethodsToIgnore.copyWith;
-      case MethodsToIgnoreConv._otherName:
-        return MethodsToIgnore.other;
       default:
         return null;
     }
