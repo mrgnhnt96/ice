@@ -65,9 +65,9 @@ abstract class CopyWithTemplate extends Template {
   /// {@macro copy_with}
   CopyWithTemplate(
     Class subject, {
-    required this.type,
+    required this.copyWithType,
   })  : _constructor = subject.copyWithConstructor(),
-        super(subject, name: IceOptions.copyWith);
+        super(subject, templateType: TemplateType.copyWith);
 
   /// {@macro copy_with}
   static CopyWithTemplate? forSubject(Class subject) {
@@ -85,7 +85,7 @@ abstract class CopyWithTemplate extends Template {
   }
 
   /// the type of the copyWith method
-  final CopyWith type;
+  final CopyWith copyWithType;
   final Constructor? _constructor;
 
   /// the constructor of the class to be used for the copyWith method
@@ -98,7 +98,7 @@ abstract class CopyWithTemplate extends Template {
   }
 
   /// the doc comment of the copyWith method
-  String get docComment => type.docComment;
+  String get docComment => copyWithType.docComment;
 
   @override
   bool get canBeGenerated {

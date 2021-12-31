@@ -23,7 +23,7 @@ class CopyWithAnonymousTemplate extends CopyWithTemplate {
     Class subject,
   ) : super(
           subject,
-          type: CopyWith.anonymous,
+          copyWithType: CopyWith.anonymous,
         );
 
   /// the callback name for the copyWith method
