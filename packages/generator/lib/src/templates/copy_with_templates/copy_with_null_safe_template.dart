@@ -2,7 +2,6 @@
 
 import 'package:ice/src/domain/domain.dart';
 import 'package:ice/src/domain/enums/position_type.dart';
-import 'package:ice/src/domain/ice_support.dart';
 import 'package:ice/src/templates/copy_with_templates/copy_with_template.dart';
 import 'package:ice/src/util/string_buffer_ext.dart';
 import 'package:ice_annotation/ice.dart';
