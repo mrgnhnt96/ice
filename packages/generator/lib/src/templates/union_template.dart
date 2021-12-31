@@ -73,8 +73,8 @@ class UnionTemplate extends Template {
       'mixin _\$${subject.name}Mixin',
       body: () {
         _writePatternMatches(buffer);
-        _writeIsType(buffer);
         ToJsonTemplate.forUnion(subject, subClasses).addToBuffer(buffer);
+        _writeIsType(buffer);
       },
     );
 
