@@ -56,7 +56,7 @@ class ToStringTemplate extends Template {
 
   void _writeAsOverride(StringBuffer buffer) {
     buffer
-      ..writeln('@override')
+      ..write('@override ')
       ..writeObject(
         'String toString()',
         body: () {

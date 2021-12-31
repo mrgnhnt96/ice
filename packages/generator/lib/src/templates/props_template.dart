@@ -32,7 +32,7 @@ class PropsTemplate extends Template {
 
   void _writeAsOverride(StringBuffer buffer) {
     buffer
-      ..writeln('@override')
+      ..write('@override ')
       ..writeObject(
         'List<Object?> get props',
         body: () {
