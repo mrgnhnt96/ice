@@ -8,6 +8,7 @@ import 'package:ice/src/domain/do_not_generate.dart';
 import 'package:ice/src/domain/domain.dart';
 import 'package:ice/src/domain/field.dart';
 import 'package:ice/src/domain/ice_settings.dart';
+import 'package:ice/src/util/string_buffer_ext.dart';
 
 /// {@template class}
 /// The class that [IceCopyWith] will be generated for
@@ -160,7 +161,7 @@ class Class {
       final getter = '${field.type} get ${field.name};';
       var jsonKey = '';
       if (field.jsonKeyDeclaration != null) {
-        jsonKey = '${field.jsonKeyDeclaration}';
+        jsonKey = '${field.jsonKeyDeclaration}$pln';
       }
 
       getters.add(jsonKey + getter);

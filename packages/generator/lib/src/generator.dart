@@ -9,6 +9,7 @@ import 'package:ice/src/code_builder.dart';
 import 'package:ice/src/domain/class.dart';
 import 'package:ice/src/domain/ice_support.dart';
 import 'package:ice/src/util/iterable_ext.dart';
+import 'package:ice/src/util/string_buffer_ext.dart';
 import 'package:ice_annotation/src/ice.dart';
 import 'package:source_gen/source_gen.dart';
 
@@ -64,7 +65,7 @@ class IceGenerator extends Generator {
     CodeBuilder(classes).generate(buffer);
 
     final support = IceSupport().get();
-    buffer.writeAll(support);
+    buffer.writeAll(support, pln);
 
     return buffer.toString();
   }

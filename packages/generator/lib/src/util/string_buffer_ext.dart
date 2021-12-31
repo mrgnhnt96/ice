@@ -1,5 +1,7 @@
 // ignore_for_file: parameter_assignments
 
+import 'package:ice/src/domain/ice_settings.dart';
+
 /// extension to [StringBuffer]
 extension StringBufferX on StringBuffer {
   /// accepts a header string to name the section
@@ -21,7 +23,7 @@ extension StringBufferX on StringBuffer {
     final opener = open ?? '{';
     final closer = close ?? '}';
 
-    write('$string$opener');
+    writepln('$string$opener');
     body();
     write(closer);
   }
@@ -41,16 +43,33 @@ extension StringBufferX on StringBuffer {
       seperateWith = '';
       beforeClose = '';
     } else {
-      seperateWith = ',';
+      seperateWith = ',$pln';
       beforeClose = ',';
       open = '({';
       close = '})';
     }
 
-    write('$entry $open');
+    writepln('$entry$open');
     writeAll(params, seperateWith);
-    write('$beforeClose$close {');
+    writepln('$beforeClose$close {');
     body();
-    write('}');
+    writepln('}');
+  }
+
+  /// writes a _possible_ line break
+  /// if [_LINE_BREAK] is true
+  void writepln([Object? object = '']) {
+    if (_LINE_BREAK) {
+      writeln(object);
+    } else {
+      write(object);
+    }
   }
 }
+
+/// DEV PURPOSES ONLY
+/// adds line break to make output easier to debug
+String get pln => _LINE_BREAK ? '\n' : '';
+
+// ignore: non_constant_identifier_names
+bool get _LINE_BREAK => true;

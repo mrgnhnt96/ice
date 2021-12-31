@@ -2,6 +2,7 @@
 
 import 'package:ice/src/domain/domain.dart';
 import 'package:ice/src/templates/ice_templates/ice_class_template.dart';
+import 'package:ice/src/util/string_buffer_ext.dart';
 
 /// A template to generate methods for
 /// - copyWith()
@@ -30,7 +31,7 @@ class UnionClassTemplate extends IceClassTemplate {
         }),
       );
     } else {
-      buffer.write('const ${subject.genName}();');
+      buffer.writepln('const ${subject.genName}();');
     }
   }
 }

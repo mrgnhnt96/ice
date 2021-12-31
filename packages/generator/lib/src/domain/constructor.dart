@@ -4,6 +4,7 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/src/dart/element/element.dart';
 import 'package:ice/src/domain/domain.dart';
 import 'package:ice/src/domain/enums/enums.dart';
+import 'package:ice/src/util/string_buffer_ext.dart';
 
 /// {@template constructor}
 /// A constructor of the [Class]
@@ -141,7 +142,7 @@ class Constructor {
       args.add(name);
     }
 
-    return args.join(',');
+    return args.join(',$pln');
   }
 }
 

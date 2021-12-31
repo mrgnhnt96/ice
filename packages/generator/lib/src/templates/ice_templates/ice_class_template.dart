@@ -122,7 +122,7 @@ class IceClassTemplate extends Template {
 
   ///
   void writeConstructors(StringBuffer buffer) {
-    buffer.write('const ${subject.genName}();');
+    buffer.writepln('const ${subject.genName}();');
   }
 
   ///
@@ -133,7 +133,7 @@ class IceClassTemplate extends Template {
       return;
     }
 
-    buffer.write(iceJsonSerializable.asAnnotation);
+    buffer.writepln(iceJsonSerializable.asAnnotation);
   }
 
   @override
@@ -145,22 +145,30 @@ class IceClassTemplate extends Template {
       classHeader,
       body: () {
         writeConstructors(buffer);
+        buffer.writepln();
+
         fromJsonTemplate.writeConstructors(buffer);
+        buffer.writepln();
 
         writeFields(buffer);
+        buffer.writepln();
 
         writeProperties(buffer);
+        buffer.writepln();
 
         ToJsonTemplate.forSubject(subject, union).addToBuffer(buffer);
       },
     );
 
     fromJsonTemplate.addToBuffer(buffer);
+    buffer
+      ..writepln()
+      ..writepln();
   }
 
   ///
   void writeFields(StringBuffer buffer) {
-    buffer.writeAll(subject.fieldGetters);
+    buffer.writeAll(subject.fieldGetters, pln);
   }
 
   ///
@@ -170,6 +178,7 @@ class IceClassTemplate extends Template {
       final copyWithTemplate = CopyWithTemplate.forSubject(subject);
       if (copyWithTemplate != null) {
         copyWithTemplate.addToBuffer(buffer);
+        buffer.writepln();
       }
 
       PropsTemplate.forSubject(
@@ -177,11 +186,13 @@ class IceClassTemplate extends Template {
         union: union,
         asExtension: false,
       ).addToBuffer(buffer);
+      buffer.writepln();
 
       ToStringTemplate.forSubject(
         subject,
         asExtension: false,
       ).addToBuffer(buffer);
+      buffer.writepln();
     }
   }
 }

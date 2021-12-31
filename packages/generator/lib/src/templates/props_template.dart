@@ -60,14 +60,14 @@ class PropsTemplate extends Template {
     ];
 
     if (allFields.isEmpty) {
-      buffer.write('return [];');
+      buffer.writepln('return [];');
       return;
     }
 
     buffer
       ..write('return [')
       ..writeAll(allFields, ', ')
-      ..write('];');
+      ..writepln('];');
   }
 }
 

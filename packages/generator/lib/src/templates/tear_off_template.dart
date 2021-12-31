@@ -30,7 +30,7 @@ class TearOffTemplate extends Template {
     buffer.writeObject(
       'class $tearOffName',
       body: () {
-        buffer.write('const $tearOffName();');
+        buffer.writepln('const $tearOffName();');
 
         for (final union in unions) {
           final defaultCtor = union.constructorWhere();

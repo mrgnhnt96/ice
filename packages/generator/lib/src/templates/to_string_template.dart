@@ -73,13 +73,6 @@ class ToStringTemplate extends Template {
       return;
     }
 
-    buffer.writeObject(
-      "return '${subject.name}",
-      open: '(',
-      close: ")';",
-      body: () {
-        buffer.writeAll(args, ', ');
-      },
-    );
+    buffer.writepln("return '${subject.name}(${args.join(',')})';");
   }
 }

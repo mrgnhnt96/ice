@@ -82,8 +82,10 @@ class FromJsonTemplate extends Template {
 
     if (!subject.doNotGenerate.fromJsonConstructor) {
       writeConstructor();
+      buffer.writepln();
     }
     fromJsonAccessConstructor(buffer);
+    buffer.writepln();
   }
 
   void _writeAsUnion(StringBuffer buffer) {
@@ -104,19 +106,19 @@ class FromJsonTemplate extends Template {
                 fromJsonAccess = union.genName;
               }
               buffer
-                ..write("case r'$unionTypeId':")
-                ..write('return $fromJsonAccess.fromJson(json);');
+                ..writepln("case r'$unionTypeId':")
+                ..writepln('return $fromJsonAccess.fromJson(json);');
             }
 
             buffer
-              ..write('default:')
+              ..writepln('default:')
               ..writeObject(
                 'if (defaultValue != null)',
                 body: () {
-                  buffer.write('return defaultValue;');
+                  buffer.writepln('return defaultValue;');
                 },
               )
-              ..write('throw FallThroughError();');
+              ..writepln('throw FallThroughError();');
           },
         );
       },
@@ -133,7 +135,7 @@ class FromJsonTemplate extends Template {
       '${subject.name} _\$${subject.nonPrivateName}FromJson'
       '(Map<String, dynamic> json)',
       body: () {
-        buffer.write(
+        buffer.writepln(
           'return _\$\$${subject.nonPrivateName}FromJson(json) '
           'as ${subject.name};',
         );
