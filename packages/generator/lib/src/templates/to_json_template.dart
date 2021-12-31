@@ -23,11 +23,11 @@ extension on Class {
 class ToJsonTemplate extends Template {
   const ToJsonTemplate.forSubject(Class subject, [this.union])
       : unions = const [],
-        super(subject, name: IceOptions.toJson);
+        super(subject, templateType: TemplateType.toJson);
 
   const ToJsonTemplate.forUnion(Class subject, this.unions)
       : union = null,
-        super(subject, name: IceOptions.toJson);
+        super(subject, templateType: TemplateType.toJson);
 
   final Iterable<Class> unions;
   final Class? union;

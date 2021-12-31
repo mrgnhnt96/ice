@@ -5,6 +5,8 @@ import 'package:ice/src/domain/domain.dart';
 import 'package:ice_annotation/ice.dart';
 import 'package:meta/meta.dart';
 
+part 'template_options.dart';
+
 extension on CopyWith {
   bool get isNone => this == CopyWith.none;
 }
@@ -14,11 +16,11 @@ abstract class Template {
   /// Creates the template with the [subject]
   const Template(
     this.subject, {
-    required this.name,
+    required this.templateType,
   });
 
   /// The template when it wraps sub-templates
-  const Template.wrapper(this.subject) : name = IceOptions.wrapper;
+  const Template.wrapper(this.subject) : templateType = TemplateType.wrapper;
 
   /// adds the template to the [buffer]
   @mustCallSuper
@@ -28,20 +30,20 @@ abstract class Template {
   final Class subject;
 
   /// the name of the method/constructor to be generated
-  final IceOptions name;
+  final TemplateType templateType;
 
   /// whether the template can be generated
   ///
-  /// should be called before [addToBuffer] or [iceToString]
+  /// should be called before [addToBuffer] or [toString]
   @mustCallSuper
   bool get canBeGenerated {
     /// whether a method can be generated
     ///
     /// returns false if the method already exists
-    switch (name) {
-      case IceOptions.wrapper:
+    switch (templateType) {
+      case TemplateType.wrapper:
         return true;
-      case IceOptions.copyWith:
+      case TemplateType.copyWith:
         if (subject.doNotGenerate.copyWith) return false;
 
         return subject.metaSettings(
@@ -49,7 +51,7 @@ abstract class Template {
           methodCallback: (method) => !method.copyWithType.isNone,
           settingsCallback: (settings) => !settings.copyWith.isNone,
         );
-      case IceOptions.equatable:
+      case TemplateType.equatable:
         if (subject.doNotGenerate.equatable) return false;
 
         return subject.metaSettings(
@@ -57,16 +59,16 @@ abstract class Template {
           methodCallback: (methods) => methods.hasProps,
           settingsCallback: (settings) => settings.equatable,
         );
-      case IceOptions.iceToString:
+      case TemplateType.iceToString:
         if (subject.doNotGenerate.tostring) return false;
 
         return subject.metaSettings(
-          iceCallback: (ice) => ice.iceToString,
+          iceCallback: (ice) => ice.tostring,
           methodCallback: (methods) => methods.hasToString,
-          settingsCallback: (settings) => settings.iceToString,
+          settingsCallback: (settings) => settings.tostring,
         );
-      case IceOptions.toJson:
-      case IceOptions.fromJson:
+      case TemplateType.toJson:
+      case TemplateType.fromJson:
         final annotations = subject.annotations;
         if (annotations.isIceAnnotation) {
           final json = annotations.ice!.jsonSerializable;
@@ -74,21 +76,21 @@ abstract class Template {
             return false;
           }
 
-          if (name.isFromJson) {
+          if (templateType.isFromJson) {
             return json.createFactory ?? true;
           }
 
           return json.createToJson ?? true;
         } else if (annotations.isMethodAnnotation) {
           final methods = annotations.methods!;
-          if (name.isFromJson) {
+          if (templateType.isFromJson) {
             return methods.createFromJson;
           }
 
           return methods.createToJson;
         }
 
-        if (name.isFromJson) {
+        if (templateType.isFromJson) {
           return iceSettings.createFromJson;
         }
 

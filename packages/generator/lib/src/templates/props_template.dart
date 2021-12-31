@@ -12,7 +12,7 @@ class PropsTemplate extends Template {
     Class subject, {
     required this.asExtension,
     this.union,
-  }) : super(subject, name: IceOptions.equatable);
+  }) : super(subject, templateType: TemplateType.equatable);
 
   /// whether to generate the props as a function
   final bool asExtension;

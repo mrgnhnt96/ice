@@ -27,7 +27,7 @@ class ToStringTemplate extends Template {
     required this.asExtension,
   }) : super(
           subject,
-          name: IceOptions.iceToString,
+          templateType: TemplateType.iceToString,
         );
 
   /// whether to generate the method as a function
@@ -73,6 +73,6 @@ class ToStringTemplate extends Template {
       return;
     }
 
-    buffer.writepln("return '${subject.name}(${args.join(',')})';");
+    buffer.writepln("return '${subject.name}(${args.join(', ')})';");
   }
 }
