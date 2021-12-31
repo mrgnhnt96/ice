@@ -21,6 +21,7 @@ abstract class Template {
   const Template.wrapper(this.subject) : name = IceOptions.wrapper;
 
   /// adds the template to the [buffer]
+  @mustCallSuper
   void addToBuffer(StringBuffer buffer) => gate(buffer);
 
   /// The subject of the template
@@ -97,13 +98,15 @@ abstract class Template {
 
   /// checks if the template can be generated
   void gate(StringBuffer buffer, [void Function(StringBuffer)? generator]) {
-    if (canBeGenerated) {
-      if (generator != null) {
-        return generator(buffer);
-      }
-
-      return generate(buffer);
+    if (!canBeGenerated) {
+      return;
     }
+
+    if (generator != null) {
+      return generator(buffer);
+    }
+
+    return generate(buffer);
   }
 
   /// generates the template to the [buffer]
