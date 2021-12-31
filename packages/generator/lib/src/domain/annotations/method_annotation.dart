@@ -1,9 +1,11 @@
 // ignore_for_file: comment_references, avoid_dynamic_calls, no_default_cases
 // ignore_for_file: implementation_imports, avoid_positional_boolean_parameters
 
+import 'package:analyzer/dart/element/element.dart';
 import 'package:ice/ice.dart';
-import 'package:ice/src/domain/enums/enums.dart';
+import 'package:ice/src/util/enum_ext.dart';
 import 'package:ice_annotation/ice.dart';
+import 'package:source_gen/source_gen.dart';
 
 /// {@template method_annotations}
 /// The annotations used for methods to be generated when the [Ice]
@@ -22,18 +24,33 @@ class MethodAnnotations {
   /// {@macro method_annotations}
   MethodAnnotations.empty()
       : this(
-          hasProps: false,
-          hasToString: false,
+          hasProps: iceSettings.props,
+          hasToString: iceSettings.tostring,
           copyWithType: iceSettings.copyWith,
         );
 
-  /// [iceProps]
+  /// gets the methods that should be generated from the annotation
+  factory MethodAnnotations.fromElement(ElementAnnotation element) {
+    final reader = ConstantReader(element.computeConstantValue());
+
+    final props = reader.peek('props')?.boolValue;
+    final tostring = reader.peek('tostring')?.boolValue;
+    final copyWith = CopyWith.values.fromReader(reader, 'copyWith');
+
+    return MethodAnnotations.empty().copyWith(
+      hasProps: props,
+      copyWithType: copyWith,
+      hasToString: tostring,
+    );
+  }
+
+  /// if the class has the props annotation
   final bool hasProps;
 
-  /// [iceToString]
+  /// if the class has the toString annotation
   final bool hasToString;
 
-  /// [copyWithType]
+  /// if the class has the copyWith annotation
   final CopyWith copyWithType;
 
   /// whether the `toJson` method should be generated
@@ -45,24 +62,6 @@ class MethodAnnotations {
   ///
   /// retrieved from the `JsonSerializable` annotation
   final bool createFromJson;
-
-  /// updates [createToJson]
-  MethodAnnotations updateToJson(bool value) {
-    return copyWith(createToJson: value);
-  }
-
-  /// updates [createFromJson]
-  MethodAnnotations updateFromJson(bool value) {
-    return copyWith(createFromJson: value);
-  }
-
-  /// All [AnnotationTypes] associated with [MethodAnnotations]
-  static Set<AnnotationTypes> get annotationTypes => {
-        AnnotationTypes.iceProps,
-        AnnotationTypes.copyWithSimple,
-        AnnotationTypes.copyWithTypeSafe,
-        AnnotationTypes.iceToString,
-      };
 
   /// returns a copy of [MethodAnnotations]
   MethodAnnotations copyWith({
@@ -79,27 +78,5 @@ class MethodAnnotations {
       createToJson: createToJson ?? this.createToJson,
       createFromJson: createFromJson ?? this.createFromJson,
     );
-  }
-
-  /// check the [type] for any [MethodAnnotations.annotationTypes]
-  /// and updates [MethodAnnotations] using [copyWith]
-  MethodAnnotations checkAnnotationAndUpdate(AnnotationTypes type) {
-    if (!annotationTypes.contains(type)) {
-      return this;
-    }
-
-    switch (type) {
-      case AnnotationTypes.iceProps:
-        return copyWith(hasProps: true);
-      // TODO(mrgnhnt96): find a better way to support this
-      case AnnotationTypes.copyWithSimple:
-        return copyWith(copyWithType: CopyWith.typeSafe);
-      case AnnotationTypes.copyWithTypeSafe:
-        return copyWith(copyWithType: CopyWith.simple);
-      case AnnotationTypes.iceToString:
-        return copyWith(hasToString: true);
-      default:
-        return this;
-    }
   }
 }
