@@ -16,8 +16,9 @@ class UnionAnnotation extends IceAnnotation implements IceUnion {
     IceJsonSerializable? jsonSerializable,
     required CopyWith copyWith,
     required bool equatable,
-    required bool iceToString,
+    required bool tostring,
     required bool ignoreGettersAsProps,
+    required bool props,
     required this.isBase,
     required this.ofUnionType,
     required this.unionTypeId,
@@ -25,15 +26,16 @@ class UnionAnnotation extends IceAnnotation implements IceUnion {
   }) : super(
           copyWith: copyWith,
           equatable: equatable,
-          iceToString: iceToString,
+          tostring: tostring,
           ignoreGettersAsProps: ignoreGettersAsProps,
           jsonSerializable: jsonSerializable,
+          props: props,
         );
 
   /// gets the props from the [annotation]
   static UnionAnnotation? fromElement(
     ElementAnnotation annotation,
-    AnnotationTypes type,
+    ClassAnnotationTypes type,
   ) {
     final iceAnnotation = IceAnnotation.fromElement(annotation);
 
@@ -64,9 +66,10 @@ class UnionAnnotation extends IceAnnotation implements IceUnion {
       unionTypeKey: unionTypeKey ?? iceSettings.unionTypeKey,
       copyWith: iceAnnotation.copyWith,
       equatable: iceAnnotation.equatable,
-      iceToString: iceAnnotation.iceToString,
+      tostring: iceAnnotation.tostring,
       ignoreGettersAsProps: iceAnnotation.ignoreGettersAsProps,
       jsonSerializable: iceAnnotation.jsonSerializable,
+      props: iceAnnotation.props,
     );
   }
 

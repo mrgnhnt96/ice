@@ -15,10 +15,21 @@ class IceAnnotation implements Ice {
   const IceAnnotation({
     required this.copyWith,
     required this.equatable,
-    required this.iceToString,
+    required this.tostring,
     required this.ignoreGettersAsProps,
     required this.jsonSerializable,
+    required this.props,
   });
+
+  IceAnnotation._defaults()
+      : this(
+          copyWith: iceSettings.copyWith,
+          equatable: iceSettings.equatable,
+          tostring: iceSettings.tostring,
+          ignoreGettersAsProps: iceSettings.ignoreGettersAsProps,
+          jsonSerializable: iceSettings.jsonSerializable,
+          props: iceSettings.props,
+        );
 
   /// gets the annotation from the [ElementAnnotation]
   static IceAnnotation? fromElement(ElementAnnotation annotation) {
@@ -28,17 +39,21 @@ class IceAnnotation implements Ice {
       return null;
     }
 
+    final defaults = IceAnnotation._defaults();
+
     final reader = ConstantReader(annotation.computeConstantValue());
 
     T? get<T>(String name, [ConstantReader? _reader]) {
       return (_reader ?? reader).peek(name)?.literalValue as T?;
     }
 
-    final equatable = get<bool>('equatable') ?? iceSettings.equatable;
-    final iceToString = get<bool>('iceToString') ?? iceSettings.iceToString;
+    final props = get<bool>('props') ?? defaults.props;
+    final equatable = get<bool>('equatable') ?? defaults.equatable;
+    final tostring = get<bool?>('tostring') ?? defaults.tostring;
     final ignoreGettersAsProps =
-        get<bool>('ignoreGettersAsProps') ?? iceSettings.ignoreGettersAsProps;
-    final copyWithType = CopyWith.values.fromReader(reader, 'copyWith');
+        get<bool>('ignoreGettersAsProps') ?? defaults.ignoreGettersAsProps;
+    final copyWithType =
+        CopyWith.values.fromReader(reader, 'copyWith') ?? defaults.copyWith;
     final iceJsonAnnotation = reader.peek('jsonSerializable')?.objectValue;
 
     IceJsonSerializable? iceJsonSerializable;
@@ -61,10 +76,11 @@ class IceAnnotation implements Ice {
 
     return IceAnnotation(
       equatable: equatable,
-      copyWith: copyWithType ?? iceSettings.copyWith,
-      iceToString: iceToString,
+      copyWith: copyWithType,
+      tostring: tostring,
       ignoreGettersAsProps: ignoreGettersAsProps,
       jsonSerializable: iceJsonSerializable,
+      props: props,
     );
   }
 
@@ -75,53 +91,14 @@ class IceAnnotation implements Ice {
   final bool equatable;
 
   @override
-  final bool iceToString;
+  final bool tostring;
 
   @override
   final bool ignoreGettersAsProps;
 
   @override
   final IceJsonSerializable? jsonSerializable;
-}
 
-/// The methods that will be generated with the [Ice] annotation
-enum IceOptions {
-  /// the copyWith method will be generated
-  copyWith,
-
-  /// [Equatable] will be generated
-  equatable,
-
-  /// iceToString will be generated
-  iceToString,
-
-  /// toJson will be generated
-  toJson,
-
-  /// fromJson will be generated
-  fromJson,
-
-  /// any other option
-  wrapper,
-}
-
-///
-extension IceOptionsX on IceOptions {
-  ///
-  bool get isCopyWith => this == IceOptions.copyWith;
-
-  ///
-  bool get isEquatable => this == IceOptions.equatable;
-
-  ///
-  bool get isIceToString => this == IceOptions.iceToString;
-
-  ///
-  bool get isToJson => this == IceOptions.toJson;
-
-  ///
-  bool get isFromJson => this == IceOptions.fromJson;
-
-  ///
-  bool get isWrapper => this == IceOptions.wrapper;
+  @override
+  final bool props;
 }
