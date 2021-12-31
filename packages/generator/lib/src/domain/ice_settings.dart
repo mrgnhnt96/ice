@@ -23,7 +23,7 @@ class IceSettings implements Ice {
   /// the default settings for ice
   const IceSettings.defaultValues()
       : this(
-          copyWith: CopyWith.simple,
+          copyWith: CopyWith.nullSafe,
           equatable: true,
           iceToString: true,
           ignoreGettersAsProps: true,
@@ -37,7 +37,7 @@ class IceSettings implements Ice {
   factory IceSettings.fromOptions(Map<String, dynamic> config) {
     const defaultValues = IceSettings.defaultValues();
 
-    const conv = CopyWithTypeConv.nullable;
+    const conv = CopyWithConv.nullable;
     final copyWithType =
         conv.fromJson(config['copy_with'] as String?) ?? defaultValues.copyWith;
 
