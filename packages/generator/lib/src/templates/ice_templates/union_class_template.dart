@@ -16,25 +16,21 @@ class UnionClassTemplate extends IceClassTemplate {
   @override
   void writeConstructors(StringBuffer buffer) {
     if (subjectIsOfUnion) {
-      buffer
-        ..writeAll(
-          union!.constructors
-              .where((c) => c.isGenerative)
-              .map<String>((superConst) {
-            final constStr = superConst.isConst ? 'const ' : '';
-            var superName = superConst.name;
-            if (superName.isNotEmpty) {
-              superName = '.$superName';
-            }
-            return '$constStr${subject.genName}${superConst.declaration} '
-                ': super$superName(${superConst.args});';
-          }),
-        )
-        ..writeln('\n');
+      buffer.writeAll(
+        union!.constructors
+            .where((c) => c.isGenerative)
+            .map<String>((superConst) {
+          final constStr = superConst.isConst ? 'const ' : '';
+          var superName = superConst.name;
+          if (superName.isNotEmpty) {
+            superName = '.$superName';
+          }
+          return '$constStr${subject.genName}${superConst.declaration} '
+              ': super$superName(${superConst.args});';
+        }),
+      );
     } else {
-      buffer
-        ..writeln('const ${subject.genName}();')
-        ..writeln('\n');
+      buffer.write('const ${subject.genName}();');
     }
   }
 }

@@ -41,7 +41,7 @@ extension on Class {
   }
 
   String get switchCase {
-    return 'case $genName:\n' 'return $nameAsArg(this as $genName);';
+    return 'case $genName: return $nameAsArg(this as $genName);';
   }
 
   String toIsType() {
@@ -82,7 +82,7 @@ class UnionTemplate extends Template {
   }
 
   void _writeIsType(StringBuffer buffer) {
-    buffer.writeAll(subClasses.map<String>((e) => e.toIsType()), '\n');
+    buffer.writeAll(subClasses.map<String>((e) => e.toIsType()));
   }
 
   void _writeSupport() {
@@ -93,7 +93,7 @@ class UnionTemplate extends Template {
   }
 
   void _writeUnionBase(StringBuffer buffer) {
-    buffer.writeln('abstract class ${subject.unionBase} {}');
+    buffer.write('abstract class ${subject.unionBase} {}');
   }
 
   void _writePatternMatches(StringBuffer buffer) {
@@ -103,8 +103,8 @@ class UnionTemplate extends Template {
         body: () {
           buffer
             ..writeAll(subClasses.map<String>((e) => e.switchCase))
-            ..writeln('default:')
-            ..writeln(
+            ..write('default:')
+            ..write(
               r"throw UnsupportedError('Unsupported type: $this');",
             );
         },
@@ -157,9 +157,9 @@ class UnionTemplate extends Template {
             open: '(',
             close: ');',
             body: () {
-              buffer.writeAll(args, ',\n');
+              buffer.writeAll(args, ',');
               if (args.isNotEmpty) {
-                buffer.writeln(',');
+                buffer.write(',');
               }
             },
           );

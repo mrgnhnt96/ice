@@ -21,7 +21,7 @@ extension StringBufferX on StringBuffer {
     final opener = open ?? '{';
     final closer = close ?? '}';
 
-    writeln('$string$opener');
+    write('$string$opener');
     body();
     write(closer);
   }
@@ -41,16 +41,16 @@ extension StringBufferX on StringBuffer {
       seperateWith = '';
       beforeClose = '';
     } else {
-      seperateWith = ',\n';
+      seperateWith = ',';
       beforeClose = ',';
       open = '({';
       close = '})';
     }
 
-    writeln('$entry $open');
+    write('$entry $open');
     writeAll(params, seperateWith);
-    writeln('$beforeClose$close {');
+    write('$beforeClose$close {');
     body();
-    writeln('}');
+    write('}');
   }
 }

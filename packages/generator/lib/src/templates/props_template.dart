@@ -67,7 +67,7 @@ class PropsTemplate extends Template {
     buffer
       ..write('return [')
       ..writeAll(allFields, ', ')
-      ..writeln('];');
+      ..write('];');
   }
 }
 

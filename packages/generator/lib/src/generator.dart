@@ -64,9 +64,7 @@ class IceGenerator extends Generator {
     CodeBuilder(classes).generate(buffer);
 
     final support = IceSupport().get();
-    buffer
-      ..writeln()
-      ..writeAll(support, '\n');
+    buffer.writeAll(support);
 
     return buffer.toString();
   }

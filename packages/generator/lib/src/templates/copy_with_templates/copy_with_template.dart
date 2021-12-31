@@ -44,7 +44,15 @@ extension on CopyWith {
     }
     final lines = desc.split('\n');
 
-    return lines.map((e) => '/// $e').join('\n');
+    String descript(String str) {
+      const comment = '///';
+      if (str.isEmpty) {
+        return comment;
+      }
+      return '$comment $str';
+    }
+
+    return lines.map(descript).join('\n');
   }
 }
 
@@ -129,7 +137,7 @@ abstract class CopyWithTemplate extends Template {
 
                 return '${p.name}: ${argReturnValue(p)}';
               }),
-              ',\n',
+              ',',
             ),
             close: ');',
           );

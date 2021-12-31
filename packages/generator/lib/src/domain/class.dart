@@ -160,7 +160,7 @@ class Class {
       final getter = '${field.type} get ${field.name};';
       var jsonKey = '';
       if (field.jsonKeyDeclaration != null) {
-        jsonKey = '${field.jsonKeyDeclaration}\n';
+        jsonKey = '${field.jsonKeyDeclaration}';
       }
 
       getters.add(jsonKey + getter);

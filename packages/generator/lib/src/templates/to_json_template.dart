@@ -41,8 +41,8 @@ class ToJsonTemplate extends Template {
           body: () {
             for (final union in unions) {
               buffer
-                ..writeln('case ${union.name}:')
-                ..writeln(
+                ..write('case ${union.name}:')
+                ..write(
                   // ignore: missing_whitespace_between_adjacent_strings
                   'return (this as ${union.name})'
                   '.toJson(includeUnionType: includeUnionType);',
@@ -50,8 +50,8 @@ class ToJsonTemplate extends Template {
             }
 
             buffer
-              ..writeln('default:')
-              ..writeln('throw FallThroughError();');
+              ..write('default:')
+              ..write('throw FallThroughError();');
           },
         );
       },
@@ -67,16 +67,16 @@ class ToJsonTemplate extends Template {
       'Map<String, dynamic> toJson({bool includeUnionType = true})',
       body: () {
         buffer
-          ..writeln(
+          ..write(
             'final map = _\$\$${subject.nonPrivateName}ToJson(this);',
           )
           ..writeObject(
             'if (includeUnionType)',
             body: () {
-              buffer.writeln("map[r'$unionTypeKey'] = r'$unionTypeId';");
+              buffer.write("map[r'$unionTypeKey'] = r'$unionTypeId';");
             },
           )
-          ..writeln('return map;');
+          ..write('return map;');
       },
     );
   }
@@ -93,7 +93,7 @@ class ToJsonTemplate extends Template {
       genSign += r'$';
     }
 
-    buffer.writeln(
+    buffer.write(
       'Map<String, dynamic> toJson() => '
       '_$genSign${subject.nonPrivateName}ToJson(this);',
     );

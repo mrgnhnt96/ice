@@ -8,7 +8,7 @@ extension on List<Field> {
     final args = <String>[];
 
     for (final field in this) {
-      final arg = '\t${field.name}: \$${field.name}';
+      final arg = '${field.name}: \$${field.name}';
 
       args.add(arg);
     }
@@ -73,10 +73,13 @@ class ToStringTemplate extends Template {
       return;
     }
 
-    buffer
-      ..writeln("return '''\n${subject.name}(")
-      ..writeAll(args, ',\n')
-      ..writeln(',')
-      ..writeln(")''';");
+    buffer.writeObject(
+      "return '${subject.name}",
+      open: '(',
+      close: ")';",
+      body: () {
+        buffer.writeAll(args, ', ');
+      },
+    );
   }
 }

@@ -141,7 +141,7 @@ class Constructor {
       args.add(name);
     }
 
-    return args.join(',\n');
+    return args.join(',');
   }
 }
 
@@ -153,7 +153,7 @@ extension ListConstructorX on List<Constructor> {
 
     for (final constructor in this) {
       final declaration = '$className${constructor.declaration} : '
-          '${constructor.superArgs()}\n\n';
+          '${constructor.superArgs()}';
 
       declarations.add(declaration);
     }

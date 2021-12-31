@@ -73,7 +73,7 @@ class FromJsonTemplate extends Template {
         return;
       }
 
-      buffer.writeln(
+      buffer.write(
         'factory ${subject.genName}'
         '.fromJson(Map<String, dynamic> json) => '
         '_\$\$${subject.name}FromJson(json);',
@@ -104,19 +104,19 @@ class FromJsonTemplate extends Template {
                 fromJsonAccess = union.genName;
               }
               buffer
-                ..writeln("case r'$unionTypeId':")
-                ..writeln('return $fromJsonAccess.fromJson(json);');
+                ..write("case r'$unionTypeId':")
+                ..write('return $fromJsonAccess.fromJson(json);');
             }
 
             buffer
-              ..writeln('default:')
+              ..write('default:')
               ..writeObject(
                 'if (defaultValue != null)',
                 body: () {
-                  buffer.writeln('return defaultValue;');
+                  buffer.write('return defaultValue;');
                 },
               )
-              ..writeln('throw FallThroughError();');
+              ..write('throw FallThroughError();');
           },
         );
       },
@@ -133,7 +133,7 @@ class FromJsonTemplate extends Template {
       '${subject.name} _\$${subject.nonPrivateName}FromJson'
       '(Map<String, dynamic> json)',
       body: () {
-        buffer.writeln(
+        buffer.write(
           'return _\$\$${subject.nonPrivateName}FromJson(json) '
           'as ${subject.name};',
         );

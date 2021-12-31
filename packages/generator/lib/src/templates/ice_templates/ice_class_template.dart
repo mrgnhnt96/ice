@@ -119,7 +119,7 @@ class IceClassTemplate extends Template {
 
   ///
   void writeConstructors(StringBuffer buffer) {
-    buffer.writeln('const ${subject.genName}();');
+    buffer.write('const ${subject.genName}();');
   }
 
   ///
@@ -130,7 +130,7 @@ class IceClassTemplate extends Template {
       return;
     }
 
-    buffer.writeln(iceJsonSerializable.asAnnotation);
+    buffer.write(iceJsonSerializable.asAnnotation);
   }
 
   @override
@@ -138,32 +138,26 @@ class IceClassTemplate extends Template {
     final fromJsonTemplate = FromJsonTemplate.forSubject(subject);
 
     jsonSerializableAnnotation(buffer);
-    buffer
-      ..writeObject(
-        classHeader,
-        body: () {
-          writeConstructors(buffer);
+    buffer.writeObject(
+      classHeader,
+      body: () {
+        writeConstructors(buffer);
+        fromJsonTemplate.writeConstructors(buffer);
 
-          fromJsonTemplate.writeConstructors(buffer);
+        writeFields(buffer);
 
-          buffer.writeln();
-          writeFields(buffer);
+        writeProperties(buffer);
 
-          buffer.writeln();
-          writeProperties(buffer);
-
-          buffer.writeln();
-          ToJsonTemplate.forSubject(subject, union).addToBuffer(buffer);
-        },
-      )
-      ..writeln();
+        ToJsonTemplate.forSubject(subject, union).addToBuffer(buffer);
+      },
+    );
 
     fromJsonTemplate.addToBuffer(buffer);
   }
 
   ///
   void writeFields(StringBuffer buffer) {
-    buffer.writeAll(subject.fieldGetters, '\n');
+    buffer.writeAll(subject.fieldGetters);
   }
 
   ///
@@ -174,7 +168,6 @@ class IceClassTemplate extends Template {
       if (copyWithTemplate != null) {
         copyWithTemplate.addToBuffer(buffer);
         IceSupport().add(copyWithTemplate.support);
-        buffer.writeln();
       }
 
       PropsTemplate.forSubject(
@@ -182,13 +175,11 @@ class IceClassTemplate extends Template {
         union: union,
         asExtension: false,
       ).addToBuffer(buffer);
-      buffer.writeln();
 
       ToStringTemplate.forSubject(
         subject,
         asExtension: false,
       ).addToBuffer(buffer);
-      buffer.writeln();
     }
   }
 }
