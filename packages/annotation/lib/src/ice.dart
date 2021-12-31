@@ -17,15 +17,26 @@ class Ice {
     this.copyWith,
     this.equatable,
     this.ignoreGettersAsProps,
-    this.iceToString,
+    bool? toString,
     this.jsonSerializable = const IceJsonSerializable(),
-  });
+  })  : props = equatable,
+        tostring = toString;
+
+  ///
+  const Ice.only({
+    this.props = false,
+    bool toString = false,
+    this.copyWith,
+  })  : tostring = toString,
+        equatable = false,
+        ignoreGettersAsProps = false,
+        jsonSerializable = null;
 
   /// whether the copyWith method is generated
   /// with simple or nullable arguments
   final CopyWith? copyWith;
 
-  /// adds `EquatableMixin` and provides prop
+  /// adds `EquatableMixin`, includes [props]
   final bool? equatable;
 
   /// whether to ignore getter methods as fields
@@ -34,39 +45,56 @@ class Ice {
   /// Does nothing if [equatable] is `false`
   final bool? ignoreGettersAsProps;
 
-  /// generates the `iceToString` method
-  final bool? iceToString;
-
   /// generates the serializable methods
   final IceJsonSerializable? jsonSerializable;
+
+  /// whether to generate the props method
+  final bool? props;
+
+  /// whether to generate the `toString` method
+  final bool? tostring;
 }
 
 /// {@template ice_union_base}
 /// the base of the union
 /// {@endtemplate}
 @Target({TargetKind.classType})
-class IceUnion implements Ice {
+class IceUnion extends Ice {
   /// {@macro ice_union_base}
   const IceUnion.of(
     this.base, {
     this.unionTypeId,
-    this.copyWith,
-    this.equatable,
-    this.iceToString,
-    this.ignoreGettersAsProps,
-    this.jsonSerializable = const IceJsonSerializable(),
-  }) : unionTypeKey = '';
+    CopyWith? copyWith,
+    bool? equatable,
+    bool? toString,
+    bool? ignoreGettersAsProps,
+    IceJsonSerializable? jsonSerializable = const IceJsonSerializable(),
+  })  : unionTypeKey = '',
+        super(
+          copyWith: copyWith,
+          equatable: equatable,
+          toString: toString,
+          ignoreGettersAsProps: ignoreGettersAsProps,
+          jsonSerializable: jsonSerializable,
+        );
 
   /// {@macro ice_union_base}
   const IceUnion.create({
     this.unionTypeKey,
-    this.copyWith,
-    this.equatable,
-    this.iceToString,
-    this.ignoreGettersAsProps,
-    this.jsonSerializable = const IceJsonSerializable(),
+    CopyWith? copyWith,
+    bool? equatable,
+    bool? toString,
+    bool? ignoreGettersAsProps,
+    IceJsonSerializable? jsonSerializable = const IceJsonSerializable(),
   })  : base = IceUnion,
-        unionTypeId = '';
+        unionTypeId = '',
+        super(
+          copyWith: copyWith,
+          equatable: equatable,
+          toString: toString,
+          ignoreGettersAsProps: ignoreGettersAsProps,
+          jsonSerializable: jsonSerializable,
+        );
 
   /// the base of the union
   final Type base;
@@ -91,19 +119,4 @@ class IceUnion implements Ice {
   /// ```
   /// defaults to the class name
   final String? unionTypeId;
-
-  @override
-  final CopyWith? copyWith;
-
-  @override
-  final bool? equatable;
-
-  @override
-  final bool? iceToString;
-
-  @override
-  final bool? ignoreGettersAsProps;
-
-  @override
-  final IceJsonSerializable? jsonSerializable;
 }
