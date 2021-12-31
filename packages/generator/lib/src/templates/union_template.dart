@@ -45,7 +45,11 @@ extension on Class {
   }
 
   String toIsType() {
-    return 'bool get is$cleanName => this is $genName;';
+    return 'bool get is$cleanName => this is $name;';
+  }
+
+  String toAsType() {
+    return '$name get as$cleanName => this as $name;';
   }
 
   String get unionName => name;
@@ -74,6 +78,7 @@ class UnionTemplate extends Template {
       body: () {
         _writePatternMatches(buffer);
         ToJsonTemplate.forUnion(subject, subClasses).addToBuffer(buffer);
+        _writeAsType(buffer);
         _writeIsType(buffer);
       },
     );
@@ -83,6 +88,27 @@ class UnionTemplate extends Template {
 
   void _writeIsType(StringBuffer buffer) {
     buffer.writeAll(subClasses.map<String>((e) => e.toIsType()));
+  }
+
+  void _writeAsType(StringBuffer buffer) {
+    for (final item in subClasses) {
+      buffer.writeObject(
+        '${item.name} get as${item.cleanName}',
+        body: () {
+          buffer
+            ..writeObject(
+              'if (!is${item.cleanName})',
+              body: () {
+                buffer.write(
+                  "throw Exception('${subject.name} runtimeType is not "
+                  "of type ${item.name}');",
+                );
+              },
+            )
+            ..write('return this as ${item.name};');
+        },
+      );
+    }
   }
 
   void _writeSupport() {
