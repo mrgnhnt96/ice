@@ -1,3 +1,4 @@
+import 'package:ice/ice.dart';
 import 'package:ice/src/domain/domain.dart';
 import 'package:ice/src/domain/ice_support.dart';
 import 'package:ice/src/templates/from_json_template.dart';
@@ -13,14 +14,17 @@ extension on IceJsonSerializable {
   /// converts all values to the json_serializable annotation
   String get asAnnotation {
     // ignore: deprecated_member_use
-    final defaults = JsonSerializable.defaults;
+    const defaults = JsonSerializable.defaults;
 
     final allArgs = [
-      if (createFactory ?? true)
+      if ((iceSettings.createFromJson) || (createFactory ?? true))
         "constructor: r'${FromJsonTemplate.fromJsonAccessor}'",
-      if (createToJson != null && createToJson != defaults.createToJson)
+      if ((iceSettings.createToJson || createToJson != defaults.createToJson) &&
+          createToJson != null)
         'createToJson: $createToJson',
-      if (createFactory != null && createFactory != defaults.createFactory)
+      if ((iceSettings.createFromJson ||
+              createFactory != defaults.createFactory) &&
+          createFactory != null)
         'createFactory: $createFactory',
       if (explicitToJson != null && explicitToJson != defaults.explicitToJson)
         'explicitToJson: $explicitToJson',

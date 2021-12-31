@@ -88,10 +88,10 @@ abstract class Template {
         }
 
         if (name.isFromJson) {
-          return iceSettings.jsonSerializable.createFactory;
+          return iceSettings.createFromJson;
         }
 
-        return iceSettings.jsonSerializable.createToJson;
+        return iceSettings.createToJson;
     }
   }
 
