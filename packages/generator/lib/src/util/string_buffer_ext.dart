@@ -1,7 +1,5 @@
 // ignore_for_file: parameter_assignments
 
-import 'package:ice/src/domain/ice_settings.dart';
-
 /// extension to [StringBuffer]
 extension StringBufferX on StringBuffer {
   /// accepts a header string to name the section
