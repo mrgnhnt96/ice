@@ -63,13 +63,13 @@ class IceUnion extends Ice {
   /// {@macro ice_union_base}
   const IceUnion.of(
     this.base, {
-    this.unionTypeId,
+    this.unionId,
     CopyWith? copyWith,
     bool? equatable,
     bool? toString,
     bool? ignoreGettersAsProps,
     IceJsonSerializable? jsonSerializable = const IceJsonSerializable(),
-  })  : unionTypeKey = '',
+  })  : unionKey = '',
         super(
           copyWith: copyWith,
           equatable: equatable,
@@ -80,14 +80,14 @@ class IceUnion extends Ice {
 
   /// {@macro ice_union_base}
   const IceUnion.create({
-    this.unionTypeKey,
+    this.unionKey,
     CopyWith? copyWith,
     bool? equatable,
     bool? toString,
     bool? ignoreGettersAsProps,
     IceJsonSerializable? jsonSerializable = const IceJsonSerializable(),
   })  : base = IceUnion,
-        unionTypeId = '',
+        unionId = '',
         super(
           copyWith: copyWith,
           equatable: equatable,
@@ -103,20 +103,20 @@ class IceUnion extends Ice {
   ///
   /// ```dart
   /// {
-  ///   unionTypeKey: unionTypeId
+  ///   unionKey: unionId
   /// }
   /// ```
   ///
   /// default: `$unionType`
-  final String? unionTypeKey;
+  final String? unionKey;
 
   /// the id used as the union type during serialization
   ///
   /// ```dart
   /// {
-  ///   unionTypeKey: unionTypeId
+  ///   unionKey: unionId
   /// }
   /// ```
   /// defaults to the class name
-  final String? unionTypeId;
+  final String? unionId;
 }

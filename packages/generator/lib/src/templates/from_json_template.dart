@@ -93,20 +93,19 @@ class FromJsonTemplate extends Template {
       '${subject.name} _\$${subject.name}FromJson(Map<String, dynamic> json, '
       '[${subject.name}? defaultValue])',
       body: () {
-        final unionTypeKey = subject.annotations.union!.unionTypeKey;
+        final unionKey = subject.annotations.union!.unionKey;
         buffer.writeObject(
-          "switch(json[r'$unionTypeKey'] as String?)",
+          "switch(json[r'$unionKey'] as String?)",
           body: () {
             for (final union in unions) {
               var fromJsonAccess = union.name;
-              final unionTypeId =
-                  union.annotations.union!.unionTypeId ?? union.name;
+              final unionId = union.annotations.union!.unionId ?? union.name;
 
               if (!union.doNotGenerate.fromJsonConstructor) {
                 fromJsonAccess = union.genName;
               }
               buffer
-                ..writepln("case r'$unionTypeId':")
+                ..writepln("case r'$unionId':")
                 ..writepln('return $fromJsonAccess.fromJson(json);');
             }
 

@@ -59,9 +59,8 @@ class ToJsonTemplate extends Template {
   }
 
   void _writeAsSubclass(StringBuffer buffer) {
-    final unionTypeId = subject.annotations.union!.unionTypeId ?? subject.name;
-    final unionTypeKey =
-        union?.annotations.union!.unionTypeKey ?? r'$unionType';
+    final unionId = subject.annotations.union!.unionId ?? subject.name;
+    final unionKey = union?.annotations.union!.unionKey ?? r'$unionType';
 
     buffer.writeObject(
       'Map<String, dynamic> toJson({bool includeUnionType = true})',
@@ -73,7 +72,7 @@ class ToJsonTemplate extends Template {
           ..writeObject(
             'if (includeUnionType)',
             body: () {
-              buffer.writepln("map[r'$unionTypeKey'] = r'$unionTypeId';");
+              buffer.writepln("map[r'$unionKey'] = r'$unionId';");
             },
           )
           ..writepln('return map;');

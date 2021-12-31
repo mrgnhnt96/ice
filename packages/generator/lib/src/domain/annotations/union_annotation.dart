@@ -21,8 +21,8 @@ class UnionAnnotation extends IceAnnotation implements IceUnion {
     required bool props,
     required this.isBase,
     required this.ofUnionType,
-    required this.unionTypeId,
-    required this.unionTypeKey,
+    required this.unionId,
+    required this.unionKey,
   }) : super(
           copyWith: copyWith,
           equatable: equatable,
@@ -56,14 +56,14 @@ class UnionAnnotation extends IceAnnotation implements IceUnion {
       }
     }
 
-    final unionTypeId = reader.peek('unionTypeId')?.stringValue;
-    final unionTypeKey = reader.peek('unionTypeKey')?.stringValue;
+    final unionId = reader.peek('unionId')?.stringValue;
+    final unionKey = reader.peek('unionKey')?.stringValue;
 
     return UnionAnnotation(
       isBase: isBase,
       ofUnionType: unionType,
-      unionTypeId: unionTypeId,
-      unionTypeKey: unionTypeKey ?? iceSettings.unionTypeKey,
+      unionId: unionId,
+      unionKey: unionKey ?? iceSettings.unionKey,
       copyWith: iceAnnotation.copyWith,
       equatable: iceAnnotation.equatable,
       tostring: iceAnnotation.tostring,
@@ -81,10 +81,10 @@ class UnionAnnotation extends IceAnnotation implements IceUnion {
   final String? ofUnionType;
 
   @override
-  final String? unionTypeId;
+  final String? unionId;
 
   @override
-  final String unionTypeKey;
+  final String unionKey;
 
   @override
   @internal

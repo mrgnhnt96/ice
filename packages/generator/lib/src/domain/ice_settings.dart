@@ -14,7 +14,7 @@ class IceSettings implements Ice {
     required this.equatable,
     required this.tostring,
     required this.ignoreGettersAsProps,
-    required this.unionTypeKey,
+    required this.unionKey,
     required this.formatOutput,
     required this.createFromJson,
     required this.createToJson,
@@ -28,7 +28,7 @@ class IceSettings implements Ice {
           equatable: true,
           tostring: true,
           ignoreGettersAsProps: true,
-          unionTypeKey: r'$unionType',
+          unionKey: r'$unionType',
           formatOutput: false,
           createToJson: true,
           createFromJson: true,
@@ -51,8 +51,7 @@ class IceSettings implements Ice {
           config['create_to_json'] as bool? ?? defaultValues.createToJson,
       createFromJson:
           config['create_from_json'] as bool? ?? defaultValues.createFromJson,
-      unionTypeKey:
-          config['union_type_key'] as String? ?? defaultValues.unionTypeKey,
+      unionKey: config['union_type_key'] as String? ?? defaultValues.unionKey,
       tostring: config['to_string'] as bool? ?? defaultValues.tostring,
       ignoreGettersAsProps: config['ignore_getters_as_props'] as bool? ??
           defaultValues.ignoreGettersAsProps,
@@ -105,7 +104,7 @@ class IceSettings implements Ice {
   final bool createFromJson;
 
   /// the default key to be used for union serialization
-  final String unionTypeKey;
+  final String unionKey;
 
   /// whether to format the output of the generated code
   /// using the dartfmt tool

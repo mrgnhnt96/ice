@@ -7,8 +7,7 @@ part 'main.g.dart';
 
 @IceUnion.of(
   State,
-  copyWith: CopyWith.nullSafe,
-  unionTypeId: r'$Something',
+  unionId: r'$Something',
 )
 class Example extends _$Example {
   const Example(this.name);
@@ -29,7 +28,7 @@ class Error extends _$Error {
 }
 
 @IceUnion.create(
-  unionTypeKey: 'runtimeType',
+  unionKey: 'runtimeType',
 )
 class State extends _$State {
   const State();
