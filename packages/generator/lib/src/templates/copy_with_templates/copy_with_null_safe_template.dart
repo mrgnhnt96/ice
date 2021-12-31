@@ -15,11 +15,17 @@ class CopyWithNullSafeTemplate extends CopyWithTemplate {
     Class subject,
   ) : super(
           subject,
-          type: CopyWith.anonymous,
+          copyWithType: CopyWith.anonymous,
         );
 
   String get _copyWith => '${subject.genName}CopyWith';
-  String get _sentinel => 'sentinelValue';
+  String get _sentinel => r'_$sentinelValue';
+  String get _copyFromType {
+    if (subject.annotations.isMethodAnnotation) {
+      return subject.name;
+    }
+    return subject.genName;
+  }
 
   @override
   String argReturnValue(Param arg) {
@@ -63,7 +69,7 @@ class CopyWithNullSafeTemplate extends CopyWithTemplate {
       body: () {
         buffer
           ..write(
-            'const factory $_copyWith(${subject.genName} value) '
+            'const factory $_copyWith($_copyFromType value) '
             '= ${_copyWith}Impl;',
           )
           ..writeObject(
@@ -90,7 +96,7 @@ class CopyWithNullSafeTemplate extends CopyWithTemplate {
       body: () {
         buffer
           ..write('const ${_copyWith}Impl(this._value);')
-          ..write('final ${subject.genName} _value;')
+          ..write('final $_copyFromType _value;')
           ..writeMethod(
             '${subject.name} call',
             params: constructor.params.map(sentinelParam),
