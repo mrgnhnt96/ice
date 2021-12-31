@@ -12,12 +12,13 @@ class IceSettings implements Ice {
   const IceSettings({
     required this.copyWith,
     required this.equatable,
-    required this.iceToString,
+    required this.tostring,
     required this.ignoreGettersAsProps,
     required this.unionTypeKey,
     required this.formatOutput,
     required this.createFromJson,
     required this.createToJson,
+    required this.props,
   });
 
   /// the default settings for ice
@@ -25,12 +26,13 @@ class IceSettings implements Ice {
       : this(
           copyWith: CopyWith.nullSafe,
           equatable: true,
-          iceToString: true,
+          tostring: true,
           ignoreGettersAsProps: true,
           unionTypeKey: r'$unionType',
           formatOutput: false,
           createToJson: true,
           createFromJson: true,
+          props: false,
         );
 
   /// {@macro ice_settings}
@@ -43,6 +45,7 @@ class IceSettings implements Ice {
 
     return IceSettings(
       copyWith: copyWithType,
+      props: config['props'] as bool? ?? defaultValues.props,
       equatable: config['equatable'] as bool? ?? defaultValues.equatable,
       createToJson:
           config['create_to_json'] as bool? ?? defaultValues.createToJson,
@@ -50,7 +53,7 @@ class IceSettings implements Ice {
           config['create_from_json'] as bool? ?? defaultValues.createFromJson,
       unionTypeKey:
           config['union_type_key'] as String? ?? defaultValues.unionTypeKey,
-      iceToString: config['to_string'] as bool? ?? defaultValues.iceToString,
+      tostring: config['to_string'] as bool? ?? defaultValues.tostring,
       ignoreGettersAsProps: config['ignore_getters_as_props'] as bool? ??
           defaultValues.ignoreGettersAsProps,
       formatOutput:
@@ -84,13 +87,16 @@ class IceSettings implements Ice {
   final bool equatable;
 
   @override
-  final bool iceToString;
-
-  @override
   final bool ignoreGettersAsProps;
 
   @override
-  IceJsonSerializable get jsonSerializable => throw UnimplementedError();
+  IceJsonSerializable? get jsonSerializable => null;
+
+  @override
+  final bool props;
+
+  @override
+  final bool tostring;
 
   /// whether to create `toJson()`
   final bool createToJson;
