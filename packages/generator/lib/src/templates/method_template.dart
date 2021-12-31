@@ -1,5 +1,4 @@
 import 'package:ice/src/domain/class.dart';
-import 'package:ice/src/domain/ice_support.dart';
 import 'package:ice/src/templates/templates.dart';
 import 'package:ice/src/templates/to_json_template.dart';
 import 'package:ice/src/util/string_buffer_ext.dart';
@@ -26,7 +25,6 @@ class MethodTemplate extends Template {
         body: () {
           if (copyWithTemplate != null) {
             copyWithTemplate.addToBuffer(buffer);
-            IceSupport().add(copyWithTemplate.support);
           }
 
           toJsonTemplate.addToBuffer(buffer);
