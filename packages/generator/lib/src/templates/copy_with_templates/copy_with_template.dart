@@ -2,7 +2,8 @@ import 'package:ice/src/domain/domain.dart';
 import 'package:ice/src/domain/enums/copy_with_type_ext.dart';
 import 'package:ice/src/domain/enums/position_type.dart';
 import 'package:ice/src/domain/ice_support.dart';
-import 'package:ice/src/templates/copy_with_templates/copy_with_function_template.dart';
+import 'package:ice/src/templates/copy_with_templates/copy_with_anonymous_template.dart';
+import 'package:ice/src/templates/copy_with_templates/copy_with_null_safe_template.dart';
 import 'package:ice/src/templates/copy_with_templates/copy_with_simple_template.dart';
 import 'package:ice/src/templates/template.dart';
 import 'package:ice/src/util/string_buffer_ext.dart';
@@ -71,14 +72,12 @@ abstract class CopyWithTemplate extends Template {
   static CopyWithTemplate? forSubject(Class subject) {
     final type = subject.copyWith;
     switch (type) {
-      case CopyWith.typeSafe:
-        return CopyWithFunctionTemplate.forSubject(
-          subject,
-        );
+      case CopyWith.anonymous:
+        return CopyWithAnonymousTemplate.forSubject(subject);
+      case CopyWith.nullSafe:
+        return CopyWithNullSafeTemplate.forSubject(subject);
       case CopyWith.simple:
-        return CopyWithSimpleTemplate.forSubject(
-          subject,
-        );
+        return CopyWithSimpleTemplate.forSubject(subject);
       case CopyWith.none:
         return null;
     }
@@ -118,8 +117,7 @@ abstract class CopyWithTemplate extends Template {
   ///
   String argReturnValue(Param arg);
 
-  @override
-  void generate(StringBuffer buffer) {
+  void copyWithMethod(StringBuffer buffer) {
     buffer
       ..writeln(docComment)
       ..writeMethod(
@@ -145,16 +143,32 @@ abstract class CopyWithTemplate extends Template {
       );
   }
 
+  /// not intended to be overridden
+  @override
+  void generate(StringBuffer buffer) {
+    if (constructor.params.isEmpty) {
+      buffer.write('${subject.name} copyWith() => ${subject.name}();');
+      return;
+    }
+    copyWithMethod(buffer);
+  }
+
   /// any preparation/support that is needed for the copyWith method
   /// to succeffully generate
-  String get support => '';
+  Iterable<String> get support => {};
 
   /// adds support to [IceSupport]
+  ///
+  /// not intended to be overridden
   void addSupport() {
     if (!canBeGenerated) {
       return;
     }
 
-    IceSupport().add(support);
+    if (constructor.params.isEmpty) {
+      return;
+    }
+
+    IceSupport().addAll(support);
   }
 }
