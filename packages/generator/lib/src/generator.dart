@@ -1,13 +1,12 @@
 // ignore_for_file: comment_references, implementation_imports
 
-import 'dart:io';
 
 import 'package:analyzer/dart/element/element.dart';
-import 'package:analyzer/src/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:ice/src/code_builder.dart';
 import 'package:ice/src/domain/class.dart';
 import 'package:ice/src/domain/ice_support.dart';
+import 'package:ice/src/util/element_ext.dart';
 import 'package:ice/src/util/iterable_ext.dart';
 import 'package:ice/src/util/string_buffer_ext.dart';
 import 'package:ice_annotation/src/ice.dart';
@@ -30,37 +29,6 @@ class IceGenerator extends Generator {
     }
 
     final buffer = StringBuffer();
-
-    final assets = <AssetId>{};
-
-    for (final import in library.element.imports) {
-      final importedLibrary = import.importedLibrary;
-      var uri = importedLibrary?.identifier;
-      if (importedLibrary == null || uri == null) {
-        continue;
-      }
-
-      final importReader = LibraryReader(importedLibrary);
-      final classes = rawClassesFrom(importReader);
-
-      if (classes.isNotEmpty) {
-        continue;
-      }
-
-      uri = uri.replaceFirst('package:', '');
-
-      // possible dart import
-      if (uri.contains(':')) {
-        continue;
-      }
-      final separator = Platform.pathSeparator;
-      uri = uri.replaceFirst(separator, '|lib$separator');
-
-      final asset = AssetId.parse(uri);
-      assets.add(asset);
-    }
-
-    buildStep.reportUnusedAssets(assets);
 
     CodeBuilder(classes).generate(buffer);
 
@@ -100,11 +68,5 @@ class IceGenerator extends Generator {
     final classes = rawClassesFrom(library);
 
     return classes.map(Class.fromElement);
-  }
-}
-
-extension on ElementAnnotation {
-  String get astName {
-    return (this as ElementAnnotationImpl).annotationAst.name.name;
   }
 }
