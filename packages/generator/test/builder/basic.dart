@@ -4,13 +4,10 @@ import 'package:ice_annotation/ice.dart';
 
 part 'output/basic.dart';
 
-@IceUnion.of(
-  State,
-  jsonSerializable: null,
-)
+@Ice.only(copyWith: CopyWith.nullSafe)
 class Example extends _$Example {
   Example(this.name);
-  @iceJsonConstructor
+  @IceConstructor.copyWith
   Example._() : name = '';
 
   final String name;

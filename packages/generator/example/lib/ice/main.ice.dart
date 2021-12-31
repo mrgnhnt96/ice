@@ -9,21 +9,19 @@ part of 'main.dart';
 // **************************************************************************
 
 @JsonSerializable(
-  constructor: '_',
+  constructor: r'_$fromJson',
 )
 abstract class _$Example extends State {
   const _$Example(int code) : super(code);
   const _$Example.empty() : super.empty();
-
-  const factory _$Example._({
-    String? text,
-    int? whole,
-    double? decimal,
-    bool? flag,
-    DateTime? date,
-    List<String>? list,
-    Set<String>? set,
-  }) = Example;
+  const factory _$Example._$fromJson(
+      {String? text,
+      int? whole,
+      double? decimal,
+      bool? flag,
+      DateTime? date,
+      List<String>? list,
+      Set<String>? set}) = Example;
 
   String? get text;
   int? get whole;
@@ -32,32 +30,7 @@ abstract class _$Example extends State {
   DateTime? get date;
   List<String>? get list;
   Set<String>? get set;
-
-  /// If `null` is passed within the `copyWith` method,
-  /// the current value will be returned.
-  ///
-  /// ```dart
-  /// myClass.copyWith(field: newValue);
-  /// ```
-  Example copyWith({
-    String? text,
-    int? whole,
-    double? decimal,
-    bool? flag,
-    DateTime? date,
-    List<String>? list,
-    Set<String>? set,
-  }) {
-    return Example(
-        text: text ?? this.text,
-        whole: whole ?? this.whole,
-        decimal: decimal ?? this.decimal,
-        flag: flag ?? this.flag,
-        date: date ?? this.date,
-        list: list ?? this.list,
-        set: set ?? this.set);
-  }
-
+  _$ExampleCopyWith get copyWith => _$ExampleCopyWith(this);
   @override
   List<Object?> get props {
     return [text, whole, decimal, flag, date, list, set, code];
@@ -65,16 +38,7 @@ abstract class _$Example extends State {
 
   @override
   String toString() {
-    return '''
-Example(
-	text: $text,
-	whole: $whole,
-	decimal: $decimal,
-	flag: $flag,
-	date: $date,
-	list: $list,
-	set: $set,
-)''';
+    return 'Example(text: $text, whole: $whole, decimal: $decimal, flag: $flag, date: $date, list: $list, set: $set)';
   }
 
   Map<String, dynamic> toJson({bool includeUnionType = true}) {
@@ -91,29 +55,15 @@ Example _$ExampleFromJson(Map<String, dynamic> json) {
 }
 
 @JsonSerializable(
-  constructor: '_',
+  constructor: r'_$fromJson',
 )
 abstract class _$Other extends State {
   const _$Other(int code) : super(code);
   const _$Other.empty() : super.empty();
-
-  const factory _$Other._(
-    int code,
-  ) = Other;
   factory _$Other.fromJson(Map<String, dynamic> json) => _$$OtherFromJson(json);
+  const factory _$Other._$fromJson(int code) = Other;
 
-  /// If `null` is passed within the `copyWith` method,
-  /// the current value will be returned.
-  ///
-  /// ```dart
-  /// myClass.copyWith(field: newValue);
-  /// ```
-  Other copyWith({
-    int? code,
-  }) {
-    return Other(code ?? this.code);
-  }
-
+  _$OtherCopyWith get copyWith => _$OtherCopyWith(this);
   @override
   List<Object?> get props {
     return [code];
@@ -134,29 +84,15 @@ abstract class _$Other extends State {
 }
 
 @JsonSerializable(
-  constructor: '_',
+  constructor: r'_$fromJson',
 )
 abstract class _$Error extends State {
   const _$Error(int code) : super(code);
   const _$Error.empty() : super.empty();
-
-  const factory _$Error._(
-    int code,
-  ) = Error;
   factory _$Error.fromJson(Map<String, dynamic> json) => _$$ErrorFromJson(json);
+  const factory _$Error._$fromJson(int code) = Error;
 
-  /// If `null` is passed within the `copyWith` method,
-  /// the current value will be returned.
-  ///
-  /// ```dart
-  /// myClass.copyWith(field: newValue);
-  /// ```
-  Error copyWith({
-    int? code,
-  }) {
-    return Error(code ?? this.code);
-  }
-
+  _$ErrorCopyWith get copyWith => _$ErrorCopyWith(this);
   @override
   List<Object?> get props {
     return [code];
@@ -177,17 +113,15 @@ abstract class _$Error extends State {
 }
 
 @JsonSerializable(
-  constructor: '_',
+  constructor: r'_$fromJson',
 )
 abstract class _$State
     with EquatableMixin, _$StateMixin
     implements _$StateUnion {
   const _$State();
 
-  const factory _$State._(
-    int code,
-  ) = State;
   factory _$State.fromJson(Map<String, dynamic> json) => _$$StateFromJson(json);
+  const factory _$State._$fromJson(int code) = State;
 
   int get code;
 
@@ -198,10 +132,36 @@ abstract class _$State
 
   @override
   String toString() {
-    return '''
-State(
-	code: $code,
-)''';
+    return 'State(code: $code)';
+  }
+}
+
+class _$StateUnions {
+  const _$StateUnions();
+  State example(
+      {String? text,
+      int? whole,
+      double? decimal,
+      bool? flag,
+      DateTime? date,
+      List<String>? list,
+      Set<String>? set}) {
+    return Example(
+        text: text,
+        whole: whole,
+        decimal: decimal,
+        flag: flag,
+        date: date,
+        list: list,
+        set: set);
+  }
+
+  State other(int code) {
+    return Other(code);
+  }
+
+  State error(int code) {
+    return Error(code);
   }
 }
 
@@ -340,9 +300,6 @@ mixin _$StateMixin {
     );
   }
 
-  bool get isExample => this is _$Example;
-  bool get isOther => this is _$Other;
-  bool get isError => this is _$Error;
   Map<String, dynamic> toJson({bool includeUnionType = true}) {
     switch (runtimeType) {
       case Example:
@@ -355,6 +312,31 @@ mixin _$StateMixin {
         throw FallThroughError();
     }
   }
+
+  Example get asExample {
+    if (!isExample) {
+      throw Exception('State runtimeType is not of type Example');
+    }
+    return this as Example;
+  }
+
+  Other get asOther {
+    if (!isOther) {
+      throw Exception('State runtimeType is not of type Other');
+    }
+    return this as Other;
+  }
+
+  Error get asError {
+    if (!isError) {
+      throw Exception('State runtimeType is not of type Error');
+    }
+    return this as Error;
+  }
+
+  bool get isExample => this is Example;
+  bool get isOther => this is Other;
+  bool get isError => this is Error;
 }
 State _$StateFromJson(Map<String, dynamic> json, [State? defaultValue]) {
   switch (json[r'$unionType'] as String?) {
@@ -369,6 +351,74 @@ State _$StateFromJson(Map<String, dynamic> json, [State? defaultValue]) {
         return defaultValue;
       }
       throw FallThroughError();
+  }
+}
+
+const _$sentinelValue = Object();
+
+abstract class _$ExampleCopyWith {
+  const factory _$ExampleCopyWith(_$Example value) = _$ExampleCopyWithImpl;
+  Example call(
+      {String? text,
+      int? whole,
+      double? decimal,
+      bool? flag,
+      DateTime? date,
+      List<String>? list,
+      Set<String>? set});
+}
+
+class _$ExampleCopyWithImpl implements _$ExampleCopyWith {
+  const _$ExampleCopyWithImpl(this._value);
+  final _$Example _value;
+  Example call({
+    Object? text = _$sentinelValue,
+    Object? whole = _$sentinelValue,
+    Object? decimal = _$sentinelValue,
+    Object? flag = _$sentinelValue,
+    Object? date = _$sentinelValue,
+    Object? list = _$sentinelValue,
+    Object? set = _$sentinelValue,
+  }) {
+    return Example(
+        text: text == _$sentinelValue ? _value.text : text as String?,
+        whole: whole == _$sentinelValue ? _value.whole : whole as int?,
+        decimal:
+            decimal == _$sentinelValue ? _value.decimal : decimal as double?,
+        flag: flag == _$sentinelValue ? _value.flag : flag as bool?,
+        date: date == _$sentinelValue ? _value.date : date as DateTime?,
+        list: list == _$sentinelValue ? _value.list : list as List<String>?,
+        set: set == _$sentinelValue ? _value.set : set as Set<String>?);
+  }
+}
+
+abstract class _$OtherCopyWith {
+  const factory _$OtherCopyWith(_$Other value) = _$OtherCopyWithImpl;
+  Other call({int code});
+}
+
+class _$OtherCopyWithImpl implements _$OtherCopyWith {
+  const _$OtherCopyWithImpl(this._value);
+  final _$Other _value;
+  Other call({
+    Object? code = _$sentinelValue,
+  }) {
+    return Other(code == _$sentinelValue ? _value.code : code as int);
+  }
+}
+
+abstract class _$ErrorCopyWith {
+  const factory _$ErrorCopyWith(_$Error value) = _$ErrorCopyWithImpl;
+  Error call({int code});
+}
+
+class _$ErrorCopyWithImpl implements _$ErrorCopyWith {
+  const _$ErrorCopyWithImpl(this._value);
+  final _$Error _value;
+  Error call({
+    Object? code = _$sentinelValue,
+  }) {
+    return Error(code == _$sentinelValue ? _value.code : code as int);
   }
 }
 

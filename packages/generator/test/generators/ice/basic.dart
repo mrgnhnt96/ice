@@ -18,7 +18,7 @@ class State extends _$State {
     this.example,
   });
 
-  @IceCopyWith.constructor
+  @IceConstructor.fromJson
   factory State.fromJson(Map<String, dynamic> json) => _$StateFromJson(json);
 
   String? _pet;
@@ -30,7 +30,7 @@ class State extends _$State {
 
   String father;
   final String name;
-  @iceIgnoreProp
+  @IceField.ignoreProp
   final int? age;
   final double? money;
   final bool? isCool;
@@ -52,7 +52,7 @@ class NotReady {
   const NotReady();
 }
 
-@IceCopyWith.simple
+@Ice.only(copyWith: CopyWith.nullSafe)
 class Something {}
 
 @Ice()

@@ -3,9 +3,7 @@ import 'package:ice_annotation/ice.dart';
 part 'main.g.dart';
 part 'main.ice.dart';
 
-@IceCopyWith.typeSafe
-@iceProps
-@iceToString
+@Ice.only(toString: true, props: true, copyWith: CopyWith.nullSafe)
 @JsonSerializable()
 class Example extends Equatable {
   const Example({

@@ -7,7 +7,7 @@ part 'main.g.dart';
 
 @IceUnion.of(
   State,
-  copyWith: CopyWith.simple,
+  copyWith: CopyWith.nullSafe,
   unionTypeId: r'$Something',
 )
 class Example extends _$Example {

@@ -6,7 +6,7 @@ part of 'main.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$Example _$$ExampleFromJson(Map<String, dynamic> json) => _$Example._(
+_$Example _$$ExampleFromJson(Map<String, dynamic> json) => _$Example._$fromJson(
       text: json['text'] as String?,
       whole: json['whole'] as int?,
       decimal: (json['decimal'] as num?)?.toDouble(),
@@ -27,7 +27,7 @@ Map<String, dynamic> _$$ExampleToJson(_$Example instance) => <String, dynamic>{
       'set': instance.set?.toList(),
     };
 
-_$Other _$$OtherFromJson(Map<String, dynamic> json) => _$Other._(
+_$Other _$$OtherFromJson(Map<String, dynamic> json) => _$Other._$fromJson(
       json['code'] as int,
     );
 
@@ -35,7 +35,7 @@ Map<String, dynamic> _$$OtherToJson(_$Other instance) => <String, dynamic>{
       'code': instance.code,
     };
 
-_$Error _$$ErrorFromJson(Map<String, dynamic> json) => _$Error._(
+_$Error _$$ErrorFromJson(Map<String, dynamic> json) => _$Error._$fromJson(
       json['code'] as int,
     );
 
@@ -43,7 +43,7 @@ Map<String, dynamic> _$$ErrorToJson(_$Error instance) => <String, dynamic>{
       'code': instance.code,
     };
 
-_$State _$$StateFromJson(Map<String, dynamic> json) => _$State._(
+_$State _$$StateFromJson(Map<String, dynamic> json) => _$State._$fromJson(
       json['code'] as int,
     );
 

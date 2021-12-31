@@ -9,7 +9,7 @@ part 'state.dart';
 
 @IceUnion.of(State)
 class Example extends _$Example {
-  @iceJsonConstructor
+  @IceConstructor.copyWith
   const Example({
     this.text,
     this.whole,
