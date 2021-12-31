@@ -1,6 +1,5 @@
 import 'package:ice/ice.dart';
 import 'package:ice/src/domain/domain.dart';
-import 'package:ice/src/domain/ice_support.dart';
 import 'package:ice/src/templates/from_json_template.dart';
 import 'package:ice/src/templates/ice_templates/union_class_template.dart';
 import 'package:ice/src/templates/templates.dart';
@@ -171,7 +170,6 @@ class IceClassTemplate extends Template {
       final copyWithTemplate = CopyWithTemplate.forSubject(subject);
       if (copyWithTemplate != null) {
         copyWithTemplate.addToBuffer(buffer);
-        IceSupport().add(copyWithTemplate.support);
       }
 
       PropsTemplate.forSubject(
