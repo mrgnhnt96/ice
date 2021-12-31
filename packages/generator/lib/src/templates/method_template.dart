@@ -23,10 +23,6 @@ class MethodTemplate extends Template {
       buffer.writeObject(
         'extension \$${subject.cleanName}X on ${subject.name}',
         body: () {
-          if (copyWithTemplate != null) {
-            copyWithTemplate.addToBuffer(buffer);
-          }
-
           toJsonTemplate.addToBuffer(buffer);
 
           PropsTemplate.forSubject(
@@ -38,6 +34,10 @@ class MethodTemplate extends Template {
             subject,
             asExtension: true,
           ).addToBuffer(buffer);
+
+          if (copyWithTemplate != null) {
+            copyWithTemplate.addToBuffer(buffer);
+          }
         },
       );
     }
