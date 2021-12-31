@@ -1,9 +1,9 @@
 // ignore_for_file: comment_references, implementation_imports
 
 import 'package:analyzer/dart/element/element.dart';
-import 'package:analyzer/src/dart/element/element.dart';
 import 'package:ice/src/domain/domain.dart';
 import 'package:ice/src/domain/enums/enums.dart';
+import 'package:ice/src/util/element_ext.dart';
 import 'package:ice/src/util/string_buffer_ext.dart';
 
 /// {@template constructor}
@@ -28,12 +28,12 @@ class Constructor {
     var isJsonConstructor = false;
 
     for (final metadata in element.metadata) {
-      final name = (metadata as ElementAnnotationImpl).annotationAst.name.name;
-      if (name == AnnotationTypes.copyWithConstructor.serialized) {
+      final name = metadata.astName;
+      if (name == CtorAnnotationTypes.copyWith.serialized) {
         isCopyWithConstructor = true;
         continue;
       }
-      if (name == AnnotationTypes.iceJsonConstructor.serialized) {
+      if (name == CtorAnnotationTypes.fromJson.serialized) {
         isJsonConstructor = true;
         continue;
       }
