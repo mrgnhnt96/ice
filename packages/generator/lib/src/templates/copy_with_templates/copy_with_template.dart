@@ -117,6 +117,7 @@ abstract class CopyWithTemplate extends Template {
   ///
   String argReturnValue(Param arg);
 
+  /// the copy with method to be generated
   void copyWithMethod(StringBuffer buffer) {
     buffer
       ..writeln(docComment)
