@@ -17,21 +17,21 @@ extension on Param {
 /// {@template copy_with_method}
 /// Generates a copyWith method for a class.
 /// {@endtemplate}
-class CopyWithFunctionTemplate extends CopyWithTemplate {
+class CopyWithAnonymousTemplate extends CopyWithTemplate {
   /// {@macro copy_with_method}
-  CopyWithFunctionTemplate.forSubject(
+  CopyWithAnonymousTemplate.forSubject(
     Class subject,
   ) : super(
           subject,
-          type: CopyWith.typeSafe,
+          type: CopyWith.anonymous,
         );
 
   /// the callback name for the copyWith method
   String get callback => r'_$CopyCallback';
 
   @override
-  String get support {
-    return 'typedef $callback<T> = T Function(T);';
+  Iterable<String> get support {
+    return {'typedef $callback<T> = T Function(T);'};
   }
 
   @override
