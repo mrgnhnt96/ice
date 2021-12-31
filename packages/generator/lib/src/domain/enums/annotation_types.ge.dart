@@ -4,55 +4,27 @@
 
 part of 'annotation_types.dart';
 
-// **************************************************************************
-// EnumAssistGenerator
-// **************************************************************************
-
-/// Extensions for the enum AnnotationTypes
-extension AnnotationTypesX on AnnotationTypes {
+/// Extensions for the enum ClassAnnotationTypes
+extension ClassAnnotationTypesX on ClassAnnotationTypes {
   /// Map of all values of the enum
   T map<T extends Object?>({
     required T ice,
     required T jsonSerializable,
-    required T jsonKey,
     required T unionCreate,
     required T unionOf,
-    required T copyWithConstructor,
-    required T iceProps,
-    required T iceIgnoreProp,
-    required T iceToString,
-    required T copyWithSimple,
-    required T copyWithTypeSafe,
-    required T iceJsonConstructor,
-    required T other,
+    required T only,
   }) {
     switch (this) {
-      case AnnotationTypes.ice:
+      case ClassAnnotationTypes.ice:
         return ice;
-      case AnnotationTypes.jsonSerializable:
+      case ClassAnnotationTypes.jsonSerializable:
         return jsonSerializable;
-      case AnnotationTypes.jsonKey:
-        return jsonKey;
-      case AnnotationTypes.unionCreate:
+      case ClassAnnotationTypes.unionCreate:
         return unionCreate;
-      case AnnotationTypes.unionOf:
+      case ClassAnnotationTypes.unionOf:
         return unionOf;
-      case AnnotationTypes.copyWithConstructor:
-        return copyWithConstructor;
-      case AnnotationTypes.iceProps:
-        return iceProps;
-      case AnnotationTypes.iceIgnoreProp:
-        return iceIgnoreProp;
-      case AnnotationTypes.iceToString:
-        return iceToString;
-      case AnnotationTypes.copyWithSimple:
-        return copyWithSimple;
-      case AnnotationTypes.copyWithTypeSafe:
-        return copyWithTypeSafe;
-      case AnnotationTypes.iceJsonConstructor:
-        return iceJsonConstructor;
-      case AnnotationTypes.other:
-        return other;
+      case ClassAnnotationTypes.only:
+        return only;
     }
   }
 
@@ -63,17 +35,9 @@ extension AnnotationTypesX on AnnotationTypes {
     required T orElse,
     T? ice,
     T? jsonSerializable,
-    T? jsonKey,
     T? unionCreate,
     T? unionOf,
-    T? copyWithConstructor,
-    T? iceProps,
-    T? iceIgnoreProp,
-    T? iceToString,
-    T? copyWithSimple,
-    T? copyWithTypeSafe,
-    T? iceJsonConstructor,
-    T? other,
+    T? only,
   }) {
     var isNullable = true;
     try {
@@ -83,223 +47,76 @@ extension AnnotationTypesX on AnnotationTypes {
     }
 
     switch (this) {
-      case AnnotationTypes.ice:
+      case ClassAnnotationTypes.ice:
         if (ice == null && !isNullable) return orElse;
         return ice as T;
-      case AnnotationTypes.jsonSerializable:
+      case ClassAnnotationTypes.jsonSerializable:
         if (jsonSerializable == null && !isNullable) return orElse;
         return jsonSerializable as T;
-      case AnnotationTypes.jsonKey:
-        if (jsonKey == null && !isNullable) return orElse;
-        return jsonKey as T;
-      case AnnotationTypes.unionCreate:
+      case ClassAnnotationTypes.unionCreate:
         if (unionCreate == null && !isNullable) return orElse;
         return unionCreate as T;
-      case AnnotationTypes.unionOf:
+      case ClassAnnotationTypes.unionOf:
         if (unionOf == null && !isNullable) return orElse;
         return unionOf as T;
-      case AnnotationTypes.copyWithConstructor:
-        if (copyWithConstructor == null && !isNullable) return orElse;
-        return copyWithConstructor as T;
-      case AnnotationTypes.iceProps:
-        if (iceProps == null && !isNullable) return orElse;
-        return iceProps as T;
-      case AnnotationTypes.iceIgnoreProp:
-        if (iceIgnoreProp == null && !isNullable) return orElse;
-        return iceIgnoreProp as T;
-      case AnnotationTypes.iceToString:
-        if (iceToString == null && !isNullable) return orElse;
-        return iceToString as T;
-      case AnnotationTypes.copyWithSimple:
-        if (copyWithSimple == null && !isNullable) return orElse;
-        return copyWithSimple as T;
-      case AnnotationTypes.copyWithTypeSafe:
-        if (copyWithTypeSafe == null && !isNullable) return orElse;
-        return copyWithTypeSafe as T;
-      case AnnotationTypes.iceJsonConstructor:
-        if (iceJsonConstructor == null && !isNullable) return orElse;
-        return iceJsonConstructor as T;
-      case AnnotationTypes.other:
-        if (other == null && !isNullable) return orElse;
-        return other as T;
+      case ClassAnnotationTypes.only:
+        if (only == null && !isNullable) return orElse;
+        return only as T;
     }
-  }
-
-  /// Returns the name of the enum field
-  String get name {
-    return map<String>(
-      ice: 'ice',
-      jsonSerializable: 'jsonSerializable',
-      jsonKey: 'jsonKey',
-      unionCreate: 'unionCreate',
-      unionOf: 'unionOf',
-      copyWithConstructor: 'copyWithConstructor',
-      iceProps: 'iceProps',
-      iceIgnoreProp: 'iceIgnoreProp',
-      iceToString: 'iceToString',
-      copyWithSimple: 'copyWithSimple',
-      copyWithTypeSafe: 'copyWithTypeSafe',
-      iceJsonConstructor: 'iceJsonConstructor',
-      other: 'other',
-    );
-  }
-
-  /// The enum value converted to an integer
-  int get toInt {
-    return map<int>(
-      ice: 0,
-      jsonSerializable: 1,
-      jsonKey: 2,
-      unionCreate: 3,
-      unionOf: 4,
-      copyWithConstructor: 5,
-      iceProps: 6,
-      iceIgnoreProp: 7,
-      iceToString: 8,
-      copyWithSimple: 9,
-      copyWithTypeSafe: 10,
-      iceJsonConstructor: 11,
-      other: 12,
-    );
-  }
-
-  /// Returns the name of the enum field
-  /// In a human readable format
-  String get readable {
-    return map<String>(
-      ice: 'Ice',
-      jsonSerializable: 'Json Serializable',
-      jsonKey: 'Json Key',
-      unionCreate: 'Union Create',
-      unionOf: 'Union Of',
-      copyWithConstructor: 'Copy With Constructor',
-      iceProps: 'Ice Props',
-      iceIgnoreProp: 'Ice Ignore Prop',
-      iceToString: 'Ice To String',
-      copyWithSimple: 'Copy With Simple',
-      copyWithTypeSafe: 'Copy With Type Safe',
-      iceJsonConstructor: 'Ice Json Constructor',
-      other: 'Other',
-    );
-  }
-
-  /// Returns the description of the enum field.
-  ///
-  /// If the description is null, the doc comment of the enum field is returned.
-  String? get description {
-    return map<String?>(
-      ice: '''
-[Ice]''',
-      jsonSerializable: '''
-[JsonSerializable]''',
-      jsonKey: '''
-[JsonKey]''',
-      unionCreate: '''
-[IceUnion]''',
-      unionOf: '''
-[IceUnion]''',
-      copyWithConstructor: '''
-[CopyWithConstructor]''',
-      iceProps: '''
-[Props]''',
-      iceIgnoreProp: '''
-[IgnoreProp]''',
-      iceToString: '''
-[ToString]''',
-      copyWithSimple: '''
-[IceCopyWith]''',
-      copyWithTypeSafe: '''
-[CopyWithTypeSafe]''',
-      iceJsonConstructor: '''
-[IceJsonConstructor]''',
-      other: '''
-any other annotation''',
-    );
   }
 
   /// Returns the serialized value of the enum field.
   Object get serialized {
     return map<Object>(
-      ice: AnnotationTypesConv._iceName,
-      jsonSerializable: AnnotationTypesConv._jsonSerializableName,
-      jsonKey: AnnotationTypesConv._jsonKeyName,
-      unionCreate: AnnotationTypesConv._unionCreateName,
-      unionOf: AnnotationTypesConv._unionOfName,
-      copyWithConstructor: AnnotationTypesConv._copyWithConstructorName,
-      iceProps: AnnotationTypesConv._icePropsName,
-      iceIgnoreProp: AnnotationTypesConv._iceIgnorePropName,
-      iceToString: AnnotationTypesConv._iceToStringName,
-      copyWithSimple: AnnotationTypesConv._copyWithSimpleName,
-      copyWithTypeSafe: AnnotationTypesConv._copyWithTypeSafeName,
-      iceJsonConstructor: AnnotationTypesConv._iceJsonConstructorName,
-      other: AnnotationTypesConv._otherName,
+      ice: ClassAnnotationTypesConv._iceName,
+      jsonSerializable: ClassAnnotationTypesConv._jsonSerializableName,
+      unionCreate: ClassAnnotationTypesConv._unionCreateName,
+      unionOf: ClassAnnotationTypesConv._unionOfName,
+      only: ClassAnnotationTypesConv._onlyName,
     );
   }
 }
 
-/// {@template annotation_types.json_converter}
-/// Serializes [AnnotationTypes] to and from json
+/// {@template class_annotation_types.json_converter}
+/// Serializes [ClassAnnotationTypes] to and from json
 ///
 /// Can be used as annotation for `json_serializable` classes
 ///
 /// ```dart
-/// @AnnotationTypesConv()
-/// final AnnotationTypes myEnum;
+/// @ClassAnnotationTypesConv()
+/// final ClassAnnotationTypes myEnum;
 /// ```
 /// {@endtemplate}
-class AnnotationTypesConv extends JsonConverter<AnnotationTypes, Object> {
-  /// {@macro annotation_types.json_converter}
-  const AnnotationTypesConv({this.defaultValue});
+class ClassAnnotationTypesConv
+    extends JsonConverter<ClassAnnotationTypes, Object> {
+  /// {@macro class_annotation_types.json_converter}
+  const ClassAnnotationTypesConv({this.defaultValue});
 
   /// the value to be used when no match is found
-  final AnnotationTypes? defaultValue;
+  final ClassAnnotationTypes? defaultValue;
 
-  /// {@macro annotation_types.json_converter_nullable}
-  static const nullable = _AnnotationTypesNullableConv();
+  /// {@macro class_annotation_types.json_converter_nullable}
+  static const nullable = _ClassAnnotationTypesNullableConv();
 
   static const _iceName = 'Ice';
   static const _jsonSerializableName = 'JsonSerializable';
-  static const _jsonKeyName = 'JsonKey';
   static const _unionCreateName = 'IceUnion.create';
   static const _unionOfName = 'IceUnion.of';
-  static const _copyWithConstructorName = 'IceCopyWith.constructor';
-  static const _icePropsName = 'iceProps';
-  static const _iceIgnorePropName = 'iceIgnoreProp';
-  static const _iceToStringName = 'iceToString';
-  static const _copyWithSimpleName = 'IceCopyWith.simple';
-  static const _copyWithTypeSafeName = 'IceCopyWith.typeSafe';
-  static const _iceJsonConstructorName = 'iceJsonConstructor';
-  static const _otherName = 'other';
+  static const _onlyName = 'Ice.only';
 
   @override
-  AnnotationTypes fromJson(Object json) {
+  ClassAnnotationTypes fromJson(Object json) {
     switch (json) {
       case _iceName:
-        return AnnotationTypes.ice;
+        return ClassAnnotationTypes.ice;
       case _jsonSerializableName:
-        return AnnotationTypes.jsonSerializable;
-      case _jsonKeyName:
-        return AnnotationTypes.jsonKey;
+        return ClassAnnotationTypes.jsonSerializable;
       case _unionCreateName:
-        return AnnotationTypes.unionCreate;
+        return ClassAnnotationTypes.unionCreate;
       case _unionOfName:
-        return AnnotationTypes.unionOf;
-      case _copyWithConstructorName:
-        return AnnotationTypes.copyWithConstructor;
-      case _icePropsName:
-        return AnnotationTypes.iceProps;
-      case _iceIgnorePropName:
-        return AnnotationTypes.iceIgnoreProp;
-      case _iceToStringName:
-        return AnnotationTypes.iceToString;
-      case _copyWithSimpleName:
-        return AnnotationTypes.copyWithSimple;
-      case _copyWithTypeSafeName:
-        return AnnotationTypes.copyWithTypeSafe;
-      case _iceJsonConstructorName:
-        return AnnotationTypes.iceJsonConstructor;
-      case _otherName:
-        return AnnotationTypes.other;
+        return ClassAnnotationTypes.unionOf;
+      case _onlyName:
+        return ClassAnnotationTypes.only;
       default:
         if (defaultValue != null) return defaultValue!;
 
@@ -308,58 +125,286 @@ class AnnotationTypesConv extends JsonConverter<AnnotationTypes, Object> {
   }
 
   @override
-  Object toJson(AnnotationTypes object) => object.serialized;
+  Object toJson(ClassAnnotationTypes object) => object.serialized;
 }
 
-/// {@template annotation_types.json_converter_nullable}
-/// Serializes [AnnotationTypes?] to and from json
+/// {@template class_annotation_types.json_converter_nullable}
+/// Serializes [ClassAnnotationTypes?] to and from json
 ///
 /// Can be used as annotation for `json_serializable` classes
 ///
 /// ```dart
-/// @AnnotationTypesConv.nullable
-/// final AnnotationTypes? myEnum;
+/// @ClassAnnotationTypesConv.nullable
+/// final ClassAnnotationTypes? myEnum;
 /// ```
 /// {@endtemplate}
-class _AnnotationTypesNullableConv
-    extends JsonConverter<AnnotationTypes?, Object?> {
-  /// {@macro annotation_types.json_converter}
-  const _AnnotationTypesNullableConv();
+class _ClassAnnotationTypesNullableConv
+    extends JsonConverter<ClassAnnotationTypes?, Object?> {
+  /// {@macro class_annotation_types.json_converter}
+  const _ClassAnnotationTypesNullableConv();
 
   @override
-  AnnotationTypes? fromJson(Object? json) {
+  ClassAnnotationTypes? fromJson(Object? json) {
     switch (json) {
-      case AnnotationTypesConv._iceName:
-        return AnnotationTypes.ice;
-      case AnnotationTypesConv._jsonSerializableName:
-        return AnnotationTypes.jsonSerializable;
-      case AnnotationTypesConv._jsonKeyName:
-        return AnnotationTypes.jsonKey;
-      case AnnotationTypesConv._unionCreateName:
-        return AnnotationTypes.unionCreate;
-      case AnnotationTypesConv._unionOfName:
-        return AnnotationTypes.unionOf;
-      case AnnotationTypesConv._copyWithConstructorName:
-        return AnnotationTypes.copyWithConstructor;
-      case AnnotationTypesConv._icePropsName:
-        return AnnotationTypes.iceProps;
-      case AnnotationTypesConv._iceIgnorePropName:
-        return AnnotationTypes.iceIgnoreProp;
-      case AnnotationTypesConv._iceToStringName:
-        return AnnotationTypes.iceToString;
-      case AnnotationTypesConv._copyWithSimpleName:
-        return AnnotationTypes.copyWithSimple;
-      case AnnotationTypesConv._copyWithTypeSafeName:
-        return AnnotationTypes.copyWithTypeSafe;
-      case AnnotationTypesConv._iceJsonConstructorName:
-        return AnnotationTypes.iceJsonConstructor;
-      case AnnotationTypesConv._otherName:
-        return AnnotationTypes.other;
+      case ClassAnnotationTypesConv._iceName:
+        return ClassAnnotationTypes.ice;
+      case ClassAnnotationTypesConv._jsonSerializableName:
+        return ClassAnnotationTypes.jsonSerializable;
+      case ClassAnnotationTypesConv._unionCreateName:
+        return ClassAnnotationTypes.unionCreate;
+      case ClassAnnotationTypesConv._unionOfName:
+        return ClassAnnotationTypes.unionOf;
+      case ClassAnnotationTypesConv._onlyName:
+        return ClassAnnotationTypes.only;
       default:
         return null;
     }
   }
 
   @override
-  Object? toJson(AnnotationTypes? object) => object?.serialized;
+  Object? toJson(ClassAnnotationTypes? object) => object?.serialized;
+}
+
+/// Extensions for the enum CtorAnnotationTypes
+extension CtorAnnotationTypesX on CtorAnnotationTypes {
+  /// Map of all values of the enum
+  T map<T extends Object?>({
+    required T copyWith,
+    required T fromJson,
+  }) {
+    switch (this) {
+      case CtorAnnotationTypes.copyWith:
+        return copyWith;
+      case CtorAnnotationTypes.fromJson:
+        return fromJson;
+    }
+  }
+
+  /// Optionally map all values of the enum
+  ///
+  /// default value is provided when value has not been mapped
+  T maybeMap<T extends Object?>({
+    required T orElse,
+    T? copyWith,
+    T? fromJson,
+  }) {
+    var isNullable = true;
+    try {
+      final value = null as T;
+    } catch (_) {
+      isNullable = false;
+    }
+
+    switch (this) {
+      case CtorAnnotationTypes.copyWith:
+        if (copyWith == null && !isNullable) return orElse;
+        return copyWith as T;
+      case CtorAnnotationTypes.fromJson:
+        if (fromJson == null && !isNullable) return orElse;
+        return fromJson as T;
+    }
+  }
+
+  /// Returns the serialized value of the enum field.
+  Object get serialized {
+    return map<Object>(
+      copyWith: CtorAnnotationTypesConv._copyWithName,
+      fromJson: CtorAnnotationTypesConv._fromJsonName,
+    );
+  }
+}
+
+/// {@template ctor_annotation_types.json_converter}
+/// Serializes [CtorAnnotationTypes] to and from json
+///
+/// Can be used as annotation for `json_serializable` classes
+///
+/// ```dart
+/// @CtorAnnotationTypesConv()
+/// final CtorAnnotationTypes myEnum;
+/// ```
+/// {@endtemplate}
+class CtorAnnotationTypesConv
+    extends JsonConverter<CtorAnnotationTypes, Object> {
+  /// {@macro ctor_annotation_types.json_converter}
+  const CtorAnnotationTypesConv({this.defaultValue});
+
+  /// the value to be used when no match is found
+  final CtorAnnotationTypes? defaultValue;
+
+  /// {@macro ctor_annotation_types.json_converter_nullable}
+  static const nullable = _CtorAnnotationTypesNullableConv();
+
+  static const _copyWithName = 'IceConstructor.copyWith';
+  static const _fromJsonName = 'IceConstructor.fromJson';
+
+  @override
+  CtorAnnotationTypes fromJson(Object json) {
+    switch (json) {
+      case _copyWithName:
+        return CtorAnnotationTypes.copyWith;
+      case _fromJsonName:
+        return CtorAnnotationTypes.fromJson;
+      default:
+        if (defaultValue != null) return defaultValue!;
+
+        throw Exception('Unknown field: $json');
+    }
+  }
+
+  @override
+  Object toJson(CtorAnnotationTypes object) => object.serialized;
+}
+
+/// {@template ctor_annotation_types.json_converter_nullable}
+/// Serializes [CtorAnnotationTypes?] to and from json
+///
+/// Can be used as annotation for `json_serializable` classes
+///
+/// ```dart
+/// @CtorAnnotationTypesConv.nullable
+/// final CtorAnnotationTypes? myEnum;
+/// ```
+/// {@endtemplate}
+class _CtorAnnotationTypesNullableConv
+    extends JsonConverter<CtorAnnotationTypes?, Object?> {
+  /// {@macro ctor_annotation_types.json_converter}
+  const _CtorAnnotationTypesNullableConv();
+
+  @override
+  CtorAnnotationTypes? fromJson(Object? json) {
+    switch (json) {
+      case CtorAnnotationTypesConv._copyWithName:
+        return CtorAnnotationTypes.copyWith;
+      case CtorAnnotationTypesConv._fromJsonName:
+        return CtorAnnotationTypes.fromJson;
+      default:
+        return null;
+    }
+  }
+
+  @override
+  Object? toJson(CtorAnnotationTypes? object) => object?.serialized;
+}
+
+/// Extensions for the enum FieldAnnotationTypes
+extension FieldAnnotationTypesX on FieldAnnotationTypes {
+  /// Map of all values of the enum
+  T map<T extends Object?>({
+    required T jsonKey,
+    required T ignoreProp,
+  }) {
+    switch (this) {
+      case FieldAnnotationTypes.jsonKey:
+        return jsonKey;
+      case FieldAnnotationTypes.ignoreProp:
+        return ignoreProp;
+    }
+  }
+
+  /// Optionally map all values of the enum
+  ///
+  /// default value is provided when value has not been mapped
+  T maybeMap<T extends Object?>({
+    required T orElse,
+    T? jsonKey,
+    T? ignoreProp,
+  }) {
+    var isNullable = true;
+    try {
+      final value = null as T;
+    } catch (_) {
+      isNullable = false;
+    }
+
+    switch (this) {
+      case FieldAnnotationTypes.jsonKey:
+        if (jsonKey == null && !isNullable) return orElse;
+        return jsonKey as T;
+      case FieldAnnotationTypes.ignoreProp:
+        if (ignoreProp == null && !isNullable) return orElse;
+        return ignoreProp as T;
+    }
+  }
+
+  /// Returns the serialized value of the enum field.
+  Object get serialized {
+    return map<Object>(
+      jsonKey: FieldAnnotationTypesConv._jsonKeyName,
+      ignoreProp: FieldAnnotationTypesConv._ignorePropName,
+    );
+  }
+}
+
+/// {@template field_annotation_types.json_converter}
+/// Serializes [FieldAnnotationTypes] to and from json
+///
+/// Can be used as annotation for `json_serializable` classes
+///
+/// ```dart
+/// @FieldAnnotationTypesConv()
+/// final FieldAnnotationTypes myEnum;
+/// ```
+/// {@endtemplate}
+class FieldAnnotationTypesConv
+    extends JsonConverter<FieldAnnotationTypes, Object> {
+  /// {@macro field_annotation_types.json_converter}
+  const FieldAnnotationTypesConv({this.defaultValue});
+
+  /// the value to be used when no match is found
+  final FieldAnnotationTypes? defaultValue;
+
+  /// {@macro field_annotation_types.json_converter_nullable}
+  static const nullable = _FieldAnnotationTypesNullableConv();
+
+  static const _jsonKeyName = 'IceField.jsonKey';
+  static const _ignorePropName = 'IceField.ignoreProp';
+
+  @override
+  FieldAnnotationTypes fromJson(Object json) {
+    switch (json) {
+      case _jsonKeyName:
+        return FieldAnnotationTypes.jsonKey;
+      case _ignorePropName:
+        return FieldAnnotationTypes.ignoreProp;
+      default:
+        if (defaultValue != null) return defaultValue!;
+
+        throw Exception('Unknown field: $json');
+    }
+  }
+
+  @override
+  Object toJson(FieldAnnotationTypes object) => object.serialized;
+}
+
+/// {@template field_annotation_types.json_converter_nullable}
+/// Serializes [FieldAnnotationTypes?] to and from json
+///
+/// Can be used as annotation for `json_serializable` classes
+///
+/// ```dart
+/// @FieldAnnotationTypesConv.nullable
+/// final FieldAnnotationTypes? myEnum;
+/// ```
+/// {@endtemplate}
+class _FieldAnnotationTypesNullableConv
+    extends JsonConverter<FieldAnnotationTypes?, Object?> {
+  /// {@macro field_annotation_types.json_converter}
+  const _FieldAnnotationTypesNullableConv();
+
+  @override
+  FieldAnnotationTypes? fromJson(Object? json) {
+    switch (json) {
+      case FieldAnnotationTypesConv._jsonKeyName:
+        return FieldAnnotationTypes.jsonKey;
+      case FieldAnnotationTypesConv._ignorePropName:
+        return FieldAnnotationTypes.ignoreProp;
+      default:
+        return null;
+    }
+  }
+
+  @override
+  Object? toJson(FieldAnnotationTypes? object) => object?.serialized;
 }
