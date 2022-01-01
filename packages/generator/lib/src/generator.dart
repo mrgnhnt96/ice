@@ -1,6 +1,5 @@
 // ignore_for_file: comment_references, implementation_imports
 
-
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:ice/src/code_builder.dart';
@@ -65,8 +64,36 @@ class IceGenerator extends Generator {
 
   /// gets all the classes annottated with `(i|I)ce.*`
   Iterable<Class> iceClassesFrom(LibraryReader library) {
-    final classes = rawClassesFrom(library);
+    final rawClasses = rawClassesFrom(library);
 
-    return classes.map(Class.fromElement);
+    final classes = rawClasses.map(Class.fromElement).toList();
+
+    for (var i = 0; i < classes.length; i++) {
+      final subject = classes[i];
+
+      if (!subject.annotations.isContainedUnion) {
+        continue;
+      }
+
+      final unionClasses = expandContainedUnion(subject);
+      classes
+        ..removeAt(i)
+        ..addAll(unionClasses);
+    }
+
+    return classes;
+  }
+
+  /// expands a contained class into the base union class
+  /// and its subClasses
+  Iterable<Class> expandContainedUnion(Class subject) {
+    final constructors =
+        subject.constructors.where((ctor) => ctor.redirectName != null);
+
+    final unions = constructors.map((c) => ContainedClass.subUnion(c, subject));
+
+    final baseUnion = ContainedClass.union(subject);
+
+    return [baseUnion, ...unions];
   }
 }
