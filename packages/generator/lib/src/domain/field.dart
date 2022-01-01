@@ -71,6 +71,19 @@ class Field {
     );
   }
 
+  /// creates a field from a [Param]
+  factory Field.fromParam(Param param) {
+    return Field(
+      includeInProps: true,
+      isNullable: param.isNullable,
+      isPrivate: false,
+      isTrueField: true,
+      jsonKeyDeclaration: null,
+      name: param.name,
+      type: param.type,
+    );
+  }
+
   /// retrieves the fields from the [FieldElement]s
   static List<Field> fromElements(
     List<FieldElement> elements, {
