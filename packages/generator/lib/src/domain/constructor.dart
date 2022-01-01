@@ -148,6 +148,9 @@ class Constructor {
   /// if the constructor is the default constructor
   bool get isDefault => name.isEmpty;
 
+  /// if the constructor is private
+  bool get isPrivate => name.startsWith('_');
+
   /// If the constructor is named
   bool get isNamed => name.isNotEmpty;
 
@@ -159,6 +162,28 @@ class Constructor {
   /// whether the constructor is the factory constructor
   /// for json_serializable
   final bool isJsonConstructor;
+
+  /// converts the constructor to a default
+  /// constructor
+  Constructor convertToDefault() {
+    if (!displayName.contains('.')) {
+      return this;
+    }
+
+    final className = displayName.split('.').first;
+
+    return Constructor(
+      name: '',
+      redirectName: null,
+      displayName: className,
+      params: params,
+      declaration: '()',
+      isGenerative: true,
+      isCopyWithConstructor: true,
+      isConst: true,
+      isJsonConstructor: true,
+    );
+  }
 
   /// gets the args wrapped in a super call
   String superArgs() {
