@@ -92,4 +92,20 @@ class UnionAnnotation extends IceAnnotation implements IceUnion {
 
   /// whether the class is a union
   bool get isSubUnion => ofUnionType != null;
+
+  /// changes the [unionId] to className
+  UnionAnnotation forClass(String className) {
+    return UnionAnnotation(
+      isBase: isBase,
+      ofUnionType: ofUnionType,
+      unionId: className,
+      unionKey: unionKey,
+      copyWith: copyWith,
+      equatable: equatable,
+      tostring: tostring,
+      ignoreGettersAsProps: ignoreGettersAsProps,
+      jsonSerializable: jsonSerializable,
+      props: props,
+    );
+  }
 }

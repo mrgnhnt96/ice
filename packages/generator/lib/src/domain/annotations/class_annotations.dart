@@ -133,4 +133,16 @@ class ClassAnnotations {
 
   /// check if class is a sub union
   bool get isSubUnion => union?.isSubUnion ?? false;
+
+  /// sets all properties to falsey values
+  ///
+  /// updates [union.unionId] to [className]
+  ClassAnnotations unionFor(String className) {
+    return ClassAnnotations(
+      methods: null,
+      isContainedUnion: false,
+      ice: null,
+      union: union?.forClass(className),
+    );
+  }
 }
