@@ -8,6 +8,7 @@ import 'package:ice/src/domain/do_not_generate.dart';
 import 'package:ice/src/domain/domain.dart';
 import 'package:ice/src/domain/field.dart';
 import 'package:ice/src/domain/ice_settings.dart';
+import 'package:ice/src/util/iterable_ext.dart';
 import 'package:ice/src/util/string_buffer_ext.dart';
 
 /// {@template class}
@@ -15,7 +16,7 @@ import 'package:ice/src/util/string_buffer_ext.dart';
 /// {@endtemplate}
 class Class {
   /// {@macro constructor}
-  Class({
+  const Class({
     required this.constructors,
     required this.annotations,
     required this.fields,
@@ -61,7 +62,7 @@ class Class {
   final ClassAnnotations annotations;
 
   /// the fields in the class
-  final List<Field> fields;
+  final Iterable<Field> fields;
 
   /// the elements of the generated code that
   /// should be ignored
@@ -70,18 +71,12 @@ class Class {
   /// The name of the class
   final String name;
 
-  String? _generatedName;
-
   /// The name of the class to be generated
   ///
   /// removes the `$` from the name
   String get genName {
-    if (_generatedName != null) {
-      return _generatedName!;
-    }
-
     final clean = name.replaceAll(r'$', '');
-    return _generatedName = '_\$$clean';
+    return '_\$$clean';
   }
 
   /// checks settings from annotations, ([methodCallback], [iceCallback])
@@ -155,13 +150,17 @@ class Class {
     return defaultCtor ?? constructors.first;
   }
 
-  /// formats all fields as getters
+  /// formats all fields as properties
   ///
   /// ```dart
+  /// abstract
   /// Type? get name;
+  ///
+  /// impl
+  /// final Type? name;
   /// ```
-  Iterable<String> get fieldGetters {
-    final getters = <String>[];
+  Iterable<String> get fieldProperties {
+    final properties = <String>[];
 
     for (final field in fields) {
       final getter = '${field.type} get ${field.name};';
@@ -170,10 +169,10 @@ class Class {
         jsonKey = '${field.jsonKeyDeclaration}$pln';
       }
 
-      getters.add(jsonKey + getter);
+      properties.add(jsonKey + getter);
     }
 
-    return getters;
+    return properties;
   }
 
   @override
@@ -184,5 +183,100 @@ class Class {
         'annotations: $annotations, '
         'fields: ${fields.length}, '
         ')';
+  }
+}
+
+/// class for a contained union
+class ContainedClass extends Class {
+  const ContainedClass._({
+    required String name,
+    required ClassAnnotations annotations,
+    required Iterable<Field> fields,
+    required DoNotGenerate doNotGenerate,
+    required this.unionBase,
+    required List<Constructor> constructors,
+  }) : super(
+          annotations: annotations,
+          constructors: constructors,
+          doNotGenerate: doNotGenerate,
+          fields: fields,
+          name: name,
+        );
+
+  /// creates a new class based from a constructor
+  factory ContainedClass.subUnion(Constructor ctor, Class union) {
+    final className = ctor.redirectName;
+
+    if (className == null) {
+      throw 'Constructor must be a redirect constructor';
+    }
+
+    final fields = ctor.params.map(Field.fromParam);
+
+    final annotations = union.annotations.unionFor(className);
+
+    const doNotGenerate = DoNotGenerate.none();
+    final defaultCtor = ctor.convertToDefault();
+    return ContainedClass._(
+      annotations: annotations,
+      doNotGenerate: doNotGenerate,
+      fields: fields,
+      name: className,
+      unionBase: union.name,
+      constructors: [defaultCtor],
+    );
+  }
+
+  /// creates a contained class based from the [union]
+  factory ContainedClass.union(Class union) {
+    String missingException() {
+      return '${union.name} does not have the (generative) constructor '
+          'needed to create the union '
+          'please add `${union.name}._();` as a the constructor';
+    }
+
+    final filteredCtors =
+        union.constructors.where((ctor) => ctor.isGenerative && ctor.isPrivate);
+
+    if (filteredCtors.isEmpty) {
+      throw missingException();
+    }
+
+    final privateCtor =
+        filteredCtors.firstWhereOrNull((ctor) => ctor.name == '_');
+
+    if (privateCtor == null) {
+      throw missingException();
+    }
+
+    if (privateCtor.params.isNotEmpty) {
+      throw '${union.name} constructor must have no parameters'
+          'should be ${union.name}._();}';
+    }
+
+    return ContainedClass._(
+      annotations: union.annotations,
+      doNotGenerate: union.doNotGenerate,
+      fields: [],
+      constructors: [privateCtor],
+      name: union.name,
+      unionBase: union.name,
+    );
+  }
+
+  @override
+  final String unionBase;
+
+  @override
+  Iterable<String> get fieldProperties {
+    return fields.map((f) => 'final ${f.type} ${f.name};');
+  }
+
+  @override
+  String get genName {
+    if (annotations.isUnionBase) {
+      return super.genName;
+    }
+    return name;
   }
 }
