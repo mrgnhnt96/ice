@@ -25,14 +25,20 @@ class Class {
 
   /// Retrieves the class data from the element
   factory Class.fromElement(ClassElement element) {
-    final constructors = Constructor.fromElements(element.constructors);
     final annotations = ClassAnnotations.fromElements(element.metadata);
+
+    final constructors = Constructor.fromElements(
+      element.constructors,
+      retrieveRedirect: annotations.isContainedUnion,
+    );
+
     late DoNotGenerate doNotGenerate;
     if (annotations.isMethodAnnotation) {
       doNotGenerate = const DoNotGenerate.none();
     } else {
       doNotGenerate = DoNotGenerate.fromElement(element);
     }
+
     final fields = Field.fromElements(
       element.fields,
       ignoreGettersAsProps: annotations.ice?.ignoreGettersAsProps ??
