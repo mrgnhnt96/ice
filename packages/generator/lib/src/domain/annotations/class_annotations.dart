@@ -16,6 +16,7 @@ class ClassAnnotations {
     required IceAnnotation? ice,
     required this.methods,
     required this.union,
+    required this.isContainedUnion,
   }) : _ice = ice;
 
   /// Retrieves the class annotations from the elements
@@ -23,6 +24,7 @@ class ClassAnnotations {
     IceAnnotation? ice;
     MethodAnnotations? methods;
     UnionAnnotation? union;
+    var isContainedUnion = false;
 
     void updateMethods(MethodAnnotations Function(MethodAnnotations) callback) {
       if (ice != null) {
@@ -51,9 +53,14 @@ class ClassAnnotations {
       }
 
       switch (type) {
+        case ClassAnnotationTypes.contained:
         case ClassAnnotationTypes.unionOf:
         case ClassAnnotationTypes.unionCreate:
           union = UnionAnnotation.fromElement(annotation, type);
+
+          if (type.isContained) {
+            isContainedUnion = true;
+          }
 
           break;
         case ClassAnnotationTypes.ice:
@@ -93,6 +100,7 @@ class ClassAnnotations {
       ice: ice,
       methods: methods,
       union: union,
+      isContainedUnion: isContainedUnion,
     );
   }
 
@@ -107,6 +115,9 @@ class ClassAnnotations {
 
   /// the union annotation
   final UnionAnnotation? union;
+
+  /// whether the union is annotated as contained
+  final bool isContainedUnion;
 
   /// if the class is annotated with [Ice] / [IceUnion]
   bool get isIceAnnotation => ice != null;

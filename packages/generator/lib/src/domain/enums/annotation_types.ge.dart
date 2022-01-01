@@ -13,6 +13,7 @@ extension ClassAnnotationTypesX on ClassAnnotationTypes {
     required T unionCreate,
     required T unionOf,
     required T only,
+    required T contained,
   }) {
     switch (this) {
       case ClassAnnotationTypes.ice:
@@ -25,6 +26,8 @@ extension ClassAnnotationTypesX on ClassAnnotationTypes {
         return unionOf;
       case ClassAnnotationTypes.only:
         return only;
+      case ClassAnnotationTypes.contained:
+        return contained;
     }
   }
 
@@ -38,6 +41,7 @@ extension ClassAnnotationTypesX on ClassAnnotationTypes {
     T? unionCreate,
     T? unionOf,
     T? only,
+    T? contained,
   }) {
     var isNullable = true;
     try {
@@ -62,6 +66,9 @@ extension ClassAnnotationTypesX on ClassAnnotationTypes {
       case ClassAnnotationTypes.only:
         if (only == null && !isNullable) return orElse;
         return only as T;
+      case ClassAnnotationTypes.contained:
+        if (contained == null && !isNullable) return orElse;
+        return contained as T;
     }
   }
 
@@ -73,6 +80,7 @@ extension ClassAnnotationTypesX on ClassAnnotationTypes {
       unionCreate: ClassAnnotationTypesConv._unionCreateName,
       unionOf: ClassAnnotationTypesConv._unionOfName,
       only: ClassAnnotationTypesConv._onlyName,
+      contained: ClassAnnotationTypesConv._containedName,
     );
   }
 }
@@ -103,6 +111,7 @@ class ClassAnnotationTypesConv
   static const _unionCreateName = 'IceUnion.create';
   static const _unionOfName = 'IceUnion.of';
   static const _onlyName = 'Ice.only';
+  static const _containedName = 'IceUnion.contained';
 
   @override
   ClassAnnotationTypes fromJson(Object json) {
@@ -117,6 +126,8 @@ class ClassAnnotationTypesConv
         return ClassAnnotationTypes.unionOf;
       case _onlyName:
         return ClassAnnotationTypes.only;
+      case _containedName:
+        return ClassAnnotationTypes.contained;
       default:
         if (defaultValue != null) return defaultValue!;
 
@@ -156,6 +167,8 @@ class _ClassAnnotationTypesNullableConv
         return ClassAnnotationTypes.unionOf;
       case ClassAnnotationTypesConv._onlyName:
         return ClassAnnotationTypes.only;
+      case ClassAnnotationTypesConv._containedName:
+        return ClassAnnotationTypes.contained;
       default:
         return null;
     }

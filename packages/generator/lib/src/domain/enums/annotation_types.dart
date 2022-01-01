@@ -22,6 +22,11 @@ enum ClassAnnotationTypes {
 
   /// does not create a class, only specific methods
   only,
+
+  /// [IceUnion]
+  ///
+  /// generates the classes for the union from the redirects
+  contained,
 }
 
 /// annotations for constructors
@@ -73,4 +78,7 @@ extension AnnotationTypesXX on ClassAnnotationTypes {
 
   /// The [JsonSerializable] annotation
   bool get isJsonSerializable => this == ClassAnnotationTypes.jsonSerializable;
+
+  /// The contained [IceUnion] annotation
+  bool get isContained => this == ClassAnnotationTypes.contained;
 }

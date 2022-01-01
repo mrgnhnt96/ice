@@ -96,6 +96,23 @@ class IceUnion extends Ice {
           jsonSerializable: jsonSerializable,
         );
 
+  /// creates a union from the factories of the class
+  const IceUnion.contained({
+    String? unionKey,
+    CopyWith? copyWith,
+    bool? equatable,
+    bool? toString,
+    bool? ignoreGettersAsProps,
+    IceJsonSerializable? jsonSerializable = const IceJsonSerializable(),
+  }) : this.create(
+          unionKey: unionKey,
+          copyWith: copyWith,
+          equatable: equatable,
+          toString: toString,
+          ignoreGettersAsProps: ignoreGettersAsProps,
+          jsonSerializable: jsonSerializable,
+        );
+
   /// the base of the union
   final Type base;
 
