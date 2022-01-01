@@ -3,6 +3,7 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:ice/src/domain/enums/enums.dart';
+import 'package:ice/src/util/element_ext.dart';
 
 /// {@template param}
 /// A parameter of the [Class]
@@ -12,10 +13,13 @@ class Param {
   Param({
     required this.name,
     required this.type,
+    required String? defaultValue,
     this.isNullable = false,
     required this.requiredness,
     required this.positionType,
-  });
+    required bool defaultRequiresConstKeyword,
+  })  : _defaultRequiresConstKeyword = defaultRequiresConstKeyword,
+        _defaultValue = defaultValue;
 
   /// Retreives the [Param] from the [ParameterElement]
   factory Param.fromElement(ParameterElement element) {
@@ -24,15 +28,78 @@ class Param {
     final requiredness =
         element.isNotOptional ? Requiredness.required : Requiredness.optional;
 
-    final param = Param(
-      name: element.displayName,
-      type: element.type.getDisplayString(withNullability: true),
-      isNullable: element.type.nullabilitySuffix == NullabilitySuffix.question,
+    String? getDefaultValue() {
+      if (element.defaultValueCode != null) {
+        return element.defaultValueCode;
+      }
+
+      final annotations = element.metadata;
+
+      if (annotations.isEmpty) {
+        return null;
+      }
+
+      for (final annotation in annotations) {
+        if (annotation.astName != 'Default') {
+          continue;
+        }
+
+        final result = annotation.ast.arguments?.arguments.first;
+
+        if (result == null) {
+          continue;
+        }
+
+        final defaultValue = '$result';
+        if (defaultValue == 'null') {
+          return null;
+        }
+
+        return defaultValue;
+      }
+    }
+
+    bool isDartCoreType() {
+      final type = element.type;
+
+      if (type.isDartCoreBool) return false;
+      if (type.isDartCoreDouble) return false;
+      if (type.isDartCoreInt) return false;
+      if (type.isDartCoreNull) return false;
+      if (type.isDartCoreNum) return false;
+      if (type.isDartCoreObject) return true;
+      if (type.isDartCoreString) return false;
+
+      if (type.isDartCoreIterable) return true;
+      // if (type.isDartCoreList) return true;
+      // if (type.isDartCoreMap) return true;
+      // if (type.isDartCoreSet) return true;
+
+      return true;
+    }
+
+    final defaultValue = getDefaultValue();
+    final name = element.displayName;
+    final type = element.type.getDisplayString(withNullability: true);
+    final isNullable =
+        element.type.nullabilitySuffix == NullabilitySuffix.question;
+
+    final bool defaultRequiresConstKeyword;
+    if (defaultValue == null) {
+      defaultRequiresConstKeyword = false;
+    } else {
+      defaultRequiresConstKeyword = isDartCoreType();
+    }
+
+    return Param(
+      name: name,
+      type: type,
+      isNullable: isNullable,
       positionType: position,
       requiredness: requiredness,
+      defaultValue: defaultValue,
+      defaultRequiresConstKeyword: defaultRequiresConstKeyword,
     );
-
-    return param;
   }
 
   /// Retreives the [Param]s from the [ParameterElement]s
@@ -54,6 +121,20 @@ class Param {
 
   /// the position of the param
   final PositionType positionType;
+
+  final String? _defaultValue;
+
+  /// the default value
+  String? get defaultValue {
+    if (_defaultRequiresConstKeyword && _defaultValue != null) {
+      return 'const $_defaultValue';
+    }
+    return _defaultValue;
+  }
+
+  /// this is true for all non primitive types
+  /// for default values
+  final bool _defaultRequiresConstKeyword;
 
   /// gets the type as a nullable type
   String get nullableType {
