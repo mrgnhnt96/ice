@@ -84,10 +84,8 @@ class Param {
     final isNullable =
         element.type.nullabilitySuffix == NullabilitySuffix.question;
 
-    final bool defaultRequiresConstKeyword;
-    if (defaultValue == null) {
-      defaultRequiresConstKeyword = false;
-    } else {
+    var defaultRequiresConstKeyword = false;
+    if (defaultValue != null && !defaultValue.startsWith('const ')) {
       defaultRequiresConstKeyword = isDartCoreType();
     }
 
