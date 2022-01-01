@@ -168,7 +168,7 @@ class IceClassTemplate extends Template {
 
   ///
   void writeFields(StringBuffer buffer) {
-    buffer.writeAll(subject.fieldGetters, pln);
+    buffer.writeAll(subject.fieldProperties, pln);
   }
 
   ///
