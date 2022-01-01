@@ -1,6 +1,8 @@
 // ignore_for_file: comment_references, implementation_imports
 
+import 'package:analyzer/dart/analysis/results.dart';
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/src/dart/ast/ast.dart';
 import 'package:ice/src/domain/domain.dart';
 import 'package:ice/src/domain/enums/enums.dart';
 import 'package:ice/src/util/element_ext.dart';
@@ -13,6 +15,7 @@ class Constructor {
   /// {@macro constructor}
   const Constructor({
     required this.name,
+    required this.redirectName,
     required this.displayName,
     required this.isCopyWithConstructor,
     required this.params,
@@ -23,7 +26,10 @@ class Constructor {
   });
 
   /// Gets the constructor from the [ConstructorElement]
-  factory Constructor.fromElement(ConstructorElement element) {
+  factory Constructor.fromElement(
+    ConstructorElement element, {
+    required bool retrieveRedirect,
+  }) {
     var isCopyWithConstructor = false;
     var isJsonConstructor = false;
 
@@ -37,6 +43,41 @@ class Constructor {
         isJsonConstructor = true;
         continue;
       }
+    }
+
+    String? getRedirectName() {
+      final result = element.library.session
+          .getParsedLibraryByElement(element.library) as ParsedLibraryResult?;
+
+      final declaration = result?.getElementDeclaration(element);
+      final node = declaration?.node as ConstructorDeclarationImpl?;
+      if (node == null) {
+        throw Exception('Could not find declaration for $element');
+      }
+      final redirectedConstructor = node.redirectedConstructor;
+
+      if (redirectedConstructor == null) {
+        // this constructor is not a redirect
+        return null;
+      }
+
+      final redirectedClass = '$redirectedConstructor';
+      if (redirectedClass == 'fromJson') {
+        /// we don't wanna touch the fromJson constructor
+        return null;
+      }
+      if (redirectedClass.contains(RegExp(r'[^A-z0-9_\$]+'))) {
+        // we can't successfully generate the name of this
+        // constructor as a class, so we will just ignore it
+        return null;
+      }
+
+      return redirectedClass;
+    }
+
+    String? redirectName;
+    if (retrieveRedirect) {
+      redirectName = getRedirectName();
     }
 
     final params = Param.fromElements(element.parameters);
@@ -53,6 +94,7 @@ class Constructor {
 
     return Constructor(
       name: element.name,
+      redirectName: redirectName,
       displayName: element.displayName,
       params: params,
       declaration: declaration,
@@ -64,11 +106,19 @@ class Constructor {
   }
 
   /// Gets all constructors for the class from [ConstructorElement]
-  static List<Constructor> fromElements(List<ConstructorElement> elements) {
+  static List<Constructor> fromElements(
+    List<ConstructorElement> elements, {
+    bool retrieveRedirect = false,
+  }) {
     final constructors = <Constructor>[];
 
     for (final element in elements) {
-      constructors.add(Constructor.fromElement(element));
+      constructors.add(
+        Constructor.fromElement(
+          element,
+          retrieveRedirect: retrieveRedirect,
+        ),
+      );
     }
 
     return constructors;
@@ -76,6 +126,9 @@ class Constructor {
 
   /// The name of the constructor
   final String name;
+
+  /// the name of the redirect class
+  final String? redirectName;
 
   /// The name of the constructor with the [Class]'s name
   final String displayName;
