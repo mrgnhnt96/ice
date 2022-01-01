@@ -3,7 +3,7 @@ import 'package:ice/src/domain/field.dart';
 import 'package:ice/src/templates/template.dart';
 import 'package:ice/src/util/string_buffer_ext.dart';
 
-extension on List<Field> {
+extension on Iterable<Field> {
   Iterable<String> asArgs() {
     final args = <String>[];
 

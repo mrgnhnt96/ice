@@ -71,7 +71,7 @@ class PropsTemplate extends Template {
   }
 }
 
-extension on List<Field> {
+extension on Iterable<Field> {
   Iterable<String> returnProps() {
     final props = <String>[];
 
