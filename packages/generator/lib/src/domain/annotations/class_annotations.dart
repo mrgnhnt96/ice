@@ -137,12 +137,12 @@ class ClassAnnotations {
   /// sets all properties to falsey values
   ///
   /// updates [union.unionId] to [className]
-  ClassAnnotations unionFor(String className) {
+  ClassAnnotations unionFor(String className, String unionClass) {
     return ClassAnnotations(
       methods: null,
-      isContainedUnion: false,
+      isContainedUnion: isContainedUnion,
       ice: null,
-      union: union?.forClass(className),
+      union: union?.forSubClass(className, unionClass),
     );
   }
 }
