@@ -25,6 +25,7 @@ class ToStringTemplate extends Template {
   const ToStringTemplate.forSubject(
     Class subject, {
     required this.asExtension,
+    this.union,
   }) : super(
           subject,
           templateType: TemplateType.iceToString,
@@ -34,6 +35,9 @@ class ToStringTemplate extends Template {
   ///
   /// if false, it will be generated as an override method
   final bool asExtension;
+
+  /// the base union of the class
+  final Class? union;
 
   @override
   void generate(StringBuffer buffer) {
@@ -68,11 +72,19 @@ class ToStringTemplate extends Template {
   void _writeReturn(StringBuffer buffer) {
     final args = subject.fields.asArgs();
 
+    var unionStr = '';
+
+    if (union != null) {
+      unionStr = '${union?.name}.';
+    }
+
     if (args.isEmpty) {
-      buffer.write("return '${subject.name}()';");
+      buffer.write("return r'$unionStr${subject.name}()';");
       return;
     }
 
-    buffer.writepln("return '${subject.name}(${args.join(', ')})';");
+    buffer.writepln(
+      "return r'$unionStr${subject.name}(''${args.join(", ''")})';",
+    );
   }
 }
