@@ -43,7 +43,9 @@ class UnionAnnotation extends IceAnnotation implements IceUnion {
       return null;
     }
 
-    final isBase = type.isUnionBase;
+    /// if [type.isContained] is true, then the subject class is a union base
+    /// this is because [element] is the annotation for the subject class
+    final isBase = type.isUnionBase || type.isContained;
 
     final reader = ConstantReader(annotation.computeConstantValue());
 
@@ -94,10 +96,10 @@ class UnionAnnotation extends IceAnnotation implements IceUnion {
   bool get isSubUnion => ofUnionType != null;
 
   /// changes the [unionId] to className
-  UnionAnnotation forClass(String className) {
+  UnionAnnotation forSubClass(String className, String unionType) {
     return UnionAnnotation(
-      isBase: isBase,
-      ofUnionType: ofUnionType,
+      isBase: false,
+      ofUnionType: unionType,
       unionId: className,
       unionKey: unionKey,
       copyWith: copyWith,
