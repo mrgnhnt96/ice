@@ -1,6 +1,7 @@
 import 'package:ice/ice.dart';
 import 'package:ice/src/domain/domain.dart';
 import 'package:ice/src/templates/from_json_template.dart';
+import 'package:ice/src/templates/ice_templates/contained_union_class_template.dart';
 import 'package:ice/src/templates/ice_templates/union_class_template.dart';
 import 'package:ice/src/templates/templates.dart';
 import 'package:ice/src/templates/to_json_template.dart';
@@ -97,6 +98,10 @@ class IceClassTemplate extends Template {
     Class subject, {
     required Class? union,
   }) {
+    if (subject.annotations.isContainedUnion) {
+      return ContainedUnionClassTemplate.forSubject(subject, union);
+    }
+
     if (union != null || subject.annotations.isUnionBase) {
       return UnionClassTemplate.forSubject(subject, union: union);
     }
