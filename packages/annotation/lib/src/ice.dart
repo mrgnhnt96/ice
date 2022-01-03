@@ -24,8 +24,8 @@ class Ice {
 
   ///
   const Ice.only({
-    this.props = false,
-    bool toString = false,
+    this.props,
+    bool? toString,
     this.copyWith,
   })  : tostring = toString,
         equatable = false,
