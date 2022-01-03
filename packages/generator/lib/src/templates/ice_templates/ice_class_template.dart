@@ -196,6 +196,7 @@ class IceClassTemplate extends Template {
       ToStringTemplate.forSubject(
         subject,
         asExtension: false,
+        union: union,
       ).addToBuffer(buffer);
       buffer.writepln();
     }
