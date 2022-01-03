@@ -23,13 +23,14 @@ class ContainedUnionClassTemplate extends IceClassTemplate {
       iceCallback: (settings) => settings.equatable,
       settingsCallback: (settings) => settings.equatable,
     );
-    var mixins = '';
+
+    var mixins = 'with ${subject.genName}Mixin';
 
     if (hasEquatable) {
-      mixins = ' with EquatableMixin';
+      mixins += ', EquatableMixin';
     }
 
-    return 'abstract class ${subject.genName}$mixins';
+    return 'abstract class ${subject.genName} $mixins';
   }
 
   @override
