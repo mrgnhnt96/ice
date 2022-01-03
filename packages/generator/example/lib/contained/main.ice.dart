@@ -11,7 +11,33 @@ part of 'main.dart';
 @JsonSerializable(
   constructor: r'_$fromJson',
 )
-abstract class _$Example with EquatableMixin {
+abstract class _$MyClass with EquatableMixin {
+  const _$MyClass();
+
+  const factory _$MyClass._$fromJson() = MyClass;
+
+  MyClass copyWith() => MyClass();
+  @override
+  List<Object?> get props {
+    return [];
+  }
+
+  @override
+  String toString() {
+    return r'MyClass()';
+  }
+
+  Map<String, dynamic> toJson() => _$$MyClassToJson(this);
+}
+
+MyClass _$MyClassFromJson(Map<String, dynamic> json) {
+  return _$$MyClassFromJson(json) as MyClass;
+}
+
+@JsonSerializable(
+  constructor: r'_$fromJson',
+)
+abstract class _$Example with _$ExampleMixin, EquatableMixin {
   const _$Example();
 
   const factory _$Example._$fromJson() = Example._;
@@ -96,22 +122,22 @@ class _B extends Example {
 )
 class _C extends Example {
   const _C([
-    this.myClass = const <String>[],
+    this.value = const <String>[],
   ]) : super._();
 
   factory _C.fromJson(Map<String, dynamic> json) => _$CFromJson(json);
-  const factory _C._$fromJson([dynamic myClass]) = _C;
+  const factory _C._$fromJson([dynamic value]) = _C;
 
-  final dynamic myClass;
+  final dynamic value;
   _CCopyWith get copyWith => _CCopyWith(this);
   @override
   List<Object?> get props {
-    return [myClass];
+    return [value];
   }
 
   @override
   String toString() {
-    return r'Example._C(' 'myClass: $myClass)';
+    return r'Example._C(' 'value: $value)';
   }
 
   Map<String, dynamic> toJson({bool includeUnionType = true}) {
@@ -186,7 +212,7 @@ mixin _$ExampleMixin {
     )
         b,
     required R Function(
-      dynamic myClass,
+      dynamic value,
     )
         c,
     required R Function(
@@ -202,7 +228,7 @@ mixin _$ExampleMixin {
         u.code,
       ),
       c: (u) => c(
-        u.myClass,
+        u.value,
       ),
       e: (u) => e(
         u.myClass,
@@ -235,7 +261,7 @@ mixin _$ExampleMixin {
     )?
         b,
     R Function(
-      dynamic myClass,
+      dynamic value,
     )?
         c,
     R Function(
@@ -257,7 +283,7 @@ mixin _$ExampleMixin {
           orElse(),
       c: (u) =>
           c?.call(
-            u.myClass,
+            u.value,
           ) ??
           orElse(),
       e: (u) =>
@@ -292,7 +318,7 @@ mixin _$ExampleMixin {
     )?
         b,
     R Function(
-      dynamic myClass,
+      dynamic value,
     )?
         c,
     R Function(
@@ -308,7 +334,7 @@ mixin _$ExampleMixin {
         u.code,
       ),
       c: (u) => c?.call(
-        u.myClass,
+        u.value,
       ),
       e: (u) => e?.call(
         u.myClass,
@@ -416,16 +442,16 @@ class _BCopyWithImpl implements _BCopyWith {
 
 abstract class _CCopyWith {
   const factory _CCopyWith(_C value) = _CCopyWithImpl;
-  _C call({dynamic myClass});
+  _C call({dynamic value});
 }
 
 class _CCopyWithImpl implements _CCopyWith {
   const _CCopyWithImpl(this._value);
   final _C _value;
   _C call({
-    Object? myClass = _$sentinelValue,
+    Object? value = _$sentinelValue,
   }) {
-    return _C(myClass == _$sentinelValue ? _value.myClass : myClass as dynamic);
+    return _C(value == _$sentinelValue ? _value.value : value as dynamic);
   }
 }
 

@@ -6,6 +6,12 @@ part of 'main.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+_$MyClass _$$MyClassFromJson(Map<String, dynamic> json) =>
+    _$MyClass._$fromJson();
+
+Map<String, dynamic> _$$MyClassToJson(_$MyClass instance) =>
+    <String, dynamic>{};
+
 _$Example _$$ExampleFromJson(Map<String, dynamic> json) =>
     _$Example._$fromJson();
 
@@ -29,11 +35,11 @@ Map<String, dynamic> _$BToJson(_B instance) => <String, dynamic>{
     };
 
 _C _$CFromJson(Map<String, dynamic> json) => _C._$fromJson(
-      json['myClass'],
+      json['value'],
     );
 
 Map<String, dynamic> _$CToJson(_C instance) => <String, dynamic>{
-      'myClass': instance.myClass,
+      'value': instance.value,
     };
 
 _E _$EFromJson(Map<String, dynamic> json) => _E._$fromJson(
