@@ -72,10 +72,6 @@ class UnionMixinTemplate extends Template {
   void generate(StringBuffer buffer) {
     _writeSupport();
 
-    if (!subject.annotations.isContainedUnion) {
-      _writeUnionBase(buffer);
-    }
-
     buffer.writeObject(
       'mixin _\$${subject.cleanName}Mixin',
       body: () {
@@ -119,10 +115,6 @@ class UnionMixinTemplate extends Template {
       'typedef $result<R, T extends ${subject.unionName}> = R Function(T);',
       'typedef $noResult<R> = R Function();'
     ]);
-  }
-
-  void _writeUnionBase(StringBuffer buffer) {
-    buffer.writepln('abstract class ${subject.unionBase} {}');
   }
 
   void _writePatternMatches(StringBuffer buffer) {

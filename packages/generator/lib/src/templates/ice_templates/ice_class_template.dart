@@ -69,19 +69,17 @@ extension on Class {
       settingsCallback: (settings) => settings.equatable,
     );
     var mixins = '';
-    var implements = '';
 
     if (hasEquatable) {
       mixins = ' with EquatableMixin';
     }
 
     if (annotations.isUnionBase) {
-      implements = ' implements $unionBase';
       final unionMixin = '_\$${cleanName}Mixin';
       mixins = '$mixins, $unionMixin';
     }
 
-    return 'abstract class $genName$mixins$implements';
+    return 'abstract class $genName$mixins';
   }
 }
 
