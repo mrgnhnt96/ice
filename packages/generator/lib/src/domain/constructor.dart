@@ -23,6 +23,7 @@ class Constructor {
     required this.isGenerative,
     required this.isConst,
     required this.isJsonConstructor,
+    required this.paramsString,
   });
 
   /// Gets the constructor from the [ConstructorElement]
@@ -88,6 +89,8 @@ class Constructor {
           '',
         )
         .trim();
+    final paranthesisIndex = declaration.indexOf('(');
+    final paramsString = declaration.substring(paranthesisIndex);
 
     final isGenerative = element.isDefaultConstructor ||
         !(element.isFactory || element.isStatic);
@@ -102,6 +105,7 @@ class Constructor {
       isCopyWithConstructor: isCopyWithConstructor,
       isConst: element.isConst,
       isJsonConstructor: isJsonConstructor,
+      paramsString: paramsString,
     );
   }
 
@@ -163,6 +167,10 @@ class Constructor {
   /// for json_serializable
   final bool isJsonConstructor;
 
+  /// the params of the constructor as it is
+  /// used in the declaration
+  final String paramsString;
+
   /// converts the constructor to a default
   /// constructor
   Constructor convertToDefault() {
@@ -178,6 +186,7 @@ class Constructor {
       displayName: className,
       params: params,
       declaration: '()',
+      paramsString: '()',
       isGenerative: true,
       isCopyWithConstructor: true,
       isConst: true,
