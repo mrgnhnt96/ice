@@ -75,7 +75,7 @@ class Class {
   ///
   /// removes the `$` from the name
   String get genName {
-    final clean = name.replaceAll(r'$', '');
+    final clean = nonPrivateName.replaceAll(r'$', '');
     return '_\$$clean';
   }
 
