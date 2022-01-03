@@ -65,9 +65,15 @@ class ToJsonTemplate extends Template {
     buffer.writeObject(
       'Map<String, dynamic> toJson({bool includeUnionType = true})',
       body: () {
+        var returnType = '_\$\$${subject.cleanName}ToJson';
+
+        if (subject.annotations.isContainedUnion) {
+          returnType = '_\$${subject.cleanName}ToJson';
+        }
+
         buffer
           ..writepln(
-            'final map = _\$\$${subject.nonPrivateName}ToJson(this);',
+            'final map = $returnType(this);',
           )
           ..writeObject(
             'if (includeUnionType)',

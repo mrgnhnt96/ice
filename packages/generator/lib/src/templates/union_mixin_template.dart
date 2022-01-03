@@ -71,10 +71,13 @@ class UnionMixinTemplate extends Template {
   @override
   void generate(StringBuffer buffer) {
     _writeSupport();
-    _writeUnionBase(buffer);
+
+    if (!subject.annotations.isContainedUnion) {
+      _writeUnionBase(buffer);
+    }
 
     buffer.writeObject(
-      'mixin _\$${subject.name}Mixin',
+      'mixin _\$${subject.cleanName}Mixin',
       body: () {
         _writePatternMatches(buffer);
         ToJsonTemplate.forUnion(subject, subClasses).addToBuffer(buffer);
