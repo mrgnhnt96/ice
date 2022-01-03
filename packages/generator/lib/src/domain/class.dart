@@ -213,10 +213,11 @@ class ContainedClass extends Class {
 
     final fields = ctor.params.map(Field.fromParam);
 
-    final annotations = union.annotations.unionFor(className);
+    final annotations = union.annotations.unionFor(className, union.name);
 
     const doNotGenerate = DoNotGenerate.none();
     final defaultCtor = ctor.convertToDefault();
+
     return ContainedClass._(
       annotations: annotations,
       doNotGenerate: doNotGenerate,
@@ -230,9 +231,9 @@ class ContainedClass extends Class {
   /// creates a contained class based from the [union]
   factory ContainedClass.union(Class union) {
     String missingException() {
-      return '${union.name} does not have the (generative) constructor '
+      return '${union.name} does not have the private (generative) constructor '
           'needed to create the union '
-          'please add `${union.name}._();` as a the constructor';
+          'please add `${union.name}._();` as the constructor';
     }
 
     final filteredCtors =
