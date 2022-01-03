@@ -52,7 +52,7 @@ class FromJsonTemplate extends Template {
 
     buffer.write(
       '${constStr}factory ${subject.genName}.$fromJsonAccessor'
-      '${constructor.declaration}'
+      '${constructor.paramsString}'
       '= ${constructor.displayName};',
     );
   }
@@ -73,10 +73,16 @@ class FromJsonTemplate extends Template {
         return;
       }
 
+      var returnType = '_\$\$${subject.cleanName}FromJson';
+
+      if (subject.annotations.isContainedUnion) {
+        returnType = '_\$${subject.cleanName}FromJson';
+      }
+
       buffer.write(
         'factory ${subject.genName}'
         '.fromJson(Map<String, dynamic> json) => '
-        '_\$\$${subject.name}FromJson(json);',
+        '$returnType(json);',
       );
     }
 
