@@ -21,6 +21,10 @@ class TearOffTemplate extends Template {
       return false;
     }
 
+    if (subject.annotations.isContainedUnion) {
+      return false;
+    }
+
     return super.canBeGenerated;
   }
 
