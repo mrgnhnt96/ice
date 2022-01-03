@@ -164,7 +164,9 @@ class Param {
 /// extension for Param
 extension ParamListX on Iterable<Param> {
   /// formats the params as bracket inserted, positioned params
-  Iterable<String> formatted() sync* {
+  ///
+  /// [initialize] will format the params using `this.`
+  Iterable<String> formatted({bool initialize = false}) sync* {
     String? closeBracket;
 
     String setUpBrackets(PositionType type) {
@@ -209,18 +211,35 @@ extension ParamListX on Iterable<Param> {
     }
 
     String positionParam(Param param, {bool isLast = false}) {
-      final paramWithType = '${param.type} ${param.name}';
+      var defaultValue = '';
 
-      if (isLast) {
-        return '$paramWithType, ${closeBracket ?? ''}';
+      if (param.canHaveDefaultValue()) {
+        defaultValue = ' = ${param.defaultValue}';
+      } else if (param.defaultValue != null) {
+        // TODO: catch this error to prevent stopping the build
+        throw 'There is a default value for ${param.name} '
+            'but the param is not within `[]` or `{}`';
       }
+
+      var prepend = '${param.type} ';
+      if (initialize) {
+        prepend = 'this.';
+      }
+
+      final formattedParam = '$prepend${param.name}$defaultValue';
 
       final openBracket = checkForBracket(
         param.positionType,
         param.requiredness,
       );
 
-      return '$openBracket' '$paramWithType';
+      var closing = '';
+
+      if (isLast) {
+        closing = ', ${closeBracket ?? ''}';
+      }
+
+      return '$openBracket' '$formattedParam' '$closing';
     }
 
     for (var i = 0; i < length; i++) {
@@ -229,5 +248,18 @@ extension ParamListX on Iterable<Param> {
 
       yield positionParam(param, isLast: isLast);
     }
+  }
+}
+
+extension on Param {
+  bool canHaveDefaultValue() {
+    if (defaultValue == null) {
+      return false;
+    }
+
+    return positionType.map(
+      named: true,
+      positioned: requiredness.isOptional,
+    );
   }
 }
