@@ -90,7 +90,7 @@ class CodeBuilder {
             .addToBuffer(buffer);
       }
 
-      UnionTemplate.forSubject(subject.value, subClasses ?? [])
+      UnionMixinTemplate.forSubject(subject.value, subClasses ?? [])
           .addToBuffer(buffer);
     }
 
