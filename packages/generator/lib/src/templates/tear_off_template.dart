@@ -30,7 +30,7 @@ class TearOffTemplate extends Template {
 
   @override
   void generate(StringBuffer buffer) {
-    final tearOffName = '${subject.genName}Unions';
+    final tearOffName = '${subject.genName}TearOffs';
     buffer.writeObject(
       'class $tearOffName',
       body: () {
