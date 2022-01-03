@@ -98,7 +98,7 @@ class Constructor {
     return Constructor(
       name: element.name,
       redirectName: redirectName,
-      displayName: element.displayName,
+      displayName: redirectName ?? element.displayName,
       params: params,
       declaration: declaration,
       isGenerative: isGenerative,
