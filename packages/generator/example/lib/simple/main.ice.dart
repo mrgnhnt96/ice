@@ -26,7 +26,7 @@ abstract class _$Example extends State {
 
   @override
   String toString() {
-    return 'Example(name: $name)';
+    return r'State.Example(' 'name: $name)';
   }
 
   Map<String, dynamic> toJson({bool includeUnionType = true}) {
@@ -55,7 +55,7 @@ abstract class _$Other extends State {
 
   @override
   String toString() {
-    return 'Other(name: $name)';
+    return r'State.Other(' 'name: $name)';
   }
 
   Map<String, dynamic> toJson({bool includeUnionType = true}) {
@@ -83,7 +83,7 @@ abstract class _$Error extends State {
 
   @override
   String toString() {
-    return 'Error()';
+    return r'State.Error()';
   }
 
   Map<String, dynamic> toJson({bool includeUnionType = true}) {
@@ -113,7 +113,7 @@ abstract class _$State
 
   @override
   String toString() {
-    return 'State()';
+    return r'State()';
   }
 }
 

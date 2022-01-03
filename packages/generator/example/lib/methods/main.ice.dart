@@ -14,7 +14,16 @@ extension $ExampleX on Example {
   }
 
   String _$toString() {
-    return 'Example(text: $text, whole: $whole, decimal: $decimal, flag: $flag, date: $date, list: $list, map: $map, set: $set, example: $example)';
+    return r'Example('
+        'text: $text, '
+        'whole: $whole, '
+        'decimal: $decimal, '
+        'flag: $flag, '
+        'date: $date, '
+        'list: $list, '
+        'map: $map, '
+        'set: $set, '
+        'example: $example)';
   }
 
   _$ExampleCopyWith get copyWith => _$ExampleCopyWith(this);
