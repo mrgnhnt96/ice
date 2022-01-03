@@ -7,6 +7,7 @@ import 'package:ice/src/domain/annotations/annotations.dart';
 import 'package:ice/src/domain/do_not_generate.dart';
 import 'package:ice/src/domain/domain.dart';
 import 'package:ice/src/domain/field.dart';
+import 'package:ice/src/domain/generic_param.dart';
 import 'package:ice/src/domain/ice_settings.dart';
 import 'package:ice/src/util/iterable_ext.dart';
 import 'package:ice/src/util/string_buffer_ext.dart';
@@ -22,6 +23,7 @@ class Class {
     required this.fields,
     required this.name,
     required this.doNotGenerate,
+    required this.generics,
   });
 
   /// Retrieves the class data from the element
@@ -46,12 +48,20 @@ class Class {
           iceSettings.ignoreGettersAsProps,
     );
 
+    final generics = <GenericParam>[];
+
+    for (final e in element.typeParameters) {
+      final param = GenericParam.fromElement(e);
+      generics.add(param);
+    }
+
     return Class(
       constructors: constructors,
       annotations: annotations,
       fields: fields,
       name: element.displayName,
       doNotGenerate: doNotGenerate,
+      generics: generics,
     );
   }
 
@@ -70,6 +80,9 @@ class Class {
 
   /// The name of the class
   final String name;
+
+  /// the generics of the class
+  final Iterable<GenericParam> generics;
 
   /// The name of the class to be generated
   ///
@@ -195,10 +208,12 @@ class ContainedClass extends Class {
     required DoNotGenerate doNotGenerate,
     required this.unionBase,
     required List<Constructor> constructors,
+    required Iterable<GenericParam> generics,
   }) : super(
           annotations: annotations,
           constructors: constructors,
           doNotGenerate: doNotGenerate,
+          generics: generics,
           fields: fields,
           name: name,
         );
@@ -221,6 +236,7 @@ class ContainedClass extends Class {
     return ContainedClass._(
       annotations: annotations,
       doNotGenerate: doNotGenerate,
+      generics: union.generics,
       fields: fields,
       name: className,
       unionBase: union.name,
@@ -258,6 +274,7 @@ class ContainedClass extends Class {
     return ContainedClass._(
       annotations: union.annotations,
       doNotGenerate: union.doNotGenerate,
+      generics: union.generics,
       fields: [],
       constructors: [privateCtor],
       name: union.name,
