@@ -59,8 +59,8 @@ extension on Class {
 /// - copyWith()
 /// - Equatable Props
 /// - toString()
-class UnionTemplate extends Template {
-  UnionTemplate.forSubject(Class subject, this.subClasses)
+class UnionMixinTemplate extends Template {
+  UnionMixinTemplate.forSubject(Class subject, this.subClasses)
       : super.wrapper(subject);
 
   final Iterable<Class> subClasses;
