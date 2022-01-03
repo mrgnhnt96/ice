@@ -4,4 +4,4 @@ export 'method_template.dart';
 export 'props_template.dart';
 export 'template.dart';
 export 'to_string_template.dart';
-export 'union_template.dart';
+export 'union_mixin_template.dart';
