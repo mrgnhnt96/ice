@@ -87,8 +87,10 @@ class FromJsonTemplate extends Template {
     }
 
     if (!subject.doNotGenerate.fromJsonConstructor) {
-      writeConstructor();
-      buffer.writepln();
+      if (subject.annotations.isUnionAnnotation) {
+        writeConstructor();
+        buffer.writepln();
+      }
     }
     fromJsonAccessConstructor(buffer);
     buffer.writepln();
@@ -131,7 +133,19 @@ class FromJsonTemplate extends Template {
   }
 
   void _writeFromJson(StringBuffer buffer) {
-    if (!subject.doNotGenerate.fromJsonConstructor) {
+    bool canWrite() {
+      if (!subject.annotations.isUnionAnnotation) {
+        return true;
+      }
+
+      if (!subject.doNotGenerate.fromJsonConstructor) {
+        return false;
+      }
+
+      return true;
+    }
+
+    if (!canWrite()) {
       return;
     }
 
