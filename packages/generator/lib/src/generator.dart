@@ -68,6 +68,8 @@ class IceGenerator extends Generator {
 
     final classes = rawClasses.map(Class.fromElement).toList();
 
+    final containedUnions = <Class>[];
+
     for (var i = 0; i < classes.length; i++) {
       final subject = classes[i];
 
@@ -76,12 +78,11 @@ class IceGenerator extends Generator {
       }
 
       final unionClasses = expandContainedUnion(subject);
-      classes
-        ..removeAt(i)
-        ..addAll(unionClasses);
+      classes.removeAt(i);
+      containedUnions.addAll(unionClasses);
     }
 
-    return classes;
+    return [...classes, ...containedUnions];
   }
 
   /// expands a contained class into the base union class
