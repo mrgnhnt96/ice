@@ -62,11 +62,14 @@ class Constructor {
         return null;
       }
 
-      final redirectedClass = '$redirectedConstructor';
+      final redirectedClass =
+          '$redirectedConstructor'.replaceAll(RegExp(r'<\w+>'), '');
+
       if (redirectedClass == 'fromJson') {
         /// we don't wanna touch the fromJson constructor
         return null;
       }
+
       if (redirectedClass.contains(RegExp(r'[^A-z0-9_\$]+'))) {
         // we can't successfully generate the name of this
         // constructor as a class, so we will just ignore it
