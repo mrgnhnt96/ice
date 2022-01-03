@@ -137,3 +137,14 @@ class IceUnion extends Ice {
   /// defaults to the class name
   final String? unionId;
 }
+
+/// {@template default}
+/// provides a default value for [IceUnion.contained] params
+/// {@endtemplate}
+class Default<T extends Object?> {
+  /// {@macro default}
+  const Default(this.value);
+
+  /// the value for the param
+  final T value;
+}
