@@ -1,6 +1,7 @@
 // ignore_for_file: unused_field, public_member_api_docs
 
 import 'package:ice/src/domain/domain.dart';
+import 'package:ice/src/domain/generic_param.dart';
 import 'package:ice/src/templates/ice_templates/ice_class_template.dart';
 import 'package:ice/src/util/string_buffer_ext.dart';
 
@@ -15,7 +16,8 @@ class ContainedUnionClassTemplate extends IceClassTemplate {
   @override
   String get classHeader {
     if (subject.annotations.isSubUnion) {
-      return 'class ${subject.genName} extends ${union!.name}';
+      return 'class ${subject.genName}${subject.generics.declaration} '
+          'extends ${union!.name}${subject.generics.args}';
     }
 
     final hasEquatable = subject.metaSettings(
@@ -30,7 +32,8 @@ class ContainedUnionClassTemplate extends IceClassTemplate {
       mixins += ', EquatableMixin';
     }
 
-    return 'abstract class ${subject.genName} $mixins';
+    return 'abstract class ${subject.genName}'
+        '${subject.generics.declaration} $mixins';
   }
 
   @override
