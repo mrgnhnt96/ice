@@ -9,8 +9,8 @@ import 'package:ice/src/templates/templates.dart';
 import 'package:ice/src/templates/to_json_template.dart';
 import 'package:ice/src/util/string_buffer_ext.dart';
 
-const _returnType = r'$T';
-const _resultType = r'$R';
+const _returnType = r'_$T';
+const _resultType = r'_$R';
 
 extension on Class {
   String mapParams(String result, {bool isRequired = false}) {
