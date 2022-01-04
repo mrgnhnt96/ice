@@ -1,5 +1,7 @@
 // ignore_for_file: parameter_assignments
 
+import 'package:ice/ice.dart';
+
 /// extension to [StringBuffer]
 extension StringBufferX on StringBuffer {
   /// accepts a header string to name the section
@@ -70,4 +72,4 @@ extension StringBufferX on StringBuffer {
 String get pln => _LINE_BREAK ? '\n' : '';
 
 // ignore: non_constant_identifier_names
-bool get _LINE_BREAK => true;
+bool get _LINE_BREAK => iceSettings.debugOutput;
