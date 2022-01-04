@@ -16,10 +16,6 @@ extension on Class {
   }
 }
 
-/// A template to generate methods for
-/// - copyWith()
-/// - Equatable Props
-/// - toString()
 class ToJsonTemplate extends Template {
   const ToJsonTemplate.forSubject(Class subject, [this.union])
       : unions = const [],
