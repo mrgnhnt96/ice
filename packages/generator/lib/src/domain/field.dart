@@ -2,6 +2,7 @@
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
+import 'package:analyzer/dart/element/type.dart';
 import 'package:ice/src/domain/domain.dart';
 import 'package:ice/src/domain/enums/enums.dart';
 import 'package:ice/src/util/element_ext.dart';
@@ -20,6 +21,8 @@ class Field {
     required this.includeInProps,
     required this.isTrueField,
     required this.jsonKeyDeclaration,
+    required this.isGeneric,
+    required this.annotations,
   });
 
   /// retrieves the field from the [FieldElement]
@@ -31,16 +34,17 @@ class Field {
     String? jsonKeyDeclaration;
 
     final annotations = element.metadata;
+    final annotationDeclarations = <String>[];
 
     if (annotations.isNotEmpty) {
       for (final annotation in annotations) {
+        annotationDeclarations.add('${annotation.ast}');
+
         final annotationName = annotation.element?.displayName;
-        if (annotationName == null) {
-          continue;
-        }
 
         if (annotationName == FieldAnnotationTypes.ignoreProp.serialized) {
           hasIgnoreProp = true;
+
           continue;
         }
 
@@ -48,6 +52,7 @@ class Field {
           jsonKeyDeclaration = annotation.ast.toString();
           final reader = ConstantReader(annotation.computeConstantValue());
           hasJsonIgnore = reader.peek('ignore')?.boolValue ?? true;
+
           continue;
         }
       }
@@ -55,6 +60,7 @@ class Field {
 
     final type = element.type;
     final isTrueField = !element.isSynthetic && !element.isStatic;
+    final isGeneric = type is TypeParameterType;
 
     if (hasIgnoreProp || hasJsonIgnore) {
       includeInProps = false;
@@ -68,6 +74,8 @@ class Field {
       includeInProps: includeInProps,
       isTrueField: isTrueField,
       jsonKeyDeclaration: jsonKeyDeclaration,
+      isGeneric: isGeneric,
+      annotations: annotationDeclarations,
     );
   }
 
@@ -81,6 +89,8 @@ class Field {
       jsonKeyDeclaration: null,
       name: param.name,
       type: param.type,
+      isGeneric: param.isGeneric,
+      annotations: param.annotations,
     );
   }
 
@@ -127,4 +137,10 @@ class Field {
 
   /// the declaration of [JsonKey] if it exists
   final String? jsonKeyDeclaration;
+
+  /// where the field is type generic
+  final bool isGeneric;
+
+  /// the annotations for the field
+  final Iterable<String> annotations;
 }
