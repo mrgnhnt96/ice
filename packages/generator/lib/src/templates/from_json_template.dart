@@ -3,50 +3,8 @@
 import 'package:build/build.dart';
 import 'package:ice/src/domain/domain.dart';
 import 'package:ice/src/domain/generic_param.dart';
-import 'package:ice/src/domain/ice_support.dart';
 import 'package:ice/src/templates/template.dart';
 import 'package:ice/src/util/string_buffer_ext.dart';
-
-extension on GenericParam {
-  String get callback {
-    return '_\$${name}Callback';
-  }
-
-  String get fromJsonName {
-    return 'fromJson$name';
-  }
-
-  String get callbackParam {
-    if (!isPrimitive) {
-      return 'required $callback<$name> $fromJsonName';
-    }
-    return '$callback<$name>? $fromJsonName';
-  }
-
-  String get defaultCallback {
-    if (!isPrimitive) {
-      return '';
-    }
-
-    return '(val) => val as $name';
-  }
-
-  String get callbackArg {
-    if (!isPrimitive) {
-      return fromJsonName;
-    }
-    return '$fromJsonName ?? $defaultCallback';
-  }
-}
-
-extension on Iterable<GenericParam> {
-  Iterable<String> get support {
-    return map((e) {
-      return 'typedef ${e.callback}<T> = '
-          '${e.name} Function(Object?);';
-    });
-  }
-}
 
 extension on Class {
   Iterable<String> get fieldGetters {
@@ -61,33 +19,6 @@ extension on Class {
 
   Constructor? get fromJsonConstructor {
     return constructorWhere((e) => e.isJsonConstructor);
-  }
-
-  Iterable<String> get genericArgs {
-    if (generics.isEmpty) {
-      return [];
-    }
-
-    final args = <String>[];
-
-    for (final generic in generics) {
-      args.add('fromJson${generic.name}');
-    }
-    return args;
-  }
-
-  Iterable<String> get genericParams {
-    if (generics.isEmpty) {
-      return [];
-    }
-
-    final args = <String>[];
-
-    for (final generic in generics) {
-      args.add(generic.callbackParam);
-    }
-
-    return args;
   }
 }
 
@@ -151,21 +82,10 @@ class FromJsonTemplate extends Template {
         returnType = '_\$${subject.cleanName}FromJson';
       }
 
-      var typeParams = '';
-      var typeArgs = '';
-
-      if (subject.generics.isNotEmpty) {
-        final params = subject.generics.map((e) => e.callbackParam).join(', ');
-        typeParams = ', {$params}';
-
-        final args = subject.generics.map((e) => e.callbackArg).join(', ');
-        typeArgs = ', $args';
-      }
-
       buffer.write(
         'factory ${subject.genName}'
-        '.fromJson(Map<String, dynamic> json$typeParams) => '
-        '$returnType(json$typeArgs);',
+        '.fromJson(Map<String, dynamic> json) => '
+        '$returnType(json);',
       );
     }
 
@@ -181,7 +101,9 @@ class FromJsonTemplate extends Template {
 
   void _writeAsUnion(StringBuffer buffer) {
     buffer.writeObject(
-      '${subject.name} _\$${subject.name}FromJson(Map<String, dynamic> json, '
+      '${subject.name}${subject.generics.args} '
+      '_\$${subject.name}FromJson${subject.generics.declaration}'
+      '(Map<String, dynamic> json, '
       '[${subject.name}? defaultValue])',
       body: () {
         final unionKey = subject.annotations.union!.unionKey;
@@ -205,7 +127,14 @@ class FromJsonTemplate extends Template {
               ..writeObject(
                 'if (defaultValue != null)',
                 body: () {
-                  buffer.writepln('return defaultValue;');
+                  buffer.writeAll(
+                    <String>[
+                      'return defaultValue',
+                      if (subject.generics.isNotEmpty)
+                        ' as ${subject.name}${subject.generics.args}',
+                      ';',
+                    ],
+                  );
                 },
               )
               ..writepln('throw FallThroughError();');
@@ -247,8 +176,6 @@ class FromJsonTemplate extends Template {
 
   @override
   void generate(StringBuffer buffer) {
-    IceSupport().addAll(subject.generics.support);
-
     if (subject.annotations.isUnionBase) {
       if (unions.isNotEmpty) {
         _writeAsUnion(buffer);
