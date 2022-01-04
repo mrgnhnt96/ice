@@ -176,7 +176,8 @@ class Class {
     final properties = <String>[];
 
     for (final field in fields) {
-      final getter = '${field.type} get ${field.name};';
+      final getter =
+          '${field.annotations.join(pln)} ${field.type} get ${field.name};';
       var jsonKey = '';
       if (field.jsonKeyDeclaration != null) {
         jsonKey = '${field.jsonKeyDeclaration}$pln';
@@ -267,7 +268,7 @@ class ContainedClass extends Class {
     }
 
     if (privateCtor.params.isNotEmpty) {
-      throw '${union.name} constructor must have no parameters'
+      throw '${union.name} constructor must have no parameters '
           'should be ${union.name}._();}';
     }
 
@@ -287,7 +288,8 @@ class ContainedClass extends Class {
 
   @override
   Iterable<String> get fieldProperties {
-    return fields.map((f) => 'final ${f.type} ${f.name};');
+    return fields
+        .map((f) => '${f.annotations.join(pln)} final ${f.type} ${f.name};');
   }
 
   @override
