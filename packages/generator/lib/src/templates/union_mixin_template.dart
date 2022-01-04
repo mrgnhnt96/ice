@@ -2,17 +2,21 @@
 
 import 'package:change_case/change_case.dart';
 import 'package:ice/src/domain/domain.dart';
+import 'package:ice/src/domain/generic_param.dart';
 import 'package:ice/src/domain/ice_support.dart';
 import 'package:ice/src/templates/from_json_template.dart';
 import 'package:ice/src/templates/templates.dart';
 import 'package:ice/src/templates/to_json_template.dart';
 import 'package:ice/src/util/string_buffer_ext.dart';
 
+const _returnType = r'$T';
+const _resultType = r'$R';
+
 extension on Class {
   String mapParams(String result, {bool isRequired = false}) {
     final nullableStr = isRequired ? '' : '?';
     final keyword = isRequired ? 'required ' : '';
-    return '$keyword$result<R, $genName>$nullableStr $nameAsArg';
+    return '$keyword$result<$_resultType, $genName>$nullableStr $nameAsArg';
   }
 
   String whenParams({bool isRequired = false}) {
@@ -27,7 +31,7 @@ extension on Class {
     final nullableStr = isRequired ? '' : '?';
     final keyword = isRequired ? 'required ' : '';
 
-    return '${keyword}R Function$paramsStr$nullableStr $nameAsArg';
+    return '$keyword$_resultType Function$paramsStr$nullableStr $nameAsArg';
   }
 
   String whenArgs(String union) {
@@ -73,7 +77,7 @@ class UnionMixinTemplate extends Template {
     _writeSupport();
 
     buffer.writeObject(
-      'mixin _\$${subject.cleanName}Mixin',
+      'mixin _\$${subject.cleanName}Mixin${subject.generics.declaration}',
       body: () {
         _writePatternMatches(buffer);
         ToJsonTemplate.forUnion(subject, subClasses).addToBuffer(buffer);
@@ -112,8 +116,9 @@ class UnionMixinTemplate extends Template {
 
   void _writeSupport() {
     IceSupport().addAll([
-      'typedef $result<R, T extends ${subject.unionName}> = R Function(T);',
-      'typedef $noResult<R> = R Function();'
+      // ignore: lines_longer_than_80_chars
+      'typedef $result<$_resultType, $_returnType extends ${subject.unionName}> = $_resultType Function($_returnType);',
+      'typedef $noResult<$_resultType> = $_resultType Function();'
     ]);
   }
 
@@ -292,7 +297,8 @@ extension on PatternType {
 
     String methodEntry(String methodName, {bool isNullable = false}) {
       final nullableStr = isNullable ? '?' : '';
-      return 'R$nullableStr $methodName<R extends Object?>';
+      return '$_resultType$nullableStr $methodName<$_resultType '
+          'extends Object?>';
     }
 
     return methodEntry(getName(), isNullable: isNullable);
@@ -335,7 +341,7 @@ extension on PatternType {
 
   String? additionalParam(String noResult) {
     return mapOrNull(
-      maybe: 'required $noResult<R> orElse',
+      maybe: 'required $noResult<$_resultType> orElse',
     );
   }
 }
