@@ -59,7 +59,7 @@ Builder iceBuilder(BuilderOptions options) {
 
   String Function(String)? formatter = (str) => str;
 
-  if (IceSettings.debugOutput) {
+  if (iceSettings.debugOutput) {
     formatter = null;
   } else {
     if (iceSettings.formatOutput) {

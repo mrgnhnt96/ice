@@ -19,6 +19,7 @@ class IceSettings implements Ice {
     required this.createFromJson,
     required this.createToJson,
     required this.props,
+    required this.debugOutput,
   });
 
   /// the default settings for ice
@@ -33,6 +34,7 @@ class IceSettings implements Ice {
           createToJson: true,
           createFromJson: true,
           props: false,
+          debugOutput: false,
         );
 
   /// {@macro ice_settings}
@@ -57,27 +59,9 @@ class IceSettings implements Ice {
           defaultValues.ignoreGettersAsProps,
       formatOutput:
           config['format_output'] as bool? ?? defaultValues.formatOutput,
+      debugOutput: config['_dev'] as bool? ?? defaultValues.formatOutput,
     );
   }
-
-  /// whether to format the output
-  static bool get debugOutput => _debugOutput;
-  @visibleForTesting
-  static set debugOutput(bool value) {
-    _debugOutput = value;
-    // ignore: avoid_print
-    print(
-      [
-        '',
-        '--- --- ---',
-        '(TESTING) FORMATTING OUTPUT',
-        '--- --- ---',
-        '',
-      ].join('\n'),
-    );
-  }
-
-  static bool _debugOutput = false;
 
   @override
   final CopyWith copyWith;
@@ -109,4 +93,67 @@ class IceSettings implements Ice {
   /// whether to format the output of the generated code
   /// using the dartfmt tool
   final bool formatOutput;
+
+  /// whether to debug the output without formatting
+  ///
+  /// This is useful for debugging the output of the generated code
+  /// without having to run dartfmt on the generated code\
+  /// Adds line breaks to code to make it easier to read
+  final bool debugOutput;
+
+  /// to debug build runner
+  @visibleForTesting
+  static Map<String, dynamic> debug({
+    CopyWith? copyWith,
+    bool? equatable,
+    bool? tostring,
+    bool? ignoreGettersAsProps,
+    String? unionKey,
+    bool? formatOutput,
+    bool? createFromJson,
+    bool? createToJson,
+    bool? props,
+  }) {
+    // ignore: avoid_print
+    print(
+      [
+        '',
+        '--- --- ---',
+        '(TESTING)',
+        '--- --- ---',
+        '',
+      ].join('\n'),
+    );
+
+    const defaults = IceSettings.defaultValues();
+
+    return IceSettings(
+      copyWith: copyWith ?? defaults.copyWith,
+      equatable: equatable ?? defaults.equatable,
+      tostring: tostring ?? defaults.tostring,
+      ignoreGettersAsProps:
+          ignoreGettersAsProps ?? defaults.ignoreGettersAsProps,
+      unionKey: unionKey ?? defaults.unionKey,
+      formatOutput: formatOutput ?? defaults.formatOutput,
+      createFromJson: createFromJson ?? defaults.createFromJson,
+      createToJson: createToJson ?? defaults.createToJson,
+      props: props ?? defaults.props,
+      debugOutput: true,
+    )._toJson();
+  }
+
+  Map<String, dynamic> _toJson() {
+    return <String, dynamic>{
+      'copy_with': copyWith.name,
+      'equatable': equatable,
+      'ignore_getters_as_props': ignoreGettersAsProps,
+      'props': props,
+      'to_string': tostring,
+      'create_to_json': createToJson,
+      'create_from_json': createFromJson,
+      'union_key': unionKey,
+      'format_output': formatOutput,
+      '_dev': debugOutput,
+    };
+  }
 }

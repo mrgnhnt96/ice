@@ -6,3 +6,4 @@ targets:
         enabled: true
         options:
           format_output: true
+          _dev: true

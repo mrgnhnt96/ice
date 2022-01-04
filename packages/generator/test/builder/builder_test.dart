@@ -11,7 +11,6 @@ import 'package:test/test.dart';
 void main() {
   setUp(() {
     const base = 'test/builder';
-    IceSettings.debugOutput = true;
     GeneratorPath.setDirPath(
       input: base,
       output: '$base/output',
@@ -22,6 +21,7 @@ void main() {
     await testPackageBuilder(
       'contained',
       builder: iceBuilder,
+      builderOptions: IceSettings.debug(),
       extension: iceExtension,
       header: iceHeader,
     );
