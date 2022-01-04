@@ -37,7 +37,8 @@ MyClass _$MyClassFromJson(Map<String, dynamic> json) {
 @JsonSerializable(
   constructor: r'_$fromJson',
 )
-abstract class _$Example with _$ExampleMixin, EquatableMixin {
+abstract class _$Example<T, R extends Object>
+    with _$ExampleMixin, EquatableMixin {
   const _$Example();
 
   const factory _$Example._$fromJson() = Example._;
@@ -56,7 +57,7 @@ abstract class _$Example with _$ExampleMixin, EquatableMixin {
 @JsonSerializable(
   constructor: r'_$fromJson',
 )
-class _A extends Example {
+class _A<T, R extends Object> extends Example<T, R> {
   const _A({
     this.name = 'hello world',
   }) : super._();
@@ -64,6 +65,7 @@ class _A extends Example {
   factory _A.fromJson(Map<String, dynamic> json) => _$AFromJson(json);
   const factory _A._$fromJson({String name}) = _A;
 
+  @TConv()
   final String name;
   _ACopyWith get copyWith => _ACopyWith(this);
   @override
@@ -88,7 +90,7 @@ class _A extends Example {
 @JsonSerializable(
   constructor: r'_$fromJson',
 )
-class _B extends Example {
+class _B<T, R extends Object> extends Example<T, R> {
   const _B([
     this.code = 5,
   ]) : super._();
@@ -120,7 +122,7 @@ class _B extends Example {
 @JsonSerializable(
   constructor: r'_$fromJson',
 )
-class _C extends Example {
+class _C<T, R extends Object> extends Example<T, R> {
   const _C([
     this.value = const <String>[],
   ]) : super._();
@@ -149,44 +151,11 @@ class _C extends Example {
   }
 }
 
-@JsonSerializable(
-  constructor: r'_$fromJson',
-)
-class _E extends Example {
-  const _E([
-    this.myClass = const <String>[],
-  ]) : super._();
-
-  factory _E.fromJson(Map<String, dynamic> json) => _$EFromJson(json);
-  const factory _E._$fromJson([dynamic myClass]) = _E;
-
-  final dynamic myClass;
-  _ECopyWith get copyWith => _ECopyWith(this);
-  @override
-  List<Object?> get props {
-    return [myClass];
-  }
-
-  @override
-  String toString() {
-    return r'Example._E(' 'myClass: $myClass)';
-  }
-
-  Map<String, dynamic> toJson({bool includeUnionType = true}) {
-    final map = _$EToJson(this);
-    if (includeUnionType) {
-      map[r'$unionType'] = r'_E';
-    }
-    return map;
-  }
-}
-
-mixin _$ExampleMixin {
+mixin _$ExampleMixin<T, R extends Object> {
   _$R map<_$R extends Object?>({
     required _$ExampleCallback<_$R, _A> a,
     required _$ExampleCallback<_$R, _B> b,
     required _$ExampleCallback<_$R, _C> c,
-    required _$ExampleCallback<_$R, _E> e,
   }) {
     switch (runtimeType) {
       case _A:
@@ -195,8 +164,6 @@ mixin _$ExampleMixin {
         return b(this as _B);
       case _C:
         return c(this as _C);
-      case _E:
-        return e(this as _E);
       default:
         throw UnsupportedError('Unsupported type: $this');
     }
@@ -215,10 +182,6 @@ mixin _$ExampleMixin {
       dynamic value,
     )
         c,
-    required _$R Function(
-      dynamic myClass,
-    )
-        e,
   }) {
     return map(
       a: (u) => a(
@@ -230,9 +193,6 @@ mixin _$ExampleMixin {
       c: (u) => c(
         u.value,
       ),
-      e: (u) => e(
-        u.myClass,
-      ),
     );
   }
 
@@ -240,14 +200,12 @@ mixin _$ExampleMixin {
     _$ExampleCallback<_$R, _A>? a,
     _$ExampleCallback<_$R, _B>? b,
     _$ExampleCallback<_$R, _C>? c,
-    _$ExampleCallback<_$R, _E>? e,
     required _$NoExampleCallback<_$R> orElse,
   }) {
     return map(
       a: (u) => a?.call(u) ?? orElse(),
       b: (u) => b?.call(u) ?? orElse(),
       c: (u) => c?.call(u) ?? orElse(),
-      e: (u) => e?.call(u) ?? orElse(),
     );
   }
 
@@ -264,10 +222,6 @@ mixin _$ExampleMixin {
       dynamic value,
     )?
         c,
-    _$R Function(
-      dynamic myClass,
-    )?
-        e,
     required _$NoExampleCallback<_$R> orElse,
   }) {
     return map(
@@ -286,11 +240,6 @@ mixin _$ExampleMixin {
             u.value,
           ) ??
           orElse(),
-      e: (u) =>
-          e?.call(
-            u.myClass,
-          ) ??
-          orElse(),
     );
   }
 
@@ -298,13 +247,11 @@ mixin _$ExampleMixin {
     _$ExampleCallback<_$R, _A>? a,
     _$ExampleCallback<_$R, _B>? b,
     _$ExampleCallback<_$R, _C>? c,
-    _$ExampleCallback<_$R, _E>? e,
   }) {
     return map(
       a: (u) => a?.call(u),
       b: (u) => b?.call(u),
       c: (u) => c?.call(u),
-      e: (u) => e?.call(u),
     );
   }
 
@@ -321,10 +268,6 @@ mixin _$ExampleMixin {
       dynamic value,
     )?
         c,
-    _$R Function(
-      dynamic myClass,
-    )?
-        e,
   }) {
     return map(
       a: (u) => a?.call(
@@ -335,9 +278,6 @@ mixin _$ExampleMixin {
       ),
       c: (u) => c?.call(
         u.value,
-      ),
-      e: (u) => e?.call(
-        u.myClass,
       ),
     );
   }
@@ -350,8 +290,6 @@ mixin _$ExampleMixin {
         return (this as _B).toJson(includeUnionType: includeUnionType);
       case _C:
         return (this as _C).toJson(includeUnionType: includeUnionType);
-      case _E:
-        return (this as _E).toJson(includeUnionType: includeUnionType);
       default:
         throw FallThroughError();
     }
@@ -378,19 +316,12 @@ mixin _$ExampleMixin {
     return this as _C;
   }
 
-  _E get asE {
-    if (!isE) {
-      throw Exception('Example runtimeType is not of type _E');
-    }
-    return this as _E;
-  }
-
   bool get isA => this is _A;
   bool get isB => this is _B;
   bool get isC => this is _C;
-  bool get isE => this is _E;
 }
-Example _$ExampleFromJson(Map<String, dynamic> json, [Example? defaultValue]) {
+Example<T, R> _$ExampleFromJson<T, R extends Object>(Map<String, dynamic> json,
+    [Example? defaultValue]) {
   switch (json[r'$unionType'] as String?) {
     case r'_A':
       return _A.fromJson(json);
@@ -398,11 +329,9 @@ Example _$ExampleFromJson(Map<String, dynamic> json, [Example? defaultValue]) {
       return _B.fromJson(json);
     case r'_C':
       return _C.fromJson(json);
-    case r'_E':
-      return _E.fromJson(json);
     default:
       if (defaultValue != null) {
-        return defaultValue;
+        return defaultValue as Example<T, R>;
       }
       throw FallThroughError();
   }
@@ -410,12 +339,12 @@ Example _$ExampleFromJson(Map<String, dynamic> json, [Example? defaultValue]) {
 
 const _$sentinelValue = Object();
 
-abstract class _ACopyWith {
-  const factory _ACopyWith(_A value) = _ACopyWithImpl;
+abstract class _ACopyWith<T, R extends Object> {
+  const factory _ACopyWith(_A value) = _ACopyWithImpl<T, R>;
   _A call({String name});
 }
 
-class _ACopyWithImpl implements _ACopyWith {
+class _ACopyWithImpl<T, R extends Object> implements _ACopyWith<T, R> {
   const _ACopyWithImpl(this._value);
   final _A _value;
   _A call({
@@ -425,12 +354,12 @@ class _ACopyWithImpl implements _ACopyWith {
   }
 }
 
-abstract class _BCopyWith {
-  const factory _BCopyWith(_B value) = _BCopyWithImpl;
+abstract class _BCopyWith<T, R extends Object> {
+  const factory _BCopyWith(_B value) = _BCopyWithImpl<T, R>;
   _B call({int code});
 }
 
-class _BCopyWithImpl implements _BCopyWith {
+class _BCopyWithImpl<T, R extends Object> implements _BCopyWith<T, R> {
   const _BCopyWithImpl(this._value);
   final _B _value;
   _B call({
@@ -440,33 +369,18 @@ class _BCopyWithImpl implements _BCopyWith {
   }
 }
 
-abstract class _CCopyWith {
-  const factory _CCopyWith(_C value) = _CCopyWithImpl;
+abstract class _CCopyWith<T, R extends Object> {
+  const factory _CCopyWith(_C value) = _CCopyWithImpl<T, R>;
   _C call({dynamic value});
 }
 
-class _CCopyWithImpl implements _CCopyWith {
+class _CCopyWithImpl<T, R extends Object> implements _CCopyWith<T, R> {
   const _CCopyWithImpl(this._value);
   final _C _value;
   _C call({
     Object? value = _$sentinelValue,
   }) {
     return _C(value == _$sentinelValue ? _value.value : value as dynamic);
-  }
-}
-
-abstract class _ECopyWith {
-  const factory _ECopyWith(_E value) = _ECopyWithImpl;
-  _E call({dynamic myClass});
-}
-
-class _ECopyWithImpl implements _ECopyWith {
-  const _ECopyWithImpl(this._value);
-  final _E _value;
-  _E call({
-    Object? myClass = _$sentinelValue,
-  }) {
-    return _E(myClass == _$sentinelValue ? _value.myClass : myClass as dynamic);
   }
 }
 

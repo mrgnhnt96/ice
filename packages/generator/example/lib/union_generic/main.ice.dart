@@ -12,79 +12,56 @@ part of 'main.dart';
   constructor: r'_$fromJson',
 )
 abstract class _$Example extends State {
-  const _$Example(int code) : super(code);
-  const _$Example.empty() : super.empty();
-  const factory _$Example._$fromJson(
-      {String? text,
-      int? whole,
-      double? decimal,
-      bool? flag,
-      DateTime? date,
-      List<String>? list,
-      Set<String>? set}) = Example;
+  const _$Example() : super();
+  factory _$Example.fromJson(Map<String, dynamic> json) =>
+      _$$ExampleFromJson(json);
+  const factory _$Example._$fromJson(String name) = Example;
 
-  String? get text;
-  int? get whole;
-  double? get decimal;
-  bool? get flag;
-  DateTime? get date;
-  List<String>? get list;
-  Set<String>? get set;
+  String get name;
   _$ExampleCopyWith get copyWith => _$ExampleCopyWith(this);
   @override
   List<Object?> get props {
-    return [text, whole, decimal, flag, date, list, set, code];
+    return [name];
   }
 
   @override
   String toString() {
-    return r'State.Example('
-        'text: $text, '
-        'whole: $whole, '
-        'decimal: $decimal, '
-        'flag: $flag, '
-        'date: $date, '
-        'list: $list, '
-        'set: $set)';
+    return r'State.Example(' 'name: $name)';
   }
 
   Map<String, dynamic> toJson({bool includeUnionType = true}) {
     final map = _$$ExampleToJson(this);
     if (includeUnionType) {
-      map[r'$unionType'] = r'Example';
+      map[r'runtimeType'] = r'$Something';
     }
     return map;
   }
-}
-
-Example _$ExampleFromJson(Map<String, dynamic> json) {
-  return _$$ExampleFromJson(json) as Example;
 }
 
 @JsonSerializable(
   constructor: r'_$fromJson',
 )
 abstract class _$Other extends State {
-  const _$Other(int code) : super(code);
-  const _$Other.empty() : super.empty();
+  const _$Other() : super();
   factory _$Other.fromJson(Map<String, dynamic> json) => _$$OtherFromJson(json);
-  const factory _$Other._$fromJson(int code) = Other;
+  const factory _$Other._$fromJson(String name) = Other;
 
+  String get name;
   _$OtherCopyWith get copyWith => _$OtherCopyWith(this);
   @override
   List<Object?> get props {
-    return [code];
+    return [name];
   }
 
   @override
   String toString() {
-    return r'State.Other()';
+    return r'State.Other(' 'name: $name)';
   }
 
   Map<String, dynamic> toJson({bool includeUnionType = true}) {
     final map = _$$OtherToJson(this);
     if (includeUnionType) {
-      map[r'$unionType'] = r'Other';
+      map[r'runtimeType'] = r'Other';
     }
     return map;
   }
@@ -94,15 +71,14 @@ abstract class _$Other extends State {
   constructor: r'_$fromJson',
 )
 abstract class _$Error extends State {
-  const _$Error(int code) : super(code);
-  const _$Error.empty() : super.empty();
+  const _$Error() : super();
   factory _$Error.fromJson(Map<String, dynamic> json) => _$$ErrorFromJson(json);
-  const factory _$Error._$fromJson(int code) = Error;
+  const factory _$Error._$fromJson() = Error;
 
-  _$ErrorCopyWith get copyWith => _$ErrorCopyWith(this);
+  Error copyWith() => Error();
   @override
   List<Object?> get props {
-    return [code];
+    return [];
   }
 
   @override
@@ -113,7 +89,7 @@ abstract class _$Error extends State {
   Map<String, dynamic> toJson({bool includeUnionType = true}) {
     final map = _$$ErrorToJson(this);
     if (includeUnionType) {
-      map[r'$unionType'] = r'Error';
+      map[r'runtimeType'] = r'Error';
     }
     return map;
   }
@@ -126,47 +102,31 @@ abstract class _$State with EquatableMixin, _$StateMixin {
   const _$State();
 
   factory _$State.fromJson(Map<String, dynamic> json) => _$$StateFromJson(json);
-  const factory _$State._$fromJson(int code) = State;
-
-  int get code;
+  const factory _$State._$fromJson() = State;
 
   @override
   List<Object?> get props {
-    return [code];
+    return [];
   }
 
   @override
   String toString() {
-    return r'State(' 'code: $code)';
+    return r'State()';
   }
 }
 
 class _$StateTearOffs {
   const _$StateTearOffs();
-  State example(
-      {String? text,
-      int? whole,
-      double? decimal,
-      bool? flag,
-      DateTime? date,
-      List<String>? list,
-      Set<String>? set}) {
-    return Example(
-        text: text,
-        whole: whole,
-        decimal: decimal,
-        flag: flag,
-        date: date,
-        list: list,
-        set: set);
+  State example(String name) {
+    return Example(name);
   }
 
-  State other(int code) {
-    return Other(code);
+  State other(String name) {
+    return Other(name);
   }
 
-  State error(int code) {
-    return Error(code);
+  State error() {
+    return Error();
   }
 }
 
@@ -190,29 +150,22 @@ mixin _$StateMixin {
 
   _$R when<_$R extends Object?>({
     required _$R Function(
-      String? text,
-      int? whole,
-      double? decimal,
-      bool? flag,
-      DateTime? date,
-      List<String>? list,
-      Set<String>? set,
+      String name,
     )
         example,
-    required _$R Function() other,
+    required _$R Function(
+      String name,
+    )
+        other,
     required _$R Function() error,
   }) {
     return map(
       example: (u) => example(
-        u.text,
-        u.whole,
-        u.decimal,
-        u.flag,
-        u.date,
-        u.list,
-        u.set,
+        u.name,
       ),
-      other: (u) => other(),
+      other: (u) => other(
+        u.name,
+      ),
       error: (u) => error(),
     );
   }
@@ -232,32 +185,27 @@ mixin _$StateMixin {
 
   _$R maybeWhen<_$R extends Object?>({
     _$R Function(
-      String? text,
-      int? whole,
-      double? decimal,
-      bool? flag,
-      DateTime? date,
-      List<String>? list,
-      Set<String>? set,
+      String name,
     )?
         example,
-    _$R Function()? other,
+    _$R Function(
+      String name,
+    )?
+        other,
     _$R Function()? error,
     required _$NoStateCallback<_$R> orElse,
   }) {
     return map(
       example: (u) =>
           example?.call(
-            u.text,
-            u.whole,
-            u.decimal,
-            u.flag,
-            u.date,
-            u.list,
-            u.set,
+            u.name,
           ) ??
           orElse(),
-      other: (u) => other?.call() ?? orElse(),
+      other: (u) =>
+          other?.call(
+            u.name,
+          ) ??
+          orElse(),
       error: (u) => error?.call() ?? orElse(),
     );
   }
@@ -276,29 +224,22 @@ mixin _$StateMixin {
 
   _$R? whenOrNull<_$R extends Object?>({
     _$R Function(
-      String? text,
-      int? whole,
-      double? decimal,
-      bool? flag,
-      DateTime? date,
-      List<String>? list,
-      Set<String>? set,
+      String name,
     )?
         example,
-    _$R Function()? other,
+    _$R Function(
+      String name,
+    )?
+        other,
     _$R Function()? error,
   }) {
     return map(
       example: (u) => example?.call(
-        u.text,
-        u.whole,
-        u.decimal,
-        u.flag,
-        u.date,
-        u.list,
-        u.set,
+        u.name,
       ),
-      other: (u) => other?.call(),
+      other: (u) => other?.call(
+        u.name,
+      ),
       error: (u) => error?.call(),
     );
   }
@@ -342,9 +283,9 @@ mixin _$StateMixin {
   bool get isError => this is Error;
 }
 State _$StateFromJson(Map<String, dynamic> json, [State? defaultValue]) {
-  switch (json[r'$unionType'] as String?) {
-    case r'Example':
-      return Example.fromJson(json);
+  switch (json[r'runtimeType'] as String?) {
+    case r'$Something':
+      return _$Example.fromJson(json);
     case r'Other':
       return _$Other.fromJson(json);
     case r'Error':
@@ -361,67 +302,31 @@ const _$sentinelValue = Object();
 
 abstract class _$ExampleCopyWith {
   const factory _$ExampleCopyWith(_$Example value) = _$ExampleCopyWithImpl;
-  Example call(
-      {String? text,
-      int? whole,
-      double? decimal,
-      bool? flag,
-      DateTime? date,
-      List<String>? list,
-      Set<String>? set});
+  Example call({String name});
 }
 
 class _$ExampleCopyWithImpl implements _$ExampleCopyWith {
   const _$ExampleCopyWithImpl(this._value);
   final _$Example _value;
   Example call({
-    Object? text = _$sentinelValue,
-    Object? whole = _$sentinelValue,
-    Object? decimal = _$sentinelValue,
-    Object? flag = _$sentinelValue,
-    Object? date = _$sentinelValue,
-    Object? list = _$sentinelValue,
-    Object? set = _$sentinelValue,
+    Object? name = _$sentinelValue,
   }) {
-    return Example(
-        text: text == _$sentinelValue ? _value.text : text as String?,
-        whole: whole == _$sentinelValue ? _value.whole : whole as int?,
-        decimal:
-            decimal == _$sentinelValue ? _value.decimal : decimal as double?,
-        flag: flag == _$sentinelValue ? _value.flag : flag as bool?,
-        date: date == _$sentinelValue ? _value.date : date as DateTime?,
-        list: list == _$sentinelValue ? _value.list : list as List<String>?,
-        set: set == _$sentinelValue ? _value.set : set as Set<String>?);
+    return Example(name == _$sentinelValue ? _value.name : name as String);
   }
 }
 
 abstract class _$OtherCopyWith {
   const factory _$OtherCopyWith(_$Other value) = _$OtherCopyWithImpl;
-  Other call({int code});
+  Other call({String name});
 }
 
 class _$OtherCopyWithImpl implements _$OtherCopyWith {
   const _$OtherCopyWithImpl(this._value);
   final _$Other _value;
   Other call({
-    Object? code = _$sentinelValue,
+    Object? name = _$sentinelValue,
   }) {
-    return Other(code == _$sentinelValue ? _value.code : code as int);
-  }
-}
-
-abstract class _$ErrorCopyWith {
-  const factory _$ErrorCopyWith(_$Error value) = _$ErrorCopyWithImpl;
-  Error call({int code});
-}
-
-class _$ErrorCopyWithImpl implements _$ErrorCopyWith {
-  const _$ErrorCopyWithImpl(this._value);
-  final _$Error _value;
-  Error call({
-    Object? code = _$sentinelValue,
-  }) {
-    return Error(code == _$sentinelValue ? _value.code : code as int);
+    return Other(name == _$sentinelValue ? _value.name : name as String);
   }
 }
 

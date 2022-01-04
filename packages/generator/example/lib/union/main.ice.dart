@@ -98,9 +98,7 @@ abstract class _$Error extends State {
 @JsonSerializable(
   constructor: r'_$fromJson',
 )
-abstract class _$State
-    with EquatableMixin, _$StateMixin
-    implements _$StateUnion {
+abstract class _$State with EquatableMixin, _$StateMixin {
   const _$State();
 
   factory _$State.fromJson(Map<String, dynamic> json) => _$$StateFromJson(json);
@@ -117,8 +115,8 @@ abstract class _$State
   }
 }
 
-class _$StateUnions {
-  const _$StateUnions();
+class _$StateTearOffs {
+  const _$StateTearOffs();
   State example(String name) {
     return Example(name);
   }
@@ -132,13 +130,11 @@ class _$StateUnions {
   }
 }
 
-abstract class _$StateUnion {}
-
 mixin _$StateMixin {
-  R map<R extends Object?>({
-    required _$StateCallback<R, _$Example> example,
-    required _$StateCallback<R, _$Other> other,
-    required _$StateCallback<R, _$Error> error,
+  _$R map<_$R extends Object?>({
+    required _$StateCallback<_$R, _$Example> example,
+    required _$StateCallback<_$R, _$Other> other,
+    required _$StateCallback<_$R, _$Error> error,
   }) {
     switch (runtimeType) {
       case _$Example:
@@ -152,16 +148,16 @@ mixin _$StateMixin {
     }
   }
 
-  R when<R extends Object?>({
-    required R Function(
+  _$R when<_$R extends Object?>({
+    required _$R Function(
       String name,
     )
         example,
-    required R Function(
+    required _$R Function(
       String name,
     )
         other,
-    required R Function() error,
+    required _$R Function() error,
   }) {
     return map(
       example: (u) => example(
@@ -174,11 +170,11 @@ mixin _$StateMixin {
     );
   }
 
-  R maybeMap<R extends Object?>({
-    _$StateCallback<R, _$Example>? example,
-    _$StateCallback<R, _$Other>? other,
-    _$StateCallback<R, _$Error>? error,
-    required _$NoStateCallback<R> orElse,
+  _$R maybeMap<_$R extends Object?>({
+    _$StateCallback<_$R, _$Example>? example,
+    _$StateCallback<_$R, _$Other>? other,
+    _$StateCallback<_$R, _$Error>? error,
+    required _$NoStateCallback<_$R> orElse,
   }) {
     return map(
       example: (u) => example?.call(u) ?? orElse(),
@@ -187,17 +183,17 @@ mixin _$StateMixin {
     );
   }
 
-  R maybeWhen<R extends Object?>({
-    R Function(
+  _$R maybeWhen<_$R extends Object?>({
+    _$R Function(
       String name,
     )?
         example,
-    R Function(
+    _$R Function(
       String name,
     )?
         other,
-    R Function()? error,
-    required _$NoStateCallback<R> orElse,
+    _$R Function()? error,
+    required _$NoStateCallback<_$R> orElse,
   }) {
     return map(
       example: (u) =>
@@ -214,10 +210,10 @@ mixin _$StateMixin {
     );
   }
 
-  R? mapOrNull<R extends Object?>({
-    _$StateCallback<R, _$Example>? example,
-    _$StateCallback<R, _$Other>? other,
-    _$StateCallback<R, _$Error>? error,
+  _$R? mapOrNull<_$R extends Object?>({
+    _$StateCallback<_$R, _$Example>? example,
+    _$StateCallback<_$R, _$Other>? other,
+    _$StateCallback<_$R, _$Error>? error,
   }) {
     return map(
       example: (u) => example?.call(u),
@@ -226,16 +222,16 @@ mixin _$StateMixin {
     );
   }
 
-  R? whenOrNull<R extends Object?>({
-    R Function(
+  _$R? whenOrNull<_$R extends Object?>({
+    _$R Function(
       String name,
     )?
         example,
-    R Function(
+    _$R Function(
       String name,
     )?
         other,
-    R Function()? error,
+    _$R Function()? error,
   }) {
     return map(
       example: (u) => example?.call(
@@ -334,5 +330,5 @@ class _$OtherCopyWithImpl implements _$OtherCopyWith {
   }
 }
 
-typedef _$StateCallback<R, T extends State> = R Function(T);
-typedef _$NoStateCallback<R> = R Function();
+typedef _$StateCallback<_$R, _$T extends State> = _$R Function(_$T);
+typedef _$NoStateCallback<_$R> = _$R Function();
