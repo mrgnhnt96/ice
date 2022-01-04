@@ -2,6 +2,7 @@
 
 import 'package:ice/src/domain/domain.dart';
 import 'package:ice/src/domain/enums/position_type.dart';
+import 'package:ice/src/domain/generic_param.dart';
 import 'package:ice/src/templates/copy_with_templates/copy_with_template.dart';
 import 'package:ice/src/util/string_buffer_ext.dart';
 import 'package:ice_annotation/ice.dart';
@@ -65,12 +66,12 @@ class CopyWithNullSafeTemplate extends CopyWithTemplate {
     final buffer = StringBuffer();
 
     buffer.writeObject(
-      'abstract class $_copyWith',
+      'abstract class $_copyWith${subject.generics.declaration}',
       body: () {
         buffer
           ..write(
             'const factory $_copyWith($_copyFromType value) '
-            '= ${_copyWith}Impl;',
+            '= ${_copyWith}Impl${subject.generics.args};',
           )
           ..writeObject(
             '${subject.name} call',
@@ -92,7 +93,8 @@ class CopyWithNullSafeTemplate extends CopyWithTemplate {
     final buffer = StringBuffer();
 
     buffer.writeObject(
-      'class ${_copyWith}Impl implements $_copyWith',
+      'class ${_copyWith}Impl${subject.generics.declaration} '
+      'implements $_copyWith${subject.generics.args}',
       body: () {
         buffer
           ..write('const ${_copyWith}Impl(this._value);')

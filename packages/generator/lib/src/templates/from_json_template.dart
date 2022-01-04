@@ -2,8 +2,51 @@
 
 import 'package:build/build.dart';
 import 'package:ice/src/domain/domain.dart';
+import 'package:ice/src/domain/generic_param.dart';
+import 'package:ice/src/domain/ice_support.dart';
 import 'package:ice/src/templates/template.dart';
 import 'package:ice/src/util/string_buffer_ext.dart';
+
+extension on GenericParam {
+  String get callback {
+    return '_\$${name}Callback';
+  }
+
+  String get fromJsonName {
+    return 'fromJson$name';
+  }
+
+  String get callbackParam {
+    if (!isPrimitive) {
+      return 'required $callback<$name> $fromJsonName';
+    }
+    return '$callback<$name>? $fromJsonName';
+  }
+
+  String get defaultCallback {
+    if (!isPrimitive) {
+      return '';
+    }
+
+    return '(val) => val as $name';
+  }
+
+  String get callbackArg {
+    if (!isPrimitive) {
+      return fromJsonName;
+    }
+    return '$fromJsonName ?? $defaultCallback';
+  }
+}
+
+extension on Iterable<GenericParam> {
+  Iterable<String> get support {
+    return map((e) {
+      return 'typedef ${e.callback}<T> = '
+          '${e.name} Function(Object?);';
+    });
+  }
+}
 
 extension on Class {
   Iterable<String> get fieldGetters {
@@ -19,12 +62,35 @@ extension on Class {
   Constructor? get fromJsonConstructor {
     return constructorWhere((e) => e.isJsonConstructor);
   }
+
+  Iterable<String> get genericArgs {
+    if (generics.isEmpty) {
+      return [];
+    }
+
+    final args = <String>[];
+
+    for (final generic in generics) {
+      args.add('fromJson${generic.name}');
+    }
+    return args;
+  }
+
+  Iterable<String> get genericParams {
+    if (generics.isEmpty) {
+      return [];
+    }
+
+    final args = <String>[];
+
+    for (final generic in generics) {
+      args.add(generic.callbackParam);
+    }
+
+    return args;
+  }
 }
 
-/// A template to generate methods for
-/// - copyWith()
-/// - Equatable Props
-/// - toString()
 class FromJsonTemplate extends Template {
   const FromJsonTemplate.forSubject(Class subject)
       : unions = const [],
@@ -37,6 +103,7 @@ class FromJsonTemplate extends Template {
   static const String fromJsonAccessor = r'_$fromJson';
 
   /// generates the constructor that json_serializable uses
+  /// to create the object from json
   void fromJsonAccessConstructor(StringBuffer buffer) {
     final iceJsonSerializable = subject.annotations.ice?.jsonSerializable;
     final createFactoryForJson = iceJsonSerializable?.createFactory ?? true;
@@ -57,6 +124,11 @@ class FromJsonTemplate extends Template {
     );
   }
 
+  /// generates the accessor for the fromJson factory
+  /// that json_serializable uses
+  ///
+  /// generates the fromJson factory that is referenced by the union
+  /// if the subject doesn't have a fromJson factory
   void writeConstructors(StringBuffer buffer) {
     if (!canBeGenerated) {
       return;
@@ -79,10 +151,21 @@ class FromJsonTemplate extends Template {
         returnType = '_\$${subject.cleanName}FromJson';
       }
 
+      var typeParams = '';
+      var typeArgs = '';
+
+      if (subject.generics.isNotEmpty) {
+        final params = subject.generics.map((e) => e.callbackParam).join(', ');
+        typeParams = ', {$params}';
+
+        final args = subject.generics.map((e) => e.callbackArg).join(', ');
+        typeArgs = ', $args';
+      }
+
       buffer.write(
         'factory ${subject.genName}'
-        '.fromJson(Map<String, dynamic> json) => '
-        '$returnType(json);',
+        '.fromJson(Map<String, dynamic> json$typeParams) => '
+        '$returnType(json$typeArgs);',
       );
     }
 
@@ -164,6 +247,8 @@ class FromJsonTemplate extends Template {
 
   @override
   void generate(StringBuffer buffer) {
+    IceSupport().addAll(subject.generics.support);
+
     if (subject.annotations.isUnionBase) {
       if (unions.isNotEmpty) {
         _writeAsUnion(buffer);
