@@ -2,6 +2,7 @@
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
+import 'package:analyzer/dart/element/type.dart';
 import 'package:ice/src/domain/enums/enums.dart';
 import 'package:ice/src/util/element_ext.dart';
 
@@ -13,13 +14,13 @@ class Param {
   Param({
     required this.name,
     required this.type,
-    required String? defaultValue,
+    required this.defaultValue,
     this.isNullable = false,
     required this.requiredness,
     required this.positionType,
-    required bool defaultRequiresConstKeyword,
-  })  : _defaultRequiresConstKeyword = defaultRequiresConstKeyword,
-        _defaultValue = defaultValue;
+    required this.isGeneric,
+    required this.annotations,
+  });
 
   /// Retreives the [Param] from the [ParameterElement]
   factory Param.fromElement(ParameterElement element) {
@@ -27,76 +28,87 @@ class Param {
         element.isNamed ? PositionType.named : PositionType.positioned;
     final requiredness =
         element.isNotOptional ? Requiredness.required : Requiredness.optional;
+    final isGeneric = element.type is TypeParameterType;
+    final returnType = element.type.getDisplayString(withNullability: true);
 
-    String? getDefaultValue() {
-      if (element.defaultValueCode != null) {
-        return element.defaultValueCode;
+    var defaultValue = element.defaultValueCode;
+    final annotationDeclarations = <String>[];
+    final annotations = element.metadata;
+
+    bool isPrimitiveType(DartType? type) {
+      if (type == null) {
+        return false;
       }
 
-      final annotations = element.metadata;
+      if (isGeneric) return false;
 
-      if (annotations.isEmpty) {
-        return null;
-      }
+      if (type.isDartCoreBool) return true;
+      if (type.isDartCoreDouble) return true;
+      if (type.isDartCoreInt) return true;
+      if (type.isDartCoreNull) return true;
+      if (type.isDartCoreNum) return true;
+      if (type.isDartCoreString) return true;
 
-      for (final annotation in annotations) {
-        if (annotation.astName != 'Default') {
-          continue;
-        }
-
-        final result = annotation.ast.arguments?.arguments.first;
-
-        if (result == null) {
-          continue;
-        }
-
-        final defaultValue = '$result';
-        if (defaultValue == 'null') {
-          return null;
-        }
-
-        return defaultValue;
-      }
-    }
-
-    bool isDartCoreType() {
-      final type = element.type;
-
-      if (type.isDartCoreBool) return false;
-      if (type.isDartCoreDouble) return false;
-      if (type.isDartCoreInt) return false;
-      if (type.isDartCoreNull) return false;
-      if (type.isDartCoreNum) return false;
-      if (type.isDartCoreObject) return true;
-      if (type.isDartCoreString) return false;
-
-      if (type.isDartCoreIterable) return true;
+      if (type.isDartCoreObject) return false;
+      if (type.isDartCoreIterable) return false;
+      //
+      //
       // if (type.isDartCoreList) return true;
       // if (type.isDartCoreMap) return true;
       // if (type.isDartCoreSet) return true;
 
-      return true;
+      return false;
     }
 
-    final defaultValue = getDefaultValue();
+    for (final annotation in annotations) {
+      if (annotation.astName != 'Default' || defaultValue != null) {
+        annotationDeclarations.add('${annotation.ast}');
+        continue;
+      }
+
+      final result = annotation.ast.arguments?.arguments.first;
+
+      if (result == null) {
+        continue;
+      }
+
+      var defaultResult = '$result';
+      if (defaultResult == 'null') {
+        continue;
+      }
+
+      final startsWithConst = defaultResult.startsWith('const ');
+
+      if (!isPrimitiveType(result.staticType)) {
+        if (isGeneric) {
+          defaultValue = '$defaultResult as $returnType';
+          continue;
+        }
+
+        if (!startsWithConst) {
+          defaultValue = 'const $defaultResult';
+          continue;
+        }
+      } else if (startsWithConst) {
+        defaultResult = defaultResult.replaceFirst('const ', '');
+      }
+
+      defaultValue = defaultResult;
+    }
+
     final name = element.displayName;
-    final type = element.type.getDisplayString(withNullability: true);
     final isNullable =
         element.type.nullabilitySuffix == NullabilitySuffix.question;
 
-    var defaultRequiresConstKeyword = false;
-    if (defaultValue != null && !defaultValue.startsWith('const ')) {
-      defaultRequiresConstKeyword = isDartCoreType();
-    }
-
     return Param(
       name: name,
-      type: type,
+      type: returnType,
       isNullable: isNullable,
       positionType: position,
       requiredness: requiredness,
       defaultValue: defaultValue,
-      defaultRequiresConstKeyword: defaultRequiresConstKeyword,
+      isGeneric: isGeneric,
+      annotations: annotationDeclarations,
     );
   }
 
@@ -120,19 +132,14 @@ class Param {
   /// the position of the param
   final PositionType positionType;
 
-  final String? _defaultValue;
-
   /// the default value
-  String? get defaultValue {
-    if (_defaultRequiresConstKeyword && _defaultValue != null) {
-      return 'const $_defaultValue';
-    }
-    return _defaultValue;
-  }
+  final String? defaultValue;
 
-  /// this is true for all non primitive types
-  /// for default values
-  final bool _defaultRequiresConstKeyword;
+  /// whether the param is generic
+  final bool isGeneric;
+
+  /// the annotations for the param
+  final Iterable<String> annotations;
 
   /// gets the type as a nullable type
   String get nullableType {
@@ -216,7 +223,7 @@ extension ParamListX on Iterable<Param> {
       if (param.canHaveDefaultValue()) {
         defaultValue = ' = ${param.defaultValue}';
       } else if (param.defaultValue != null) {
-        // TODO: catch this error to prevent stopping the build
+        // TODO(mrgnhnt96): catch this error to prevent stopping the build
         throw 'There is a default value for ${param.name} '
             'but the param is not within `[]` or `{}`';
       }
