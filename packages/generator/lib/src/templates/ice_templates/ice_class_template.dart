@@ -13,7 +13,7 @@ import 'package:meta/meta.dart';
 
 extension on IceJsonSerializable {
   /// converts all values to the json_serializable annotation
-  String asAnnotation({required bool addGenerics}) {
+  String get asAnnotation {
     // ignore: deprecated_member_use
     const defaults = JsonSerializable.defaults;
 
@@ -42,7 +42,6 @@ extension on IceJsonSerializable {
         'ignoreUnannotated: $ignoreUnannotated',
       if (includeIfNull != null && includeIfNull != defaults.includeIfNull)
         'includeIfNull: $includeIfNull',
-      if (addGenerics) 'genericArgumentFactories: true',
     ];
 
     var args = '';
@@ -139,11 +138,7 @@ class IceClassTemplate extends Template {
       return;
     }
 
-    buffer.writepln(
-      iceJsonSerializable.asAnnotation(
-        addGenerics: subject.generics.isNotEmpty,
-      ),
-    );
+    buffer.writepln(iceJsonSerializable.asAnnotation);
   }
 
   @override
