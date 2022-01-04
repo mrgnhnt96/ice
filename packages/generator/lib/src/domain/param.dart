@@ -51,6 +51,8 @@ class Param {
 
       if (type.isDartCoreObject) return false;
       if (type.isDartCoreIterable) return false;
+
+      if (type.getDisplayString(withNullability: false) == 'Type') return true;
       //
       //
       // if (type.isDartCoreList) return true;
