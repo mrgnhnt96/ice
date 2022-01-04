@@ -20,10 +20,20 @@ void main() {
 
   test('builder', () async {
     await testPackageBuilder(
-      'basic',
+      'contained',
       builder: iceBuilder,
       extension: iceExtension,
       header: iceHeader,
     );
   });
 }
+
+
+/*
+possible points
+
+# T
+- element.type.toString() // TypeParameterTypeImpl
+
+# non T
+*/
