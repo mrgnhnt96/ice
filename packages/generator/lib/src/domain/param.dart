@@ -3,6 +3,7 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
+import 'package:ice/src/domain/copy_with_method.dart';
 import 'package:ice/src/domain/enums/enums.dart';
 import 'package:ice/src/util/element_ext.dart';
 
@@ -20,6 +21,7 @@ class Param {
     required this.positionType,
     required this.isGeneric,
     required this.annotations,
+    required this.copyWithMethod,
   });
 
   /// Retreives the [Param] from the [ParameterElement]
@@ -102,6 +104,8 @@ class Param {
     final isNullable =
         element.type.nullabilitySuffix == NullabilitySuffix.question;
 
+    final copyWithMethod = CopyWithMethod.recursive(element);
+
     return Param(
       name: name,
       type: returnType,
@@ -111,6 +115,7 @@ class Param {
       defaultValue: defaultValue,
       isGeneric: isGeneric,
       annotations: annotationDeclarations,
+      copyWithMethod: copyWithMethod,
     );
   }
 
@@ -142,6 +147,9 @@ class Param {
 
   /// the annotations for the param
   final Iterable<String> annotations;
+
+  /// the copyWith method for the param type
+  final CopyWithMethod? copyWithMethod;
 
   /// gets the type as a nullable type
   String get nullableType {

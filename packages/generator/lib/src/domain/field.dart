@@ -3,9 +3,11 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
+import 'package:ice/src/domain/copy_with_method.dart';
 import 'package:ice/src/domain/domain.dart';
 import 'package:ice/src/domain/enums/enums.dart';
 import 'package:ice/src/util/element_ext.dart';
+import 'package:ice_annotation/ice.dart';
 import 'package:source_gen/source_gen.dart';
 
 /// {@template field}
@@ -23,6 +25,7 @@ class Field {
     required this.jsonKeyDeclaration,
     required this.isGeneric,
     required this.annotations,
+    required this.copyWithMethod,
   });
 
   /// retrieves the field from the [FieldElement]
@@ -66,6 +69,8 @@ class Field {
       includeInProps = false;
     }
 
+    final copyWithMethod = CopyWithMethod.recursive(element);
+
     return Field(
       isNullable: type.nullabilitySuffix == NullabilitySuffix.question,
       name: element.displayName,
@@ -76,6 +81,7 @@ class Field {
       jsonKeyDeclaration: jsonKeyDeclaration,
       isGeneric: isGeneric,
       annotations: annotationDeclarations,
+      copyWithMethod: copyWithMethod,
     );
   }
 
@@ -91,6 +97,7 @@ class Field {
       type: param.type,
       isGeneric: param.isGeneric,
       annotations: param.annotations,
+      copyWithMethod: param.copyWithMethod,
     );
   }
 
@@ -143,4 +150,6 @@ class Field {
 
   /// the annotations for the field
   final Iterable<String> annotations;
+
+  final CopyWithMethod? copyWithMethod;
 }
