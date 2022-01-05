@@ -80,3 +80,5 @@ packages/gen_files
 game_plan.md
 ideas.md
 todo.md
+
+packages/generator/debug_runner
