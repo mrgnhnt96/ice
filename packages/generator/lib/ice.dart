@@ -37,7 +37,12 @@ set iceSettings(IceSettings value) {
 IceSettings? _iceSettings;
 
 /// the list of ignore_for_file
-const _ignores = <String>['cast_nullable_to_non_nullable'];
+const _ignores = <String>[
+  'cast_nullable_to_non_nullable',
+  'unnecessary_raw_strings',
+  'annotate_overrides',
+  'require_trailing_commas',
+];
 
 /// the list of ignore_for_file for the generated file
 final iceIgnoreForFile = '// ignore_for_file: ${_ignores.join(',')}'.trim();
