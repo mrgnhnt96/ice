@@ -25,7 +25,6 @@ class Field {
     required this.jsonKeyDeclaration,
     required this.isGeneric,
     required this.annotations,
-    required this.copyWithMethod,
   });
 
   /// retrieves the field from the [FieldElement]
@@ -69,8 +68,6 @@ class Field {
       includeInProps = false;
     }
 
-    final copyWithMethod = CopyWithMethod.recursive(element);
-
     return Field(
       isNullable: type.nullabilitySuffix == NullabilitySuffix.question,
       name: element.displayName,
@@ -81,7 +78,6 @@ class Field {
       jsonKeyDeclaration: jsonKeyDeclaration,
       isGeneric: isGeneric,
       annotations: annotationDeclarations,
-      copyWithMethod: copyWithMethod,
     );
   }
 
@@ -97,7 +93,6 @@ class Field {
       type: param.type,
       isGeneric: param.isGeneric,
       annotations: param.annotations,
-      copyWithMethod: param.copyWithMethod,
     );
   }
 
@@ -150,6 +145,4 @@ class Field {
 
   /// the annotations for the field
   final Iterable<String> annotations;
-
-  final CopyWithMethod? copyWithMethod;
 }
