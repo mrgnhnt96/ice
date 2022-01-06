@@ -59,7 +59,7 @@ extension on Class {
     if (union != null) {
       if (!annotations.isUnionBase) {
         return 'abstract class $genName${generics.declaration} extends '
-            '${union.name}${generics.args}';
+            '${union.name}${union.generics.args}';
       }
 
       return union.classHeader();
@@ -77,8 +77,9 @@ extension on Class {
     }
 
     if (annotations.isUnionBase) {
-      final unionMixin = '_\$${cleanName}Mixin';
-      mixins = '$mixins, $unionMixin';
+      final unionMixin = '_\$${cleanName}Mixin${generics.args}';
+      mixins = mixins.isEmpty ? ' with ' : '$mixins,';
+      mixins = '$mixins $unionMixin';
     }
 
     return 'abstract class $genName${generics.declaration}$mixins';

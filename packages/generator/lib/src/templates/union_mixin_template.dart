@@ -16,7 +16,9 @@ extension on Class {
   String mapParams(String result, {bool isRequired = false}) {
     final nullableStr = isRequired ? '' : '?';
     final keyword = isRequired ? 'required ' : '';
-    return '$keyword$result<$_resultType, $genName>$nullableStr $nameAsArg';
+
+    return '$keyword$result<$_resultType, $genName>$nullableStr '
+        '$nameAsArg';
   }
 
   String whenParams({bool isRequired = false}) {
@@ -31,7 +33,8 @@ extension on Class {
     final nullableStr = isRequired ? '' : '?';
     final keyword = isRequired ? 'required ' : '';
 
-    return '$keyword$_resultType Function$paramsStr$nullableStr $nameAsArg';
+    return '$keyword$_resultType Function${generics.declaration}'
+        '$paramsStr$nullableStr $nameAsArg';
   }
 
   String whenArgs(String union) {
@@ -77,7 +80,7 @@ class UnionMixinTemplate extends Template {
     _writeSupport();
 
     buffer.writeObject(
-      'mixin _\$${subject.cleanName}Mixin${subject.generics.declaration}',
+      'mixin _\$${subject.cleanName}Mixin',
       body: () {
         _writePatternMatches(buffer);
         ToJsonTemplate.forUnion(subject, subClasses).addToBuffer(buffer);
@@ -315,7 +318,7 @@ extension on PatternType {
           throw Exception('The map must be created');
         },
         when: () {
-          return '$name: ($union) => $name($args)';
+          return '$name: ($union) => $name.call($args)';
         },
       ),
       maybe: pattern.map(

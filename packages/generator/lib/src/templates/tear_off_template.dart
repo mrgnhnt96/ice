@@ -1,4 +1,5 @@
 import 'package:ice/src/domain/class.dart';
+import 'package:ice/src/domain/generic_param.dart';
 import 'package:ice/src/templates/templates.dart';
 import 'package:ice/src/util/string_buffer_ext.dart';
 
@@ -43,10 +44,16 @@ class TearOffTemplate extends Template {
           }
 
           buffer.writeObject(
-            '${subject.name} ${union.nameAsArg}${defaultCtor.declaration}',
+            '${subject.name} ${union.nameAsArg}${union.generics.args}'
+            '${defaultCtor.paramsString}',
             body: () {
+              var access = '';
+              if (defaultCtor.name.isNotEmpty) {
+                access = '.${defaultCtor.name}';
+              }
               buffer.writeObject(
-                'return ${union.name}',
+                'return '
+                '${union.name}${union.generics.declaration}$access',
                 open: '(',
                 close: ');',
                 body: () {

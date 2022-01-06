@@ -22,16 +22,18 @@ class CopyWithNullSafeTemplate extends CopyWithTemplate {
   String get _copyWith => '${subject.genName}CopyWith';
   String get _sentinel => r'_$sentinelValue';
   String get _copyFromType {
+    final generics = subject.generics.args;
     if (subject.annotations.isMethodAnnotation) {
-      return subject.name;
+      return subject.name + generics;
     }
-    return subject.genName;
+    return subject.genName + generics;
   }
 
   @override
   String argReturnValue(Param arg) {
-    final returnVal = '${arg.name} == $_sentinel ? _value.${arg.name} : '
-        '${arg.name} as ${arg.type}';
+    final asType = 'as ${arg.type}';
+    final returnVal = '${arg.name} == $_sentinel ? _value.${arg.name} $asType '
+        ': ${arg.name} $asType';
 
     return arg.positionType.map(
       positioned: returnVal,
@@ -57,7 +59,7 @@ class CopyWithNullSafeTemplate extends CopyWithTemplate {
   void copyWithMethod(StringBuffer buffer) {
     buffer.write(
       '$_copyWith get copyWith => '
-      '$_copyWith(this);',
+      '$_copyWith${subject.generics.args}(this);',
     );
   }
 
@@ -103,8 +105,14 @@ class CopyWithNullSafeTemplate extends CopyWithTemplate {
             '${subject.name} call',
             params: constructor.params.map(sentinelParam),
             body: () {
+              var constructorAccess = '';
+              if (constructor.name.isNotEmpty &&
+                  !subject.annotations.isContainedUnion) {
+                constructorAccess = '.${constructor.name}';
+              }
               buffer.writeObject(
-                'return ${subject.name}',
+                'return '
+                '${subject.name}${subject.generics.args}$constructorAccess',
                 open: '(',
                 close: ');',
                 body: () {

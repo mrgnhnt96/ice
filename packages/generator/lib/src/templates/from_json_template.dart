@@ -117,9 +117,19 @@ class FromJsonTemplate extends Template {
               if (!union.doNotGenerate.fromJsonConstructor) {
                 fromJsonAccess = union.genName;
               }
+
+              var genericsDeclaration = '';
+              if (union.generics.isNotEmpty &&
+                  !union.annotations.isContainedUnion) {
+                final generics = union.generics.map((e) => 'Object?');
+                genericsDeclaration = '<${generics.join(', ')}>';
+              }
               buffer
                 ..writepln("case r'$unionId':")
-                ..writepln('return $fromJsonAccess.fromJson(json);');
+                ..writepln(
+                  'return $fromJsonAccess$genericsDeclaration'
+                  '.fromJson(json);',
+                );
             }
 
             buffer
@@ -164,10 +174,12 @@ class FromJsonTemplate extends Template {
     buffer.writeObject(
       // ignore: missing_whitespace_between_adjacent_strings
       '${subject.name} _\$${subject.nonPrivateName}FromJson'
+      '${subject.generics.declaration}'
       '(Map<String, dynamic> json)',
       body: () {
         buffer.writepln(
-          'return _\$\$${subject.nonPrivateName}FromJson(json) '
+          'return _\$\$${subject.nonPrivateName}FromJson'
+          '${subject.generics.args}(json) '
           'as ${subject.name};',
         );
       },
