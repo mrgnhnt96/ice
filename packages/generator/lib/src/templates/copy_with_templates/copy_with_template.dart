@@ -149,7 +149,8 @@ abstract class CopyWithTemplate extends Template {
   @override
   void generate(StringBuffer buffer) {
     if (constructor.params.isEmpty) {
-      buffer.write('${subject.name} copyWith() => ${subject.name}();');
+      buffer
+          .write('${subject.name} copyWith() => ${constructor.displayName}();');
       return;
     }
     copyWithMethod(buffer);
