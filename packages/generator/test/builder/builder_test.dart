@@ -27,13 +27,3 @@ void main() {
     );
   });
 }
-
-
-/*
-possible points
-
-# T
-- element.type.toString() // TypeParameterTypeImpl
-
-# non T
-*/
