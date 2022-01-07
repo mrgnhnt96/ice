@@ -42,6 +42,9 @@ const _ignores = <String>[
   'unnecessary_raw_strings',
   'annotate_overrides',
   'require_trailing_commas',
+  'unnecessary_cast',
+  'implicit_dynamic_type',
+  'lines_longer_than_80_chars',
 ];
 
 /// the list of ignore_for_file for the generated file
