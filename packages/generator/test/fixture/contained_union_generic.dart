@@ -1,0 +1,26 @@
+import 'package:ice_annotation/ice.dart';
+
+part 'fixtures/contained_union_generic.dart';
+part 'contained_union_generic.g.dart';
+
+@IceUnion.contained()
+class Example<T> extends _$Example<T> {
+  const Example._();
+  const factory Example.a(@TConv() T name) = _A;
+  const factory Example.b(String name) = _B;
+  const factory Example.c(String name, int code, bool flag) = _C;
+}
+
+class TConv<T> extends JsonConverter<T, String> {
+  const TConv();
+
+  @override
+  T fromJson(String json) {
+    return json as T;
+  }
+
+  @override
+  String toJson(T object) {
+    return '$object';
+  }
+}
