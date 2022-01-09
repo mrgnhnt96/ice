@@ -102,14 +102,17 @@ class ToJsonTemplate extends Template {
 
   @override
   bool get canBeGenerated {
-    if (subject.annotations.isUnionBase) {
-      if (unions.isNotEmpty) {
-        // TODO(mrgnhnt96): check if all/any fields have toJson()
-        return true;
-      }
-    }
-
     return super.canBeGenerated;
+    // if (!super.canBeGenerated) {
+    //   return false;
+    // }
+
+    // if (subject.annotations.isUnionBase) {
+    //   if (unions.isNotEmpty) {
+    //     // TODO(mrgnhnt96): check if all/any fields have toJson()
+    //     return true;
+    //   }
+    // }
   }
 
   @override
