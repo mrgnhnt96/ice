@@ -50,13 +50,6 @@ const _ignores = <String>[
 /// the list of ignore_for_file for the generated file
 final iceIgnoreForFile = '// ignore_for_file: ${_ignores.join(',')}'.trim();
 
-/// the header to use for generated file
-String get iceHeader => '''
-// coverage:ignore-file
-$defaultFileHeader
-$iceIgnoreForFile
-''';
-
 /// the extension of the generated file
 const iceExtension = '.ice.dart';
 
@@ -70,6 +63,12 @@ Builder iceBuilder(BuilderOptions options) {
   if (iceSettings.formatOutput) {
     formatter = null;
   }
+
+  final iceHeader = '''
+// coverage:ignore-file
+$defaultFileHeader
+$iceIgnoreForFile
+''';
 
   return PartBuilder(
     [const IceGenerator()],
