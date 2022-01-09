@@ -1,6 +1,7 @@
 import 'package:ice_annotation/ice.dart';
 
 part 'fixtures/ice_no_methods.dart';
+// part 'ice_no_methods.ice.dart';
 
 @Ice(
   copyWith: CopyWith.none,

@@ -1,6 +1,7 @@
 import 'package:ice_annotation/ice.dart';
 
 part 'fixtures/union_generic_json_ctor.dart';
+// part 'union_generic_json_ctor.ice.dart';
 part 'union_generic_json_ctor.g.dart';
 
 @IceUnion.of(State)

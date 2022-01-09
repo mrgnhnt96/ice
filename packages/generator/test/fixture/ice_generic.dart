@@ -1,6 +1,7 @@
 import 'package:ice_annotation/ice.dart';
 
 part 'fixtures/ice_generic.dart';
+// part 'ice_generic.ice.dart';
 part 'ice_generic.g.dart';
 
 @Ice()

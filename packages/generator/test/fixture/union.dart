@@ -2,6 +2,7 @@ import 'package:ice_annotation/ice.dart';
 
 part 'union.g.dart';
 part 'fixtures/union.dart';
+// part 'union.ice.dart';
 
 @IceUnion.of(State)
 class Example extends _$Example {

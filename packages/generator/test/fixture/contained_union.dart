@@ -2,6 +2,7 @@ import 'package:ice_annotation/ice.dart';
 
 part 'contained_union.g.dart';
 part 'fixtures/contained_union.dart';
+// part 'contained_union.ice.dart';
 
 @IceUnion.contained()
 class Example extends _$Example {

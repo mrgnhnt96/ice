@@ -1,6 +1,7 @@
 import 'package:ice_annotation/ice.dart';
 
 part 'fixtures/ice_generic_json_ctor.dart';
+// part 'ice_generic_json_ctor.ice.dart';
 part 'ice_generic_json_ctor.g.dart';
 
 @Ice()

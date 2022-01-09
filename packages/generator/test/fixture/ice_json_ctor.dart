@@ -2,6 +2,7 @@ import 'package:ice_annotation/ice.dart';
 
 part 'ice_json_ctor.g.dart';
 part 'fixtures/ice_json_ctor.dart';
+// part 'ice_json_ctor.ice.dart';
 
 @Ice()
 class Example extends _$Example {

@@ -1,6 +1,7 @@
 import 'package:ice_annotation/ice.dart';
 
 part 'fixtures/contained_union_generic.dart';
+// part 'contained_union_generic.ice.dart';
 part 'contained_union_generic.g.dart';
 
 @IceUnion.contained()

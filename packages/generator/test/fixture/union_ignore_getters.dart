@@ -1,6 +1,7 @@
 import 'package:ice_annotation/ice.dart';
 
 part 'fixtures/union_ignore_getters.dart';
+// part 'union_ignore_getters.ice.dart';
 part 'union_ignore_getters.g.dart';
 
 @IceUnion.of(

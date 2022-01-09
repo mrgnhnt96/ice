@@ -1,6 +1,7 @@
 import 'package:ice_annotation/ice.dart';
 
 part 'fixtures/union_no_methods.dart';
+// part 'union_no_methods.ice.dart';
 
 @IceUnion.of(
   State,
