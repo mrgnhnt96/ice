@@ -12,14 +12,15 @@ part of '../union.dart';
   constructor: r'_$fromJson',
 )
 abstract class _$Example extends State {
-  const _$Example(String name) : super(name);
+  const _$Example();
   factory _$Example.fromJson(Map<String, dynamic> json) =>
       _$$ExampleFromJson(json);
-  const factory _$Example._$fromJson({required int code, required bool flag}) =
-      Example;
+  const factory _$Example._$fromJson(
+      {required int code, required bool flag, required String name}) = Example;
 
   int get code;
   bool get flag;
+  String get name;
   _$ExampleCopyWith get copyWith => _$ExampleCopyWith(this);
   @override
   List<Object?> get props {
@@ -28,7 +29,7 @@ abstract class _$Example extends State {
 
   @override
   String toString() {
-    return r'State.Example(' 'code: $code, ' 'flag: $flag)';
+    return r'State.Example(' 'code: $code, ' 'flag: $flag, ' 'name: $name' ')';
   }
 
   Map<String, dynamic> toJson({bool includeUnionType = true}) {
@@ -44,14 +45,14 @@ abstract class _$Example extends State {
   constructor: r'_$fromJson',
 )
 abstract class _$Other extends State {
-  const _$Other(String name) : super(name);
+  const _$Other();
   factory _$Other.fromJson(Map<String, dynamic> json) => _$$OtherFromJson(json);
   const factory _$Other._$fromJson() = Other;
 
   Other copyWith() => Other();
   @override
   List<Object?> get props {
-    return [name];
+    return [];
   }
 
   @override
@@ -75,25 +76,23 @@ abstract class _$State with EquatableMixin, _$StateMixin {
   const _$State();
 
   factory _$State.fromJson(Map<String, dynamic> json) => _$$StateFromJson(json);
-  const factory _$State._$fromJson(String name) = State;
-
-  String get name;
+  const factory _$State._$fromJson() = State;
 
   @override
   List<Object?> get props {
-    return [name];
+    return [];
   }
 
   @override
   String toString() {
-    return r'State(' 'name: $name)';
+    return r'State()';
   }
 }
 
 class _$StateTearOffs {
   const _$StateTearOffs();
-  State example({required int code, required bool flag}) {
-    return Example(code: code, flag: flag);
+  State example({required int code, required bool flag, required String name}) {
+    return Example(code: code, flag: flag, name: name);
   }
 
   State other() {
@@ -237,7 +236,7 @@ const _$sentinelValue = Object();
 
 abstract class _$ExampleCopyWith {
   const factory _$ExampleCopyWith(_$Example value) = _$ExampleCopyWithImpl;
-  Example call({int code, bool flag});
+  Example call({int code, bool flag, String name});
 }
 
 class _$ExampleCopyWithImpl implements _$ExampleCopyWith {
@@ -246,10 +245,12 @@ class _$ExampleCopyWithImpl implements _$ExampleCopyWith {
   Example call({
     Object? code = _$sentinelValue,
     Object? flag = _$sentinelValue,
+    Object? name = _$sentinelValue,
   }) {
     return Example(
         code: code == _$sentinelValue ? _value.code as int : code as int,
-        flag: flag == _$sentinelValue ? _value.flag as bool : flag as bool);
+        flag: flag == _$sentinelValue ? _value.flag as bool : flag as bool,
+        name: name == _$sentinelValue ? _value.name as String : name as String);
   }
 }
 
