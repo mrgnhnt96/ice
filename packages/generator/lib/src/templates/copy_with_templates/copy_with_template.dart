@@ -10,6 +10,12 @@ import 'package:ice/src/util/string_buffer_ext.dart';
 import 'package:ice_annotation/ice.dart';
 import 'package:meta/meta.dart';
 
+// TODO(mrgnhnt96): add a "_then" annonymous function that will handle
+// deep copies (freezed)
+//
+// I need the declaration from the CopyWith method in order to provide the
+// same copyWith method as a deep copy
+
 extension on Class {
   CopyWith get copyWith {
     return metaSettings(
