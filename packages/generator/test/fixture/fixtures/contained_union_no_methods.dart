@@ -183,19 +183,6 @@ mixin _$ExampleMixin {
     );
   }
 
-  Map<String, dynamic> toJson({bool includeUnionType = true}) {
-    switch (runtimeType) {
-      case A:
-        return (this as A).toJson(includeUnionType: includeUnionType);
-      case B:
-        return (this as B).toJson(includeUnionType: includeUnionType);
-      case C:
-        return (this as C).toJson(includeUnionType: includeUnionType);
-      default:
-        throw FallThroughError();
-    }
-  }
-
   A get asA {
     if (!isA) {
       throw Exception('Example runtimeType is not of type _A');

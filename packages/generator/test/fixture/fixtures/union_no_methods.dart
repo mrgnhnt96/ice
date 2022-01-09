@@ -131,17 +131,6 @@ mixin _$StateMixin {
     );
   }
 
-  Map<String, dynamic> toJson({bool includeUnionType = true}) {
-    switch (runtimeType) {
-      case Example:
-        return (this as Example).toJson(includeUnionType: includeUnionType);
-      case Other:
-        return (this as Other).toJson(includeUnionType: includeUnionType);
-      default:
-        throw FallThroughError();
-    }
-  }
-
   Example get asExample {
     if (!isExample) {
       throw Exception('State runtimeType is not of type Example');
