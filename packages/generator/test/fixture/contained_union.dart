@@ -8,7 +8,7 @@ part 'fixtures/contained_union.dart';
 class Example extends _$Example {
   const Example._();
 
-  const factory Example.a(String name) = _A;
-  const factory Example.b(String name) = _B;
-  const factory Example.c(String name) = _C;
+  const factory Example.a(String name) = A;
+  const factory Example.b(String name) = B;
+  const factory Example.c(String name) = C;
 }

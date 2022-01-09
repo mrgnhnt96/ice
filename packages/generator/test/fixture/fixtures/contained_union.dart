@@ -32,13 +32,13 @@ abstract class _$Example with _$ExampleMixin, EquatableMixin {
 @JsonSerializable(
   constructor: r'_$fromJson',
 )
-class _A extends Example {
-  const _A(
+class A extends Example {
+  const A(
     this.name,
   ) : super._();
 
-  factory _A.fromJson(Map<String, dynamic> json) => _$AFromJson(json);
-  const factory _A._$fromJson(String name) = _A;
+  factory A.fromJson(Map<String, dynamic> json) => _$AFromJson(json);
+  const factory A._$fromJson(String name) = A;
 
   final String name;
   _ACopyWith get copyWith => _ACopyWith(this);
@@ -64,13 +64,13 @@ class _A extends Example {
 @JsonSerializable(
   constructor: r'_$fromJson',
 )
-class _B extends Example {
-  const _B(
+class B extends Example {
+  const B(
     this.name,
   ) : super._();
 
-  factory _B.fromJson(Map<String, dynamic> json) => _$BFromJson(json);
-  const factory _B._$fromJson(String name) = _B;
+  factory B.fromJson(Map<String, dynamic> json) => _$BFromJson(json);
+  const factory B._$fromJson(String name) = B;
 
   final String name;
   _BCopyWith get copyWith => _BCopyWith(this);
@@ -96,13 +96,13 @@ class _B extends Example {
 @JsonSerializable(
   constructor: r'_$fromJson',
 )
-class _C extends Example {
-  const _C(
+class C extends Example {
+  const C(
     this.name,
   ) : super._();
 
-  factory _C.fromJson(Map<String, dynamic> json) => _$CFromJson(json);
-  const factory _C._$fromJson(String name) = _C;
+  factory C.fromJson(Map<String, dynamic> json) => _$CFromJson(json);
+  const factory C._$fromJson(String name) = C;
 
   final String name;
   _CCopyWith get copyWith => _CCopyWith(this);
@@ -127,17 +127,17 @@ class _C extends Example {
 
 mixin _$ExampleMixin {
   _$R map<_$R extends Object?>({
-    required _$ExampleCallback<_$R, _A> a,
-    required _$ExampleCallback<_$R, _B> b,
-    required _$ExampleCallback<_$R, _C> c,
+    required _$ExampleCallback<_$R, A> a,
+    required _$ExampleCallback<_$R, B> b,
+    required _$ExampleCallback<_$R, C> c,
   }) {
     switch (runtimeType) {
-      case _A:
-        return a(this as _A);
-      case _B:
-        return b(this as _B);
-      case _C:
-        return c(this as _C);
+      case A:
+        return a(this as A);
+      case B:
+        return b(this as B);
+      case C:
+        return c(this as C);
       default:
         throw UnsupportedError('Unsupported type: $this');
     }
@@ -171,9 +171,9 @@ mixin _$ExampleMixin {
   }
 
   _$R maybeMap<_$R extends Object?>({
-    _$ExampleCallback<_$R, _A>? a,
-    _$ExampleCallback<_$R, _B>? b,
-    _$ExampleCallback<_$R, _C>? c,
+    _$ExampleCallback<_$R, A>? a,
+    _$ExampleCallback<_$R, B>? b,
+    _$ExampleCallback<_$R, C>? c,
     required _$NoExampleCallback<_$R> orElse,
   }) {
     return map(
@@ -218,9 +218,9 @@ mixin _$ExampleMixin {
   }
 
   _$R? mapOrNull<_$R extends Object?>({
-    _$ExampleCallback<_$R, _A>? a,
-    _$ExampleCallback<_$R, _B>? b,
-    _$ExampleCallback<_$R, _C>? c,
+    _$ExampleCallback<_$R, A>? a,
+    _$ExampleCallback<_$R, B>? b,
+    _$ExampleCallback<_$R, C>? c,
   }) {
     return map(
       a: (u) => a?.call(u),
@@ -258,50 +258,50 @@ mixin _$ExampleMixin {
 
   Map<String, dynamic> toJson({bool includeUnionType = true}) {
     switch (runtimeType) {
-      case _A:
-        return (this as _A).toJson(includeUnionType: includeUnionType);
-      case _B:
-        return (this as _B).toJson(includeUnionType: includeUnionType);
-      case _C:
-        return (this as _C).toJson(includeUnionType: includeUnionType);
+      case A:
+        return (this as A).toJson(includeUnionType: includeUnionType);
+      case B:
+        return (this as B).toJson(includeUnionType: includeUnionType);
+      case C:
+        return (this as C).toJson(includeUnionType: includeUnionType);
       default:
         throw FallThroughError();
     }
   }
 
-  _A get asA {
+  A get asA {
     if (!isA) {
       throw Exception('Example runtimeType is not of type _A');
     }
-    return this as _A;
+    return this as A;
   }
 
-  _B get asB {
+  B get asB {
     if (!isB) {
       throw Exception('Example runtimeType is not of type _B');
     }
-    return this as _B;
+    return this as B;
   }
 
-  _C get asC {
+  C get asC {
     if (!isC) {
       throw Exception('Example runtimeType is not of type _C');
     }
-    return this as _C;
+    return this as C;
   }
 
-  bool get isA => this is _A;
-  bool get isB => this is _B;
-  bool get isC => this is _C;
+  bool get isA => this is A;
+  bool get isB => this is B;
+  bool get isC => this is C;
 }
 Example _$ExampleFromJson(Map<String, dynamic> json, [Example? defaultValue]) {
   switch (json[r'$unionType'] as String?) {
     case r'_A':
-      return _A.fromJson(json);
+      return A.fromJson(json);
     case r'_B':
-      return _B.fromJson(json);
+      return B.fromJson(json);
     case r'_C':
-      return _C.fromJson(json);
+      return C.fromJson(json);
     default:
       if (defaultValue != null) {
         return defaultValue;
@@ -313,47 +313,47 @@ Example _$ExampleFromJson(Map<String, dynamic> json, [Example? defaultValue]) {
 const _$sentinelValue = Object();
 
 abstract class _ACopyWith {
-  const factory _ACopyWith(_A value) = _ACopyWithImpl;
-  _A call({String name});
+  const factory _ACopyWith(A value) = _ACopyWithImpl;
+  A call({String name});
 }
 
 class _ACopyWithImpl implements _ACopyWith {
   const _ACopyWithImpl(this._value);
-  final _A _value;
-  _A call({
+  final A _value;
+  A call({
     Object? name = _$sentinelValue,
   }) {
-    return _A(name == _$sentinelValue ? _value.name as String : name as String);
+    return A(name == _$sentinelValue ? _value.name as String : name as String);
   }
 }
 
 abstract class _BCopyWith {
-  const factory _BCopyWith(_B value) = _BCopyWithImpl;
-  _B call({String name});
+  const factory _BCopyWith(B value) = _BCopyWithImpl;
+  B call({String name});
 }
 
 class _BCopyWithImpl implements _BCopyWith {
   const _BCopyWithImpl(this._value);
-  final _B _value;
-  _B call({
+  final B _value;
+  B call({
     Object? name = _$sentinelValue,
   }) {
-    return _B(name == _$sentinelValue ? _value.name as String : name as String);
+    return B(name == _$sentinelValue ? _value.name as String : name as String);
   }
 }
 
 abstract class _CCopyWith {
-  const factory _CCopyWith(_C value) = _CCopyWithImpl;
-  _C call({String name});
+  const factory _CCopyWith(C value) = _CCopyWithImpl;
+  C call({String name});
 }
 
 class _CCopyWithImpl implements _CCopyWith {
   const _CCopyWithImpl(this._value);
-  final _C _value;
-  _C call({
+  final C _value;
+  C call({
     Object? name = _$sentinelValue,
   }) {
-    return _C(name == _$sentinelValue ? _value.name as String : name as String);
+    return C(name == _$sentinelValue ? _value.name as String : name as String);
   }
 }
 

@@ -12,24 +12,24 @@ abstract class _$Example with _$ExampleMixin {
   const _$Example();
 }
 
-class _A extends Example {
-  const _A(
+class A extends Example {
+  const A(
     this.name,
   ) : super._();
 
   final String name;
 }
 
-class _B extends Example {
-  const _B(
+class B extends Example {
+  const B(
     this.name,
   ) : super._();
 
   final String name;
 }
 
-class _C extends Example {
-  const _C(
+class C extends Example {
+  const C(
     this.name,
     this.code,
     this.flag,
@@ -42,17 +42,17 @@ class _C extends Example {
 
 mixin _$ExampleMixin {
   _$R map<_$R extends Object?>({
-    required _$ExampleCallback<_$R, _A> a,
-    required _$ExampleCallback<_$R, _B> b,
-    required _$ExampleCallback<_$R, _C> c,
+    required _$ExampleCallback<_$R, A> a,
+    required _$ExampleCallback<_$R, B> b,
+    required _$ExampleCallback<_$R, C> c,
   }) {
     switch (runtimeType) {
-      case _A:
-        return a(this as _A);
-      case _B:
-        return b(this as _B);
-      case _C:
-        return c(this as _C);
+      case A:
+        return a(this as A);
+      case B:
+        return b(this as B);
+      case C:
+        return c(this as C);
       default:
         throw UnsupportedError('Unsupported type: $this');
     }
@@ -90,9 +90,9 @@ mixin _$ExampleMixin {
   }
 
   _$R maybeMap<_$R extends Object?>({
-    _$ExampleCallback<_$R, _A>? a,
-    _$ExampleCallback<_$R, _B>? b,
-    _$ExampleCallback<_$R, _C>? c,
+    _$ExampleCallback<_$R, A>? a,
+    _$ExampleCallback<_$R, B>? b,
+    _$ExampleCallback<_$R, C>? c,
     required _$NoExampleCallback<_$R> orElse,
   }) {
     return map(
@@ -141,9 +141,9 @@ mixin _$ExampleMixin {
   }
 
   _$R? mapOrNull<_$R extends Object?>({
-    _$ExampleCallback<_$R, _A>? a,
-    _$ExampleCallback<_$R, _B>? b,
-    _$ExampleCallback<_$R, _C>? c,
+    _$ExampleCallback<_$R, A>? a,
+    _$ExampleCallback<_$R, B>? b,
+    _$ExampleCallback<_$R, C>? c,
   }) {
     return map(
       a: (u) => a?.call(u),
@@ -185,41 +185,41 @@ mixin _$ExampleMixin {
 
   Map<String, dynamic> toJson({bool includeUnionType = true}) {
     switch (runtimeType) {
-      case _A:
-        return (this as _A).toJson(includeUnionType: includeUnionType);
-      case _B:
-        return (this as _B).toJson(includeUnionType: includeUnionType);
-      case _C:
-        return (this as _C).toJson(includeUnionType: includeUnionType);
+      case A:
+        return (this as A).toJson(includeUnionType: includeUnionType);
+      case B:
+        return (this as B).toJson(includeUnionType: includeUnionType);
+      case C:
+        return (this as C).toJson(includeUnionType: includeUnionType);
       default:
         throw FallThroughError();
     }
   }
 
-  _A get asA {
+  A get asA {
     if (!isA) {
       throw Exception('Example runtimeType is not of type _A');
     }
-    return this as _A;
+    return this as A;
   }
 
-  _B get asB {
+  B get asB {
     if (!isB) {
       throw Exception('Example runtimeType is not of type _B');
     }
-    return this as _B;
+    return this as B;
   }
 
-  _C get asC {
+  C get asC {
     if (!isC) {
       throw Exception('Example runtimeType is not of type _C');
     }
-    return this as _C;
+    return this as C;
   }
 
-  bool get isA => this is _A;
-  bool get isB => this is _B;
-  bool get isC => this is _C;
+  bool get isA => this is A;
+  bool get isB => this is B;
+  bool get isC => this is C;
 }
 typedef _$ExampleCallback<_$R, _$T extends Example> = _$R Function(_$T);
 typedef _$NoExampleCallback<_$R> = _$R Function();
