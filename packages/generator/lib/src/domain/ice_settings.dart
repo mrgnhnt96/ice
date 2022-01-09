@@ -109,22 +109,10 @@ class IceSettings implements Ice {
     bool? tostring,
     bool? ignoreGettersAsProps,
     String? unionKey,
-    bool? formatOutput,
     bool? createFromJson,
     bool? createToJson,
     bool? props,
   }) {
-    // ignore: avoid_print
-    print(
-      [
-        '',
-        '--- --- ---',
-        '(TESTING)',
-        '--- --- ---',
-        '',
-      ].join('\n'),
-    );
-
     const defaults = IceSettings.defaultValues();
 
     return IceSettings(
@@ -134,7 +122,7 @@ class IceSettings implements Ice {
       ignoreGettersAsProps:
           ignoreGettersAsProps ?? defaults.ignoreGettersAsProps,
       unionKey: unionKey ?? defaults.unionKey,
-      formatOutput: formatOutput ?? defaults.formatOutput,
+      formatOutput: true,
       createFromJson: createFromJson ?? defaults.createFromJson,
       createToJson: createToJson ?? defaults.createToJson,
       props: props ?? defaults.props,
