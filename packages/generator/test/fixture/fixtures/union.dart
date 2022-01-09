@@ -12,24 +12,24 @@ part of '../union.dart';
   constructor: r'_$fromJson',
 )
 abstract class _$Example extends State {
-  const _$Example();
+  const _$Example() : super();
   factory _$Example.fromJson(Map<String, dynamic> json) =>
       _$$ExampleFromJson(json);
   const factory _$Example._$fromJson(
       {required int code, required bool flag, required String name}) = Example;
 
+  String get name;
   int get code;
   bool get flag;
-  String get name;
   _$ExampleCopyWith get copyWith => _$ExampleCopyWith(this);
   @override
   List<Object?> get props {
-    return [code, flag, name];
+    return [name, code, flag];
   }
 
   @override
   String toString() {
-    return r'State.Example(' 'code: $code, ' 'flag: $flag, ' 'name: $name' ')';
+    return r'State.Example(' 'name: $name, ' 'code: $code, ' 'flag: $flag)';
   }
 
   Map<String, dynamic> toJson({bool includeUnionType = true}) {
@@ -45,7 +45,7 @@ abstract class _$Example extends State {
   constructor: r'_$fromJson',
 )
 abstract class _$Other extends State {
-  const _$Other();
+  const _$Other() : super();
   factory _$Other.fromJson(Map<String, dynamic> json) => _$$OtherFromJson(json);
   const factory _$Other._$fromJson() = Other;
 
@@ -75,7 +75,6 @@ abstract class _$Other extends State {
 abstract class _$State with EquatableMixin, _$StateMixin {
   const _$State();
 
-  factory _$State.fromJson(Map<String, dynamic> json) => _$$StateFromJson(json);
   const factory _$State._$fromJson() = State;
 
   @override
@@ -117,6 +116,7 @@ mixin _$StateMixin {
 
   _$R when<_$R extends Object?>({
     required _$R Function(
+      String name,
       int code,
       bool flag,
     )
@@ -125,6 +125,7 @@ mixin _$StateMixin {
   }) {
     return map(
       example: (u) => example.call(
+        u.name,
         u.code,
         u.flag,
       ),
@@ -145,6 +146,7 @@ mixin _$StateMixin {
 
   _$R maybeWhen<_$R extends Object?>({
     _$R Function(
+      String name,
       int code,
       bool flag,
     )?
@@ -155,6 +157,7 @@ mixin _$StateMixin {
     return map(
       example: (u) =>
           example?.call(
+            u.name,
             u.code,
             u.flag,
           ) ??
@@ -175,6 +178,7 @@ mixin _$StateMixin {
 
   _$R? whenOrNull<_$R extends Object?>({
     _$R Function(
+      String name,
       int code,
       bool flag,
     )?
@@ -183,6 +187,7 @@ mixin _$StateMixin {
   }) {
     return map(
       example: (u) => example?.call(
+        u.name,
         u.code,
         u.flag,
       ),

@@ -14,8 +14,6 @@ part of '../contained_union_generic.dart';
 abstract class _$Example<T> with _$ExampleMixin, EquatableMixin {
   const _$Example();
 
-  factory _$Example.fromJson(Map<String, dynamic> json) =>
-      _$ExampleFromJson(json);
   const factory _$Example._$fromJson() = Example._;
 
   @override
@@ -42,7 +40,7 @@ class A<T> extends Example<T> {
 
   @TConv()
   final T name;
-  _ACopyWith get copyWith => _ACopyWith<T>(this);
+  ACopyWith get copyWith => ACopyWith<T>(this);
   @override
   List<Object?> get props {
     return [name];
@@ -50,13 +48,13 @@ class A<T> extends Example<T> {
 
   @override
   String toString() {
-    return r'Example._A(' 'name: $name)';
+    return r'Example.A(' 'name: $name)';
   }
 
   Map<String, dynamic> toJson({bool includeUnionType = true}) {
     final map = _$AToJson(this);
     if (includeUnionType) {
-      map[r'$unionType'] = r'_A';
+      map[r'$unionType'] = r'A';
     }
     return map;
   }
@@ -74,7 +72,7 @@ class B<T> extends Example<T> {
   const factory B._$fromJson(String name) = B;
 
   final String name;
-  _BCopyWith get copyWith => _BCopyWith<T>(this);
+  BCopyWith get copyWith => BCopyWith<T>(this);
   @override
   List<Object?> get props {
     return [name];
@@ -82,13 +80,13 @@ class B<T> extends Example<T> {
 
   @override
   String toString() {
-    return r'Example._B(' 'name: $name)';
+    return r'Example.B(' 'name: $name)';
   }
 
   Map<String, dynamic> toJson({bool includeUnionType = true}) {
     final map = _$BToJson(this);
     if (includeUnionType) {
-      map[r'$unionType'] = r'_B';
+      map[r'$unionType'] = r'B';
     }
     return map;
   }
@@ -110,7 +108,7 @@ class C<T> extends Example<T> {
   final String name;
   final int code;
   final bool flag;
-  _CCopyWith get copyWith => _CCopyWith<T>(this);
+  CCopyWith get copyWith => CCopyWith<T>(this);
   @override
   List<Object?> get props {
     return [name, code, flag];
@@ -118,13 +116,13 @@ class C<T> extends Example<T> {
 
   @override
   String toString() {
-    return r'Example._C(' 'name: $name, ' 'code: $code, ' 'flag: $flag)';
+    return r'Example.C(' 'name: $name, ' 'code: $code, ' 'flag: $flag)';
   }
 
   Map<String, dynamic> toJson({bool includeUnionType = true}) {
     final map = _$CToJson(this);
     if (includeUnionType) {
-      map[r'$unionType'] = r'_C';
+      map[r'$unionType'] = r'C';
     }
     return map;
   }
@@ -288,21 +286,21 @@ mixin _$ExampleMixin {
 
   A get asA {
     if (!isA) {
-      throw Exception('Example runtimeType is not of type _A');
+      throw Exception('Example runtimeType is not of type A');
     }
     return this as A;
   }
 
   B get asB {
     if (!isB) {
-      throw Exception('Example runtimeType is not of type _B');
+      throw Exception('Example runtimeType is not of type B');
     }
     return this as B;
   }
 
   C get asC {
     if (!isC) {
-      throw Exception('Example runtimeType is not of type _C');
+      throw Exception('Example runtimeType is not of type C');
     }
     return this as C;
   }
@@ -314,11 +312,11 @@ mixin _$ExampleMixin {
 Example<T> _$ExampleFromJson<T>(Map<String, dynamic> json,
     [Example? defaultValue]) {
   switch (json[r'$unionType'] as String?) {
-    case r'_A':
+    case r'A':
       return A.fromJson(json);
-    case r'_B':
+    case r'B':
       return B.fromJson(json);
-    case r'_C':
+    case r'C':
       return C.fromJson(json);
     default:
       if (defaultValue != null) {
@@ -330,13 +328,13 @@ Example<T> _$ExampleFromJson<T>(Map<String, dynamic> json,
 
 const _$sentinelValue = Object();
 
-abstract class _ACopyWith<T> {
-  const factory _ACopyWith(A<T> value) = _ACopyWithImpl<T>;
+abstract class ACopyWith<T> {
+  const factory ACopyWith(A<T> value) = ACopyWithImpl<T>;
   A call({T name});
 }
 
-class _ACopyWithImpl<T> implements _ACopyWith<T> {
-  const _ACopyWithImpl(this._value);
+class ACopyWithImpl<T> implements ACopyWith<T> {
+  const ACopyWithImpl(this._value);
   final A<T> _value;
   A call({
     Object? name = _$sentinelValue,
@@ -345,13 +343,13 @@ class _ACopyWithImpl<T> implements _ACopyWith<T> {
   }
 }
 
-abstract class _BCopyWith<T> {
-  const factory _BCopyWith(B<T> value) = _BCopyWithImpl<T>;
+abstract class BCopyWith<T> {
+  const factory BCopyWith(B<T> value) = BCopyWithImpl<T>;
   B call({String name});
 }
 
-class _BCopyWithImpl<T> implements _BCopyWith<T> {
-  const _BCopyWithImpl(this._value);
+class BCopyWithImpl<T> implements BCopyWith<T> {
+  const BCopyWithImpl(this._value);
   final B<T> _value;
   B call({
     Object? name = _$sentinelValue,
@@ -361,13 +359,13 @@ class _BCopyWithImpl<T> implements _BCopyWith<T> {
   }
 }
 
-abstract class _CCopyWith<T> {
-  const factory _CCopyWith(C<T> value) = _CCopyWithImpl<T>;
+abstract class CCopyWith<T> {
+  const factory CCopyWith(C<T> value) = CCopyWithImpl<T>;
   C call({String name, int code, bool flag});
 }
 
-class _CCopyWithImpl<T> implements _CCopyWith<T> {
-  const _CCopyWithImpl(this._value);
+class CCopyWithImpl<T> implements CCopyWith<T> {
+  const CCopyWithImpl(this._value);
   final C<T> _value;
   C call({
     Object? name = _$sentinelValue,

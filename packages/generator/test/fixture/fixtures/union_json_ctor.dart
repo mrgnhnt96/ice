@@ -111,7 +111,6 @@ abstract class _$Example3 extends State {
 abstract class _$State with EquatableMixin, _$StateMixin {
   const _$State();
 
-  factory _$State.fromJson(Map<String, dynamic> json) => _$$StateFromJson(json);
   const factory _$State._$fromJson() = State;
 
   @override

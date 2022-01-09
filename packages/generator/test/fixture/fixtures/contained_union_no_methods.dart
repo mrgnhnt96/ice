@@ -185,21 +185,21 @@ mixin _$ExampleMixin {
 
   A get asA {
     if (!isA) {
-      throw Exception('Example runtimeType is not of type _A');
+      throw Exception('Example runtimeType is not of type A');
     }
     return this as A;
   }
 
   B get asB {
     if (!isB) {
-      throw Exception('Example runtimeType is not of type _B');
+      throw Exception('Example runtimeType is not of type B');
     }
     return this as B;
   }
 
   C get asC {
     if (!isC) {
-      throw Exception('Example runtimeType is not of type _C');
+      throw Exception('Example runtimeType is not of type C');
     }
     return this as C;
   }
