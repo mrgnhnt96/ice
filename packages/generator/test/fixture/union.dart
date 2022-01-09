@@ -9,34 +9,36 @@ class Example extends _$Example {
   const Example({
     required this.code,
     required this.flag,
-  }) : super('example');
+    required this.name,
+  });
 
-  const Example.no() : this(code: 1, flag: true);
+  const Example.no() : this(name: '', code: 1, flag: true);
 
   const Example.not(
     String name,
     int code,
     bool flag,
   )   : code = code,
-        flag = flag,
-        super(name);
+        name = name,
+        flag = flag;
 
   const Example.some(this.code)
       : flag = true,
-        super('some');
+        name = '';
 
+  final String name;
   final int code;
   final bool flag;
 }
 
 @IceUnion.of(State)
 class Other extends _$Other {
-  const Other() : super('other');
+  const Other();
 }
 
 @IceUnion.create()
 class State extends _$State {
-  const State(this.name);
+  const State();
 
-  final String name;
+  factory State.fromJson(Map<String, dynamic> json) => _$StateFromJson(json);
 }

@@ -11,4 +11,7 @@ class Example extends _$Example {
   const factory Example.a(String name) = A;
   const factory Example.b(String name) = B;
   const factory Example.c(String name) = C;
+
+  factory Example.fromJson(Map<String, dynamic> json) =>
+      _$ExampleFromJson(json);
 }

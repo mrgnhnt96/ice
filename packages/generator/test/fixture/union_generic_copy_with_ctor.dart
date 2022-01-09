@@ -141,4 +141,6 @@ class Example3<T> extends _$Example3<T> {
 @IceUnion.create()
 class State extends _$State {
   const State();
+
+  factory State.fromJson(Map<String, dynamic> json) => _$StateFromJson(json);
 }
