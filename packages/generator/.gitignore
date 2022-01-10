@@ -5,3 +5,5 @@
 .packages
 build/
 pubspec.lock
+test/**/fixture/**.ice.dart
+test/**/fixture/**.g.dart
