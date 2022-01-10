@@ -1,6 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file:
+// ignore_for_file: cast_nullable_to_non_nullable,unnecessary_raw_strings,annotate_overrides,require_trailing_commas,unnecessary_cast,implicit_dynamic_type,lines_longer_than_80_chars
 
 part of 'main.dart';
 
@@ -221,16 +221,16 @@ mixin _$ExampleMixin {
         e,
   }) {
     return map(
-      a: (u) => a(
+      a: (u) => a.call(
         u.name,
       ),
-      b: (u) => b(
+      b: (u) => b.call(
         u.code,
       ),
-      c: (u) => c(
+      c: (u) => c.call(
         u.value,
       ),
-      e: (u) => e(
+      e: (u) => e.call(
         u.myClass,
       ),
     );
@@ -421,7 +421,8 @@ class _ACopyWithImpl implements _ACopyWith {
   _A call({
     Object? name = _$sentinelValue,
   }) {
-    return _A(name: name == _$sentinelValue ? _value.name : name as String);
+    return _A(
+        name: name == _$sentinelValue ? _value.name as String : name as String);
   }
 }
 
@@ -436,7 +437,7 @@ class _BCopyWithImpl implements _BCopyWith {
   _B call({
     Object? code = _$sentinelValue,
   }) {
-    return _B(code == _$sentinelValue ? _value.code : code as int);
+    return _B(code == _$sentinelValue ? _value.code as int : code as int);
   }
 }
 
@@ -451,7 +452,8 @@ class _CCopyWithImpl implements _CCopyWith {
   _C call({
     Object? value = _$sentinelValue,
   }) {
-    return _C(value == _$sentinelValue ? _value.value : value as dynamic);
+    return _C(
+        value == _$sentinelValue ? _value.value as dynamic : value as dynamic);
   }
 }
 
@@ -466,7 +468,9 @@ class _ECopyWithImpl implements _ECopyWith {
   _E call({
     Object? myClass = _$sentinelValue,
   }) {
-    return _E(myClass == _$sentinelValue ? _value.myClass : myClass as dynamic);
+    return _E(myClass == _$sentinelValue
+        ? _value.myClass as dynamic
+        : myClass as dynamic);
   }
 }
 

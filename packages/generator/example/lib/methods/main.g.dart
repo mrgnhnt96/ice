@@ -32,5 +32,5 @@ Map<String, dynamic> _$ExampleToJson(Example instance) => <String, dynamic>{
       'list': instance.list,
       'map': instance.map,
       'set': instance.set?.toList(),
-      'example': instance.example,
+      'example': instance.example?.toJson(),
     };

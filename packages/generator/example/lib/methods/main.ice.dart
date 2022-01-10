@@ -1,6 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file:
+// ignore_for_file: cast_nullable_to_non_nullable,unnecessary_raw_strings,annotate_overrides,require_trailing_commas,unnecessary_cast,implicit_dynamic_type,lines_longer_than_80_chars
 
 part of 'main.dart';
 
@@ -60,16 +60,27 @@ class _$ExampleCopyWithImpl implements _$ExampleCopyWith {
     Object? example = _$sentinelValue,
   }) {
     return Example(
-        text: text == _$sentinelValue ? _value.text : text as String?,
-        whole: whole == _$sentinelValue ? _value.whole : whole as int?,
-        decimal:
-            decimal == _$sentinelValue ? _value.decimal : decimal as double?,
-        flag: flag == _$sentinelValue ? _value.flag : flag as bool?,
-        date: date == _$sentinelValue ? _value.date : date as DateTime?,
-        list: list == _$sentinelValue ? _value.list : list as List<String>?,
-        map: map == _$sentinelValue ? _value.map : map as Map<String, String>?,
-        set: set == _$sentinelValue ? _value.set : set as Set<String>?,
-        example:
-            example == _$sentinelValue ? _value.example : example as Example?);
+        text:
+            text == _$sentinelValue ? _value.text as String? : text as String?,
+        whole: whole == _$sentinelValue ? _value.whole as int? : whole as int?,
+        decimal: decimal == _$sentinelValue
+            ? _value.decimal as double?
+            : decimal as double?,
+        flag: flag == _$sentinelValue ? _value.flag as bool? : flag as bool?,
+        date: date == _$sentinelValue
+            ? _value.date as DateTime?
+            : date as DateTime?,
+        list: list == _$sentinelValue
+            ? _value.list as List<String>?
+            : list as List<String>?,
+        map: map == _$sentinelValue
+            ? _value.map as Map<String, String>?
+            : map as Map<String, String>?,
+        set: set == _$sentinelValue
+            ? _value.set as Set<String>?
+            : set as Set<String>?,
+        example: example == _$sentinelValue
+            ? _value.example as Example?
+            : example as Example?);
   }
 }

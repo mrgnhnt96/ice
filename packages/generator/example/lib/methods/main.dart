@@ -21,6 +21,8 @@ class Example extends Equatable {
   factory Example.fromJson(Map<String, dynamic> json) =>
       _$ExampleFromJson(json);
 
+  Map<String, dynamic> toJson() => _$ExampleToJson(this);
+
   final String? text;
   final int? whole;
   final double? decimal;

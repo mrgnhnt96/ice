@@ -1,6 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file:
+// ignore_for_file: cast_nullable_to_non_nullable,unnecessary_raw_strings,annotate_overrides,require_trailing_commas,unnecessary_cast,implicit_dynamic_type,lines_longer_than_80_chars
 
 part of 'main.dart';
 
@@ -203,7 +203,7 @@ mixin _$StateMixin {
     required _$R Function() error,
   }) {
     return map(
-      example: (u) => example(
+      example: (u) => example.call(
         u.text,
         u.whole,
         u.decimal,
@@ -212,8 +212,8 @@ mixin _$StateMixin {
         u.list,
         u.set,
       ),
-      other: (u) => other(),
-      error: (u) => error(),
+      other: (u) => other.call(),
+      error: (u) => error.call(),
     );
   }
 
@@ -384,14 +384,22 @@ class _$ExampleCopyWithImpl implements _$ExampleCopyWith {
     Object? set = _$sentinelValue,
   }) {
     return Example(
-        text: text == _$sentinelValue ? _value.text : text as String?,
-        whole: whole == _$sentinelValue ? _value.whole : whole as int?,
-        decimal:
-            decimal == _$sentinelValue ? _value.decimal : decimal as double?,
-        flag: flag == _$sentinelValue ? _value.flag : flag as bool?,
-        date: date == _$sentinelValue ? _value.date : date as DateTime?,
-        list: list == _$sentinelValue ? _value.list : list as List<String>?,
-        set: set == _$sentinelValue ? _value.set : set as Set<String>?);
+        text:
+            text == _$sentinelValue ? _value.text as String? : text as String?,
+        whole: whole == _$sentinelValue ? _value.whole as int? : whole as int?,
+        decimal: decimal == _$sentinelValue
+            ? _value.decimal as double?
+            : decimal as double?,
+        flag: flag == _$sentinelValue ? _value.flag as bool? : flag as bool?,
+        date: date == _$sentinelValue
+            ? _value.date as DateTime?
+            : date as DateTime?,
+        list: list == _$sentinelValue
+            ? _value.list as List<String>?
+            : list as List<String>?,
+        set: set == _$sentinelValue
+            ? _value.set as Set<String>?
+            : set as Set<String>?);
   }
 }
 
@@ -406,7 +414,7 @@ class _$OtherCopyWithImpl implements _$OtherCopyWith {
   Other call({
     Object? code = _$sentinelValue,
   }) {
-    return Other(code == _$sentinelValue ? _value.code : code as int);
+    return Other(code == _$sentinelValue ? _value.code as int : code as int);
   }
 }
 
@@ -421,7 +429,7 @@ class _$ErrorCopyWithImpl implements _$ErrorCopyWith {
   Error call({
     Object? code = _$sentinelValue,
   }) {
-    return Error(code == _$sentinelValue ? _value.code : code as int);
+    return Error(code == _$sentinelValue ? _value.code as int : code as int);
   }
 }
 

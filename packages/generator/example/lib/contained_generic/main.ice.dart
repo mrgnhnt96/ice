@@ -1,6 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file:
+// ignore_for_file: cast_nullable_to_non_nullable,unnecessary_raw_strings,annotate_overrides,require_trailing_commas,unnecessary_cast,implicit_dynamic_type,lines_longer_than_80_chars
 
 part of 'main.dart';
 
@@ -67,7 +67,7 @@ class _A<T, R extends Object> extends Example<T, R> {
 
   @TConv()
   final String name;
-  _ACopyWith get copyWith => _ACopyWith(this);
+  _ACopyWith get copyWith => _ACopyWith<T, R>(this);
   @override
   List<Object?> get props {
     return [name];
@@ -99,7 +99,7 @@ class _B<T, R extends Object> extends Example<T, R> {
   const factory _B._$fromJson([int code]) = _B;
 
   final int code;
-  _BCopyWith get copyWith => _BCopyWith(this);
+  _BCopyWith get copyWith => _BCopyWith<T, R>(this);
   @override
   List<Object?> get props {
     return [code];
@@ -131,7 +131,7 @@ class _C<T, R extends Object> extends Example<T, R> {
   const factory _C._$fromJson([dynamic value]) = _C;
 
   final dynamic value;
-  _CCopyWith get copyWith => _CCopyWith(this);
+  _CCopyWith get copyWith => _CCopyWith<T, R>(this);
   @override
   List<Object?> get props {
     return [value];
@@ -151,7 +151,7 @@ class _C<T, R extends Object> extends Example<T, R> {
   }
 }
 
-mixin _$ExampleMixin<T, R extends Object> {
+mixin _$ExampleMixin {
   _$R map<_$R extends Object?>({
     required _$ExampleCallback<_$R, _A> a,
     required _$ExampleCallback<_$R, _B> b,
@@ -170,27 +170,27 @@ mixin _$ExampleMixin<T, R extends Object> {
   }
 
   _$R when<_$R extends Object?>({
-    required _$R Function(
+    required _$R Function<T, R extends Object>(
       String name,
     )
         a,
-    required _$R Function(
+    required _$R Function<T, R extends Object>(
       int code,
     )
         b,
-    required _$R Function(
+    required _$R Function<T, R extends Object>(
       dynamic value,
     )
         c,
   }) {
     return map(
-      a: (u) => a(
+      a: (u) => a.call(
         u.name,
       ),
-      b: (u) => b(
+      b: (u) => b.call(
         u.code,
       ),
-      c: (u) => c(
+      c: (u) => c.call(
         u.value,
       ),
     );
@@ -210,15 +210,15 @@ mixin _$ExampleMixin<T, R extends Object> {
   }
 
   _$R maybeWhen<_$R extends Object?>({
-    _$R Function(
+    _$R Function<T, R extends Object>(
       String name,
     )?
         a,
-    _$R Function(
+    _$R Function<T, R extends Object>(
       int code,
     )?
         b,
-    _$R Function(
+    _$R Function<T, R extends Object>(
       dynamic value,
     )?
         c,
@@ -256,15 +256,15 @@ mixin _$ExampleMixin<T, R extends Object> {
   }
 
   _$R? whenOrNull<_$R extends Object?>({
-    _$R Function(
+    _$R Function<T, R extends Object>(
       String name,
     )?
         a,
-    _$R Function(
+    _$R Function<T, R extends Object>(
       int code,
     )?
         b,
-    _$R Function(
+    _$R Function<T, R extends Object>(
       dynamic value,
     )?
         c,
@@ -340,47 +340,49 @@ Example<T, R> _$ExampleFromJson<T, R extends Object>(Map<String, dynamic> json,
 const _$sentinelValue = Object();
 
 abstract class _ACopyWith<T, R extends Object> {
-  const factory _ACopyWith(_A value) = _ACopyWithImpl<T, R>;
+  const factory _ACopyWith(_A<T, R> value) = _ACopyWithImpl<T, R>;
   _A call({String name});
 }
 
 class _ACopyWithImpl<T, R extends Object> implements _ACopyWith<T, R> {
   const _ACopyWithImpl(this._value);
-  final _A _value;
+  final _A<T, R> _value;
   _A call({
     Object? name = _$sentinelValue,
   }) {
-    return _A(name: name == _$sentinelValue ? _value.name : name as String);
+    return _A<T, R>(
+        name: name == _$sentinelValue ? _value.name as String : name as String);
   }
 }
 
 abstract class _BCopyWith<T, R extends Object> {
-  const factory _BCopyWith(_B value) = _BCopyWithImpl<T, R>;
+  const factory _BCopyWith(_B<T, R> value) = _BCopyWithImpl<T, R>;
   _B call({int code});
 }
 
 class _BCopyWithImpl<T, R extends Object> implements _BCopyWith<T, R> {
   const _BCopyWithImpl(this._value);
-  final _B _value;
+  final _B<T, R> _value;
   _B call({
     Object? code = _$sentinelValue,
   }) {
-    return _B(code == _$sentinelValue ? _value.code : code as int);
+    return _B<T, R>(code == _$sentinelValue ? _value.code as int : code as int);
   }
 }
 
 abstract class _CCopyWith<T, R extends Object> {
-  const factory _CCopyWith(_C value) = _CCopyWithImpl<T, R>;
+  const factory _CCopyWith(_C<T, R> value) = _CCopyWithImpl<T, R>;
   _C call({dynamic value});
 }
 
 class _CCopyWithImpl<T, R extends Object> implements _CCopyWith<T, R> {
   const _CCopyWithImpl(this._value);
-  final _C _value;
+  final _C<T, R> _value;
   _C call({
     Object? value = _$sentinelValue,
   }) {
-    return _C(value == _$sentinelValue ? _value.value : value as dynamic);
+    return _C<T, R>(
+        value == _$sentinelValue ? _value.value as dynamic : value as dynamic);
   }
 }
 

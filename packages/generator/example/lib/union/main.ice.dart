@@ -1,6 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file:
+// ignore_for_file: cast_nullable_to_non_nullable,unnecessary_raw_strings,annotate_overrides,require_trailing_commas,unnecessary_cast,implicit_dynamic_type,lines_longer_than_80_chars
 
 part of 'main.dart';
 
@@ -160,13 +160,13 @@ mixin _$StateMixin {
     required _$R Function() error,
   }) {
     return map(
-      example: (u) => example(
+      example: (u) => example.call(
         u.name,
       ),
-      other: (u) => other(
+      other: (u) => other.call(
         u.name,
       ),
-      error: (u) => error(),
+      error: (u) => error.call(),
     );
   }
 
@@ -311,7 +311,8 @@ class _$ExampleCopyWithImpl implements _$ExampleCopyWith {
   Example call({
     Object? name = _$sentinelValue,
   }) {
-    return Example(name == _$sentinelValue ? _value.name : name as String);
+    return Example(
+        name == _$sentinelValue ? _value.name as String : name as String);
   }
 }
 
@@ -326,7 +327,8 @@ class _$OtherCopyWithImpl implements _$OtherCopyWith {
   Other call({
     Object? name = _$sentinelValue,
   }) {
-    return Other(name == _$sentinelValue ? _value.name : name as String);
+    return Other(
+        name == _$sentinelValue ? _value.name as String : name as String);
   }
 }
 

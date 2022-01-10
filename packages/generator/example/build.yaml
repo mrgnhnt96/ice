@@ -7,3 +7,6 @@ targets:
         options:
           format_output: true
           _dev: true
+      json_serializable:
+        options:
+          explicit_to_json: true
