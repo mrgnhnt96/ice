@@ -1,6 +1,7 @@
 import 'package:generator_test/generator_test.dart';
 import 'package:ice/ice.dart';
 import 'package:ice/src/domain/ice_settings.dart';
+import 'package:ice_annotation/ice.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -34,6 +35,27 @@ void main() {
         inputDir: 'test/fixture',
         fixtureDir: 'test/fixture/fixtures',
         builderOptions: IceSettings.debug(),
+        extension: iceExtension,
+      );
+    });
+
+    test('${fileName}_bld_opt', () async {
+      await testPackageBuilder(
+        fileName,
+        fixtureFileName: '${fileName}_bld_opt',
+        builder: iceBuilder,
+        inputDir: 'test/fixture',
+        fixtureDir: 'test/fixture/fixtures',
+        builderOptions: IceSettings.debug(
+          copyWith: CopyWith.anonymous,
+          createFromJson: false,
+          createToJson: false,
+          equatable: false,
+          ignoreGettersAsProps: false,
+          props: false,
+          tostring: false,
+          unionKey: 'runtimeType',
+        ),
         extension: iceExtension,
       );
     });
