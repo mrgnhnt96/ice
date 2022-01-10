@@ -14,32 +14,21 @@ abstract class _$Example {
   String get name;
   int get code;
   bool get flag;
-  _$ExampleCopyWith get copyWith => _$ExampleCopyWith(this);
 
-  @override
-  String toString() {
-    return r'Example(' 'name: $name, ' 'code: $code, ' 'flag: $flag)';
-  }
-}
-
-const _$sentinelValue = Object();
-
-abstract class _$ExampleCopyWith {
-  const factory _$ExampleCopyWith(_$Example value) = _$ExampleCopyWithImpl;
-  Example call({String name, int code, bool flag});
-}
-
-class _$ExampleCopyWithImpl implements _$ExampleCopyWith {
-  const _$ExampleCopyWithImpl(this._value);
-  final _$Example _value;
-  Example call({
-    Object? name = _$sentinelValue,
-    Object? code = _$sentinelValue,
-    Object? flag = _$sentinelValue,
+  /// 'null' safe
+  ///
+  /// ```dart
+  /// myClass.copyWith(field: (currentValue) => newValue);
+  /// ```
+  Example copyWith({
+    _$CopyCallback<String>? name,
+    _$CopyCallback<int>? code,
+    _$CopyCallback<bool>? flag,
   }) {
-    return Example(
-        name == _$sentinelValue ? _value.name as String : name as String,
-        code: code == _$sentinelValue ? _value.code as int : code as int,
-        flag: flag == _$sentinelValue ? _value.flag as bool : flag as bool);
+    return Example(name == null ? this.name : name(this.name),
+        code: code == null ? this.code : code(this.code),
+        flag: flag == null ? this.flag : flag(this.flag));
   }
 }
+
+typedef _$CopyCallback<T> = T Function(T);

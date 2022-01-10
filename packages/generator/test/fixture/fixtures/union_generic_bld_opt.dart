@@ -15,11 +15,20 @@ abstract class _$Example<T> extends State {
   T get name;
   int get code;
   bool get flag;
-  _$ExampleCopyWith get copyWith => _$ExampleCopyWith<T>(this);
 
-  @override
-  String toString() {
-    return r'State.Example(' 'name: $name, ' 'code: $code, ' 'flag: $flag)';
+  /// 'null' safe
+  ///
+  /// ```dart
+  /// myClass.copyWith(field: (currentValue) => newValue);
+  /// ```
+  Example copyWith({
+    _$CopyCallback<T>? name,
+    _$CopyCallback<int>? code,
+    _$CopyCallback<bool>? flag,
+  }) {
+    return Example(name == null ? this.name : name(this.name),
+        code: code == null ? this.code : code(this.code),
+        flag: flag == null ? this.flag : flag(this.flag));
   }
 }
 
@@ -28,21 +37,21 @@ abstract class _$Other<T> extends State {
 
   @TConv<T>()
   T get some;
-  _$OtherCopyWith get copyWith => _$OtherCopyWith<T>(this);
 
-  @override
-  String toString() {
-    return r'State.Other(' 'some: $some)';
+  /// 'null' safe
+  ///
+  /// ```dart
+  /// myClass.copyWith(field: (currentValue) => newValue);
+  /// ```
+  Other copyWith({
+    _$CopyCallback<T>? some,
+  }) {
+    return Other(some == null ? this.some : some(this.some));
   }
 }
 
 abstract class _$State with _$StateMixin {
   const _$State();
-
-  @override
-  String toString() {
-    return r'State()';
-  }
 }
 
 class _$StateTearOffs {
@@ -186,42 +195,6 @@ mixin _$StateMixin {
   bool get isExample => this is Example;
   bool get isOther => this is Other;
 }
-const _$sentinelValue = Object();
-
-abstract class _$ExampleCopyWith<T> {
-  const factory _$ExampleCopyWith(_$Example<T> value) =
-      _$ExampleCopyWithImpl<T>;
-  Example call({T name, int code, bool flag});
-}
-
-class _$ExampleCopyWithImpl<T> implements _$ExampleCopyWith<T> {
-  const _$ExampleCopyWithImpl(this._value);
-  final _$Example<T> _value;
-  Example call({
-    Object? name = _$sentinelValue,
-    Object? code = _$sentinelValue,
-    Object? flag = _$sentinelValue,
-  }) {
-    return Example<T>(name == _$sentinelValue ? _value.name as T : name as T,
-        code: code == _$sentinelValue ? _value.code as int : code as int,
-        flag: flag == _$sentinelValue ? _value.flag as bool : flag as bool);
-  }
-}
-
-abstract class _$OtherCopyWith<T> {
-  const factory _$OtherCopyWith(_$Other<T> value) = _$OtherCopyWithImpl<T>;
-  Other call({T some});
-}
-
-class _$OtherCopyWithImpl<T> implements _$OtherCopyWith<T> {
-  const _$OtherCopyWithImpl(this._value);
-  final _$Other<T> _value;
-  Other call({
-    Object? some = _$sentinelValue,
-  }) {
-    return Other<T>(some == _$sentinelValue ? _value.some as T : some as T);
-  }
-}
-
+typedef _$CopyCallback<T> = T Function(T);
 typedef _$StateCallback<_$R, _$T extends State> = _$R Function(_$T);
 typedef _$NoStateCallback<_$R> = _$R Function();

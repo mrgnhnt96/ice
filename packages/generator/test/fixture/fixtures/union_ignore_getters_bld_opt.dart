@@ -15,15 +15,20 @@ abstract class _$Example extends State {
   int get code;
   bool get flag;
   String get other;
-  _$ExampleCopyWith get copyWith => _$ExampleCopyWith(this);
 
-  @override
-  String toString() {
-    return r'State.Example('
-        'name: $name, '
-        'code: $code, '
-        'flag: $flag, '
-        'other: $other)';
+  /// 'null' safe
+  ///
+  /// ```dart
+  /// myClass.copyWith(field: (currentValue) => newValue);
+  /// ```
+  Example copyWith({
+    _$CopyCallback<String>? name,
+    _$CopyCallback<int>? code,
+    _$CopyCallback<bool>? flag,
+  }) {
+    return Example(name == null ? this.name : name(this.name),
+        code: code == null ? this.code : code(this.code),
+        flag: flag == null ? this.flag : flag(this.flag));
   }
 }
 
@@ -31,20 +36,10 @@ abstract class _$Other extends State {
   const _$Other() : super();
 
   Other copyWith() => Other();
-
-  @override
-  String toString() {
-    return r'State.Other()';
-  }
 }
 
 abstract class _$State with _$StateMixin {
   const _$State();
-
-  @override
-  String toString() {
-    return r'State()';
-  }
 }
 
 class _$StateTearOffs {
@@ -177,27 +172,6 @@ mixin _$StateMixin {
   bool get isExample => this is Example;
   bool get isOther => this is Other;
 }
-const _$sentinelValue = Object();
-
-abstract class _$ExampleCopyWith {
-  const factory _$ExampleCopyWith(_$Example value) = _$ExampleCopyWithImpl;
-  Example call({String name, int code, bool flag});
-}
-
-class _$ExampleCopyWithImpl implements _$ExampleCopyWith {
-  const _$ExampleCopyWithImpl(this._value);
-  final _$Example _value;
-  Example call({
-    Object? name = _$sentinelValue,
-    Object? code = _$sentinelValue,
-    Object? flag = _$sentinelValue,
-  }) {
-    return Example(
-        name == _$sentinelValue ? _value.name as String : name as String,
-        code: code == _$sentinelValue ? _value.code as int : code as int,
-        flag: flag == _$sentinelValue ? _value.flag as bool : flag as bool);
-  }
-}
-
+typedef _$CopyCallback<T> = T Function(T);
 typedef _$StateCallback<_$R, _$T extends State> = _$R Function(_$T);
 typedef _$NoStateCallback<_$R> = _$R Function();

@@ -15,11 +15,20 @@ abstract class _$Example<T> extends State {
   T get name;
   int get code;
   bool get flag;
-  _$ExampleCopyWith get copyWith => _$ExampleCopyWith<T>(this);
 
-  @override
-  String toString() {
-    return r'State.Example(' 'name: $name, ' 'code: $code, ' 'flag: $flag)';
+  /// 'null' safe
+  ///
+  /// ```dart
+  /// myClass.copyWith(field: (currentValue) => newValue);
+  /// ```
+  Example copyWith({
+    _$CopyCallback<String>? name,
+    _$CopyCallback<int>? code,
+    _$CopyCallback<bool>? flag,
+  }) {
+    return Example.named(name == null ? this.name : name(this.name),
+        code: code == null ? this.code : code(this.code),
+        flag: flag == null ? this.flag : flag(this.flag));
   }
 }
 
@@ -30,11 +39,20 @@ abstract class _$Example2<T> extends State {
   T get name;
   int get code;
   bool get flag;
-  _$Example2CopyWith get copyWith => _$Example2CopyWith<T>(this);
 
-  @override
-  String toString() {
-    return r'State.Example2(' 'name: $name, ' 'code: $code, ' 'flag: $flag)';
+  /// 'null' safe
+  ///
+  /// ```dart
+  /// myClass.copyWith(field: (currentValue) => newValue);
+  /// ```
+  Example2 copyWith({
+    _$CopyCallback<String>? name,
+    _$CopyCallback<int>? code,
+    _$CopyCallback<bool>? flag,
+  }) {
+    return Example2.named(name == null ? this.name : name(this.name),
+        code: code == null ? this.code : code(this.code),
+        flag: flag == null ? this.flag : flag(this.flag));
   }
 }
 
@@ -45,21 +63,25 @@ abstract class _$Example3<T> extends State {
   T get name;
   int get code;
   bool get flag;
-  _$Example3CopyWith get copyWith => _$Example3CopyWith<T>(this);
 
-  @override
-  String toString() {
-    return r'State.Example3(' 'name: $name, ' 'code: $code, ' 'flag: $flag)';
+  /// 'null' safe
+  ///
+  /// ```dart
+  /// myClass.copyWith(field: (currentValue) => newValue);
+  /// ```
+  Example3 copyWith({
+    _$CopyCallback<String>? name,
+    _$CopyCallback<int>? code,
+    _$CopyCallback<bool>? flag,
+  }) {
+    return Example3.named(name == null ? this.name : name(this.name),
+        code: code == null ? this.code : code(this.code),
+        flag: flag == null ? this.flag : flag(this.flag));
   }
 }
 
 abstract class _$State with _$StateMixin {
   const _$State();
-
-  @override
-  String toString() {
-    return r'State()';
-  }
 }
 
 class _$StateTearOffs {
@@ -269,70 +291,6 @@ mixin _$StateMixin {
   bool get isExample2 => this is Example2;
   bool get isExample3 => this is Example3;
 }
-const _$sentinelValue = Object();
-
-abstract class _$ExampleCopyWith<T> {
-  const factory _$ExampleCopyWith(_$Example<T> value) =
-      _$ExampleCopyWithImpl<T>;
-  Example call({String name, int code, bool flag});
-}
-
-class _$ExampleCopyWithImpl<T> implements _$ExampleCopyWith<T> {
-  const _$ExampleCopyWithImpl(this._value);
-  final _$Example<T> _value;
-  Example call({
-    Object? name = _$sentinelValue,
-    Object? code = _$sentinelValue,
-    Object? flag = _$sentinelValue,
-  }) {
-    return Example<T>.named(
-        name == _$sentinelValue ? _value.name as String : name as String,
-        code: code == _$sentinelValue ? _value.code as int : code as int,
-        flag: flag == _$sentinelValue ? _value.flag as bool : flag as bool);
-  }
-}
-
-abstract class _$Example2CopyWith<T> {
-  const factory _$Example2CopyWith(_$Example2<T> value) =
-      _$Example2CopyWithImpl<T>;
-  Example2 call({String name, int code, bool flag});
-}
-
-class _$Example2CopyWithImpl<T> implements _$Example2CopyWith<T> {
-  const _$Example2CopyWithImpl(this._value);
-  final _$Example2<T> _value;
-  Example2 call({
-    Object? name = _$sentinelValue,
-    Object? code = _$sentinelValue,
-    Object? flag = _$sentinelValue,
-  }) {
-    return Example2<T>.named(
-        name == _$sentinelValue ? _value.name as String : name as String,
-        code: code == _$sentinelValue ? _value.code as int : code as int,
-        flag: flag == _$sentinelValue ? _value.flag as bool : flag as bool);
-  }
-}
-
-abstract class _$Example3CopyWith<T> {
-  const factory _$Example3CopyWith(_$Example3<T> value) =
-      _$Example3CopyWithImpl<T>;
-  Example3 call({String name, int code, bool flag});
-}
-
-class _$Example3CopyWithImpl<T> implements _$Example3CopyWith<T> {
-  const _$Example3CopyWithImpl(this._value);
-  final _$Example3<T> _value;
-  Example3 call({
-    Object? name = _$sentinelValue,
-    Object? code = _$sentinelValue,
-    Object? flag = _$sentinelValue,
-  }) {
-    return Example3<T>.named(
-        name == _$sentinelValue ? _value.name as String : name as String,
-        code: code == _$sentinelValue ? _value.code as int : code as int,
-        flag: flag == _$sentinelValue ? _value.flag as bool : flag as bool);
-  }
-}
-
+typedef _$CopyCallback<T> = T Function(T);
 typedef _$StateCallback<_$R, _$T extends State> = _$R Function(_$T);
 typedef _$NoStateCallback<_$R> = _$R Function();

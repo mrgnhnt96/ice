@@ -10,11 +10,6 @@ part of '../contained_union_generic.dart';
 
 abstract class _$Example<T> with _$ExampleMixin {
   const _$Example();
-
-  @override
-  String toString() {
-    return r'Example()';
-  }
 }
 
 class A<T> extends Example<T> {
@@ -24,11 +19,16 @@ class A<T> extends Example<T> {
 
   @TConv()
   final T name;
-  ACopyWith get copyWith => ACopyWith<T>(this);
 
-  @override
-  String toString() {
-    return r'Example.A(' 'name: $name)';
+  /// 'null' safe
+  ///
+  /// ```dart
+  /// myClass.copyWith(field: (currentValue) => newValue);
+  /// ```
+  A copyWith({
+    _$CopyCallback<T>? name,
+  }) {
+    return A(name == null ? this.name : name(this.name));
   }
 }
 
@@ -38,11 +38,16 @@ class B<T> extends Example<T> {
   ) : super._();
 
   final String name;
-  BCopyWith get copyWith => BCopyWith<T>(this);
 
-  @override
-  String toString() {
-    return r'Example.B(' 'name: $name)';
+  /// 'null' safe
+  ///
+  /// ```dart
+  /// myClass.copyWith(field: (currentValue) => newValue);
+  /// ```
+  B copyWith({
+    _$CopyCallback<String>? name,
+  }) {
+    return B(name == null ? this.name : name(this.name));
   }
 }
 
@@ -56,11 +61,21 @@ class C<T> extends Example<T> {
   final String name;
   final int code;
   final bool flag;
-  CCopyWith get copyWith => CCopyWith<T>(this);
 
-  @override
-  String toString() {
-    return r'Example.C(' 'name: $name, ' 'code: $code, ' 'flag: $flag)';
+  /// 'null' safe
+  ///
+  /// ```dart
+  /// myClass.copyWith(field: (currentValue) => newValue);
+  /// ```
+  C copyWith({
+    _$CopyCallback<String>? name,
+    _$CopyCallback<int>? code,
+    _$CopyCallback<bool>? flag,
+  }) {
+    return C(
+        name == null ? this.name : name(this.name),
+        code == null ? this.code : code(this.code),
+        flag == null ? this.flag : flag(this.flag));
   }
 }
 
@@ -232,58 +247,6 @@ mixin _$ExampleMixin {
   bool get isB => this is B;
   bool get isC => this is C;
 }
-const _$sentinelValue = Object();
-
-abstract class ACopyWith<T> {
-  const factory ACopyWith(A<T> value) = ACopyWithImpl<T>;
-  A call({T name});
-}
-
-class ACopyWithImpl<T> implements ACopyWith<T> {
-  const ACopyWithImpl(this._value);
-  final A<T> _value;
-  A call({
-    Object? name = _$sentinelValue,
-  }) {
-    return A<T>(name == _$sentinelValue ? _value.name as T : name as T);
-  }
-}
-
-abstract class BCopyWith<T> {
-  const factory BCopyWith(B<T> value) = BCopyWithImpl<T>;
-  B call({String name});
-}
-
-class BCopyWithImpl<T> implements BCopyWith<T> {
-  const BCopyWithImpl(this._value);
-  final B<T> _value;
-  B call({
-    Object? name = _$sentinelValue,
-  }) {
-    return B<T>(
-        name == _$sentinelValue ? _value.name as String : name as String);
-  }
-}
-
-abstract class CCopyWith<T> {
-  const factory CCopyWith(C<T> value) = CCopyWithImpl<T>;
-  C call({String name, int code, bool flag});
-}
-
-class CCopyWithImpl<T> implements CCopyWith<T> {
-  const CCopyWithImpl(this._value);
-  final C<T> _value;
-  C call({
-    Object? name = _$sentinelValue,
-    Object? code = _$sentinelValue,
-    Object? flag = _$sentinelValue,
-  }) {
-    return C<T>(
-        name == _$sentinelValue ? _value.name as String : name as String,
-        code == _$sentinelValue ? _value.code as int : code as int,
-        flag == _$sentinelValue ? _value.flag as bool : flag as bool);
-  }
-}
-
+typedef _$CopyCallback<T> = T Function(T);
 typedef _$ExampleCallback<_$R, _$T extends Example> = _$R Function(_$T);
 typedef _$NoExampleCallback<_$R> = _$R Function();

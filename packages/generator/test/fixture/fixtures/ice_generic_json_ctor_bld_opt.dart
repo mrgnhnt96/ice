@@ -15,11 +15,20 @@ abstract class _$Example<T> {
   T get name;
   int get code;
   bool get flag;
-  _$ExampleCopyWith get copyWith => _$ExampleCopyWith<T>(this);
 
-  @override
-  String toString() {
-    return r'Example(' 'name: $name, ' 'code: $code, ' 'flag: $flag)';
+  /// 'null' safe
+  ///
+  /// ```dart
+  /// myClass.copyWith(field: (currentValue) => newValue);
+  /// ```
+  Example copyWith({
+    _$CopyCallback<T>? name,
+    _$CopyCallback<int>? code,
+    _$CopyCallback<bool>? flag,
+  }) {
+    return Example(name == null ? this.name : name(this.name),
+        code: code == null ? this.code : code(this.code),
+        flag: flag == null ? this.flag : flag(this.flag));
   }
 }
 
@@ -30,11 +39,20 @@ abstract class _$Example2<T> {
   T get name;
   int get code;
   bool get flag;
-  _$Example2CopyWith get copyWith => _$Example2CopyWith<T>(this);
 
-  @override
-  String toString() {
-    return r'Example2(' 'name: $name, ' 'code: $code, ' 'flag: $flag)';
+  /// 'null' safe
+  ///
+  /// ```dart
+  /// myClass.copyWith(field: (currentValue) => newValue);
+  /// ```
+  Example2 copyWith({
+    _$CopyCallback<T>? name,
+    _$CopyCallback<int>? code,
+    _$CopyCallback<bool>? flag,
+  }) {
+    return Example2(name == null ? this.name : name(this.name),
+        code: code == null ? this.code : code(this.code),
+        flag: flag == null ? this.flag : flag(this.flag));
   }
 }
 
@@ -45,72 +63,21 @@ abstract class _$Example3<T> {
   T get name;
   int get code;
   bool get flag;
-  _$Example3CopyWith get copyWith => _$Example3CopyWith<T>(this);
 
-  @override
-  String toString() {
-    return r'Example3(' 'name: $name, ' 'code: $code, ' 'flag: $flag)';
-  }
-}
-
-const _$sentinelValue = Object();
-
-abstract class _$ExampleCopyWith<T> {
-  const factory _$ExampleCopyWith(_$Example<T> value) =
-      _$ExampleCopyWithImpl<T>;
-  Example call({T name, int code, bool flag});
-}
-
-class _$ExampleCopyWithImpl<T> implements _$ExampleCopyWith<T> {
-  const _$ExampleCopyWithImpl(this._value);
-  final _$Example<T> _value;
-  Example call({
-    Object? name = _$sentinelValue,
-    Object? code = _$sentinelValue,
-    Object? flag = _$sentinelValue,
+  /// 'null' safe
+  ///
+  /// ```dart
+  /// myClass.copyWith(field: (currentValue) => newValue);
+  /// ```
+  Example3 copyWith({
+    _$CopyCallback<T>? name,
+    _$CopyCallback<int>? code,
+    _$CopyCallback<bool>? flag,
   }) {
-    return Example<T>(name == _$sentinelValue ? _value.name as T : name as T,
-        code: code == _$sentinelValue ? _value.code as int : code as int,
-        flag: flag == _$sentinelValue ? _value.flag as bool : flag as bool);
+    return Example3(name == null ? this.name : name(this.name),
+        code: code == null ? this.code : code(this.code),
+        flag: flag == null ? this.flag : flag(this.flag));
   }
 }
 
-abstract class _$Example2CopyWith<T> {
-  const factory _$Example2CopyWith(_$Example2<T> value) =
-      _$Example2CopyWithImpl<T>;
-  Example2 call({T name, int code, bool flag});
-}
-
-class _$Example2CopyWithImpl<T> implements _$Example2CopyWith<T> {
-  const _$Example2CopyWithImpl(this._value);
-  final _$Example2<T> _value;
-  Example2 call({
-    Object? name = _$sentinelValue,
-    Object? code = _$sentinelValue,
-    Object? flag = _$sentinelValue,
-  }) {
-    return Example2<T>(name == _$sentinelValue ? _value.name as T : name as T,
-        code: code == _$sentinelValue ? _value.code as int : code as int,
-        flag: flag == _$sentinelValue ? _value.flag as bool : flag as bool);
-  }
-}
-
-abstract class _$Example3CopyWith<T> {
-  const factory _$Example3CopyWith(_$Example3<T> value) =
-      _$Example3CopyWithImpl<T>;
-  Example3 call({T name, int code, bool flag});
-}
-
-class _$Example3CopyWithImpl<T> implements _$Example3CopyWith<T> {
-  const _$Example3CopyWithImpl(this._value);
-  final _$Example3<T> _value;
-  Example3 call({
-    Object? name = _$sentinelValue,
-    Object? code = _$sentinelValue,
-    Object? flag = _$sentinelValue,
-  }) {
-    return Example3<T>(name == _$sentinelValue ? _value.name as T : name as T,
-        code: code == _$sentinelValue ? _value.code as int : code as int,
-        flag: flag == _$sentinelValue ? _value.flag as bool : flag as bool);
-  }
-}
+typedef _$CopyCallback<T> = T Function(T);
