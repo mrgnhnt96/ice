@@ -2,6 +2,7 @@ import 'package:ice_annotation/ice.dart';
 
 part 'ice.g.dart';
 part 'fixtures/ice.dart';
+// part 'fixtures/ice_bld_opt.dart';
 // part 'ice.ice.dart';
 
 @Ice()

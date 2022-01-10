@@ -1,6 +1,7 @@
 import 'package:ice_annotation/ice.dart';
 
 part 'fixtures/contained_union_no_methods.dart';
+// part 'fixtures/contained_union_no_methods_bld_opt.dart';
 // part 'contained_union_no_methods.ice.dart';
 
 @IceUnion.contained(

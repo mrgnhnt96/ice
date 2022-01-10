@@ -1,6 +1,7 @@
 import 'package:ice_annotation/ice.dart';
 
 part 'fixtures/union_generic.dart';
+// part 'fixtures/union_generic_bld_opt.dart';
 // part 'union_generic.ice.dart';
 part 'union_generic.g.dart';
 

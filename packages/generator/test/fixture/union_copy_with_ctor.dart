@@ -2,6 +2,7 @@ import 'package:ice_annotation/ice.dart';
 
 part 'union_copy_with_ctor.g.dart';
 part 'fixtures/union_copy_with_ctor.dart';
+// part 'fixtures/union_copy_with_ctor_bld_opt.dart';
 // part 'union_copy_with_ctor.ice.dart';
 
 @IceUnion.of(State)
