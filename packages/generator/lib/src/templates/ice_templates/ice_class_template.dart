@@ -18,7 +18,7 @@ extension on IceJsonSerializable {
     const defaults = JsonSerializable.defaults;
 
     final allArgs = [
-      if ((iceSettings.createFromJson) || (createFactory ?? true))
+      if (iceSettings.createFromJson || createFactory == true)
         "constructor: r'${FromJsonTemplate.fromJsonAccessor}'",
       if ((iceSettings.createToJson || createToJson != defaults.createToJson) &&
           createToJson != null)
@@ -137,6 +137,12 @@ class IceClassTemplate extends Template {
 
     if (iceJsonSerializable == null) {
       return;
+    }
+
+    if (!iceSettings.generateJson) {
+      if (!iceJsonSerializable.hasNonDefaultValues) {
+        return;
+      }
     }
 
     buffer.writepln(iceJsonSerializable.asAnnotation);
