@@ -1,6 +1,14 @@
 # comment out to overwrite all files
 # set -o noclobber
 
+echo "Do the generated files use the builder options? (y/n)"
+read answer
+if [ "$answer" == "y" ]; then
+    suffix="_bld_opt"
+else
+    suffix=""
+fi
+
 for f in ../fixture/*.ice.dart
 do
     path=${f:3}
@@ -15,35 +23,19 @@ do
     name=${fileName%.dart}
     echo $name
 
+    fileName=$name$suffix
 
     directory=$path
-    path=$path$fileName
+    path=$path$fileName.dart
 
     mkdir -p $directory
     > $path
 
     cat $originalPath >> $path
 
-    # echo "${originalPath} >> ${path}"
-    content=$(cat $originalPath)
-
-    echo "/*\n $content*/" > $originalPath
-
-    # update the part of path
+        # update the part of path
     oldPart="part of '"
     newPart="part of '../"
     sed -i '' "s+$oldPart+$newPart+" $path
-
-    baseFile=${originalPath%.ice.dart}.dart
-
-    # reference the fixture part path
-    oldPart="// part"
-    newPart="part"
-    sed -i '' "s+$oldPart+$newPart+" $baseFile
-
-    # comment ice part path
-    oldPart="part '$name.ice.dart"
-    newPart="// part '$name.ice.dart"
-    sed -i '' "s+$oldPart+$newPart+" $baseFile
 
 done
