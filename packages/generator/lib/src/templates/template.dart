@@ -2,6 +2,7 @@
 
 import 'package:ice/ice.dart';
 import 'package:ice/src/domain/domain.dart';
+import 'package:ice/src/domain/ice_settings.dart';
 import 'package:ice_annotation/ice.dart';
 import 'package:meta/meta.dart';
 
@@ -37,6 +38,25 @@ abstract class Template {
   /// should be called before [addToBuffer] or [toString]
   @mustCallSuper
   bool get canBeGenerated {
+    bool canGenerateJson(bool? Function(IceJsonSerializable) callback,
+        bool Function(IceSettings) settingsCallBack) {
+      return subject.metaSettings(
+        methodCallback: (method) => method.createToJson,
+        iceCallback: (ice) {
+          final json = ice.jsonSerializable;
+
+          if (json == null) return false;
+
+          if (callback(json) == true) {
+            return true;
+          }
+
+          return callback(json);
+        },
+        settingsCallback: (settings) => settingsCallBack(settings),
+      );
+    }
+
     /// whether a method can be generated
     ///
     /// returns false if the method already exists
@@ -68,33 +88,15 @@ abstract class Template {
           settingsCallback: (settings) => settings.tostring,
         );
       case TemplateType.toJson:
+        return canGenerateJson(
+          (json) => json.createToJson,
+          (settings) => settings.createToJson,
+        );
       case TemplateType.fromJson:
-        final annotations = subject.annotations;
-        if (annotations.isIceAnnotation) {
-          final json = annotations.ice!.jsonSerializable;
-          if (json == null) {
-            return false;
-          }
-
-          if (templateType.isFromJson) {
-            return json.createFactory ?? true;
-          }
-
-          return json.createToJson ?? true;
-        } else if (annotations.isMethodAnnotation) {
-          final methods = annotations.methods!;
-          if (templateType.isFromJson) {
-            return methods.createFromJson;
-          }
-
-          return methods.createToJson;
-        }
-
-        if (templateType.isFromJson) {
-          return iceSettings.createFromJson;
-        }
-
-        return iceSettings.createToJson;
+        return canGenerateJson(
+          (json) => json.createFactory,
+          (settings) => settings.createToJson,
+        );
     }
   }
 
