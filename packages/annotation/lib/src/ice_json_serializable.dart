@@ -24,4 +24,18 @@ class IceJsonSerializable extends JsonSerializable {
           ignoreUnannotated: ignoreUnannotated,
           includeIfNull: includeIfNull,
         );
+
+  /// whether there has been config provided to the json_serializable
+  bool get hasNonDefaultValues {
+    if (anyMap != null) return true;
+    if (checked != null) return true;
+    if (createFactory != null) return true;
+    if (createToJson != null) return true;
+    if (disallowUnrecognizedKeys != null) return true;
+    if (explicitToJson != null) return true;
+    if (fieldRename != null) return true;
+    if (ignoreUnannotated != null) return true;
+    if (includeIfNull != null) return true;
+    return false;
+  }
 }
