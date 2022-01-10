@@ -32,9 +32,6 @@ class Example<T> extends _$Example<T> {
       : name = '' as T,
         flag = true;
 
-  factory Example.fromJson(Map<String, dynamic> json) =>
-      _$ExampleFromJson<Object>(json) as Example<T>;
-
   @TConv<T>()
   final T name;
   final int code;

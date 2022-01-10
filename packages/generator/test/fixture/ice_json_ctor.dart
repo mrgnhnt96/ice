@@ -33,9 +33,6 @@ class Example extends _$Example {
       : name = '',
         flag = true;
 
-  factory Example.fromJson(Map<String, dynamic> json) =>
-      _$ExampleFromJson(json);
-
   final String name;
   final int code;
   final bool flag;
@@ -68,9 +65,6 @@ class Example2 extends _$Example2 {
   const Example2.some(this.code)
       : name = '',
         flag = true;
-
-  factory Example2.fromJson(Map<String, dynamic> json) =>
-      _$Example2FromJson(json);
 
   final String name;
   final int code;
@@ -106,9 +100,6 @@ class Example3 extends _$Example3 {
   const Example3.some(this.code)
       : name = '',
         flag = true;
-
-  factory Example3.fromJson(Map<String, dynamic> json) =>
-      _$Example3FromJson(json);
 
   final String name;
   final int code;

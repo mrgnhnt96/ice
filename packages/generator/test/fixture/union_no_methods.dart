@@ -3,7 +3,6 @@ import 'package:ice_annotation/ice.dart';
 part 'fixtures/union_no_methods.dart';
 // part 'fixtures/union_no_methods_bld_opt.dart';
 // part 'union_no_methods.ice.dart';
-// part 'union_no_methods.ice.dart';
 
 @IceUnion.of(
   State,

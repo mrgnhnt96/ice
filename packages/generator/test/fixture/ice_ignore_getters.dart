@@ -34,9 +34,6 @@ class Example extends _$Example {
       : name = '',
         flag = true;
 
-  factory Example.fromJson(Map<String, dynamic> json) =>
-      _$ExampleFromJson(json);
-
   final String name;
   final int code;
   final bool flag;

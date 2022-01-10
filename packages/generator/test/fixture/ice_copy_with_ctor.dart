@@ -37,8 +37,6 @@ class Example extends _$Example {
   final int code;
   final bool flag;
 
-  factory Example.fromJson(Map<String, dynamic> json) =>
-      _$ExampleFromJson(json);
 }
 
 @Ice()
@@ -69,8 +67,6 @@ class Example2 extends _$Example2 {
       : name = '',
         flag = true;
 
-  factory Example2.fromJson(Map<String, dynamic> json) =>
-      _$Example2FromJson(json);
 
   final String name;
   final int code;
@@ -107,8 +103,6 @@ class Example3 extends _$Example3 {
       : name = '',
         flag = true;
 
-  factory Example3.fromJson(Map<String, dynamic> json) =>
-      _$Example3FromJson(json);
 
   final String name;
   final int code;

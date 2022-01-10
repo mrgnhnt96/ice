@@ -39,9 +39,6 @@ class Example<T> extends _$Example<T> {
       : name = '' as T,
         flag = true;
 
-  factory Example.fromJson(Map<String, dynamic> json) =>
-      _$ExampleFromJson<Object>(json) as Example<T>;
-
   @TConv<T>()
   final T name;
   final int code;
@@ -96,9 +93,6 @@ class Example2<T> extends _$Example2<T> {
       : name = '' as T,
         flag = true;
 
-  factory Example2.fromJson(Map<String, dynamic> json) =>
-      _$Example2FromJson<Object>(json) as Example2<T>;
-
   @TConv<T>()
   final T name;
   final int code;
@@ -138,9 +132,6 @@ class Example3<T> extends _$Example3<T> {
   const Example3.some(this.code)
       : name = '' as T,
         flag = true;
-
-  factory Example3.fromJson(Map<String, dynamic> json) =>
-      _$Example3FromJson<Object>(json) as Example3<T>;
 
   @TConv<T>()
   final T name;
