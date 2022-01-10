@@ -1,13 +1,19 @@
 # comment out to overwrite all files
 # set -o noclobber
 
-echo "Do you want to reference the generated files? (y/n)"
-read refGen
+refGen=$1
+if [ -z "$refGen" ]; then
+    echo "Do you want to reference the generated files? (y/n)"
+    read refGen
+fi
 
 if [ $refGen == "n" ]
 then
-    echo "Do you want to reference the builder option files? (y/n)"
-    read refOpt
+    refOpt=$2
+    if [ -z "$refOpt" ]; then
+        echo "Do you want to reference the builder option files? (y/n)"
+        read refOpt
+    fi
 fi
 
 function uncommentPart() {
@@ -36,7 +42,7 @@ do
         then continue
     fi
 
-    if [[ $f == *".freezed.dart" ]]
+    if [[ $f == *".ice.dart" ]]
         then continue
     fi
 
@@ -54,16 +60,17 @@ do
     newPart="// part"
     sed -r -i '' "s-$oldPart-$newPart-" $path
 
-    uncommentPart "$name.g" $path
 
     if [ $refGen == "y" ]
     then
         uncommentPart "$name.ice" $path
+        uncommentPart "$name.g" $path
     else
         if [ $refOpt == "y" ]
         then
             uncommentPart "fixtures/${name}_bld_opt" $path
         else
+            uncommentPart "$name.g" $path
             uncommentPart "fixtures/$name" $path
         fi
     fi
