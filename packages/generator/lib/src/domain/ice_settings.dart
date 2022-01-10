@@ -33,7 +33,7 @@ class IceSettings implements Ice {
           formatOutput: false,
           createToJson: true,
           createFromJson: true,
-          props: false,
+          props: true,
           debugOutput: false,
         );
 
