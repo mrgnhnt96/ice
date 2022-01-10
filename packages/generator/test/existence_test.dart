@@ -15,7 +15,7 @@ void main() {
     group('${i1.Example}', () {
       ExistenceTest<i1.Example>(
         copyWith: false,
-        fromJson: true,
+        fromJson: false,
         props: true,
         toJson: true,
       ).runTests();
@@ -90,7 +90,7 @@ void main() {
   group('ice', () {
     ExistenceTest<i3.Example>(
       copyWith: true,
-      fromJson: true,
+      fromJson: false,
       props: true,
       toJson: true,
     ).runTests();
@@ -99,7 +99,7 @@ void main() {
   group('ice_ignore_getters', () {
     ExistenceTest<i4.Example>(
       copyWith: true,
-      fromJson: true,
+      fromJson: false,
       props: true,
       toJson: true,
     ).runTests();
@@ -138,7 +138,7 @@ void main() {
     group('${i6.State}', () {
       ExistenceTest<i6.State>(
         copyWith: false,
-        fromJson: true,
+        fromJson: false,
         props: true,
         toJson: true,
       ).runTests();
@@ -169,7 +169,7 @@ void main() {
     group('${i7.State}', () {
       ExistenceTest<i7.State>(
         copyWith: false,
-        fromJson: true,
+        fromJson: false,
         props: true,
         toJson: true,
       ).runTests();
