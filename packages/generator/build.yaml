@@ -10,11 +10,10 @@ targets:
         options:
           format_output: true
           _dev: true
-          # copyWith: anonymous
+          # copy_with: anonymous
           # equatable: false
-          # tostring: false
-          # ignoreGettersAsProps: false
-          # formatOutput: false
+          # to_string: false
+          # ignore_getters_as_props: false
           # create_to_json: false
           # create_from_json: false
           # props: false
