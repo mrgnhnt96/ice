@@ -73,7 +73,12 @@ class IceSettings implements Ice {
   final bool ignoreGettersAsProps;
 
   @override
-  IceJsonSerializable? get jsonSerializable => null;
+  IceJsonSerializable? get jsonSerializable => generateJson
+      ? IceJsonSerializable(
+          createToJson: createToJson,
+          createFactory: createFromJson,
+        )
+      : null;
 
   @override
   final bool props;
@@ -86,6 +91,9 @@ class IceSettings implements Ice {
 
   /// whether to create `fromJson()` & its constructors
   final bool createFromJson;
+
+  /// whether to generate toJson and fromJson
+  bool get generateJson => createToJson || createFromJson;
 
   /// the default key to be used for union serialization
   final String unionKey;
