@@ -130,10 +130,10 @@ class IceSettings implements Ice {
       ignoreGettersAsProps:
           ignoreGettersAsProps ?? defaults.ignoreGettersAsProps,
       unionKey: unionKey ?? defaults.unionKey,
-      formatOutput: true,
       createFromJson: createFromJson ?? defaults.createFromJson,
       createToJson: createToJson ?? defaults.createToJson,
       props: props ?? defaults.props,
+      formatOutput: true,
       debugOutput: true,
     )._toJson();
   }
