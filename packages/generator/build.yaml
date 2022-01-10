@@ -5,11 +5,16 @@ targets:
       ice:
         enabled: true
         generate_for:
-          exclude:
-            - test/
           include:
-            - test/**/integration/*
-            - test/**/integration/**/*
+            - "test/fixture/*.dart"
+        options:
+          format_output: true
+          _dev: true
+      json_serializable:
+        enabled: true
+        generate_for:
+          include:
+            - "test/fixture/*.dart"
 
 builders:
   ice:
